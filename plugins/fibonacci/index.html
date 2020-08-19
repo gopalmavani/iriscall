@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Fibonacci tree examples</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="fibonacci/tree-generator.min.js"></script>
+    <script src="fibonacci/fibonacci-tree.min.js"></script>
+</head>
+
+<body>
+    <h1>Fibonacci tree examples</h1>
+    <p>
+        Click a node to see its subtree only. Click the central node of the subtree to return back to the original tree
+        view. Double-click the image to zoom in. Hold Shift key and double-click to zoom out. You can use mouse wheel to
+        zoom
+        in/out as well.
+    </p>
+    <div class="fibonacci">
+        <svg class="fibonacci__svg fibonacci__svg--hierarchical" width="1200" height="600"></svg>
+        <svg class="fibonacci__svg fibonacci__svg--radial" width="900" height="900"></svg>
+        <div class="fibonacci__tooltip"></div>
+    </div>
+    <script>
+        const toCsvArray = (d) => ({
+            id: +d.id,
+            accountNo: d.cbm_account_num,
+            userId: d.user_id,
+            email: d.email,
+            lchild: +d.lchild,
+            rchild: +d.rchild,
+        });
+
+        const svgHierarchical = d3.select(".fibonacci__svg--hierarchical")
+            .call(d3.zoom().on("zoom", () =>
+                svgHierarchical.select("g").attr("transform", d3.event.transform)));
+
+        const svgRadial = d3.select(".fibonacci__svg--radial")
+            .call(d3.zoom().on("zoom", () =>
+                svgRadial.select("g").attr("transform", d3.event.transform)));
+
+        const tooltip = d3.select(".fibonacci__tooltip");
+        
+        const margin = { x: 50, y: 50 };
+
+        d3.csv("sample-data.csv", toCsvArray).then(data => {
+            new FibonacciTree(data, svgHierarchical, tooltip, { levels: 12, isRadial: false, margin });
+            new FibonacciTree(data, svgRadial, tooltip, { levels: 12, isRadial: true, margin });
+        });
+    </script>
+</body>
+
+</html>

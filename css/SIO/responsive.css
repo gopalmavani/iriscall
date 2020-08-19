@@ -1,0 +1,121 @@
+@media screen and (max-width: 1280px){
+    .mb1{
+        margin-bottom: 5px;
+    }
+    .mb1-5{
+        margin-bottom: 10px;
+    }
+    .mb2{
+        margin-bottom: 15px;
+    }
+    .mb3{
+        margin-bottom: 25px;
+    }
+    .mb6{
+        margin-bottom: 45px;
+    }
+    .login-box{
+        max-width: 900px;
+        margin-bottom: 80px
+    }
+    .vector-icon img {
+        max-width: 400px;
+        position: absolute;
+        bottom: -50px;
+        right: -50px;
+    }
+}
+@media screen and (max-width: 992px){
+    .login-box{
+        max-width: 750px;
+        margin-bottom: 80px
+    }
+    .login-form{
+        max-width: 400px;
+        padding: 30px 30px 30px 30px;
+    }
+    .login-form h4 {
+        font-size:26px;
+    }
+    .vector-icon img {
+        max-width: 300px;
+        position: absolute;
+        bottom: -50px;
+        right: -50px;
+    }
+}
+@media screen and (max-width: 768px){
+    .login .logo{
+        padding: 0 30px;
+    }
+    .login .logo img{
+        max-width: 409px;
+        width: 100%;
+        margin: 0 auto;
+    }
+     .login-form{
+        margin: 0 auto;
+    }
+    .login-box{
+        text-align: center;
+        margin: 20px 30px 80px 30px;
+        background-image: none;
+    }   
+    .login-vector{
+        display: none;
+    }
+    .login-form p{
+            padding-left: 00px;
+    }
+} 
+@media screen and (max-width: 575.98px) {
+    .login .logo img{
+        max-width: 250px;
+    }
+    .login .logo {
+         margin-top: 30px;
+    }
+    .login-form p{
+        padding-left: 0px;
+        font-size: 12px;
+    }
+    .login-form h4 {
+        font-size: 20px;
+    }
+    .mb6 {
+        margin-bottom: 25px;
+    }
+    .signInBtn{
+        font-size: 12px;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .form-flex{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .form-group label, .form-flex label, .form-flex a {
+        color: var(--white);
+        font-size: 13px;
+    }
+    .sio-flex{
+        flex-direction: column;
+        text-align: center;
+        width: 90%;
+        padding: 10px 10px 6px 10px;
+    }
+    .sio-text{
+        padding-left: 00px;
+    }
+    .sio-logo img{
+        max-width: 30px;
+    }
+    .sio-heading{
+        font-size: 13px;
+        margin: 10px 0;
+    }
+    .sio-sub-heading{
+        font-size: 11px;
+    }
+}

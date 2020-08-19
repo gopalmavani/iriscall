@@ -1,0 +1,242 @@
+.m-b-10
+{
+    margin-bottom:10px ;
+}
+.icon-background {
+    background-color: #f5f5f5 !important;
+}
+.header-navbar-fixed #main-container {
+    padding-top: 0px;
+}
+.user-nav, .compen-nav, .pool-nav, .order-nav, .product-nav, .wallet-nav, .other-nav, .report-nav, .builder-nav, .roles-nav{
+    display: none !important;
+}
+.m-r-15{
+    margin-right: 15px;
+}.sidebar-nav>ul>li>a i
+.image-preview-box{
+    display:none;
+    height:150px;
+    width:150px;
+    position: relative;
+    overflow: hidden;
+    border:1px solid;
+    text-align: center;
+}
+.image-preview-box-update{
+    height:150px;
+    width:150px;
+    position: relative;
+    overflow: hidden;
+    border:1px solid;
+    text-align: center;
+}
+.image-preview{
+    position: absolute;
+    margin:auto;
+    top: -9999px;
+    bottom: -9999px;
+    left: -9999px;
+    right: -9999px;
+    width: 100%;
+    display: block;
+}
+.add-more-fields .col-xs-5 {
+    padding-right: 0px;
+    padding-bottom: 10px;
+}
+
+.add-more-fields .btn-danger {
+    width: 34px;
+}
+#email-valid, #phone-valid, #business-phone-valid{
+    display: none;
+}
+.json-format {
+    white-space: pre;
+    font-family: monospace;
+}
+.box1, .box2 {
+    border-bottom: 2px solid;
+    border-color: #646464;
+}
+.disabledTab {
+    pointer-events: none;
+}
+.custom_fields > .col-md-6:nth-child(odd) {
+    float: left;
+    width: 48.2%;
+}
+
+.custom_fields > .col-md-6:nth-child(even) {
+    float: right;
+    width: 48.2%;
+}
+.table-data2{
+    float: right;
+
+}
+.table-data2, .table-data1{
+    border-top: none !important;
+}
+.checkbox{
+    margin-left: 20px;
+    width: 100%;
+}
+/*.error{*/
+/*float: left;*/
+/*}*/
+.admin-btn-group{
+    float: right;
+}
+.white-bg{
+    background-color: #fff;
+    padding-top: 0px !important;
+    height: 65px !important;
+}
+/*.page-heading{*/
+/*margin-top: 15px;*/
+/*}*/
+.admin-btn{
+    margin-top: 15px;
+}
+
+#email-success-change , #password-success-change{
+    color: #008000;
+    margin-top: 12px;
+    width: 300px;
+    margin-left: 70px;
+}
+#check{
+    float: left;
+    margin-top: 75px;
+    position: absolute;
+    margin-left: 15px;
+    font-weight: 500;
+    color: green;
+}
+.no-match{
+    color: red !important;
+}
+.profile-name{
+    margin-left: 350px;
+    margin-top: 20px;
+    position: fixed;
+    word-break: break-all;
+}
+.dataTables_wrapper > .row, #user-info-grid, #order-credit-memo-grid, #compensations-grid, #categories-grid, #order-info-grid, #pool-plan-grid, #product-info-grid, #sys-users-grid, #wallet-grid, #wallet-type-entity-grid, #wallet-meta-entity-grid, #subscription-info-grid{
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.error-msg{
+    margin-left: 375px;
+    color: red;
+    font-weight: 600;
+}
+#userList{
+    height: 300px;
+    overflow-y: scroll;
+}
+.help-block{
+    float: left;
+}
+.disable-cursor{
+    cursor: not-allowed !important;
+}
+.custom-error{
+    color: #ff0000;
+}
+.module-box{
+    background-color: #fff;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-left: 18px;
+    width: 23%;
+}
+.block > .nav-tabs.nav-justified > li > a{
+
+}
+#userList{
+    padding-left: 8px;
+}
+#userList > li > input {
+    margin-right: 5px;
+    width: 20px;
+    height: 15px;
+}
+.sorting{
+    margin-left: 10px;
+    height: 20px;
+}
+.fc-past{
+    background-color : #EEEEEE;
+}
+.fc-today{
+    background-color : lightgreen;
+}
+.hide{
+    display: none;
+}
+.overlay {
+    background: none repeat scroll 0 0 black;
+    position: fixed;
+    display: block;
+    opacity: 0.5;
+    z-index: 1000001;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+.loader{
+    padding: 20% 0px 0px 50%;
+    color: white;
+}
+.pagination > ul > .active > a {
+    background-color: #2f4f4f;
+    color: white;
+}
+
+.table > tbody > tr > td
+{
+    padding:6px 10px;
+}
+* {margin:0; padding:0;}
+
+toastr.options {
+    "closeButton": true, // true/false
+    "debug": false, // true/false
+    "newestOnTop": false, // true/false
+    "progressBar": false, // true/false
+    "positionClass": "toast-top-right", // toast-top-right / toast-top-left / toast-bottom-right / toast-bottom-left
+    "preventDuplicates": false, true/false
+    "onclick": null,
+    "showDuration": "300", // in milliseconds
+    "hideDuration": "1000", // in milliseconds
+    "timeOut": "5000", // in milliseconds
+    "extendedTimeOut": "1000", // in milliseconds
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+
+.overlayhide{
+  display: none !important;
+}
+.overlay {
+  background: none repeat scroll 0 0 black;
+  position: fixed;
+  display: block;
+  opacity: 0.5;
+  z-index: 1000001;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+.loader{
+  padding: 20% 0px 0px 50%;
+  color: white;
+}

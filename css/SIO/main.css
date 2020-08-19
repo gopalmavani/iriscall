@@ -1,0 +1,222 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  outline: none;
+}
+body {
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+.mb1 {
+  margin-bottom: 10px;
+}
+.mb1-5 {
+  margin-bottom: 15px;
+}
+.mb2 {
+  margin-bottom: 20px;
+}
+.mb3 {
+  margin-bottom: 30px;
+}
+.mb5 {
+  margin-bottom: 30px;
+}
+.mb6 {
+  margin-bottom: 35px;
+}
+
+/*#############################*/
+/*---login page---*/
+/*#############################*/
+.login .logo {
+  text-align: center;
+  margin-top: 30px;
+}
+.login-box {
+  max-width: 1100px;
+  margin: 0 auto 120px;
+  display: flex;
+  justify-content: space-between;
+  background: var(--dark-blue);
+  background-image: url('../../images/sio/background-login.png');
+  background-position: bottom right;
+  background-size: 55%;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+}
+.login-form {
+  max-width: 500px;
+  padding: 30px 20px 40px 40px;
+  width: 100%;
+}
+.login-form h4 {
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--white);
+  text-transform: uppercase;
+}
+.form-group label,
+.form-flex label,
+.form-flex a {
+  color: var(--white);
+  font-size: 16px;
+}
+.form-flex label,
+.form-flex a {
+  font-size: 14px;
+}
+.form-flex a:hover {
+  color: var(--light-blue);
+}
+input[type='text'] {
+  width: 100%;
+  padding: 12px 20px;
+  height: 50px;
+  margin: 2px 0;
+  display: inline-block;
+  border: 1px solid var(--dark-blue);
+  border-radius: 50px;
+  box-sizing: border-box;
+}
+.form-flex {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+/* The container */
+.checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: var(--white);
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input ~ .checkmark {
+  background-color: var(--light-grayish-blue);
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--light-grayish-blue);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border-style: solid;
+  border-color: var(--dark-blue);
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.signInBtn {
+  background: var(--light-grayish-blue);
+  padding: 8px 30px 3px 25px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  color: var(--button-blue);
+  border: 1px solid var(--gray);
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.signInBtn img {
+  padding-left: 10px;
+}
+.signInBtn:hover {
+  border: 1px solid var(--dark-blue);
+}
+.login-form p {
+  color: var(--white);
+  font-size: 14px;
+  padding-left: 60px;
+}
+.login-form p a {
+  color: var(--light-blue);
+}
+.login-form p a:hover {
+  color: var(--white);
+}
+.login-vector {
+  position: relative;
+}
+.vector-icon img {
+  position: absolute;
+  bottom: -75px;
+  right: -75px;
+}
+
+/* SIO Notice */
+
+.sio-flex {
+  display: flex;
+  align-items: center;
+  background: #f2f5fa;
+  padding: 28px 0 25px 20px;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+.sio-text {
+  padding-left: 30px;
+}
+.sio-heading {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #0b5ba2;
+}
+.sio-sub-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b5ba2;
+}
+.sio-sub-heading a {
+  color: #d3537d;
+}

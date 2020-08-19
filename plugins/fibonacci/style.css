@@ -1,0 +1,68 @@
+.fibonacci {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /*margin: 2em;*/
+  background-color: #fff;
+  overflow: hidden;
+}
+
+/* svg element style */
+.fibonacci__svg {
+  margin-bottom: 50px;
+}
+
+/* style of a node with data (id, email, etc.) */
+.fibonacci__svg__node circle {
+  fill: #00bfff;
+  cursor: pointer;
+}
+
+/* style of a node that has no data (an open position) */
+.fibonacci__svg__node--placeholder circle {
+  fill: #ffa500;
+  cursor: default;
+}
+
+/* style of a node caption */
+.fibonacci__svg__node text {
+  font: 10px sans-serif;
+  cursor: default;
+}
+
+/* for caption of internal nodes a shadow is used to make the caption better readable */
+.fibonacci__svg__node--internal text {
+  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+}
+
+/* style of a line connecting two nodes */
+.fibonacci__svg__line {
+  fill: none;
+  stroke: #aaa;
+  stroke-width: 2;
+}
+
+/* style of a line connecting parent node and the righ child */
+.fibonacci__svg__line--left {
+  stroke: #888;
+  stroke-width: 3;
+}
+
+/* style of inscribed circles (used in radial tree layout) */
+.fibonacci__svg__circle {
+  stroke: #ccc;
+}
+
+/* style of tooltip that appears when a node with data is hovered */
+.fibonacci__tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 5px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+}

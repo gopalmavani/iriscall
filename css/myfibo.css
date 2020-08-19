@@ -1,0 +1,253 @@
+body
+{
+    color: #555;
+    font-family: Arial,Helvetica,sans-serif;
+    background: #FAFAFA;
+    font-size: 13px;
+}
+#myFibo{
+    margin-top: 81px;
+    margin-left: 176px;
+    height: 868px;
+    width: 13000px;
+    z-index: 199;
+    position: absolute;
+    overflow: hidden;
+}
+.fibo-bg-12{
+    background: url('../images/fibo.png') 18px 0;
+    background-size: 2948px;
+    background-repeat: no-repeat;
+}
+.fibo-bg-8{
+    background: url('../images/fibo-8.png') 27px -9px;
+    background-size: 1105px;
+    background-repeat: no-repeat;
+}
+.levels{
+    /*position: absolute;*/
+    /* top: 65px; */
+    /*width: 100%;*/
+    /*width: 3150px;*/
+    z-index: 100;
+}
+.level-td{
+    width: 20px;
+    background: #EEE;
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 0px 10px;
+    font-size: 13px;
+}
+.user-fb-account {
+    padding: 3px 11px;
+    background: black;
+    border-radius: 15px;
+}
+.other-fb-account {
+    padding: 3px 11px;
+    background: #CCC;
+    border-radius: 15px;
+}
+.levels tr {
+    list-style: none;
+    margin-bottom: 20px;
+    background: url(../images/li-border.jpg) center repeat-x;
+    position: relative;
+    height: 70px;
+    padding-left: 3px;
+    line-height: 23px;
+}
+/*.top{
+
+}*/
+
+.child-8{
+    padding: 0;
+    text-align: center;
+}
+.child-8 li {
+    list-style: none;
+    display: inline;
+    float: left;
+    padding: 42px 3.5px;
+    line-height: 0px;
+}
+
+.child-12{
+    padding: 0;
+    text-align: center;
+}
+.child-12 li {
+    list-style: none;
+    display: inline;
+    float: left;
+    padding: 42px 0px;
+    line-height: 0px;
+}
+
+.top li{
+    list-style: none;
+    display: inline;
+}
+li.right{
+    margin-top: 72px;
+}
+.node:hover{
+    cursor: pointer;
+}
+.node {
+    /* width: 30px; */
+    /* height: 30px; */
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background: #000;
+    /* position: absolute; */
+    /* margin-left: -15px; */
+    color: #FFF;
+    line-height: 30px;
+    -webkit-transition: all 1s;
+    transition: all 1s;
+    text-align: center;
+    padding: 2px 10px;
+    /* font-size: 12px; */
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;
+}
+
+/*
+    adding color code based on
+*/
+.user-node{
+    background-color: #ED8422;
+}
+.unity-user-node {
+    background-color: #4b8a08;
+}
+.other-user-node{
+    background-color: #073F62;
+}
+.empty-node{
+    background-color: #949494;
+}
+.head-span{
+    font-size: 14px;
+}
+.head-a{
+    font-size: 14px;
+    padding-left: 10px;
+}
+
+
+/* For table in modal*/
+
+.modal-table{
+    border-collapse: collapse;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.modal-table tr,th,td{
+    text-align: center !important;
+}
+
+.modal-table th,td {
+    padding: 5px 0px;
+    border-bottom: 1px solid #ddd;
+}
+
+.modal-table tr{
+    background: none;
+    height: 38px;
+}
+
+.modal-table th{
+    background-color:#d9d9d9;
+    color: #06314c;
+}
+
+.modal-table tr:hover {
+    background-color: #daeffd !important;
+}
+
+.modal-button{
+    background-color: white;
+    padding: 7px 5px;
+    margin-left: 5px;
+    width: 20px;
+}
+
+.modal-button {
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: absolute;
+    z-index: 201;
+    overflow: auto;
+    background-color: #ffffff;
+    top: 0;
+    margin: auto;
+}
+
+.modal-content{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.modal-title{
+    padding: 21px 27px;
+    margin: initial;
+    font-weight: 400;
+    text-align: center;
+}
+
+/* For dropdown in Iframe without bootstrap */
+.btn-group{
+    width: 175px;
+    float: right;
+}
+
+.dropdown{
+    width: 140px;
+    text-align:center;
+    color: #5e5e5e;
+    background-color: white;
+    position: relative;
+    display: inline-block;
+    height: 25px;
+    padding-top: 5px;
+    font-size: smaller;
+    font-weight: lighter;
+}
+
+.dropdown:hover{
+    background-color: #EEE;
+    cursor: pointer;
+    z-index: 202;
+    box-shadow: 1px 1px 1px 1px #EEE, #EEE;
+}
+
+.dropdown:hover .dropdowncontent{
+    display: block;
+    box-shadow: 1px 1px 1px 1px #EEE, #EEE;
+}
+
+.dropdowncontent {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    z-index: 200;
+    margin-top: 4px;
+}
+
+.linkclass {
+    text-decoration: none;
+    text-align: center;
+    color:grey;
+}

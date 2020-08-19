@@ -1,0 +1,13 @@
+{
+  "name": "fibonacci",
+  "description": "Draw Fibonacci trees using D3.js",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "http-server"
+  },
+  "author": "Incredible Web Ltd",
+  "license": "MIT",
+  "dependencies": {
+    "http-server": "^0.12.1"
+  }
+}

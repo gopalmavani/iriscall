@@ -1,0 +1,14 @@
+# phpstorm project files
+.idea
+
+# .htaccess file
+.htaccess
+
+#assets and runtime not needed
+assets
+protected/runtime
+protected/config/db.php
+protected/config/console.php
+protected/config/main.php
+protected/config/params.php
+protected/config/mail.php
