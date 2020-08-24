@@ -400,8 +400,9 @@ $folder = Yii::app()->params['basePath'];
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/nautilus/deposits');?>"><i class="fa fa-cogs"></i> <span class="sidebar-mini-hide"> Deposit/Withdraws </span></a></li>
                             </ul>
                         </li>
-                    </ul>
-                </div>
+                        <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/admin');?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> Company </span></a></li>
+                        <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrinfo');?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> CDR </span></a></li>
+                   </ul>                </div>
                 <!-- mainmenu -->
 
             </div>
