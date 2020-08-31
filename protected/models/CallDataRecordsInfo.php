@@ -17,6 +17,8 @@
  * @property string $to_number
  * @property string $end_reason
  * @property string $unit_cost
+ * @property string $total_time
+ * @property string $comment
  * @property string $date
  * @property string $created_at
  *
@@ -39,10 +41,10 @@ class CallDataRecordsInfo extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('organisation_id, callid, start_time, timezone, date, created_at', 'required'),
+            array('organisation_id, callid, start_time, timezone, total_time, date, created_at', 'required'),
             array('organisation_id', 'integerOnly'=>true),
-            array('callid, from_type, from_id, from_number, from_name, to_number, end_reason','length', 'max'=>255),
-            array('timezone, unit_cost, date','length', 'max'=>20),
+            array('callid, from_type, from_id, from_number, from_name, comment, to_number, end_reason','length', 'max'=>255),
+            array('timezone, unit_cost, total_time, date','length', 'max'=>20),
             array('created_at', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -69,6 +71,8 @@ class CallDataRecordsInfo extends CActiveRecord
             'to_number'=> 'To',
             'end_reason'=> 'Reason',
             'unit_cost'=> 'Cost',
+            'total_time'=> 'Duration',
+            'comment'=> 'Comment',
             'date'=> 'Date',
             'created_at'=> 'created',
         );
@@ -105,6 +109,8 @@ class CallDataRecordsInfo extends CActiveRecord
         $criteria->compare('to_number',$this->to_number,true);
         $criteria->compare('end_reason',$this->end_reason,true);
         $criteria->compare('unit_cost',$this->unit_cost,true);
+        $criteria->compare('total_time',$this->total_time,true);
+        $criteria->compare('comment',$this->comment,true);
         $criteria->compare('date',$this->date,true);
         $criteria->compare('created_at',$this->created_at,true);
 

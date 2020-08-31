@@ -5,22 +5,23 @@ $this->pageTitle = 'CDR';
 ?>
 
 <!--Begin loader-->
-<div class="overlay" style="opacity:0.1 !important;position:unset !important;">
-    <div class="loader">
-        <!-- <div class="m-loader m-loader--lg m-loader--success" style="width: 30px; display: inline-block;"></div> -->
-        <p style="font-size: 18px;"><i class="fa fa-cog fa-spin" aria-hidden="true"></i> Loading...</p>
-    </div>
-</div>
-<!--End loader-->
 
-<div class="row hide" id="mydatatable">
+<!--End loader-->
+<?php
+$sql = "SELECT * FROM cdr_info";
+$result = Yii::app()->db->createCommand($sql)->queryAll();
+if(!empty($result)){ ?>
+    <div class="overlay" style="opacity:0.1 !important;position:unset !important;">
+        <div class="loader">
+            <p style="font-size: 18px;"><i class="fa fa-cog fa-spin" aria-hidden="true"></i> Loading...</p>
+        </div>
+    </div>
+
+    <div class="row hide" id="mydatatable">
     <div class="col-md-12">
-        <?php
-        $sql = "SELECT * FROM cdr_info";
-        $result = Yii::app()->db->createCommand($sql)->queryAll();
-        if(!empty($result)){ ?>
             <div class="pull-right m-b-10">
-                <?php echo CHtml::link('Create', array('calldatarecords/index'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+                <?php echo CHtml::link('Fetch CDR', array('calldatarecords/index'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+                <?php echo CHtml::link('Calculate Cost', array('calldatarecords/costcalculate'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
             </div>
             <div style="margin-right:10px;" class="pull-right m-b-10">
                 <a class="btn btn-outline-primary" id="clearfilters">Clear Filters <i class="fa fa-times"></i></a>
@@ -48,7 +49,6 @@ $this->pageTitle = 'CDR';
                         foreach($arr as $key=>$col){
                             switch($col->name)
                             {
-
                                 case 'organisation_id':
                                     echo "<td></td>";
                                     echo "<td><input type='text' data-column='1' class='text-box' style='width:100%;'></td>";
@@ -84,35 +84,25 @@ $this->pageTitle = 'CDR';
                 </table>
             </div>
             <div class="row"><br/></div>
-        <?php } else { ?>
-            <div class="row">
-                <div align="center">
-                    <img src="<?php echo Yii::app()->baseUrl."/plugins/img/product.png"; ?>" height="20%" width="10%"><br /><br />
-                    <h2>No Product</h2>
-                    <p></p>
-                    <div class="row">
-                        <?php echo CHtml::link('Create', array('productInfo/create'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
-                    </div>
-                    <br />
-                </div>
-            </div>
-        <?php } ?>
     </div>
 </div>
+<?php } else { ?>
+    <div class="row">
+        <div align="center">
+            <h2>No Call data records</h2>
+            <p></p>
+            <div class="row">
+                <?php echo CHtml::link('Fetch CDR', array('calldatarecords/index'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
+            </div>
+            <br />
+        </div>
+    </div>
+<?php } ?>
 <script src="<?php echo Yii::app()->createUrl('/'); ?>/plugins/js/core/bootbox.min.js"></script>
 <script>
     $(document).ready(function() {
-        if (localStorage.getItem('msg')){
-            $("#delete").removeClass("hide");
-            setTimeout(
-                function(){
-                    $("#delete").addClass("hide");
-                },5000
-            );
-            localStorage.removeItem('msg');
-        }
-        var d = new Date();
 
+        var d = new Date();
         var month = d.getMonth()+1;
         var day = d.getDate();
 
@@ -122,13 +112,13 @@ $this->pageTitle = 'CDR';
 
         var datatable = $('#product-info-table').DataTable({
             "fnDrawCallback":function(){
-                if($('#product-info-table td').hasClass('dataTables_empty')){
+                /*if($('#product-info-table td').hasClass('dataTables_empty')){
                     $('div.dataTables_paginate').hide();
                     $('div#product-info-table_info').hide();
                 } else {
                     $('div#product-info-table_info').show();
                     $('div.dataTables_paginate').show();
-                }
+                }*/
             },
             //"order":[[11,"DESC"]],
             "pageLength":20,
@@ -142,23 +132,23 @@ $this->pageTitle = 'CDR';
             "buttons": [
                 {
                     extend: 'copyHtml5',
-                    title: 'Products Data export '+currentDate
+                    title: 'CDR Data export '+currentDate
                 },
                 {
                     extend: 'excelHtml5',
-                    title: 'Products Data export '+currentDate
+                    title: 'CDR Data export '+currentDate
                 },
                 {
                     extend: 'csvHtml5',
-                    title: 'Products Data export '+currentDate
+                    title: 'CDR Data export '+currentDate
                 },
                 {
                     extend: 'pdfHtml5',
-                    title: 'Products Data export '+currentDate
+                    title: 'CDR Data export '+currentDate
                 },
                 {
                     extend: 'print',
-                    title: 'Products Data export '+currentDate
+                    title: 'CDR Data export '+currentDate
                 }
             ],
             "serverSide": true,
@@ -179,7 +169,7 @@ $this->pageTitle = 'CDR';
                 }
             },{
                 "visible":false,
-                "targets":[1,5,7,9,10,11,12,13,14,15]
+                "targets":[1,2,3,4,5,6,7,8,9,10,13,15,16]
             } ]
         });
 
