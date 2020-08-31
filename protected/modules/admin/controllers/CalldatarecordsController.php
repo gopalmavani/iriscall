@@ -402,9 +402,9 @@ class CalldatarecordsController extends Controller
 
         if (!empty($requestData['search']['value']))
         {
-            $sql.=" AND ( product_id LIKE '%" . $requestData['search']['value'] . "%' ";
+            $sql.=" AND ( callid LIKE '%" . $requestData['search']['value'] . "%' ";
             foreach($array_cols as  $key=>$col){
-                if($col->name != 'product_id')
+                if($col->name != 'callid')
                 {
                     $sql.=" OR ".$col->name." LIKE '%" . $requestData['search']['value'] . "%'";
                 }
@@ -417,6 +417,7 @@ class CalldatarecordsController extends Controller
         $j = 0;
         // getting records as per search parameters
         foreach($columns as $key=>$column){
+            //echo "<pre>";print_r($col->name);die;
             if($requestData['columns'][$key]['search']['value'] != ''){   //name
                 $sql.=" AND $column LIKE '%".$requestData['columns'][$key]['search']['value']."%' ";
             }

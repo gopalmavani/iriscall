@@ -46,32 +46,33 @@ if(!empty($result)){ ?>
                     <tr>
                         <?php
                         $arr = array_values($array_cols);
+                        //echo "<pre>";print_r($arr);die;
                         foreach($arr as $key=>$col){
                             switch($col->name)
                             {
-                                case 'organisation_id':
+                                case 'from_name':
                                     echo "<td></td>";
-                                    echo "<td><input type='text' data-column='1' class='text-box' style='width:100%;'></td>";
+                                    echo "<td><input type='text' data-column='10' class='text-box' style='width:100%;'></td>";
                                     break;
 
-                                case 'callid':
-                                    echo "<td><input type='text' data-column='3' class='text-box' style='width:100%;'></td>";
+                                case 'to_number':
+                                    echo "<td><input type='text' data-column='11' class='text-box' style='width:100%;'></td>";
                                     break;
 
-                                case 'start_time':
+                                /*case 'start_time':
                                     echo "<td><input type='date' data-column='4' data-date-inline-picker='true' class='date-field' style='width:100%' /></td>";
-                                    break;
-
-                                /*case 'answer_time':
-                                    echo "<td><input type='date' data-column='5' data-date-inline-picker='true' class='date-field' style='width:100%' /></td>";
                                     break;*/
 
-                                case 'end_time':
-                                    echo "<td><input type='date' data-column='6' data-date-inline-picker='true' class='date-field' style='width:100%' /></td>";
+                                case 'unit_cost':
+                                    echo "<td><input type='text' data-column='14' class='text-box' style='width:100%;'></td>";
                                     break;
 
-                                case 'from_type':
-                                    echo "<td><input type='text' data-column='7' class='text-box' style='width:100%;'></td>";
+                                case 'total_time':
+                                    echo "<td><input type='text' data-column='16' class='text-box' style='width:100%;'></td>";
+                                    break;
+
+                                case 'comment':
+                                    echo "<td><input type='text' data-column='17' class='text-box' style='width:100%;'></td>";
                                     break;
 
                                 default :
@@ -169,7 +170,7 @@ if(!empty($result)){ ?>
                 }
             },{
                 "visible":false,
-                "targets":[1,2,3,4,5,6,7,8,9,10,13,15,16]
+                "targets":[1,2,3,4,5,6,7,8,9,10,13,15]
             } ]
         });
 
