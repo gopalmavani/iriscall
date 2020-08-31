@@ -27,6 +27,8 @@ $id = $model->id;
         'to_number',
         'end_reason',
         'unit_cost',
+        'total_time',
+        'comment',
         'date',
         'created_at',
     ),

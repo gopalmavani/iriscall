@@ -112,6 +112,7 @@ class CalldatarecordsController extends Controller
                         throw new Exception('Could not open: ' . $saveTo);
                     }
 
+                    $token = base64_encode(Yii::app()->params['cdr_username'].":".Yii::app()->params['cdr_password']);
                     //Create a cURL handle.
                     $ch = curl_init($fileUrl);
                     //Pass our file handle to cURL.
@@ -123,7 +124,7 @@ class CalldatarecordsController extends Controller
                     curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     curl_setopt($ch, CURLOPT_HTTPHEADER , array(
-                        "Authorization: Basic c2FnYXI6V2FXQ25NWVNWdHNGSjZXNg=="
+                        "Authorization: Basic ".$token
                     ));
                     //Execute the request.
                     curl_exec($ch);
@@ -142,41 +143,34 @@ class CalldatarecordsController extends Controller
                         $data = $this->csvtoarray($saveTo, ',');
                         $cdr_data = [];
                         foreach ($data as $key => $value) {
-                            $value['organisation_id'] = $organisation_id;
-                            $value['unit_cost'] = '';
-                            $value['date'] = $date;
-                            $value['created_at'] = date('Y-m-d H:i:s');
-                            array_push($cdr_data, $value);
-                        }
-                        if(!empty($cdr_data)){
-                            $deleted = CallDataRecordsInfo::model()->deleteAll("organisation_id='" .$organisation_id."' and date = '".$date."'");
-                            foreach ($cdr_data as $key => $value) {
+                            if($value['from_type'] != 'external'){
                                 if(empty($value['answer_time'])){
                                     $value['answer_time'] = '0000-00-00 00:00:00';
                                 }
-                                if(empty($value['start_time'])){
-                                    $value['start_time'] = '0000-00-00 00:00:00';
-                                }
-                                if(empty($value['end_time'])){
-                                    $value['end_time'] = '0000-00-00 00:00:00';
-                                }
-                                $model_s = new CallDataRecordsInfo;
-                                $model_s['callid'] = $value['callid'];
-                                $model_s['start_time'] = $value['start_time'];
-                                $model_s['answer_time'] = $value['answer_time'];
-                                $model_s['end_time'] = $value['end_time'];
-                                $model_s['timezone'] = $value['timezone'];
-                                $model_s['from_type'] = $value['from_type'];
-                                $model_s['from_id'] = $value['from_id'];
-                                $model_s['from_number'] = $value['from_number'];
-                                $model_s['from_name'] = $value['from_name'];
-                                $model_s['to_number'] = $value['to_number'];
-                                $model_s['end_reason'] = $value['end_reason'];
-                                $model_s['organisation_id'] = $value['organisation_id'];
-                                $model_s['unit_cost'] = $value['unit_cost'];
-                                $model_s['date'] = $value['date'];
-                                $model_s['created_at'] = date('Y-m-d H:i:s');
-                                $model_s->save(false);
+                                $value['organisation_id'] = $organisation_id;
+                                $value['unit_cost'] = '';
+                                $value['date'] = $date;
+                                $value['created_at'] = date('Y-m-d H:i:s');
+                                $diff = strtotime($value['end_time']) - strtotime($value['start_time']);
+                                $minutes = floor($diff / 60);
+                                $seconds = $diff % 60;
+                                $total_time = "00:$minutes:$seconds";
+                                $value['total_time'] = $total_time;
+                                $value['comment'] = '';
+                                $value['created_at'] = date('Y-m-d H:i:s');
+                                array_push($cdr_data, $value);
+                            }
+                        }
+                        if(!empty($cdr_data)){
+                            $deleted = CallDataRecordsInfo::model()->deleteAll("organisation_id='" .$organisation_id."' and date = '".$date."'");
+                            $connection = Yii::app()->db->getSchema()->getCommandBuilder();
+                            $chunked_array = array_chunk($cdr_data, 5000);
+                            $table_name = 'cdr_info';
+                            foreach ($chunked_array as $chunk_array){
+                                $command = $connection->createMultipleInsertCommand($table_name, $chunk_array);
+                                $command->execute();
+                                $logMessage = count($chunk_array)." records were inserted in ".$table_name.PHP_EOL;
+                                file_put_contents('protected/runtime/insert.log', $logMessage, FILE_APPEND);
                             }
                         }
                     }
@@ -189,6 +183,58 @@ class CalldatarecordsController extends Controller
         ]);
     }
 
+    public function actionCostcalculate(){
+        $cdr_data = $model=CallDataRecordsInfo::model()->findAll();
+        $ar = [];
+        foreach ($cdr_data as $cdr){
+            $model = CallDataRecordsInfo::model()->findByPk($cdr['id']);
+            $tonumber = $cdr['to_number'];
+            $diff = strtotime($cdr['end_time']) - strtotime($cdr['start_time']);
+            $total_time = $diff;
+            $cost_calculate = $this->calculateCost($tonumber,$total_time);
+            //echo "<pre>";print_r($cost_calculate);die;
+            $model['unit_cost'] = $cost_calculate['cost'];
+            $model['comment'] = $cost_calculate['comment'];
+            $model->save(false);
+        }
+        $this->redirect('cdrinfo');
+    }
+
+    /**
+     * @param $tonumber
+     * @param $totaltime
+     */
+    function calculateCost($tonumber,$totaltime){
+        $prefix_start_char = substr($tonumber, 0, 2);
+        $cost_rules = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('cdr_cost_rules')
+            ->where(['like', 'start_with', [ $prefix_start_char . '%']])
+            ->andWhere('digit=:digit',[':digit'=>strlen($tonumber)])
+            ->order('start_with asc')
+            ->queryAll();
+        $cost = '0.00';
+        $comment = '-';
+        foreach ($cost_rules as $rule){
+            $rule_prefix = substr($rule['start_with'], 2, 1);
+            $prefix_start = substr($tonumber, 2, 1);
+            if(!empty($rule_prefix)){
+                if($rule_prefix == $prefix_start){
+                    //$cost = $totaltime*$rule['cost'] / 60;
+                    $cost = $rule['cost'];
+                    $comment = $rule['comment'];
+                }
+            }else{
+                if($prefix_start_char == $rule['start_with']){
+                    //$cost = $totaltime*$rule['cost'] / 60;
+                    $cost = $rule['cost'];
+                    $comment = $rule['comment'];
+                }
+            }
+        }
+        $result = array('cost'=>round($cost,3),'comment'=>$comment);
+        return $result;
+    }
 
     function csvtoarray($filename='', $delimiter){
 
