@@ -21,6 +21,7 @@ if(!empty($result)){ ?>
     <div class="col-md-12">
             <div class="pull-right m-b-10">
                 <?php echo CHtml::link('Fetch CDR', array('calldatarecords/index'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+                <?php echo CHtml::link('Fetch From Number', array('calldatarecords/getfromnumber'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
                 <?php echo CHtml::link('Calculate Cost', array('calldatarecords/costcalculate'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
             </div>
             <div style="margin-right:10px;" class="pull-right m-b-10">

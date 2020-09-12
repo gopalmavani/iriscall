@@ -183,9 +183,87 @@ class CalldatarecordsController extends Controller
         ]);
     }
 
+    public function actionGetfromnumber(){
+        $cdr_data = Yii::app()->db->createCommand()
+            ->select('distinct(from_id)')
+            ->from('cdr_info')
+            ->Where('from_id!=:fi',[':fi'=>''])
+            //->andWhere('from_number=:fn',[':fn'=>''])
+            ->queryAll();
+        //echo "<pre>";print_r($cdr_data);die;
+        if(!empty($cdr_data)){
+            foreach ($cdr_data as $data){
+                $from_id = $data['from_id'];
+                $from_numer = '';
+                $token = base64_encode(Yii::app()->params['cdr_username'].":".Yii::app()->params['cdr_password']);
+                try{
+                    $curl = curl_init();
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => "https://rest.pbx.mytelephony.eu/identity/".$from_id,
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => "",
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 90000,
+                        CURLOPT_SSL_VERIFYPEER=>false,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => "GET",
+                        CURLOPT_HTTPHEADER => array(
+                            "Authorization: Basic ".$token
+                        ),
+                    ));
+                    $response = curl_exec($curl);
+                    curl_close($curl);
+                    $response = json_decode($response);
+                    if(!empty($response)){
+                        $identity_number = explode("/",$response->cli);
+                        $resource_number = end($identity_number);
+                    }else{
+                        $resource_number = '';
+                    }
+                    if(!empty($resource_number)){
+                        $curl = curl_init();
+                        curl_setopt_array($curl, array(
+                            CURLOPT_URL => "https://rest.pbx.mytelephony.eu/resource/".$resource_number,
+                            CURLOPT_RETURNTRANSFER => true,
+                            CURLOPT_ENCODING => "",
+                            CURLOPT_MAXREDIRS => 10,
+                            CURLOPT_TIMEOUT => 999990,
+                            CURLOPT_SSL_VERIFYPEER=>false,
+                            CURLOPT_FOLLOWLOCATION => true,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_CUSTOMREQUEST => "GET",
+                            CURLOPT_HTTPHEADER => array(
+                                "Authorization: Basic ".$token
+                            ),
+                        ));
+                        $response = curl_exec($curl);
+                        curl_close($curl);
+                        $response = json_decode($response);
+                        if(!empty($response)){
+                            $from_numer = $response->number;
+                        }
+                    }
+                }catch(Exception $e){
+                    $error = $e->getMessage();
+                    print_r($error);die;
+                }
+                try{
+                    CallDataRecordsInfo::model()->updateAll(array('from_number' => $from_numer), 'from_id=:from_id AND from_number=:from_number',array(':from_id'=>$from_id,'from_number'=>''));
+                }catch (Exception $e){
+                    $error = $e->getMessage();
+                    echo "<pre>";print_r($from_id);
+                    print_r($error);die;
+                }
+            }
+        }
+        $this->redirect('cdrinfo');
+    }
+
     public function actionCostcalculate(){
         $cdr_data = $model=CallDataRecordsInfo::model()->findAll();
         $ar = [];
+        set_time_limit(1000);
         foreach ($cdr_data as $cdr){
             $model = CallDataRecordsInfo::model()->findByPk($cdr['id']);
             $tonumber = $cdr['to_number'];

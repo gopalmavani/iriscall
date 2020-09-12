@@ -12,3 +12,4 @@ protected/config/console.php
 protected/config/main.php
 protected/config/params.php
 protected/config/mail.php
+uploads/cdr-csv
