@@ -99,6 +99,7 @@ class CalldatarecordsController extends Controller
                 }
 //                echo "<pre>";print_r($_SERVER['DOCUMENT_ROOT'].Yii::app()->baseUrl.'/uploads/cdr-csv/company.csv');die;
                 $organisation_id = $_POST['OrganizationInfo']['organisation_id'];
+                $all_data = [];
                 foreach ($date_range as $date){
                     $fileUrl = 'https://files.apollo.compass-stack.com/cdr/'.$organisation_id.'/'.$date.'/company.csv';
                     //The path & filename to save to.
@@ -140,7 +141,8 @@ class CalldatarecordsController extends Controller
                     fclose($fp);
 
                     if($statusCode == 200) {
-                        $data = $this->csvtoarray($saveTo, ',');
+
+                        $data = $this->csvToArray($saveTo, ',');
                         $cdr_data = [];
                         foreach ($data as $key => $value) {
                             if($value['from_type'] != 'external'){
@@ -161,6 +163,7 @@ class CalldatarecordsController extends Controller
                                 array_push($cdr_data, $value);
                             }
                         }
+                        //echo "<pre>";print_r($cdr_data);
                         if(!empty($cdr_data)){
                             $deleted = CallDataRecordsInfo::model()->deleteAll("organisation_id='" .$organisation_id."' and date = '".$date."'");
                             $connection = Yii::app()->db->getSchema()->getCommandBuilder();
@@ -342,7 +345,15 @@ class CalldatarecordsController extends Controller
                 if(!$header){
                     $header = $row;
                 }else{
-                    $data[] = array_combine($header, $row);
+                    $data_convert_int = [];
+                    foreach ($row as $key => $val){
+                        if($key == 9){
+                            $val = (int)$val;
+                        }
+                        array_push($data_convert_int,$val);
+                    }
+                    //$data[] = array_combine($header, $row);
+                    $data[] = array_combine($header, $data_convert_int);
                 }
             }
             fclose($handle);
@@ -351,6 +362,7 @@ class CalldatarecordsController extends Controller
 
         return $data;
     }
+
 
     /**
      * This is the default 'index' action that is invoked
