@@ -264,17 +264,29 @@ class CalldatarecordsController extends Controller
         $cdr_data = $model=CallDataRecordsInfo::model()->findAll();
         $ar = [];
         set_time_limit(1000);
+        $data =[];
         foreach ($cdr_data as $cdr){
             $model = CallDataRecordsInfo::model()->findByPk($cdr['id']);
             $tonumber = $cdr['to_number'];
             $diff = strtotime($cdr['end_time']) - strtotime($cdr['start_time']);
             $total_time = $diff;
-            $cost_calculate = $this->calculateCost($tonumber,$total_time);
-            //echo "<pre>";print_r($cost_calculate);die;
+            $fromnumber = $cdr['from_number'];
+            $cost_calculate = $this->calculateCost($tonumber,$total_time,$fromnumber);
+            /*//echo "<pre>";print_r($cost_calculate);
+            array_push($data,[
+                'id'=>$cdr['id'],
+                'from_number'=>$cdr['from_number'],
+                'from_no_count'=>strlen($cdr['from_number']),
+                'to_number'=>$cdr['to_number'],
+                'to_no_count'=>strlen($cdr['to_number']),
+                'cost'=>$cost_calculate['cost'],
+                'comment'=>$cost_calculate['comment'],
+            ]);*/
             $model['unit_cost'] = $cost_calculate['cost'];
             $model['comment'] = $cost_calculate['comment'];
             $model->save(false);
         }
+        //echo "<pre>";print_r($data);die;
         $this->redirect('cdrinfo');
     }
 
@@ -282,31 +294,35 @@ class CalldatarecordsController extends Controller
      * @param $tonumber
      * @param $totaltime
      */
-    function calculateCost($tonumber,$totaltime){
+    function calculateCost($tonumber,$totaltime,$fromnumber){
         $prefix_start_char = substr($tonumber, 0, 2);
+        $to_strlen_prefix = strlen($tonumber);
+        $from_strlen_prefix = strlen($fromnumber);
         $cost_rules = Yii::app()->db->createCommand()
             ->select('*')
             ->from('cdr_cost_rules')
-            ->where(['like', 'start_with', [ $prefix_start_char . '%']])
-            ->andWhere('digit=:digit',[':digit'=>strlen($tonumber)])
+            ->where('digit=:digit',[':digit'=>$to_strlen_prefix])
+            ->orWhere('from_number_digit=:fndigit',[':fndigit'=>$from_strlen_prefix])
+            ->orWhere('start_with=:str_with',[':str_with'=>$prefix_start_char])
             ->order('start_with asc')
             ->queryAll();
         $cost = '0.00';
         $comment = '-';
         foreach ($cost_rules as $rule){
-            $rule_prefix = substr($rule['start_with'], 2, 1);
-            $prefix_start = substr($tonumber, 2, 1);
-            if(!empty($rule_prefix)){
-                if($rule_prefix == $prefix_start){
-                    //$cost = $totaltime*$rule['cost'] / 60;
+            if($to_strlen_prefix == $rule['digit']){
+                if(empty($rule['from_number_digit']) && empty($rule['start_with'])){
                     $cost = $rule['cost'];
                     $comment = $rule['comment'];
-                }
-            }else{
-                if($prefix_start_char == $rule['start_with']){
-                    //$cost = $totaltime*$rule['cost'] / 60;
-                    $cost = $rule['cost'];
-                    $comment = $rule['comment'];
+                }if(empty($rule['from_number_digit']) && !empty($rule['start_with'])){
+                    if($rule['start_with'] == $prefix_start_char){
+                        $cost = $rule['cost'];
+                        $comment = $rule['comment'];
+                    }
+                }if(!empty($rule['from_number_digit']) && empty($rule['start_with'])) {
+                    if($rule['from_number_digit'] == $from_strlen_prefix){
+                        $cost = $rule['cost'];
+                        $comment = $rule['comment'];
+                    }
                 }
             }
         }
