@@ -5,6 +5,8 @@
  *
  * @property integer $start_with
  * @property string $digit
+ * @property integer $from_number_start_with
+ * @property string $from_number_digit
  * @property double $cost
  * @property string $country
  * @property string $comment
@@ -30,9 +32,9 @@ class CdrCostRulesInfo extends CActiveRecord
         // will receive user inputs.
         return array(
             array('start_with, digit, cost, country, created_at', 'required'),
-            array('digit', 'integerOnly'=>true),
+            array('digit,from_number_digit', 'integerOnly'=>true),
             array('cost', 'numerical'),
-            array('start_with','length', 'max'=>30),
+            array('start_with,from_number_start_with','length', 'max'=>30),
             array('country','length', 'max'=>20),
             array('created_at', 'safe'),
         );
@@ -46,6 +48,8 @@ class CdrCostRulesInfo extends CActiveRecord
         return array(
             'start_with' => 'Start with',
             'digit' => 'Digit',
+            'from_number_start_with' => 'From Start with',
+            'from_number_digit' => 'From Digit',
             'cost' => 'Cost',
             'country' => 'Country',
             'comment'=> 'Comment',
@@ -73,6 +77,8 @@ class CdrCostRulesInfo extends CActiveRecord
 
         $criteria->compare('start_with',$this->start_with,true);
         $criteria->compare('digit',$this->digit);
+        $criteria->compare('from_number_start_with',$this->from_number_start_with,true);
+        $criteria->compare('from_number_digit',$this->from_number_digit);
         $criteria->compare('cost',$this->cost,true);
         $criteria->compare('country',$this->country,true);
         $criteria->compare('comment',$this->comment,true);
