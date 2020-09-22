@@ -186,6 +186,92 @@ class CalldatarecordsController extends Controller
         ]);
     }
 
+    public function actionInvoice(){
+        $model=new OrganizationInfo;
+        if(isset($_POST) && !empty($_POST['month']) && !empty($_POST['OrganizationInfo']['organisation_id'])){
+            $org_id = $_POST['OrganizationInfo']['organisation_id'];
+            $month = $_POST['month'];
+            $start = date('Y-'. $month . '-01' );
+            $end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
+            /*$start = '2020-08-01';
+            $end = '2020-08-31';*/
+            $data_array = [];
+            /* first row */
+            $national_call_cdr_data = Yii::app()->db->createCommand()
+                ->select('count(*) as total_time')
+                ->from('cdr_info')
+                ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
+                ->andWhere(['like', 'comment', '%National%'])
+                ->andWhere('date>=:fn',[':fn'=>$start])
+                ->andWhere('date<=:fn1',[':fn1'=>$end])
+                ->queryRow();
+            $national_call_total_time = 0;
+            if(!empty($national_call_cdr_data['total_time'])){
+                $national_call_total_time = $national_call_cdr_data['total_time'];
+            }
+            array_push($data_array,['is_min'=>false,'rule'=>'Setup National call','min'=>$national_call_total_time,'total_time'=>$national_call_total_time,'cost'=>'0.025']);
+            /* second row */
+            $cdr_rules = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Fixed Call']);
+            $national_fixed_call_cdr_data = Yii::app()->db->createCommand()
+                ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
+                ->from('cdr_info')
+                ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
+                ->andWhere(['like', 'comment', '%'.$cdr_rules->comment.'%'])
+                ->andWhere('date>=:fn',[':fn'=>$start])
+                ->andWhere('date<=:fn1',[':fn1'=>$end])
+                ->queryRow();
+            $time = '00:00:00';
+            $min = '0';
+            if(!empty($national_fixed_call_cdr_data['total_time'])){
+                $time = $national_fixed_call_cdr_data['total_time'];
+                $timesplit=explode(':',$time);
+                $min=($timesplit[0]*60)+($timesplit[1])+(round($timesplit[2]/60,2));
+            }
+            array_push($data_array,['is_min'=>true,'rule'=>'National Fixed call','total_time'=>$time,'min'=>$min,'cost'=>$cdr_rules->cost]);
+
+            /* third row */
+            $cdr_rules_2 = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Mobile Call']);
+            $national_mobile_call_cdr_data = Yii::app()->db->createCommand()
+                ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
+                ->from('cdr_info')
+                ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
+                ->andWhere(['like', 'comment', '%'.$cdr_rules_2->comment.'%'])
+                ->andWhere('date>=:fn',[':fn'=>$start])
+                ->andWhere('date<=:fn1',[':fn1'=>$end])
+                ->queryRow();
+            $min2 = 0;
+            $national_mobile_total_time = '00:00:00';
+            if(!empty($national_mobile_call_cdr_data['total_time'])){
+                $time2 = $national_mobile_call_cdr_data['total_time'];
+                $timesplit2=explode(':',$time2);
+                $min2=($timesplit2[0]*60)+($timesplit2[1])+(round($timesplit2[2]/60,2));
+                $national_mobile_total_time = $national_mobile_call_cdr_data['total_time'];
+            }
+            array_push($data_array,['is_min'=>true,'rule'=>'National Mobile call','total_time'=>$national_mobile_total_time,'min'=>$min2,'cost'=>$cdr_rules_2->cost]);
+
+            /* fourth row */
+            $international_call_cdr_data = Yii::app()->db->createCommand()
+                ->select('count(*) as total_time')
+                ->from('cdr_info')
+                ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
+                ->andWhere(['like', 'comment', '%International%'])
+                ->andWhere('date>=:fn',[':fn'=>$start])
+                ->andWhere('date<=:fn1',[':fn1'=>$end])
+                ->queryRow();
+            $intenational_total_time = 0;
+            if(!empty($international_call_cdr_data['total_time'])){
+                $intenational_total_time = $international_call_cdr_data['total_time'];
+            }
+            array_push($data_array,['is_min'=>false,'rule'=>'Setup International call','min'=>$intenational_total_time,'total_time'=>$intenational_total_time,'cost'=>'0.100']);
+            $this->render('invoicedetail',[
+                'details'=>$data_array
+            ]);
+        }
+        $this->render('createinvoice',[
+            'model'=>$model
+        ]);
+    }
+
     public function actionGetfromnumber(){
         $cdr_data = Yii::app()->db->createCommand()
             ->select('distinct(from_id)')
