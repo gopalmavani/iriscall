@@ -542,12 +542,11 @@ class HomeController extends Controller
                     $modified_data['token'] = $apiToken;
                     $user_response = CurlHelper::executeAction($sso_url."api/updateUser", $modified_data, "POST");
                 }
-
                 if(!is_null($user_response['success_response']) && ($user_response['success_response']['status'] == 1)){
                     $model->attributes = $_POST['UserInfo'];
                     //$model->date_of_birth = date('Y-m-d', strtotime($_POST['UserInfo']['date_of_birth']));
                     //$model->date_of_birth = date('Y-m-d');
-                    $model->language = 'English';
+                    //$model->language = 'English';
                     if ($_POST['accountType'] == 'personal') {
                         $model->business_name = "";
                         $model->vat_number = "";
@@ -634,12 +633,12 @@ class HomeController extends Controller
                                 $payout->save();
                             }
                         }
-                        $mail = new YiiMailer('welcome', array('activationUrl' => $activationUrl));
+                        /*$mail = new YiiMailer('welcome', array('activationUrl' => $activationUrl));
                         //$mail->setFrom('info@micromaxcash.com', 'Micromaxcash');
                         $mail->setFrom('info@cbmglobal.io', 'CBM Global');
                         $mail->setSubject("Email Verification");
                         $mail->setTo($model->email);
-                        $mail->send();
+                        $mail->send();*/
 
                         //Add to mailchimp list
                         if ($model->marketting_mail == 1) {
@@ -735,10 +734,266 @@ class HomeController extends Controller
         }
     }
 
-    public function actionSignup($id){
+    /*public function actionSignup($id){
         $this->layout = false;
         $_SESSION['sponsor_id'] = $id;
         $this->render('registration/stepEmailVerification');
+    }*/
+
+    public function actionSignup($id){
+        $this->layout = false;
+        $_SESSION['sponsor_id'] = $id;
+        $model = new UserInfo;
+        $sioData = 0;
+        $apiToken = null;
+        $model->phone = '';
+        if (!empty($_POST)) {
+            echo '<pre>';
+            print_r($_POST);die;
+            $modified_data = SSOHelper::modifyPostDataWRTSSOForNewUser($_POST);
+
+            if (isset($_SESSION['sponsor_id'])) {
+                $id = $_SESSION['sponsor_id'];
+                $modified_data['sponsor_id'] = $id;
+                //Update to SSO
+                $sso_url = Yii::app()->params['SSO_URL'];
+                if($sioData == 0){
+                    //create user
+                    //print("Create");
+                    $user_response = CurlHelper::executeAction($sso_url."api/createUser", $modified_data, "POST");
+                } else {
+                    //update user
+                    //print("Update");
+                    $modified_data['token'] = $apiToken;
+                    $user_response = CurlHelper::executeAction($sso_url."api/updateUser", $modified_data, "POST");
+                }
+                /*print_r($user_response);
+                exit;*/
+
+                if(!is_null($user_response['success_response']) && ($user_response['success_response']['status'] == 1)){
+                    $model->attributes = $_POST['UserInfo'];
+                    $model->date_of_birth = date('Y-m-d', strtotime($_POST['UserInfo']['date_of_birth']));
+                    if ($_POST['accountType'] == 'personal') {
+                        $model->business_name = "";
+                        $model->vat_number = "";
+                        $model->busAddress_building_num = "";
+                        $model->busAddress_street = "";
+                        $model->busAddress_region = "";
+                        $model->busAddress_city = "";
+                        $model->busAddress_postcode = "";
+                        $model->busAddress_country = "";
+                    } else {
+                        if (!empty($model->business_name)) {
+                            if (isset($_POST['sameAddress'])) {
+                                $model->busAddress_building_num = $_POST['UserInfo']['building_num'];
+                                $model->busAddress_street = $_POST['UserInfo']['street'];
+                                $model->busAddress_region = $_POST['UserInfo']['region'];
+                                $model->busAddress_city = $_POST['UserInfo']['city'];
+                                $model->busAddress_postcode = $_POST['UserInfo']['postcode'];
+                                $model->busAddress_country = $_POST['UserInfo']['country'];
+                            } else {
+                                $model->busAddress_building_num = $_POST['UserInfo']['busAddress_building_num'];
+                                $model->busAddress_street = $_POST['UserInfo']['busAddress_street'];
+                                $model->busAddress_region = $_POST['UserInfo']['busAddress_region'];
+                                $model->busAddress_city = $_POST['UserInfo']['busAddress_city'];
+                                $model->busAddress_postcode = $_POST['UserInfo']['busAddress_postcode'];
+                                $model->busAddress_country = $_POST['UserInfo']['busAddress_country'];
+                            }
+                        }
+                    }
+                    $model->setScenario('signUp');
+                    $model->sponsor_id = $id;
+                    $model->full_name = $model->first_name . ' ' . $model->middle_name . ' ' . $model->last_name;
+                    //$model->password = md5($_POST['UserInfo']['password']);
+                    $model->email = strtolower($_POST['UserInfo']['email']);
+                    $model->created_at = date('Y-m-d H:i:s');
+                    $model->auth = $this->randomString(20);
+                    $model->gender = $_POST['gender'];
+                    $activationUrl = Yii::app()->createAbsoluteUrl('/home/activation?key=' . $model->auth);
+                    if (isset($_POST['privacy'])) {
+                        $model->terms_conditions = 1;
+                    }
+                    if (isset($_POST['notification-mail'])) {
+                        $model->notification_mail = 1;
+                    }
+                    if (isset($_POST['market-mail'])) {
+                        $model->marketting_mail = 1;
+                    }
+                    if ($model->save()) {
+
+                        $notification_channel = Yii::app()->params['SlackNotificationChannel'];
+
+                        /*//Add to Statalyse
+                        try {
+                            $statalyseURL = Yii::app()->params['StatalyseURL'];
+                            $statalyseRequest = [];
+                            if($statalyseURL != ''){
+                                $statalyseRequest['first_name'] = $model->first_name;
+                                $statalyseRequest['last_name'] = $model->last_name;
+                                $statalyseRequest['email'] = $model->email;
+                                $statalyseRequest['token'] = Yii::app()->params['APIToken'];
+                            }
+                            $statalyseCurl = curl_init();
+
+                            curl_setopt_array($statalyseCurl, array(
+                                CURLOPT_URL => $statalyseURL,
+                                CURLOPT_RETURNTRANSFER => true,
+                                CURLOPT_ENCODING => "",
+                                CURLOPT_MAXREDIRS => 10,
+                                CURLOPT_TIMEOUT => 0,
+                                CURLOPT_FOLLOWLOCATION => true,
+                                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                                CURLOPT_CUSTOMREQUEST => "POST",
+                                CURLOPT_POSTFIELDS =>json_encode($statalyseRequest),
+                                CURLOPT_HTTPHEADER => array(
+                                    "Content-Type: application/json",
+                                ),
+                            ));
+
+                            $statalyseResponse = curl_exec($statalyseCurl);
+                            curl_close($statalyseCurl);
+
+                            $statResponse = json_decode($statalyseResponse, true);
+                            if($statResponse['status'] == 0){
+                                SlackHelper::sendData($notification_channel, "Issue while adding new user: ".$model->email." to Statalyse. API Response was: ".$statResponse['message']);
+                            }
+                        } catch (Exception $e){
+                            SlackHelper::sendData($notification_channel, "Issue while adding new user: ".$model->email." to Statalyse. Error: ".$e->getMessage());
+                        }*/
+
+                        if (!empty($_POST['payout_bank'])) {
+                            $payout = new UserPayoutInfo();
+                            $payout->user_id = $model->user_id;
+                            $payout->bank_name = $_POST['payout_bank'];
+                            if (isset($_POST['payout_house'])) {
+                                $payout->bank_building_num = $_POST['payout_house'];
+                            }
+                            if (isset($_POST['payout_street'])) {
+                                $payout->bank_street = $_POST['payout_street'];
+                            }
+                            if (isset($_POST['payout_region'])) {
+                                $payout->bank_region = $_POST['payout_region'];
+                            }
+                            if (isset($_POST['payout_city'])) {
+                                $payout->bank_city = $_POST['payout_city'];
+                            }
+                            if (isset($_POST['payout_post'])) {
+                                $payout->bank_postcode = $_POST['payout_post'];
+                            }
+                            if (isset($_POST['payout_country'])) {
+                                $payout->bank_country = $_POST['payout_country'];
+                            }
+                            if (isset($_POST['payout_accountname'])) {
+                                $payout->account_name = $_POST['payout_accountname'];
+                            }
+                            if (isset($_POST['payout_iban'])) {
+                                $payout->iban = $_POST['payout_iban'];
+                            }
+                            if (isset($_POST['payout_biccode'])) {
+                                $payout->bic_code = $_POST['payout_biccode'];
+                            }
+                            $payout->created_at = date('Y-m-d H:i:s');
+                            if ($payout->validate()) {
+                                $payout->save();
+                            }
+                        }
+                        $mail = new YiiMailer('welcome', array('activationUrl' => $activationUrl));
+                        $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+                        $mail->setSubject("Email Verification");
+                        $mail->setTo($model->email);
+                        $mail->send();
+
+                        //Add to mailchimp list
+                        if ($model->marketting_mail == 1) {
+                            $address = $model->building_num . ", " . $model->street . ", " . $model->region . ", " . $model->city . ", " . ServiceHelper::getCountryNameFromId($model->country);
+                            $curl = curl_init();
+                            $url = Yii::app()->params['MailChimpURL'];
+                            if ($model->language == "Dutch") {
+                                $listId = Yii::app()->params['MailChimpDutchListId'];
+                            } else {
+                                $listId = Yii::app()->params['MailChimpEnglishListId'];
+                            }
+                            $authorization = Yii::app()->params['MailChimpAuthorizationId'];
+                            curl_setopt_array($curl, array(
+                                CURLOPT_URL => $url . "lists/" . $listId . "/members",
+                                CURLOPT_RETURNTRANSFER => true,
+                                CURLOPT_ENCODING => "",
+                                CURLOPT_MAXREDIRS => 10,
+                                CURLOPT_TIMEOUT => 30,
+                                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                                CURLOPT_CUSTOMREQUEST => "POST",
+                                CURLOPT_POSTFIELDS => CJSON::encode([
+                                    "email_address" => $model->email,
+                                    "status" => "subscribed",
+                                    "merge_fields" => ["FNAME" => $model->first_name,
+                                        "LNAME" => $model->last_name,
+                                        "ADDRESS" => $address,
+                                        "PHONE" => $model->phone,
+                                        "BIRTHDAY" => date('m/d', strtotime($model->date_of_birth))]
+                                ]),
+                                CURLOPT_HTTPHEADER => array(
+                                    "authorization: " . $authorization,
+                                    "cache-control: no-cache",
+                                    "content-type: application/json"
+                                ),
+                            ));
+                            $response = curl_exec($curl);
+                            $err = curl_error($curl);
+                            curl_close($curl);
+                        }
+                        //Add to CBM User License
+                        ServiceHelper::modifyCBMUserLicenses($model->user_id, $model->email,0, 0);
+
+                        $loginForm = new LoginForm();
+                        $this->layout = 'newlogin';
+                        $this->render('login', [
+                            'model' => $loginForm,
+                            'id' => $model->sponsor_id,
+                            'success' => 'We have sent a email verification link to your email address.'
+                        ]);
+                    } else {
+                        $error = $model->getErrors();
+                        $errorString = json_encode($error);
+
+                        $logs = new CbmLogs();
+                        $logs->status = 2;
+                        $logs->created_date = date('Y-m-d H:i:s');
+                        $logs->log = "Error while creating user: " . $errorString;
+                        $logs->save(false); // saving logs
+
+                        $this->render('signup', [
+                            'model' => $model,
+                            'id' => $id
+                        ]);
+                    }
+
+                } else {
+                    $loginForm = new LoginForm();
+                    $this->render('login', [
+                        'model' => $loginForm,
+                        'success' => $user_response['success_response']['message']
+                    ]);
+                }
+            }  else {
+                $logs = new CbmLogs();
+                $logs->status = 2;
+                $logs->created_date = date('Y-m-d H:i:s');
+                $logs->log = "Error while creating user: Sponsor Id not found";
+                $logs->save(false); // saving logs
+
+                $loginForm = new LoginForm();
+                $this->render('login', [
+                    'model' => $loginForm,
+                    'success' => 'Issue while creating the user. Kindly try after some time'
+                ]);
+            }
+            unset($_SESSION['user_present_in_sso']);
+        }
+        $this->render('registration/stepOne', [
+            'model' => $model,
+            'sioData' => $sioData,
+            'accountType'=>'personal'
+        ]);
     }
 
     public function actionRegistrationStepOneInitial(){

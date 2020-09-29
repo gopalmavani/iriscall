@@ -15,6 +15,13 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/style.bund
     .boxshadow-content{
         background: #FFF !important;
     }
+    body{
+        background-color: #56077E !important;
+        background-image: url(<?= Yii::app()->baseUrl. '/images/bg-7.jpg'; ?>) !important;
+        background-size: cover !important;
+        background-attachment: fixed !important;
+        background-repeat: no-repeat !important;
+    }
 </style>
 <main id="main-container">
 	<!-- Hero Content -->

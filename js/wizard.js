@@ -56,7 +56,7 @@ var KTWizard4 = function () {
 					required: true,
 					email: true,
                     remote: {
-                        url: '../home/checkEmail',
+                        url: '../checkEmail',
                         type: 'post',
                         data: {
                             'email': function () {
