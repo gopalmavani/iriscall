@@ -85,6 +85,13 @@
         .text-grey {
             color: #afb2b2 !important;
         }
+        body{
+            background-color: #56077E !important;
+            background-image: url(<?= Yii::app()->baseUrl. '/images/bg-7.jpg'; ?>) !important;
+            background-size: cover !important;
+            background-attachment: fixed !important;
+            background-repeat: no-repeat !important;
+        }
     </style>
 </head>
 <body id="kt_body" class="header-fixed subheader-enabled page-loading">
@@ -252,9 +259,27 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-6">
-                                                            <!--<div class="form-group <?php /*echo $model->hasErrors('date_of_birth') ? 'has-error' : ''; */?>">
-                                                                <?php /*echo $form->textFieldControlGroup($model, 'date_of_birth', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); */?>
-                                                            </div>-->
+                                                            <label style="margin-bottom: 10px;">Account Type:</label>
+                                                            <div class="row mb1">
+                                                                <div class="col-4 col-sm-4 col-md-3 col-lg-3">
+                                                                    <div class="form-group">
+                                                                        <div class="custom-radio" style="width: max-content;">
+                                                                            <input type="radio" id="personal" name="accountType" checked
+                                                                                   value="personal">
+                                                                            <label class="custom-control-label" for="personal">Personal</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4 col-sm-4 col-md-3 col-lg-3">
+                                                                    <div class="form-group">
+                                                                        <div class="custom-radio" style="width: max-content;">
+                                                                            <input type="radio" id="corporate" name="accountType" value="corporate">
+                                                                            <label class="custom-control-label"
+                                                                                   for="corporate">Corporate</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
 
                                                     </div>
@@ -717,7 +742,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <input type="hidden" name="accountType" id="accountType" value="">
                                                 </div>
                                             </div>
                                         </div>
@@ -859,8 +883,8 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
                 time: false
             }
         );
-        let accountType = "<?= $_GET['accountType'] ?>";
-        $('#accountType').val(accountType);
+        //let accountType = "<?php //echo $_GET['accountType']; ?>";
+        //$('#accountType').val(accountType);
 
         $("#password").keyup(function () {
             passwordStrength($(this).val());

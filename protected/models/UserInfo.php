@@ -42,6 +42,7 @@
  * @property integer $notification_mail
  * @property integer $marketting_mail
  * @property string $auth
+ * @property string $organisation_id
  * @property integer $terms_conditions
  * @property integer $affiliate_disclosure
  * @property integer $privacy_disclosure
@@ -81,7 +82,7 @@ class UserInfo extends CActiveRecord
 			array('full_name, first_name, middle_name, last_name, email, api_token, sponsor_id, business_name, vat_number, busAddress_building_num, busAddress_street, busAddress_region, busAddress_city, busAddress_country, business_phone, building_num, street, region, city, country, phone, role', 'length', 'max'=>80),
 			array('language', 'length', 'max'=>1000),
 			array('busAddress_postcode, postcode', 'length', 'max'=>20),
-			array('image, token, auth', 'length', 'max'=>255),
+			array('image, organisation_id, token, auth', 'length', 'max'=>255),
 			array('created_at, modified_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -157,6 +158,7 @@ class UserInfo extends CActiveRecord
 			'affiliate_disclosure' => 'Affiliate Disclosure',
 			'privacy_disclosure' => 'Privacy Disclosure',
 			'reserve_wallet_commission_status' => 'Reserve Wallet Commission Status',
+			'organisation_id' => 'Organisation Id',
 		);
 	}
 
@@ -220,6 +222,7 @@ class UserInfo extends CActiveRecord
 		$criteria->compare('affiliate_disclosure',$this->affiliate_disclosure);
 		$criteria->compare('privacy_disclosure',$this->privacy_disclosure);
 		$criteria->compare('reserve_wallet_commission_status',$this->reserve_wallet_commission_status);
+		$criteria->compare('organisation_id',$this->organisation_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
