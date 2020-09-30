@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no">
     <meta name="authoring-tool" content="Adobe_Animate_CC">
-    <title>Micromaxcash</title>
+    <title>Iriscall</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <?php
     /*Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/newtheme/bootstrap.min.css');
@@ -102,7 +102,7 @@
         <div class="kt-grid__item kt-grid__item--fluid" id="kt_wrapper">
 
             <!-- begin:: Header -->
-            <div class="logo"><a href="signin.php"><img src="<?= Yii::app()->baseUrl. '/images/logos/logo-8.png'; ?>" style="width: auto !important; height: 100px !important;"></a></div>
+            <div class="logo"><a href="#"><img src="<?= Yii::app()->baseUrl. '/images/logos/iriscall-logo.svg'; ?>" style="width: auto !important; height: 100px !important;"></a></div>
             <!-- end:: Header -->
 
             <!-- begin:: Content -->
@@ -799,7 +799,7 @@
 </div>
 
 <script type="text/javascript">
-    let KTAppOptions = {
+    var KTAppOptions = {
         "colors": {
             "state": {
                 "brand": "#044e80",
@@ -841,7 +841,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
 <script type="text/javascript">
     $(document).ready(function () {
 
-        let sioData = "<?= $sioData; ?>";
+        var sioData = "<?= $sioData; ?>";
         if(sioData == 1){
             $('#email').prop("readonly", true);
             $('#confirm_email_group').css("display", "none");
@@ -871,7 +871,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
 </script>
 
 <script type="text/javascript">
-    let currentTab = 1;
+    var currentTab = 1;
     $(document).ready(function () {
         $('.btnCollapse').on('click', function () {
             $('#sidebar').toggleClass('active');
@@ -883,16 +883,16 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
                 time: false
             }
         );
-        //let accountType = "<?php //echo $_GET['accountType']; ?>";
+        //var accountType = "<?php //echo $_GET['accountType']; ?>";
         //$('#accountType').val(accountType);
 
         $("#password").keyup(function () {
             passwordStrength($(this).val());
         });
         $("#email").keyup(function () {
-            let email = $(this).val();
-            let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            let rs = regex.test(email);
+            var email = $(this).val();
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            var rs = regex.test(email);
             if (rs) {
                 $('#custom_mail_checker').hide();
             } else {
@@ -903,7 +903,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
 
     //Update the current tab
     $('.nav-link').on('click', function () {
-        let navId = $(this).attr('id');
+        var navId = $(this).attr('id');
         if(navId === 'step1_reg'){
             currentTab = 1;
         }
@@ -960,8 +960,8 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
     * based upon users country is from EU or not
     * */
     function checkIfInEU(){
-        let europeanCountiesArray = [14,21,33,54,56,66,71,72,80,84,97,104,106,121,127,128,136,155,176,177,181,196,197,202,210];
-        let userCountry = parseInt($('#UserInfo_country option:selected').val());
+        var europeanCountiesArray = [14,21,33,54,56,66,71,72,80,84,97,104,106,121,127,128,136,155,176,177,181,196,197,202,210];
+        var userCountry = parseInt($('#UserInfo_country option:selected').val());
         if($.inArray(userCountry, europeanCountiesArray) >= 0){
             return true;
         } else {
@@ -996,7 +996,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
                 }
             }
         }, "The Password you entered doesn’t match.");
-        let validatior = $(".validation-wizard1").validate({
+        var validatior = $(".validation-wizard1").validate({
             ignore: ".ignore",
             errorClass: "text-danger",
             errorElement: "span",
@@ -1190,7 +1190,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
                 'UserInfo[email]': {
                     required: "Please enter email.",
                     email: "Please enter valid email.",
-                    remote: "Email Already Exist in System."
+                    remote: "Email Already Exist in System. Please login"
                 },
                 'confirm_email': {
                     required: "Please enter confirm email.",
@@ -1278,7 +1278,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
                 },
                 'payout_country': {
                     required: "Please enter country."
-                },
+                }
             }
         });
         console.log(validatior.errorList);

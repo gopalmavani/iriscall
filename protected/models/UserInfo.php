@@ -42,11 +42,11 @@
  * @property integer $notification_mail
  * @property integer $marketting_mail
  * @property string $auth
- * @property string $organisation_id
  * @property integer $terms_conditions
  * @property integer $affiliate_disclosure
  * @property integer $privacy_disclosure
  * @property integer $reserve_wallet_commission_status
+ * @property integer $organization_id
  *
  * The followings are the available model relations:
  * @property NuClientDepositWithdraw[] $nuClientDepositWithdraws
@@ -78,15 +78,15 @@ class UserInfo extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('full_name, first_name, last_name, language, building_num, street, city, postcode, country, phone', 'required'),
-			array('gender, is_enabled, is_active, is_delete, notification_mail, marketting_mail, terms_conditions, affiliate_disclosure, privacy_disclosure, reserve_wallet_commission_status', 'numerical', 'integerOnly'=>true),
+			array('gender, is_enabled, is_active, is_delete, notification_mail, marketting_mail, terms_conditions, affiliate_disclosure, privacy_disclosure, reserve_wallet_commission_status, organization_id', 'numerical', 'integerOnly'=>true),
 			array('full_name, first_name, middle_name, last_name, email, api_token, sponsor_id, business_name, vat_number, busAddress_building_num, busAddress_street, busAddress_region, busAddress_city, busAddress_country, business_phone, building_num, street, region, city, country, phone, role', 'length', 'max'=>80),
 			array('language', 'length', 'max'=>1000),
 			array('busAddress_postcode, postcode', 'length', 'max'=>20),
-			array('image, organisation_id, token, auth', 'length', 'max'=>255),
+			array('image, token, auth', 'length', 'max'=>255),
 			array('created_at, modified_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('user_id, full_name, first_name, middle_name, last_name, email, api_token, date_of_birth, gender, language, sponsor_id, is_enabled, is_active, created_at, modified_at, business_name, vat_number, busAddress_building_num, busAddress_street, busAddress_region, busAddress_city, busAddress_postcode, busAddress_country, business_phone, building_num, street, region, city, postcode, country, phone, is_delete, image, role, token, notification_mail, marketting_mail, auth, terms_conditions, affiliate_disclosure, privacy_disclosure, reserve_wallet_commission_status', 'safe', 'on'=>'search'),
+			array('user_id, full_name, first_name, middle_name, last_name, email, api_token, date_of_birth, gender, language, sponsor_id, is_enabled, is_active, created_at, modified_at, business_name, vat_number, busAddress_building_num, busAddress_street, busAddress_region, busAddress_city, busAddress_postcode, busAddress_country, business_phone, building_num, street, region, city, postcode, country, phone, is_delete, image, role, token, notification_mail, marketting_mail, auth, terms_conditions, affiliate_disclosure, privacy_disclosure, reserve_wallet_commission_status, organization_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -158,7 +158,7 @@ class UserInfo extends CActiveRecord
 			'affiliate_disclosure' => 'Affiliate Disclosure',
 			'privacy_disclosure' => 'Privacy Disclosure',
 			'reserve_wallet_commission_status' => 'Reserve Wallet Commission Status',
-			'organisation_id' => 'Organisation Id',
+			'organization_id' => 'Organization Id',
 		);
 	}
 
@@ -222,7 +222,7 @@ class UserInfo extends CActiveRecord
 		$criteria->compare('affiliate_disclosure',$this->affiliate_disclosure);
 		$criteria->compare('privacy_disclosure',$this->privacy_disclosure);
 		$criteria->compare('reserve_wallet_commission_status',$this->reserve_wallet_commission_status);
-		$criteria->compare('organisation_id',$this->organisation_id);
+		$criteria->compare('organization_id',$this->organization_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

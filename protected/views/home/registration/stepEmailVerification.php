@@ -96,11 +96,11 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/ani
         $('#personalAccount').trigger('click');
     });
     function verifyEmail() {
-        let email = $("#email").val();
+        var email = $("#email").val();
         if(email == ''){
             toastr.error("Invalid email");
         } else {
-            let registration_email_verification_url = "<?= Yii::app()->createUrl('home/verifyEmail'); ?>";
+            var registration_email_verification_url = "<?= Yii::app()->createUrl('home/verifyEmail'); ?>";
             $.ajax({
                 url: registration_email_verification_url,
                 type: "POST",
@@ -108,7 +108,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/ani
                     email: email
                 },
                 success: function (response) {
-                    let resp = JSON.parse(response);
+                    var resp = JSON.parse(response);
                     /*
                     * 0 - Error
                     * 1 - Registration can begin

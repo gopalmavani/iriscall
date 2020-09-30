@@ -110,4 +110,19 @@
 <script src="<?php echo Yii::app()->request->baseUrl ?>/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
 <script type="text/javascript">
     $('#date_of_birth').bootstrapMaterialDatePicker({maxDate: new Date(),time:false});
+    $("#update-Profile").validate({
+        rules: {
+            first_name:"required",
+            last_name:"required",
+            date_of_birth:"required"
+        },
+        messages: {
+            first_name: "Please enter First name ",
+            last_name: "Please enter Lasrt name",
+            date_of_birth: "Please select Date-Of-Birth"
+        },
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });
 </script>

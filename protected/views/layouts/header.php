@@ -15,8 +15,8 @@
             <div class="kt-header__brand kt-grid__item" id="kt_header_brand">
                 <div class="kt-header__brand-logo">
                     <a href="#">
-                        <img alt="Logo" src="<?= Yii::app()->request->baseUrl ?>/images/logos/logo-8.png" class="kt-header__brand-logo-default" />
-                        <img alt="Logo" src="<?= Yii::app()->request->baseUrl ?>/images/logos/logo-8-inverse.png" class="kt-header__brand-logo-sticky" />
+                        <img alt="Logo" src="<?= Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" class="kt-header__brand-logo-default" />
+                        <img alt="Logo" src="<?= Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" class="kt-header__brand-logo-sticky" />
                     </a>
                 </div>
             </div>
@@ -235,10 +235,10 @@
     </div>
 </div>
 <script>
-    let base_url = '<?= Yii::app()->baseurl; ?>';
+    var base_url = '<?= Yii::app()->baseurl; ?>';
     function removeFromCart(cart_id,product_id){
-        let url = "<?= Yii::app()->createUrl('marketplace/removefromcart'); ?>";
-        let data = {
+        var url = "<?= Yii::app()->createUrl('marketplace/removefromcart'); ?>";
+        var data = {
             'cart_id': cart_id,
             'product_id':product_id
         };
@@ -247,7 +247,7 @@
             url: url,
             data: data,
             success: function (data) {
-                let res = JSON.parse(data);
+                var res = JSON.parse(data);
                 if(res.token){
                     //$('.cart_item_'+product_id).css('display','none');
                     if(res.cartCount == 0){
@@ -274,10 +274,10 @@
 
     //Update cart page UI
     function appendDataItemsToCart(cartDataArr) {
-        let cart_div = '';
+        var cart_div = '';
         $.each(cartDataArr, function(key,value) {
 
-            let div = '<div class="kt-mycart__item cart_item_'+value.product_id+'">'+
+            var div = '<div class="kt-mycart__item cart_item_'+value.product_id+'">'+
                 '<div style="padding-right: 20px;padding-top: 20px;">\n' +
                 '<a href="javascript:void(0)" class="pull-right" onclick="removeFromCart('+value.cart_id+','+value.product_id+')">\n'+
                 '<i class="fa fa-times-circle"></i>\n' +
