@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="icon" sizes="16x16" href="<?php echo Yii::app()->request->baseUrl ?>/images/logos/favicon.ico">
+    <link rel="icon" sizes="16x16" href="<?php echo Yii::app()->request->baseUrl ?>/images/logos/iriscall-favicon.png">
 <?php
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/SIO/color.css');
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/SIO/main.css');

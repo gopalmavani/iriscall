@@ -10,8 +10,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/ico" sizes="16x16" href="<?php echo Yii::app()->request->baseUrl ?>/images/logos/favicon.ico">
-    <title>Micromaxcash</title>
+    <link rel="icon" type="image/ico" sizes="16x16" href="<?php echo Yii::app()->request->baseUrl ?>/images/logos/iriscall-favicon.png">
+    <title>Iriscall</title>
     <!-- Bootstrap Core CSS -->
     <!-- <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- Custom CSS -->
@@ -61,7 +61,7 @@
             <div class="login-box card">
                 <div class="card-body">
                 <div class="center m-b-20" align="center">
-                  <img src="<?php echo Yii::app()->request->baseUrl ?>/images/logos/logo-mmc-big.png" alt="homepage" class="dark-logo" style="height: 80px;width: auto;" />
+                  <img src="<?php echo Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" alt="homepage" class="dark-logo" style="height: 80px;width: auto;" />
                 </div>
                     <?php echo $content; ?>
                 </div>

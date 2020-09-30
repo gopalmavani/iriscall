@@ -11,9 +11,9 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="<?= Yii::app()->request->baseUrl ?>/images/logos/favicon.ico">
+    <link rel="shortcut icon" href="<?= Yii::app()->request->baseUrl ?>/images/logos/iriscall-favicon.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Asap+Condensed:500">
-    <title>Micromaxcash</title>
+    <title>Iriscall</title>
     <?php
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/plugins.bundle.css');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/style.bundle.css');
@@ -95,7 +95,7 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
         </div>
     </div>
     <script type="text/javascript">
-        let KTAppOptions = {
+        var KTAppOptions = {
             "colors": {
                 "state": {
                     "brand": "#044e80",

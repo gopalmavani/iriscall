@@ -26,14 +26,7 @@ class UserController extends Controller
     {
         if (Yii::app()->user->isGuest  && $action->id != 'forgot' && $action->id != 'resetpassword' && $action->id != 'passwordreset'  && $action->id != 'newUserPage' && $action->id != 'updateNewUserFields'){
             $this->redirect(Yii::app()->createUrl('home/login'));
-        } /*else{
-            $user = UserInfo::model()->findByAttributes(['user_id' => Yii::app()->user->id]);
-            if ($action->id != 'login'  && $action->id != 'forgot'  && $action->id != 'resetpassword' && $action->id != 'passwordreset'  && $action->id != 'newUserPage' && $action->id != 'updateNewUserFields'){
-                if (Yii::app()->session['userid'] != $user->password){
-                    $this->redirect(Yii::app()->createUrl('home/login'));
-                }
-            }
-        }*/
+        }
         return parent::beforeAction($action);
 
     }
