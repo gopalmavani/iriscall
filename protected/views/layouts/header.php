@@ -15,7 +15,7 @@
             <div class="kt-header__brand kt-grid__item" id="kt_header_brand">
                 <div class="kt-header__brand-logo">
                     <a href="#">
-                        <img alt="Logo" src="<?= Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" class="kt-header__brand-logo-default" />
+                        <img alt="Logo" src="<?= Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" class="kt-header__brand-logo-default" style="width: 160px !important;height: 200px !important;"/>
                         <img alt="Logo" src="<?= Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" class="kt-header__brand-logo-sticky" />
                     </a>
                 </div>
@@ -192,17 +192,17 @@
                             <li class="kt-menu__item kt-menu__item--rel" id="dashboard-link"><a href="<?= Yii::app()->createUrl('home/index'); ?>" class="kt-menu__link"><span class="kt-menu__link-text">Dashboard</span></a> </li>
                         <?php } ?>
 
-                        <?php if(Yii::app()->controller->id == 'account') { ?>
-                            <li class="kt-menu__item kt-menu__item--rel" id="cashback-link"><a href="<?= Yii::app()->createUrl('account/index'); ?>" class="kt-menu__link kt-active"><span class="kt-menu__link-text">Cashback</span></a> </li>
-                        <?php } else { ?>
-                            <li class="kt-menu__item kt-menu__item--rel" id="cashback-link"><a href="<?= Yii::app()->createUrl('account/index'); ?>" class="kt-menu__link"><span class="kt-menu__link-text">Cashback</span></a> </li>
-                        <?php } ?>
+                        <?php /*if(Yii::app()->controller->id == 'account') { */?><!--
+                            <li class="kt-menu__item kt-menu__item--rel" id="cashback-link"><a href="<?/*= Yii::app()->createUrl('account/index'); */?>" class="kt-menu__link kt-active"><span class="kt-menu__link-text">Cashback</span></a> </li>
+                        <?php /*} else { */?>
+                            <li class="kt-menu__item kt-menu__item--rel" id="cashback-link"><a href="<?/*= Yii::app()->createUrl('account/index'); */?>" class="kt-menu__link"><span class="kt-menu__link-text">Cashback</span></a> </li>
+                        <?php /*} */?>
 
-                        <?php if(Yii::app()->controller->id == 'partnerproducts') { ?>
-                            <li class="kt-menu__item kt-menu__item--rel" id="partnerproducts-link"><a href="<?= Yii::app()->createUrl('partnerproducts/list'); ?>" class="kt-menu__link kt-active"><span class="kt-menu__link-text">Partner Products</span></a> </li>
-                        <?php } else { ?>
-                            <li class="kt-menu__item kt-menu__item--rel" id="partnerproducts-link"><a href="<?= Yii::app()->createUrl('partnerproducts/list'); ?>" class="kt-menu__link"><span class="kt-menu__link-text">Partner Products</span></a> </li>
-                        <?php } ?>
+                        <?php /*if(Yii::app()->controller->id == 'partnerproducts') { */?>
+                            <li class="kt-menu__item kt-menu__item--rel" id="partnerproducts-link"><a href="<?/*= Yii::app()->createUrl('partnerproducts/list'); */?>" class="kt-menu__link kt-active"><span class="kt-menu__link-text">Partner Products</span></a> </li>
+                        <?php /*} else { */?>
+                            <li class="kt-menu__item kt-menu__item--rel" id="partnerproducts-link"><a href="<?/*= Yii::app()->createUrl('partnerproducts/list'); */?>" class="kt-menu__link"><span class="kt-menu__link-text">Partner Products</span></a> </li>
+                        --><?php /*} */?>
 
                         <?php if(Yii::app()->controller->id == 'affiliate') { ?>
                             <li class="kt-menu__item kt-menu__item--rel" id="affiliateprogram-link"><a href="<?= Yii::app()->createUrl('affiliate/softwaresales'); ?>" class="kt-menu__link kt-active"><span class="kt-menu__link-text">Affiliate Program</span></a> </li>
@@ -216,17 +216,17 @@
                             <li class="kt-menu__item kt-menu__item--rel" id="affiliateprogram-link"><a href="<?= Yii::app()->createUrl('wallet/index'); ?>" class="kt-menu__link"><span class="kt-menu__link-text">Wallet</span></a> </li>
                         <?php } ?>
 
-                        <?php if(Yii::app()->controller->id == 'marketplace') { ?>
-                            <li class="kt-menu__item kt-menu__item--rel" id="wallet-link"><a href="<?= Yii::app()->createUrl('marketplace/index'); ?>" class="kt-menu__link kt-active kt-active"><span class="kt-menu__link-text">Marketplace</span></a> </li>
-                        <?php } else { ?>
-                            <li class="kt-menu__item kt-menu__item--rel" id="wallet-link"><a href="<?= Yii::app()->createUrl('marketplace/index'); ?>" class="kt-menu__link"><span class="kt-menu__link-text">Marketplace</span></a> </li>
-                        <?php } ?>
+                        <?php /*if(Yii::app()->controller->id == 'marketplace') { */?><!--
+                            <li class="kt-menu__item kt-menu__item--rel" id="wallet-link"><a href="<?/*= Yii::app()->createUrl('marketplace/index'); */?>" class="kt-menu__link kt-active kt-active"><span class="kt-menu__link-text">Marketplace</span></a> </li>
+                        <?php /*} else { */?>
+                            <li class="kt-menu__item kt-menu__item--rel" id="wallet-link"><a href="<?/*= Yii::app()->createUrl('marketplace/index'); */?>" class="kt-menu__link"><span class="kt-menu__link-text">Marketplace</span></a> </li>
+                        <?php /*} */?>
 
-                        <?php if(Yii::app()->controller->id == 'product') { ?>
-                            <li class="kt-menu__item kt-menu__item--rel" id="wallet-link"><a href="<?= Yii::app()->createUrl('product/index'); ?>" class="kt-menu__link kt-active kt-active"><span class="kt-menu__link-text">Grid Licenses</span></a> </li>
-                        <?php } else { ?>
-                            <li class="kt-menu__item kt-menu__item--rel" id="wallet-link"><a href="<?= Yii::app()->createUrl('product/index'); ?>" class="kt-menu__link"><span class="kt-menu__link-text">Grid Licenses</span></a> </li>
-                        <?php } ?>
+                        <?php /*if(Yii::app()->controller->id == 'product') { */?>
+                            <li class="kt-menu__item kt-menu__item--rel" id="wallet-link"><a href="<?/*= Yii::app()->createUrl('product/index'); */?>" class="kt-menu__link kt-active kt-active"><span class="kt-menu__link-text">Grid Licenses</span></a> </li>
+                        <?php /*} else { */?>
+                            <li class="kt-menu__item kt-menu__item--rel" id="wallet-link"><a href="<?/*= Yii::app()->createUrl('product/index'); */?>" class="kt-menu__link"><span class="kt-menu__link-text">Grid Licenses</span></a> </li>
+                        --><?php /*} */?>
                     </ul>
                 </div>
             </div>

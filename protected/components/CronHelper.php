@@ -21,20 +21,4 @@ class CronHelper extends CApplicationComponent {
             $command->execute();
         }
     }
-
-    public static function fakeDepositArray(){
-        $fakeDeposits = Yii::app()->db->createCommand()
-            ->select('email')
-            ->from('cbm_deposit_withdraw')
-            ->where(['or like', 'comment', ['%fake%', '%MMC%']])
-            ->andWhere('profit>=:pf',[':pf'=>50])
-            ->queryColumn();
-        return $fakeDeposits;
-        /*$fakeDepositArr = ["agneszohlandt@hotmail.com","dirk.vanhoudt@dvv.be","ria_coemans@hotmail.com",
-            "tom.geypens@gmail.com","ilse.vantongerloo@gmail.com","cjv.selleslaghs@telfort.nl",
-            "inge_creyf@hotmail.com","info@grcars.be","math.houben@hotmail.com","yves.hulin@telenet.be",
-            "demer136@gmail.com","koolen.gjpm@gmail.com","w.a.bouwense@gmail.com","vaniwaar@zeelandnet.nl",
-            "henny.raadschilders@kpnmail.nl","desleyleclaire@home.nl","marlies@4sys.nl","bovytrading@hotmail.com"];
-        return $fakeDepositArr;*/
-    }
 }

@@ -19,31 +19,6 @@ class WalletHelper extends CApplicationComponent {
         $wallet->save(false);
     }
 
-    public static function addToWalletCommission($userId, $walletTypeId, $amount, $fromLevel, $fromUserId,
-                                                 $fromNodeId, $toNodeId, $month, $year, $transactionType,
-                                                 $transactionComment, $transactionStatus){
-        $walletComm = new WalletCommission();
-        $walletComm->user_id = $userId;
-        $walletComm->wallet_type_id = $walletTypeId;
-        $walletComm->amount = $amount;
-        $walletComm->from_level = $fromLevel;
-        $walletComm->from_user_id = $fromUserId;
-        $walletComm->from_node_id = $fromNodeId;
-        $walletComm->to_node_id = $toNodeId;
-        $walletComm->month = $month;
-        $walletComm->year = $year;
-        $walletComm->transaction_type = $transactionType;
-        $walletComm->transaction_comment = $transactionComment;
-        $walletComm->transaction_status = $transactionStatus;
-        $walletComm->save(false);
-    }
-
-    public static function multipleAddToWalletCommission($data){
-        $connection = Yii::app()->db->getSchema()->getCommandBuilder();
-        $command = $connection->createMultipleInsertCommand('wallet_commission', $data);
-        $command->execute();
-    }
-
     public static function multipleDataInsert($table_name, $data){
         $connection = Yii::app()->db->getSchema()->getCommandBuilder();
         $chunked_array = array_chunk($data, 5000);
