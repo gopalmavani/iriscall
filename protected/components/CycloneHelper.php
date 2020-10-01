@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: imyuvii
- * Date: 27/10/16
- * Time: 7:39 PM
- */
 class CycloneHelper
 {
     /**

@@ -169,16 +169,6 @@ class HomeController extends Controller
                 $userId = Yii::app()->user->id;
                 $user = UserInfo::model()->findByPk($userId);
             }
-            $nexiMaxAccount = CbmAccounts::model()->findByAttributes(['email_address' => $user->email, 'agent' => Yii::app()->params['NexiMaxAgent']]);
-            if(isset($nexiMaxAccount->login))
-                $nexiMaxAccountNumber = $nexiMaxAccount->login;
-            else
-                $nexiMaxAccountNumber = '';
-            $unityMaxAccount = CbmAccounts::model()->findByAttributes(['email_address' => $user->email, 'agent' => Yii::app()->params['UnityMaxAgent']]);
-            if(isset($unityMaxAccount->login))
-                $unityMaxAccountNumber = $unityMaxAccount->login;
-            else
-                $unityMaxAccountNumber = '';
             $notificationArr = [];
 
             //Voucher notification module
@@ -187,23 +177,6 @@ class HomeController extends Controller
                 $temp = array();
                 $temp['type'] = 'success';
                 $temp['notification'] = "Congratulations! You have a voucher <strong>". $voucher['voucher_code'] ."</strong> of ".$voucher['value']." ".$voucher['type'].".";
-                array_push($notificationArr, $temp);
-            }
-
-            //Withdrawal notification module
-            $withdrawalTrades = Yii::app()->db->createCommand()
-                ->select('count(*) as cnt')
-                ->from('cbm_deposit_withdraw')
-                ->where('email=:ea',[':ea'=>$user->email])
-                ->andWhere('is_accounted_for=:iaf', [':iaf'=>0])
-                ->andWhere('profit<=:p', [':p'=>-50])
-                ->queryRow();
-            if($withdrawalTrades['cnt'] > 0){
-                $withdrawalNotification = "Note: Our system has detected a withdrawal on your trading account. 
-            Please be informed that your nodes will be adjusted accordingly after this month’s cashback calculation.";
-                $temp = array();
-                $temp['type'] = 'info';
-                $temp['notification'] = $withdrawalNotification;
                 array_push($notificationArr, $temp);
             }
 
@@ -247,261 +220,23 @@ class HomeController extends Controller
                 ->queryColumn();
             $levelTwoChildCount = count($levelTwoChild);
 
-            //Nodes counter for donut chart
-            $nodesCounter = Yii::app()->db->createCommand()
-                ->select('agent_name as name, count(*) as y')
-                ->from('cbm_user_accounts')
-                ->join('agent_info', 'agent_num=agent_number')
-                ->where('beneficiary=:bf', [':bf'=>$user->email])
-                ->andWhere('matrix_node_num is not null')
-                ->group('agent_name')
-                ->queryAll();
-
             //All trading product data
-            $unity_trading = Yii::app()->db->createCommand()
-                ->select('*')
-                ->from('cbm_accounts ca')
-                ->where('ca.email_address=:ea', [':ea'=>$user->email])
-                ->andWhere('ca.agent=:ag', [':ag'=>Yii::app()->params['UnityMaxAgent']])
-                ->queryRow();
-            $unity_trading_deposit = 0;
-            if(isset($unity_trading['login'])){
-                $unity_trading_deposit_query = Yii::app()->db->createCommand()
-                    ->select('sum(profit) as profit')
-                    ->from('cbm_deposit_withdraw ca')
-                    ->where('ca.email=:ea', [':ea'=>$user->email])
-                    ->andWhere('ca.login=:ag', [':ag'=>$unity_trading['login']])
-                    ->andWhere('ca.profit>=:profit', [':profit'=>0])
-                    ->queryRow();
-                $unity_trading_deposit = $unity_trading_deposit_query['profit'];
-            }
-
-            $nexi_trading = Yii::app()->db->createCommand()
-                ->select('*')
-                ->from('cbm_accounts ca')
-                ->where('ca.email_address=:ea', [':ea'=>$user->email])
-                ->andWhere('ca.agent=:ag', [':ag'=>Yii::app()->params['NexiMaxAgent']])
-                ->queryRow();
-            $nexi_trading_deposit = 0;
-            if(isset($nexi_trading['login'])){
-                $nexi_trading_deposit_query = Yii::app()->db->createCommand()
-                    ->select('sum(profit) as profit')
-                    ->from('cbm_deposit_withdraw ca')
-                    ->where('ca.email=:ea', [':ea'=>$user->email])
-                    ->andWhere('ca.login=:ag', [':ag'=>$nexi_trading['login']])
-                    ->andWhere('ca.profit>=:profit', [':profit'=>0])
-                    ->queryRow();
-                $nexi_trading_deposit = $nexi_trading_deposit_query['profit'];
-            }
-
             //Total Earnings
             $total_earnings = WalletHelper::getUserWalletEarnings($user->user_id);
 
-            $commission_graph_data = $this->calculateCommissionGraph($user->user_id, 2020);
-
             $isWalletNormalizationOngoing = Yii::app()->params['IsWalletNormalizationOngoing'];
             $this->render('index', [
-                'commission_graph_data' => json_encode($commission_graph_data),
-                'unity_trading' => $unity_trading,
-                'nexi_trading' => $nexi_trading,
-                'unity_trading_deposit' => $unity_trading_deposit,
-                'nexi_trading_deposit' => $nexi_trading_deposit,
                 'user_id' => $user->user_id,
                 'country' => $user->country,
                 'custom_notifications' => $notificationArr,
                 'isWalletNormalizationOngoing' => $isWalletNormalizationOngoing,
                 'levelOneChildCount' => $levelOneChildCount,
                 'levelTwoChildCount' => $levelTwoChildCount,
-                'nodesCounter' => $nodesCounter,
                 'totalEarnings' => $total_earnings,
                 'availableLicenses' =>$available_licenses,
-                'totalLicenses' =>$total_licenses,
-                'nexiMaxAccountNumber' => $nexiMaxAccountNumber,
-                'unityMaxAccountNumber' => $unityMaxAccountNumber
+                'totalLicenses' =>$total_licenses
             ]);
         }
-    }
-
-    public function calculateCommissionGraph($userId, $year)
-    {
-        $affiliateReference = WalletMetaEntity::model()->findByAttributes(['reference_key' => 'Affiliate Commission']);
-        //For Cashback earnings commission scheme
-        $agents = AgentInfo::model()->findAll();
-        $transaction_references = [];
-        foreach ($agents as $agent) {
-            if(!in_array($agent->wallet_reference_id, $transaction_references))
-                array_push($transaction_references, $agent->wallet_reference_id);
-        }
-        $cashBackReferences = $transaction_references;
-        array_push($transaction_references, $affiliateReference->reference_id);
-
-        $user_wallet = WalletTypeEntity::model()->findByAttributes(['wallet_type' => 'User']);
-        $creditTransactionType = Yii::app()->params['CreditTransactionType'];
-
-        $wallet_data = Yii::app()->db->createCommand()
-            ->select('sum(amount) as amount, reference_id, Month(created_at) as mnt')
-            ->from('wallet')
-            ->where('wallet_type_id=:typ', [':typ' => $user_wallet->wallet_type_id])
-            ->andWhere('user_id=:uId', [':uId' => $userId])
-            ->andwhere(['in', 'reference_id', $transaction_references])
-            ->andWhere('transaction_type=:tt', [':tt' => $creditTransactionType])
-            ->andWhere('Year(created_at)=:yc', [':yc' => $year])
-            ->group('reference_id, Month(created_at)')
-            ->order('Month(created_at) asc')
-            ->queryAll();
-
-        $finalArray = array();
-        $affiliateArr = [];
-        $cashBackArr = [];
-
-        //Initialize affiliate and cashback arrays for every month
-        for ($i = 0; $i < 12; $i++) {
-            $affiliateArr[$i] = 0;
-            $cashBackArr[$i] = 0;
-        }
-        if (!empty($wallet_data)) {
-            foreach ($wallet_data as $record) {
-                if ($record['reference_id'] == $affiliateReference->reference_id) {
-                    $affiliateArr[$record['mnt'] - 1] = (float)$record['amount'];
-                } elseif (in_array($record['reference_id'], $cashBackReferences)) {
-                    $cashBackArr[$record['mnt'] - 1] += (float)$record['amount'];
-                }
-            }
-        }
-        $temp = array();
-        $temp['name'] = "Affiliate Earnings";
-        $temp['data'] = $affiliateArr;
-        $temp['color'] = '#164E81';
-        array_push($finalArray, $temp);
-
-        $temp = array();
-        $temp['name'] = "Cashback";
-        $temp['data'] = $cashBackArr;
-        $temp['color'] = '#C97030';
-        array_push($finalArray, $temp);
-
-        return $finalArray;
-    }
-
-    //Ajax action to change earnings graph on the basis of year
-    public function actionAjaxEarningGraph()
-    {
-        if (isset($_POST['year'])) {
-            $year = $_POST['year'];
-        } else {
-            $year = 0;
-        }
-        $userId = Yii::app()->user->id;
-        $commission_graph_data = $this->calculateCommissionGraph($userId, $year);
-        print(json_encode($commission_graph_data));
-    }
-
-    public function getBalance($login, $required_date)
-    {
-        $required_date = date('Y-m-d', strtotime($required_date));
-        $requiredBalance = Yii::app()->db->createCommand()
-            ->select('*')
-            ->from('user_daily_balance')
-            ->where('login=:lg', [':lg' => $login])
-            ->andWhere(['like', 'Date(created_at)', $required_date])
-            ->queryRow();
-
-        if (!empty($requiredBalance['login'])) {
-            $responseBal = $requiredBalance['balance'] - $requiredBalance['deposit'];
-        } else {
-            $requiredBalance = Yii::app()->db->createCommand()
-                ->select('*')
-                ->from('user_daily_balance')
-                ->where('login=:lg', [':lg' => $login])
-                ->andWhere('Date(created_at)>=:rd', [':rd' => $required_date])
-                ->order('created_at asc')
-                ->queryRow();
-            if (!empty($requiredBalance['login'])) {
-                $responseBal = $requiredBalance['balance'] - $requiredBalance['deposit'];
-            } else {
-                $responseBal = 0;
-            }
-        }
-        return $responseBal;
-    }
-
-    /*
-     * Product specific index
-     * */
-    public function actionProductIndex()
-    {
-        $userId = Yii::app()->user->id;
-        $user = UserInfo::model()->findByPk($userId);
-
-        $registration_status = RegistrationStatus::model()->findAllByAttributes(['user_id' => $user->user_id]);
-        foreach ($registration_status as $status) {
-            $max_step = Yii::app()->db->createCommand()
-                ->select('max(step_number) as step_number')
-                ->from('registration_steps')
-                ->where('product_id=:pId', [':pId' => $status->product_id])
-                ->queryRow();
-            $registration_steps = RegistrationSteps::model()->findAllByAttributes(['product_id' => $status->product_id]);
-            if ($max_step['step_number'] > $status->step_number) {
-                $this->render('product_index', [
-                    'registration_steps' => $registration_steps,
-                    'achieved_till' => $status->step_number
-                ]);
-            }
-        }
-    }
-
-    /*
-     * to show recent registered users.
-     */
-    public function actionNewChilds()
-    {
-        $NewUser = Yii::app()->db->createCommand()
-            ->select('*')
-            ->from('user_info')
-            ->where('sponsor_id = ' . Yii::app()->user->id)
-            ->order('created_at desc')
-            ->limit('5')
-            ->queryAll();
-        $this->renderPartial('new-user', array(
-            'NewUser' => $NewUser
-        ));
-    }
-
-    /**
-     * This is the action to handle external exceptions.
-     */
-    public function actionError()
-    {
-        if ($error = Yii::app()->errorHandler->error) {
-            if (Yii::app()->request->isAjaxRequest)
-                echo $error['message'];
-            else
-                $this->render('error', $error);
-        }
-    }
-
-    /**
-     * Displays the contact page
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm;
-        if (isset($_POST['ContactForm'])) {
-            $model->attributes = $_POST['ContactForm'];
-            if ($model->validate()) {
-                $name = '=?UTF-8?B?' . base64_encode($model->name) . '?=';
-                $subject = '=?UTF-8?B?' . base64_encode($model->subject) . '?=';
-                $headers = "From: $name <{$model->email}>\r\n" .
-                    "Reply-To: {$model->email}\r\n" .
-                    "MIME-Version: 1.0\r\n" .
-                    "Content-Type: text/plain; charset=UTF-8";
-
-                mail(Yii::app()->params['adminEmail'], $subject, $model->body, $headers);
-                Yii::app()->user->setFlash('contact', 'Thank you for contacting us. We will respond to you as soon as possible.');
-                $this->refresh();
-            }
-        }
-        $this->render('contact', array('model' => $model));
     }
 
     public function actionCreateUserSignup(){
@@ -1221,110 +956,11 @@ class HomeController extends Controller
         }
     }
 
-    public function actionJiraWebhook()
-    {
-        $response = Yii::app()->request->getRawBody();
-        if (!empty($response)) {
-            $data = json_decode($response, true);
-
-            //If project is related to CBM registration
-            if ($data['issue']['fields']['project']['key'] == 'CBMREG') {
-                $emailString = $data['issue']['fields']['description'];
-                $emailArr = ServiceHelper::extract_emails_from($emailString);
-                $status_name = $data['issue']['fields']['status']['name'];
-                $mapped_status_name = ServiceHelper::getMappedStatus($status_name);
-
-                if ($mapped_status_name != '') {
-                    $mapped_status = RegistrationSteps::model()->findByAttributes(['status_name' => $mapped_status_name]);
-                    foreach ($emailArr as $email) {
-                        $user = UserInfo::model()->findByAttributes(['email' => $email]);
-                        $cbm_account = CbmAccounts::model()->findByAttributes(['email_address' => $email]);
-                        if ((isset($user->email)) || (isset($cbm_account->email_address))) {
-                            ServiceHelper::updateUserStatus($email, $mapped_status->step_number, 1);
-
-                            $logs = new CbmLogs();
-                            $logs->status = 1;
-                            $logs->created_date = date('Y-m-d H:i:s');
-                            $logs->log = "Status of " . $email . " is updated to " . $mapped_status_name;
-                            $logs->save(false); // saving logs
-                            echo "Status of " . $email . " is updated to " . $mapped_status_name;
-                        } else {
-                            $logs = new CbmLogs();
-                            $logs->status = 2;
-                            $logs->created_date = date('Y-m-d H:i:s');
-                            $logs->log = "Webhook user not found";
-                            $logs->save(false); // saving logs
-                            echo "Webhook user not found";
-                        }
-                    }
-                } else {
-                    $logs = new CbmLogs();
-                    $logs->status = 2;
-                    $logs->created_date = date('Y-m-d H:i:s');
-                    $logs->log = "Mapped status name not found for " . $status_name;
-                    $logs->save(false); // saving logs
-                }
-            }
-        } else {
-            $logs = new CbmLogs();
-            $logs->status = 2;
-            $logs->created_date = date('Y-m-d H:i:s');
-            $logs->log = "Webhook post body is empty";
-            $logs->save(false); // saving logs
-            echo "Webhook post body is empty";
-        }
-    }
-
-    /*Delete Userbalance datbase table row which date has saturday or sunday */
-    public function actionDeleteSatSundayRow()
-    {
-        $dates = Yii::app()->db->createCommand()
-            ->select('distinct(created_at)')
-            ->from('user_daily_balance')
-            ->queryAll();/*"SELECT DISTINCT created_at FROM `user_daily_balance`";*/
-        foreach ($dates as $date) {
-            $day = date('D', strtotime($date['created_at']));
-            if ($day == "Sat" || $day == "Sun") {
-                UserDailyBalance::model()->deleteAll("created_at ='" . $date['created_at'] . "'");
-            }
-        }
-    }
-
     /* Set loginId session */
     public function actionSetSessionLoginId()
     {
         if (isset($_POST['loginID'])) {
             $_SESSION['loginId'] = $_POST['loginID'];
         }
-    }
-
-    //Temporary action to add data from csv
-    public function actionAddCSVDataToWallet(){
-        $file = fopen('protected/runtime/commission_logs/commission_data_08_2019.csv', "r");
-        $insertSQL = "INSERT INTO `wallet_commission`(`user_id`, `wallet_type_id`, `amount`, `from_level`, `from_user_id`,
-                      `from_node_id`, `to_node_id`, `month`, `year`, `transaction_type`, `transaction_comment`, `transaction_status`) VALUES ";
-        $newSQL = $insertSQL;
-        while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE)
-        {
-            $newSQL .= "('$emapData[0]','$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]',
-                      '$emapData[6]','$emapData[7]','$emapData[8]','$emapData[9]','$emapData[10]','$emapData[11]'),";
-            /*$sql = "INSERT into wallet_commission values('$emapData[0]','$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]',
-                      '$emapData[6]','$emapData[7]','$emapData[8]','$emapData[9]','$emapData[10]','$emapData[11]','$emapData[12]','$emapData[13]',
-                      '$emapData[14]')";
-            //mysqli_query($con, $sql);
-            Yii::app()->db->createCommand($sql)->query();*/
-        }
-        Yii::app()->db->createCommand($newSQL)->query();
-        fclose($file);
-        echo "CSV File has been successfully Imported.";
-    }
-
-    public function actionTempaction(){
-        //last month date
-        $specificMonthLastDate = date('Y-m-t', strtotime("2019-08-01")) . " 23:59:59";
-        //$data = json_decode(MatrixHelper::getParentTraceFromDB('32276'), true);
-        print('<pre>');
-        print_r($specificMonthLastDate);
-        exit;
     }
 }
