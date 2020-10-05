@@ -9,8 +9,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-     <link rel="icon" type="image/png" sizes="16x16" href="<?php echo Yii::app()->request->baseUrl ?>/images/logos/favicon.ico">
-    <title>CashBack Matrix</title>
+     <link rel="icon" type="image/png" sizes="16x16" href="<?php echo Yii::app()->request->baseUrl ?>/images/logos/iriscall-favicon.png">
+    <title>Iriscall</title>
     <!-- Bootstrap Core CSS -->
     <!-- <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- Custom CSS -->
@@ -33,7 +33,7 @@
     <section id="wrapper" class="error-page">
         <div class="error-box">
         <?php echo $content; ?>    
-        <footer class="footer text-center">Copyright © <?php echo date('Y');?> CBM Global</footer>
+        <footer class="footer text-center">Copyright © <?php echo date('Y');?> Iriscall</footer>
         </div>
     </section>
     <!-- ============================================================== -->
