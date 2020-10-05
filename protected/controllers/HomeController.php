@@ -279,7 +279,6 @@ class HomeController extends Controller
                     $model->attributes = $_POST['UserInfo'];
                     //$model->date_of_birth = date('Y-m-d', strtotime($_POST['UserInfo']['date_of_birth']));
                     //$model->date_of_birth = date('Y-m-d');
-                    //$model->language = 'English';
                     if ($_POST['accountType'] == 'personal') {
                         $model->business_name = "";
                         $model->vat_number = "";
@@ -377,11 +376,7 @@ class HomeController extends Controller
                             $address = $model->building_num . ", " . $model->street . ", " . $model->region . ", " . $model->city . ", " . ServiceHelper::getCountryNameFromId($model->country);
                             $curl = curl_init();
                             $url = Yii::app()->params['MailChimpURL'];
-                            if ($model->language == "Dutch") {
-                                $listId = Yii::app()->params['MailChimpDutchListId'];
-                            } else {
-                                $listId = Yii::app()->params['MailChimpEnglishListId'];
-                            }
+                            $listId = Yii::app()->params['MailChimpDutchListId'];
                             $authorization = Yii::app()->params['MailChimpAuthorizationId'];
                             curl_setopt_array($curl, array(
                                 CURLOPT_URL => $url . "lists/" . $listId . "/members",

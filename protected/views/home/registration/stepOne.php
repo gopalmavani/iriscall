@@ -92,6 +92,12 @@
             background-attachment: fixed !important;
             background-repeat: no-repeat !important;
         }
+        .kt-wizard-v4__nav-number{
+            background-color: #256c9e !important;
+        }
+        .kt-wizard-v4__nav-label-title{
+            color: #256c9e !important;
+        }
     </style>
 </head>
 <body id="kt_body" class="header-fixed subheader-enabled page-loading">
@@ -215,9 +221,6 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-xl-6">
-                                                            <div class="form-group <?php echo $model->hasErrors('language') ? 'has-error' : ''; ?>">
-                                                                <?php echo $form->dropDownListControlGroup($model, 'language', array('English' => 'English', 'Dutch' => 'Dutch', 'French' => 'French'), array('prompt' => 'Select Language', 'class' => 'form-control')); ?>
-                                                            </div>
                                                         </div>
                                                         <div class="col-xl-6">
                                                             <div class="form-group" id="confirm_password_group">
@@ -527,219 +530,6 @@
                                                                     <span>*</span>
                                                                 </label>
                                                             </div>
-                                                            <div class="custom-control mb-10">
-                                                                <p class="form-text text-muted text-sm text-grey">If you would like to receive
-                                                                    notification mails updating you directly on activities in
-                                                                    your system, you need to check the following box.</p>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox agree">
-                                                                <input type="checkbox" id="checkbox3" name="notification-mail">
-                                                                <label class="custom-control-label text-normal" for="checkbox3">I
-                                                                    would like to receive notification mails
-                                                                    <span class="showonhover"><i class="fa fa-info-circle"></i>
-                                                                    <div class="col-md-12" id="system-mail"
-                                                                         style="background: rgba(0,0,0,.03);border-color: rgba(0,0,0,.03); margin-bottom: 20px;">
-                                                                        <div class="row" style="margin-left: auto;">
-                                                                            <div class="form-group"
-                                                                                 style="margin-top: 10px;margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked id="sys-1" name="sys-1">
-                                                                                    <label for="sys-1"> I would like to receive a mail when I don't have enough licenses for my remaining capital </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group" style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked id="sys-2" name="sys-2">
-                                                                                    <label for="sys-2"> I would like to receive a mail for evey weekly/monthly commissions payout </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-3" name="sys-3">
-                                                                                    <label for="sys-3"> I would like to receive a mail when I do a withdrawal of my trading capital </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-4" name="sys-4">
-                                                                                    <label for="sys-4"> I would like to receive a mail when a first line affiliate registers to the system </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-5" name="sys-5">
-                                                                                    <label for="sys-5"> I would like to receive a mail when a first line affiliate buys new licenses </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-6" name="sys-6">
-                                                                                    <label for="sys-6"> I would like to receive a mail when a first line affiliate places new nodes </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-7" name="sys-7">
-                                                                                    <label for="sys-7"> I would like to receive a mail when a second line affiliate registers to the system </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-8" name="sys-8">
-                                                                                    <label for="sys-8"> I would like to receive a mail when a first line affiliate buys new licenses </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-9" name="sys-9">
-                                                                                    <label for="sys-9"> I would like to receive a mail when a first line affiliate places new nodes </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-10" name="sys-10">
-                                                                                    <label for="sys-10"> I would like to receive a mail when a second line affiliate registers to the system </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-11" name="sys-11">
-                                                                                    <label for="sys-11"> I would like to receive a mail when a second line affiliate buys new licenses </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-12" name="sys-12">
-                                                                                    <label for="sys-12"> I would like to receive a mail when a second line affiliate places new nodes </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-13" name="sys-13">
-                                                                                    <label for="sys-13"> I would like to receive a mail when a client deposit has been detected in my matrix </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-14" name="sys-14">
-                                                                                    <label for="sys-14"> I would like to receive a mail when there is a spillover in my matrix </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group"
-                                                                                 style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked
-                                                                                           id="sys-15" name="sys-15">
-                                                                                    <label for="sys-15"> I would like to receive a mail when there is withdrawal by a client in my matrix </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row" style="margin-left: auto">
-                                                                            <div class="form-group" style="margin-bottom: 0">
-                                                                                <div class="checkbox checkbox-success">
-                                                                                    <input type="checkbox" checked id="sys-16"
-                                                                                           name="sys-16">
-                                                                                    <label for="sys-16"> I would like to receive a mail when the cashback earnings have been calculated </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </span>
-                                                                </label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox agree mb-10 mb2">
-                                                                <p class="text-sm text-grey form-text text-muted">In order to keep receiving updates
-                                                                    on the company or its products, please let us know here if
-                                                                    you want to receive mails.</p>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox agree mb-10">
-                                                                <input type="checkbox" id="checkbox4" name="market-mail">
-                                                                <label class="custom-control-label text-normal" for="checkbox4">I
-                                                                    would like to receive marketing mails
-                                                                    <span class="showhover">
-                                                                <i class="fa fa-info-circle"></i>
-                                                                <div class="col-md-12" id="market-mail"
-                                                                     style="background: rgba(0,0,0,.03);border-color: rgba(0,0,0,.03); margin-bottom: 20px;">
-                                                                    <div class="row" style="margin-left: auto">
-                                                                        <div class="form-group" style="margin-top: 10px;margin-bottom: 0">
-                                                                            <div class="checkbox checkbox-success">
-                                                                                <input type="checkbox" checked id="mark-1" name="mark-1">
-                                                                                <label for="mark-1"> I would like to receive a mail when I don't have enough licenses for my remaining capital </label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row" style="margin-left: auto">
-                                                                        <div class="form-group" style="margin-bottom: 0">
-                                                                            <div class="checkbox checkbox-success">
-                                                                                <input type="checkbox" checked id="mark-2" name="mark-2">
-                                                                                <label for="mark-2"> I would like to receive a mail for evey weekly/monthly commissions payout </label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row" style="margin-left: auto">
-                                                                        <div class="form-group" style="margin-bottom: 0">
-                                                                            <div class="checkbox checkbox-success">
-                                                                                <input type="checkbox" checked id="mark-3" name="mark-3">
-                                                                                <label for="mark-3"> I would like to receive a mail when I do a withdrawal of my trading capital </label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </span>
-                                                                </label>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -847,7 +637,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
             $('#confirm_email_group').css("display", "none");
             $('#password_group').css("display", "none");
             $('#confirm_password_group').css("display", "none");
-            disable_if_present(['#UserInfo_first_name', '#UserInfo_country', '#UserInfo_language', '#UserInfo_phone', '#UserInfo_middle_name',
+            disable_if_present(['#UserInfo_first_name', '#UserInfo_country', '#UserInfo_phone', '#UserInfo_middle_name',
                 '#UserInfo_date_of_birth', '#UserInfo_last_name', '#UserInfo_street', '#UserInfo_building_num', '#UserInfo_postcode',
                 '#UserInfo_city', '#UserInfo_region', '#UserInfo_business_name', '#UserInfo_vat_number', '#UserInfo_busAddress_country',
                 '#UserInfo_busAddress_street', '#UserInfo_busAddress_building_num', '#UserInfo_busAddress_postcode', '#UserInfo_busAddress_city',
@@ -1078,9 +868,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
                 'UserInfo[country]': {
                     required: true
                 },
-                'UserInfo[language]': {
-                    required: true
-                },
                 'password': {
                     required: "#password:visible",
                 },
@@ -1217,9 +1004,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
                 },
                 'UserInfo[country]': {
                     required: "Please select country."
-                },
-                'UserInfo[language]': {
-                    required: "Please select language."
                 },
                 'password': {
                     required: "Please enter password.",

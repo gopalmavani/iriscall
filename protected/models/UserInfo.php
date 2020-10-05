@@ -49,13 +49,8 @@
  * @property integer $organization_id
  *
  * The followings are the available model relations:
- * @property NuClientDepositWithdraw[] $nuClientDepositWithdraws
- * @property NuKyc[] $nuKycs
- * @property NuRegistrations[] $nuRegistrations
  * @property OrderCart[] $orderCarts
  * @property OrderInfo[] $orderInfos
- * @property UserLicenseCount[] $userLicenseCounts
- * @property UserLicenses[] $userLicenses
  * @property UserPayoutInfo[] $userPayoutInfos
  * @property Wallet[] $wallets
  */
@@ -77,7 +72,7 @@ class UserInfo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('full_name, first_name, last_name, language, building_num, street, city, postcode, country, phone', 'required'),
+			array('full_name, first_name, last_name, building_num, street, city, postcode, country, phone', 'required'),
 			array('gender, is_enabled, is_active, is_delete, notification_mail, marketting_mail, terms_conditions, affiliate_disclosure, privacy_disclosure, reserve_wallet_commission_status, organization_id', 'numerical', 'integerOnly'=>true),
 			array('full_name, first_name, middle_name, last_name, email, api_token, sponsor_id, business_name, vat_number, busAddress_building_num, busAddress_street, busAddress_region, busAddress_city, busAddress_country, business_phone, building_num, street, region, city, country, phone, role', 'length', 'max'=>80),
 			array('language', 'length', 'max'=>1000),
