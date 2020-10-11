@@ -398,7 +398,7 @@
                                                                                name="payoutDetailsId">
                                                                         <label class="custom-control-label text-normal"
                                                                                for="payoutDetailsId">I would like to add payout
-                                                                            details</label>
+                                                                            details</label><span></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -500,11 +500,10 @@
                                                             <div class="row mb2">
                                                                 <div class="col-md-12">
                                                                     <div class="checkbox-single custom-control">
-                                                                        <label class="checkbox mb-2">
-                                                                            <input type="checkbox" id="privacy" name="privacy">I accept the <a target="_blank" href="https://www.cbmglobal.io/legal/terms-conditions.html">privacy
-                                                                                policy</a>
-                                                                            <span>*</span>
-                                                                        </label>
+                                                                        <input type="checkbox" id="privacy" name="privacy">
+                                                                        <span></span>
+                                                                        <label for="privacy">I accept the <a target="_blank" href="https://www.cbmglobal.io/legal/terms-conditions.html">privacy
+                                                                                policy*</a></label>
                                                                     </div>
                                                                 </div>
                                                             </div>

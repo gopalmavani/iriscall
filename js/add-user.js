@@ -267,56 +267,50 @@ var KTAddUser = function () {
 			}
 		));
 
-		/*_validations.push(FormValidation.formValidation(
+		_validations.push(FormValidation.formValidation(
 			_formEl,
 			{
 				fields: {
-					address1: {
+                    payout_bank: {
 						validators: {
 							notEmpty: {
-								message: 'Address is required'
+								message: 'Bank name is required'
 							}
 						}
 					},
-					postcode: {
+                    payout_accountname: {
 						validators: {
 							notEmpty: {
-								message: 'Postcode is required'
+								message: 'Account Name is required'
 							}
 						}
 					},
-					city: {
+                    payout_iban: {
 						validators: {
 							notEmpty: {
-								message: 'City is required'
+								message: 'IBAN is required'
 							}
 						}
 					},
-					state: {
+                    payout_biccode: {
 						validators: {
 							notEmpty: {
-								message: 'state is required'
+								message: 'BIC-CODE is required'
 							}
 						}
-					},
-					country: {
-						validators: {
-							notEmpty: {
-								message: 'Country is required'
-							}
-						}
-					},
+					}
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
+                    excluded: new FormValidation.plugins.Excluded(),
 					// Bootstrap Framework Integration
 					bootstrap: new FormValidation.plugins.Bootstrap({
 						//eleInvalidClass: '',
-						eleValidClass: '',
+						eleValidClass: ''
 					})
 				}
 			}
-		));*/
+		));
 	}
 
 	var _initAvatar = function () {
