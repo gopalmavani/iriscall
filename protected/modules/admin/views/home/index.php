@@ -33,21 +33,10 @@
     <!--First row for draggable small widgets-->
     <div class="row">
         <div class="col-md-3">
-            <div class="col-xs-6 col-lg-12 block  <?php echo $navigation['user']; ?> ">
-                <div class="block-header ">
-                    <div class="pull-right push-15-t push-15">
-                        <a href="<?php echo Yii::app()->createUrl('admin/mt4/accounts')?>">
-                            <i class="fa fa-institution fa-2x text-amethyst"></i>
-                        </a>
-                    </div>
-                    <div class="h2 text-amethyst" data-toggle="countTo" data-to="<?= $mt4Users; ?>"><?= $mt4Users; ?></div>
-                    <a href="<?php echo Yii::app()->createUrl('admin/mt4/accounts')?>">
-                        <div class="text-uppercase font-w600 font-s12 text-muted">MT4 Accounts</div>
-                    </a>
-                </div>
+            <div class="col-xs-6 col-lg-12 block   ">
             </div>
 
-            <div class="col-xs-6 col-lg-12 block <?php echo $navigation['user']; ?>">
+            <div class="col-xs-6 col-lg-12 block ">
                 <div class="block-header ">
                     <div class="pull-right push-15-t push-15">
                         <a href="<?php echo Yii::app()->createUrl('admin/userInfo/admin')?>">
@@ -61,28 +50,12 @@
                 </div>
             </div>
 
-            <div class="col-xs-6 col-lg-12 block <?php echo $navigation['user']; ?> ">
+            <div class="col-xs-6 col-lg-12 block  ">
                 <div class="block-header ">
-                    <div class="pull-right push-15-t push-15">
-                        <a href="<?php echo Yii::app()->createUrl('admin/mt4/depositWithdraw')?>">
-                            <i class="fa fa-line-chart fa-2x text-success"></i>
-                        </a>
-                    </div>
-                    <div class="h2 text-success" data-toggle="countTo" data-before="&euro;" data-to="<?= $deposits; ?>"><?= $deposits; ?></div>
-                    <a href="<?php echo Yii::app()->createUrl('admin/mt4/depositWithdraw')?>">
-                        <div class="text-uppercase font-w600 font-s12 text-muted">Deposit</div>
-                    </a>
                 </div>
             </div>
 
-            <div class="col-xs-6 col-lg-12 block <?php echo $navigation['user']; ?>">
-                <div class="block-header ">
-                    <div class="pull-right push-15-t push-15">
-                        <i class="fa fa-id-card-o fa-2x text-smooth"></i>
-                    </div>
-                    <div class="h2 text-smooth" data-toggle="countTo" data-to="<?= $cbmLicenses; ?>"><?= $cbmLicenses; ?></div>
-                    <div class="text-uppercase font-w600 font-s12 text-muted"><?= Yii::app()->params['appName']; ?> Licenses</div>
-                </div>
+            <div class="col-xs-6 col-lg-12 block ">
             </div>
 
         </div>
@@ -173,21 +146,10 @@
                             <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
                         </li>
                     </ul>
-                    <h3 class="block-title">Unplaced <?= Yii::app()->params['appName']; ?> User Accounts (<?php echo $no_unplace_account; ?>)</h3>
                 </div>
                 <div class="block-content clearfix overscroll" style="height: 495px; overflow-y: hidden;">
                     <table class="table table-borderless table-striped table-vcenter" id="cbmAccUser">
                         <tbody>
-                        <?php foreach ($cbmuseraccounts as $model){ ?>
-                            <tr>
-                                <td><?php echo $model['login'];?></td>
-                                <td class="text-success text-center"
-                                    style="width: 120px;"><?php echo $model['email_address'];?></td>
-                                <td>&nbsp;</td>
-                                <td class="text-muted text-right"
-                                    style="width: 150px; margin-right: 25px;"><?php echo $model['no_of_node'];?></td>
-                            </tr>
-                        <?php } ?>
                         </tbody>
                     </table>
                     <div class="pull-right m-b-10">
@@ -200,12 +162,6 @@
             <div class="block">
                 <ul class="nav nav-tabs nav-tabs-alt" data-toggle="tabs">
 <!--                <ul class="nav nav-tabs nav-tabs-alt" data-toggle="tabs">-->
-                    <li class="active">
-                        <a href="#btabs-alt-static-home" class="mt4" data-id="mt4"><?= Yii::app()->params['appName']; ?> Accounts (<?php echo $no_of_not_reg;?>) </a>
-                    </li>
-                    <li>
-                        <a href="#btabs-alt-static-profile" class="mt4" data-id="no_mt4">User Accounts (<?php echo $no_of_not_reg_mt4;?>) </a>
-                    </li>
                     <li class="pull-right">
                        <ul class="block-options" style="margin-top:10px; margin-right:15px; ">
 <!--                           <li>-->
@@ -225,16 +181,7 @@
                         <h4 class="push-15">Not Registered With Us </h4>
                         <table class="table table-borderless table-striped table-vcenter" id="cbmAccUser">
                             <tbody>
-                            <?php foreach ($cbmaccounts as $model){ ?>
-                                <tr>
-                                    <td><?php echo $model['login'];?></td>
-                                    <td class="text-success text-center"
-                                        style="width: 160px;"><?php echo $model['email_address'];?></td>
 
-                                    <td class="text-muted text-right"
-                                        style="width: 150px;">&euro;<?php echo $model['balance'];?></td>
-                                </tr>
-                            <?php } ?>
                             </tbody>
                         </table>
                     </div>
@@ -243,12 +190,7 @@
                         <h4 class="push-15">Not Registered With Mt4 </h4>
                         <table class="table table-borderless table-striped table-vcenter" id="cbmAccUser">
                             <tbody>
-                            <?php foreach ($cbmaccountsNot as $model){ ?>
-                                <tr>
-                                    <td><?php echo $model['full_name'];?></td>
-                                    <td class="text-success"><?php echo $model['email'];?></td>
-                                </tr>
-                            <?php } ?>
+
                             </tbody>
                         </table>
                     </div>
@@ -309,19 +251,7 @@
                 <div class="block-content clearfix">
                     <table class="table table-borderless table-striped table-vcenter" id="DepositLatest">
                         <tbody>
-                        <?php foreach ($latestDeposits as $model){ ?>
-                            <tr>
-                                <td><?php echo $model['name'];?></td>
-                                <?php if($model['type'] == 'Withdraw'){ ?>
-                                  <td class="text-danger text-center" style="width: 120px;">- &euro; <?php echo abs($model['amount']); ?></td>
-                                <?php }else{ ?>
-                                  <td class="text-success text-center" style="width: 120px;">&euro; <?php echo $model['amount'];?></td>
-                                <?php  } ?>
 
-                                <td class="text-muted text-right"
-                                    style="width: 150px;"><?php echo $model['date'];?></td>
-                            </tr>
-                        <?php } ?>
                         </tbody>
                     </table>
                     <div class="pull-right m-b-10">
@@ -377,37 +307,6 @@
         App.initHelpers(['appear', 'appear-countTo']);
     });
 </script>
-
-<script>
-    $('#cbmuseraccount').on('click', function (e) {
-        $.ajax({
-            url: '<?php echo Yii::app()->createUrl('admin/home/CbmUserAccounts')?>',
-            type: "get",
-            beforeSend: function (response) {
-            },
-            success: function (response) {
-                var result = jQuery.parseJSON(response);
-                $('#cbmAccUser').html(result.response_detail);
-                $('#unplaceduserCount').html(result.no_unplace_account);
-            }
-        });
-    })
-
-    $('#latestDeposit').on('click', function (e) {
-        $.ajax({
-            url: '<?php echo Yii::app()->createUrl('admin/home/LatestDeposit')?>',
-            type: "get",
-            beforeSend: function (response) {
-            },
-            success: function (response) {
-                var result = jQuery.parseJSON(response);
-                $('#DepositLatest').html(result);
-            }
-        });
-    })
-
-</script>
-
 <script type="text/javascript">
  // for date change filter wise search.
 

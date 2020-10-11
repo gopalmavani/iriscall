@@ -157,7 +157,6 @@ class HomeController extends CController
         if (!isset(Yii::app()->session['adminLoginId'])) {
             Yii::app()->session['adminLoginId'] = Yii::app()->user->getId();
         }
-        $navigation = NavCheck::navigationCheck();
         $year = date('Y');
         $month = date('m');
         $t = cal_days_in_month(CAL_GREGORIAN, $month, $year);
@@ -199,118 +198,21 @@ class HomeController extends CController
         }
         $users = UserInfo::model()->findAll();
 
-        $mt4Users = CbmAccounts::model()->findAll();
-        $deposits = Yii::app()->db->createCommand()
-            ->select('sum(profit) as deposits')
-            ->from('cbm_deposit_withdraw')
-            ->where('type=:typ', [':typ' => 'Deposit'])
-            ->queryRow();
         $orderTotal = Yii::app()->db->createCommand()
             ->select('sum(orderTotal) as total')
             ->from('order_info')
             ->where('order_status=:st', [':st' => '1'])
             ->queryRow();
 
-        $cbmLicenses = Yii::app()->db->createCommand()
-            ->select('sum(total_licenses) as licenses')
-            ->from('cbm_user_licenses')
-            ->queryRow();
-
-        // $latestDeposits = CbmDepositWithdraw::model()->findAllByAttributes(['type' => 'Deposit'], ['order' => 'close_time desc', 'limit' => 10]);
-        $latestDeposits = Yii::app()->db->createCommand()
-            ->select('*')
-            ->from('cbm_deposit_withdraw')
-            ->order('close_time DESC')
-            ->limit('10')
-            ->queryAll();
-        $cbmuseraccounts = Yii::app()->db->createCommand()
-            ->select('login,email_address,count(login) as no_of_node')
-            ->from('cbm_user_accounts')
-            ->where('matrix_node_num IS NULL')
-            ->group('login,email_address')
-            ->order('modified_at DESC')
-            ->limit(50)
-            ->queryAll();
-
-        $CbmUserAccounts = Yii::app()->db->createCommand()
-            ->select('login,email_address,count(login) as no_of_node')
-            ->from('cbm_user_accounts')
-            ->where('matrix_node_num IS NULL')
-            ->group('login,email_address')
-            ->order('modified_at DESC')
-            ->queryAll();
-
-        $no_unplace_account = count($CbmUserAccounts);
-
-        $sql = "SELECT login,email_address,balance FROM `cbm_accounts` WHERE email_address NOT IN (SELECT email from user_info) and login != 685";
-        $cbmaccounts = Yii::app()->db->createCommand($sql)->queryAll();
-
-        $no_of_not_reg = count($cbmaccounts);
-
-        $query = "SELECT full_name,email FROM `user_info` WHERE email NOT IN (SELECT email_address from cbm_accounts)";
-        $cbmaccountsNot = Yii::app()->db->createCommand($query)->queryAll();
-
-        $no_of_not_reg_mt4 = count($cbmaccountsNot);
-
-        $latestDepositArray = array();
-        foreach ($latestDeposits as $deposit) {
-            $temp = array();
-            $user = UserInfo::model()->findByAttributes(['email' => $deposit['email']]);
-            if (isset($user->full_name))
-                $temp['name'] = $user->full_name;
-            else
-                $temp['name'] = '';
-            $temp['type'] =  $deposit['type'];
-            $temp['amount'] = $deposit['profit'];
-            $temp['date'] = NotificationHelper::time_elapsed_string($deposit['close_time']);
-            array_push($latestDepositArray, $temp);
-            $temp = null;
-        }
-
-        $query = "select full_name, email from user_info where email not in (select email_address from cbm_accounts)";
-        $MT4UnregisteredAccounts = Yii::app()->db->createCommand($query)->queryAll();
-
-        $latestMT4Accounts = CbmAccounts::model()->findAll(['order' => 'registration_date desc', 'limit' => 10]);
-        $topMT4Accounts = CbmAccounts::model()->findAll(['order' => 'balance desc', 'limit' => 10]);
-
         $this->render('index', [
             'users' => count($users),
-            'mt4Users' => count($mt4Users),
-            'deposits' => $deposits['deposits'],
-            'cbmLicenses' => $cbmLicenses['licenses'],
-            'navigation' => $navigation,
             'days' => $days,
             'daywiseevents' => $daywiseevents,
             'bookings' => $result,
-            'upcomingbookings' => $mybookings,
-            'latestDeposits' => $latestDepositArray,
-            'MT4UnregisteredAccounts' => $MT4UnregisteredAccounts,
-            'latestMT4Accounts' => $latestMT4Accounts,
-            'cbmuseraccounts' => $cbmuseraccounts,
-            'cbmaccounts' => $cbmaccounts,
-            'cbmaccountsNot' => $cbmaccountsNot,
-            'topMT4Accounts' => $topMT4Accounts,
-            'no_unplace_account' => $no_unplace_account,
-            'no_of_not_reg' => $no_of_not_reg,
-            'no_of_not_reg_mt4' => $no_of_not_reg_mt4
-
+            'upcomingbookings' => $mybookings
         ]);
 
     }
-
-
-    /*
-     * To check for cluster placements
-     * */
-    public function actionClusterTest(){
-        $accountNumArray = ['C2000010331','C2000010332','C2000010333','C2000010334','C2000010335','C2000010336','C2000010337','C2000010338','C2000010339','C20000103310','C20000103311','C20000103312','C20000103313','C20000103314'];
-        $parentAccountNum = MatrixHelper::getMatrixSponsor($accountNumArray[0], 1);
-        $parentAccountNum = 'C200001027347';
-        $email = 'kagoge@web.de';
-        $matrix_id = 1;
-        MatrixHelper::addClusterToMatrix($accountNumArray, $parentAccountNum, $email, $matrix_id);
-    }
-
 
     /*
      * To create new fibo placements w.r.t old ones
