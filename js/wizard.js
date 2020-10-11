@@ -11,7 +11,7 @@ var KTWizard4 = function () {
 	// Private functions
 	var initWizard = function () {
 		// Initialize form wizard
-		wizard = new KTWizard('kt_wizard_v4', {
+		wizard = new KTWizard('kt_wizard', {
 			startStep: 1, // initial active step number
 			clickableSteps: true  // allow step clicking
 		});
