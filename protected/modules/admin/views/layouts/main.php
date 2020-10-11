@@ -1,7 +1,6 @@
 <?php /* @var $this Controller */
 Yii::import('application.components.NavCheck');
 
-$theme =  Test::GetTheme();
 $limit = 20;
 $notifications = NotificationHelper::ShowNotiticationLimit();
 $notificationsVpamm = NotificationHelper::ShowNotiticationVpamm();
@@ -269,15 +268,6 @@ $folder = Yii::app()->params['basePath'];
                         <img src="<?php echo Yii::app()->baseUrl.'/images/logos/logo-8.png' ?>" style="max-width: 200px; max-height: 50px;">
                     </a>
                 </div>
-                <!-- END Side Header -->
-                <?php
-                $nav = new NavCheck;
-                $navigation = $nav->navigationCheck();
-
-                $pending_count =  Test::Getpendingwallets();
-
-                ?>
-                <!-- Side Content -->
                 <div class="side-content" id="mainmenu">
                     <ul class="nav-main" id="yw0">
                         <?php if(Yii::app()->controller->id == 'home'){ $active = "active";}else{ $active = " ";} ?>
