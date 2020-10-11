@@ -2,105 +2,88 @@
 $this->pageTitle = Yii::app()->name . '| Wallet';
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datatables/jquery.dataTables.css');
 ?>
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-grid--stretch">
-    <div class="kt-body kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-grid--stretch" id="kt_body">
-        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-            <!-- begin:: Subheader -->
-            <div class="kt-subheader kt-grid__item" id="kt_subheader">
-                <div class="kt-container kt-container--fluid ">
-                    <div class="kt-subheader__main">
-                        <h3 class="kt-subheader__title"> Wallet </h3>
-                        <span class="kt-subheader__separator kt-hidden"></span>
-                        <div class="kt-subheader__breadcrumbs"> <a href="<?= Yii::app()->createUrl('wallet/index'); ?>" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a> <span class="kt-subheader__breadcrumbs-separator"></span> <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Wallet</span> </div>
+<div class="subheader py-2 py-lg-6 subheader-transparent" id="kt_subheader">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <h5 class="text-dark font-weight-bold my-1 mr-5">Wallet</h5>
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="<?= Yii::app()->createUrl('wallet/index'); ?>" class="text-muted">All Transactions</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex flex-column-fluid" id="vue-div">
+    <div class="container">
+        <div class="row mt-0 mt-lg-3">
+            <div class="col-xl-4">
+                <div class="card card-custom card-stretch gutter-b">
+                    <div class="card-body">
+                        <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block"><?= money_format('%(#1n',$balance); ?></span>
+                        <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Current Balance</div>
+                        <div class="font-weight-bold text-inverse-white font-size-sm">Including affiliates and payouts</div>
                     </div>
                 </div>
             </div>
-            <!-- end:: Subheader -->
-            <!-- begin:: Content -->
-            <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-                <div class="row">
-                    <div class="col-md-6 col-xl-4">
-                        <div class="kt-portlet kt-portlet--skin-solid kt-bg-brand kt-portlet--height-fluid">
-                            <div class="kt-portlet__body">
-                                <div class="kt-portlet__content">
-                                    <h1><?= money_format('%(#1n',$balance); ?></h1>
-                                    <div>Current Balance</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-4">
-                        <!--begin::Portlet-->
-                        <div class="kt-portlet kt-portlet--skin-solid kt-bg-success kt-portlet--height-fluid">
-                            <div class="kt-portlet__body">
-                                <div class="kt-portlet__content">
-                                    <h1><?= money_format('%(#1n',$max_balance); ?></h1>
-                                    <div>Maximum Balance</div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--end::Portlet-->
-                    </div>
-                    <div class="col-md-6 col-xl-4">
-                        <!--begin::Portlet-->
-                        <div class="kt-portlet kt-portlet--skin-solid kt-bg-warning kt-portlet--height-fluid">
-                            <div class="kt-portlet__body">
-                                <div class="kt-portlet__content">
-                                    <h1><?= money_format('%(#1n',$total_payout); ?></h1>
-                                    <div>Total Payouts</div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="col-xl-4">
+                <div class="card card-custom bg-info bg-hover-state-info card-stretch gutter-b">
+                    <div class="card-body">
+                        <span class="card-title font-weight-bolder text-inverse-info font-size-h2 mb-0 mt-6 d-block"><?= money_format('%(#1n',$max_balance); ?></span>
+                        <div class="text-inverse-info font-weight-bolder font-size-h5 mb-2 mt-5">Maximum Balance</div>
+                        <div class="font-weight-bold text-inverse-info font-size-sm"></div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="kt-portlet">
-                            <div class="kt-portlet__body">
-                                <ul class="nav nav-tabs" role="tablist">
-                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#all_trans_tab"
-                                                            role="tab"><span
-                                                    class="hidden-sm-up"><i class="ti-home"></i></span> <span
-                                                    class="hidden-xs-down">All</span></a></li>
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#affiliates_tab"
-                                                            role="tab"><span
-                                                    class="hidden-sm-up"><i class="ti-home"></i></span> <span
-                                                    class="hidden-xs-down">Affiliate Earnings</span></a></li>
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#commissions_tab"
-                                                            role="tab"><span
-                                                    class="hidden-sm-up"><i class="ti-user"></i></span> <span
-                                                    class="hidden-xs-down">Cashback</span></a></li>
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#payouts_tab" role="tab"><span
-                                                    class="hidden-sm-up"><i class="ti-email"></i></span> <span
-                                                    class="hidden-xs-down">Payouts</span></a></li>
-                                    <!--<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#order_payments_tab" role="tab"><span
-                                                    class="hidden-sm-up"><i class="ti-email"></i></span><span
-                                                    class="hidden-xs-down">Order Payments</span></a></li>-->
-                                    <li class="nav-item" style="display: none"><a class="nav-link" data-toggle="tab" href="#withdrawals_tab" role="tab"><span
-                                                    class="hidden-sm-up"><i class="ti-email"></i></span> <span
-                                                    class="hidden-xs-down">Withdrawals</span></a></li>
+            </div>
+            <div class="col-xl-4">
+                <div class="card card-custom bg-danger bg-hover-state-danger card-stretch gutter-b">
+                    <div class="card-body">
+                        <span class="card-title font-weight-bolder text-inverse-info font-size-h2 mb-0 mt-6 d-block"><?= money_format('%(#1n',$total_payout); ?></span>
+                        <div class="text-inverse-danger font-weight-bolder font-size-h5 mb-2 mt-5">Total Payouts</div>
+                        <div class="font-weight-bold text-inverse-danger font-size-sm">Including wallet orders and direct payouts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-custom gutter-b">
+                    <div class="card-body">
+                        <div class="example">
+                            <div class="example-preview">
+                                <ul class="nav nav-tabs nav-tabs-line">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#all_trans_tab">All</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#affiliates_tab">Affiliate Earnings</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#payouts_tab" tabindex="-1" aria-disabled="true">Payouts</a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="all_trans_tab" role="tabpanel">
                                         <div class="row d-flex align-items-center mb-3">
                                             <div class="col-md-9 col-lg-10">
-                                                <div class="kt-checkbox-inline checkbox-group" style="text-align: center">
-                                                    <label for="all_trans_affiliates" class="kt-checkbox">
+                                                <div class="checkbox-inline" style="margin: 15px">
+                                                    <label for="all_trans_affiliates" class="checkbox">
                                                         <input type="checkbox" name="all_trans" id="all_trans_affiliates" value="2"
-                                                               class="filled-in chk-col-custom-light-blue" checked="">Affiliate Earnings<span></span>
+                                                                checked=""><span></span>Affiliate Earnings
                                                     </label>
-                                                    <label for="all_trans_cashback" class="kt-checkbox">
+                                                    <!--<label for="all_trans_cashback" class="checkbox">
                                                         <input type="checkbox" name="all_trans" id="all_trans_cashback" value="1"
-                                                               class="filled-in chk-col-custom-light-blue" checked="">Cashback<span></span>
-                                                    </label>
-                                                    <label for="all_trans_payouts" class="kt-checkbox">
+                                                                checked=""><span></span>Cashback
+                                                    </label>-->
+                                                    <label for="all_trans_payouts" class="checkbox">
                                                         <input type="checkbox" name="all_trans" id="all_trans_payouts" value="3"
-                                                               class="filled-in chk-col-custom-light-blue" checked="">Payouts<span></span>
+                                                                checked=""><span></span>Payouts
                                                     </label>
-                                                    <!--<label for="all_trans_order_payments" class="kt-checkbox">
+                                                    <!--<label for="all_trans_order_payments" class="checkbox">
                                                         <input type="checkbox" name="all_trans" id="all_trans_order_payments" value="4"
-                                                               class="filled-in chk-col-custom-light-blue" checked="">Order Payments<span></span>
+                                                                checked="">Order Payments<span></span>
                                                     </label>-->
                                                 </div>
                                             </div>
@@ -126,14 +109,14 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
                                     <div class="tab-pane" id="affiliates_tab" role="tabpanel">
                                         <div class="row d-flex align-items-center mb-3">
                                             <div class="col-md-9 col-lg-10">
-                                                <div class="kt-checkbox-inline checkbox-group" style="text-align: center">
-                                                    <label for="affiliate_first_tier" class="kt-checkbox">
+                                                <div class="checkbox-inline" style="margin: 15px">
+                                                    <label for="affiliate_first_tier" class="checkbox">
                                                         <input type="checkbox" name="affiliates" id="affiliate_first_tier" value="1"
-                                                               class="filled-in chk-col-custom-light-blue" checked="">First Tier<span></span>
+                                                                checked=""><span></span>First Tier
                                                     </label>
-                                                    <label for="affiliate_second_tier" class="kt-checkbox">
+                                                    <label for="affiliate_second_tier" class="checkbox">
                                                         <input type="checkbox" name="affiliates" id="affiliate_second_tier" value="2"
-                                                               class="filled-in chk-col-custom-light-blue" checked="">Second Tier<span></span>
+                                                                checked=""><span></span>Second Tier
                                                     </label>
                                                 </div>
                                             </div>
@@ -155,24 +138,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
                                             <div class="pages" align="right"></div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="commissions_tab" role="tabpanel">
-                                        <div class="table-responsive">
-                                            <table class="table table-wallet" id="commission_table">
-                                                <thead>
-                                                <tr>
-                                                    <th>Description</th>
-                                                    <th>Amount</th>
-                                                    <th>Status</th>
-                                                    <th>Date</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="commission_table_body"></tbody>
-                                            </table>
-                                            <div class="pages" align="right"></div>
-                                        </div>
-                                    </div>
                                     <div class="tab-pane" id="payouts_tab" role="tabpanel">
-                                        <div class="alert alert-info">Please note that you are eligible for payout when the total balance in your wallet reaches 50€. An administration fee of 5€ will be deducted with every payout.</div>
+                                        <div class="alert alert-info mb-5 mt-5">Please note that you are eligible for payout when the total balance in your wallet reaches 50€. An administration fee of 5€ will be deducted with every payout.</div>
                                         <div class="table-responsive">
                                             <table class="table table-wallet" id="payout_table">
                                                 <thead>
@@ -195,7 +162,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
                     </div>
                 </div>
             </div>
-            <!-- end:: Content -->
         </div>
     </div>
 </div>
@@ -203,21 +169,19 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
 <script type="text/javascript">
 
     //Default All Transactions Data
-    let allTransArr = [];
+    var allTransArr = [];
     $("[name='all_trans']:checked").each(function () {
         allTransArr.push($(this).val());
     });
     getAllTransactions(allTransArr);
 
     //Default Affiliate Data
-    let affiliateArr = [];
+    var affiliateArr = [];
     $("[name='affiliates']:checked").each(function () {
         affiliateArr.push($(this).val());
     });
     getAffiliates(affiliateArr);
 
-    //Default Commissions Data
-    getCommissions();
 
     //Default Payout Data
     getPayout();
@@ -227,7 +191,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
 
     //On Change event for All Transactions checkbox
     $("[name='all_trans']").change(function () {
-        let allTransArr = [];
+        var allTransArr = [];
         $("[name='all_trans']:checked").each(function () {
             allTransArr.push($(this).val());
         });
@@ -236,25 +200,16 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
 
     //On Change event for Affiliate checkbox
     $("[name='affiliates']").change(function () {
-        let affiliateArr = [];
+        var affiliateArr = [];
         $("[name='affiliates']:checked").each(function () {
             affiliateArr.push($(this).val());
         });
         getAffiliates(affiliateArr);
     });
 
-    //On Change event for Commission checkbox
-    /*$("[name='commissions']").change(function () {
-        let commissionArr = [];
-        $("[name='commissions']:checked").each(function () {
-            commissionArr.push($(this).val());
-        });
-        getCommissions(commissionArr);
-    });*/
-
     //To Get All Transactions Data
     function getAllTransactions(checkedValues) {
-        let allTransDataUrl = "<?= Yii::app()->createUrl('wallet/getAllTransactionsData'); ?>";
+        var allTransDataUrl = "<?= Yii::app()->createUrl('wallet/getAllTransactionsData'); ?>";
         $.ajax({
             url: allTransDataUrl,
             type: "POST",
@@ -269,7 +224,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
 
     //To Get Affiliate Data
     function getAffiliates(checkedValues) {
-        let affiliateDataUrl = "<?= Yii::app()->createUrl('wallet/getAffiliateData'); ?>";
+        var affiliateDataUrl = "<?= Yii::app()->createUrl('wallet/getAffiliateData'); ?>";
         $.ajax({
             url: affiliateDataUrl,
             type: "POST",
@@ -284,20 +239,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
     }
 
     //To Get Commission Data
-    function getCommissions() {
-        let commissionDataUrl = "<?= Yii::app()->createUrl('wallet/getCommissionData'); ?>";
-        $.ajax({
-            url: commissionDataUrl,
-            type: "POST",
-            success: function (response) {
-                setDataInTables(response, 'commission_table');
-            }
-        });
-    }
-
-    //To Get Commission Data
     function getPayout() {
-        let payoutDataUrl = "<?= Yii::app()->createUrl('wallet/getPayoutData'); ?>";
+        var payoutDataUrl = "<?= Yii::app()->createUrl('wallet/getPayoutData'); ?>";
         $.ajax({
             url: payoutDataUrl,
             type: "POST",
@@ -309,7 +252,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
 
     //To Get Order Payment Data
     function getOrderPayment() {
-        let orderPaymentUrl = "<?= Yii::app()->createUrl('wallet/getOrderPaymentData'); ?>";
+        var orderPaymentUrl = "<?= Yii::app()->createUrl('wallet/getOrderPaymentData'); ?>";
         $.ajax({
             url: orderPaymentUrl,
             type: "POST",
@@ -321,31 +264,14 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
 
     //To Set data in the table view
     function setDataInTables(response, table_name) {
-        if(table_name == 'commission_table'){
-            var dataTable = $('#' + table_name ).DataTable({
-                destroy: true,
-                "columnDefs": [
-                    {
-                        "targets": [ 4 ],
-                        "visible": false
-                    },
-                    {
-                        "targets": [1,2],
-                        "width": "25%"
-                    }
-                ],
-                "ordering": false
-            });
-        } else {
-            var dataTable = $('#' + table_name ).DataTable({
-                destroy: true,
-                "ordering": false
-            });
-        }
+        var dataTable = $('#' + table_name ).DataTable({
+            destroy: true,
+            "ordering": false
+        });
         dataTable.clear().draw();
-        let lenghtx = response.length;
+        var lenghtx = response.length;
         if(lenghtx != 0) {
-            let dt = JSON.parse(response);
+            var dt = JSON.parse(response);
             $.each(dt, function (index, value) {
                 dataTable.row.add([
                     value.description,
@@ -360,7 +286,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
 
     //To set data in All Transaction table
     function setDataInAllTransactionTables(response, table_name) {
-        let dataTable = $('#' + table_name ).DataTable({
+        var dataTable = $('#' + table_name ).DataTable({
             destroy: true,
             "columnDefs": [
                 {
@@ -376,9 +302,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
             "order": [[ 5, "desc" ]]
         });
         dataTable.clear().draw();
-        let lenghtx = response.length;
+        var lenghtx = response.length;
         if(lenghtx != 0) {
-            let dt = JSON.parse(response);
+            var dt = JSON.parse(response);
             $.each(dt, function (index, value) {
                 dataTable.row.add([
                     value.scheme,
@@ -396,7 +322,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
     function setDataInAffiliateTables(response, table_name) {
         //CSS width is necessary because of tabbed view
         $('#' + table_name ).css("width","100%");
-        let dataTable = $('#' + table_name ).DataTable({
+        var dataTable = $('#' + table_name ).DataTable({
             destroy: true,
             "columnDefs": [
                 {
@@ -415,9 +341,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
             "order": [[ 5, "desc" ]]
         });
         dataTable.clear().draw();
-        let lenghtx = response.length;
+        var lenghtx = response.length;
         if(lenghtx != 0){
-            let dt = JSON.parse(response);
+            var dt = JSON.parse(response);
             $.each(dt, function (index, value) {
                 dataTable.row.add([
                     value.tier,

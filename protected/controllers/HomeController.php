@@ -425,9 +425,9 @@ class HomeController extends Controller
                         $logs->log = "Error while creating user: " . $errorString;
                         $logs->save(false); // saving logs
 
-                        $this->render('signup', [
-                            'model' => $model,
-                            'id' => $id
+                        $this->render('login', [
+                            'model' => $loginForm,
+                            'success' => 'Issue while creating the user. Kindly try after some time'
                         ]);
                     }
 
@@ -695,9 +695,9 @@ class HomeController extends Controller
                         $logs->log = "Error while creating user: " . $errorString;
                         $logs->save(false); // saving logs
 
-                        $this->render('signup', [
-                            'model' => $model,
-                            'id' => $id
+                        $this->render('login', [
+                            'model' => $loginForm,
+                            'success' => 'Issue while creating the user. Kindly try after some time'
                         ]);
                     }
 
@@ -742,10 +742,21 @@ class HomeController extends Controller
             $email = $_POST['UserInfo']['email'];
             $response = $this->verifyEmailWithPortalAndSIO($email);
             if($response['status'] != 1){
-                $result = 'Email Already Exist in System. Please login';
+                echo json_encode(array(
+                    'valid' => false,
+                ));
+                //$result = 'Email Already Exist in System. Please login';
+            } else {
+                echo json_encode(array(
+                    'valid' => true,
+                ));
             }
+        } else {
+            echo json_encode(array(
+                'valid' => false,
+            ));
         }
-        echo json_encode($result);
+        //echo json_encode($result);
     }
 
     protected function verifyEmailWithPortalAndSIO($email){

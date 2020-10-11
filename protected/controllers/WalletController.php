@@ -26,14 +26,7 @@ class WalletController extends Controller
     {
         if (Yii::app()->user->isGuest){
             $this->redirect(Yii::app()->createUrl('home/login'));
-        } /*else{
-            $user = UserInfo::model()->findByAttributes(['user_id' => Yii::app()->user->id]);
-            if ($action->id != 'login'){
-                if (Yii::app()->session['userid'] != $user->password){
-                    $this->redirect(Yii::app()->createUrl('home/login'));
-                }
-            }
-        }*/
+        }
         return parent::beforeAction($action);
 
     }
@@ -98,18 +91,11 @@ class WalletController extends Controller
 
             //For Affiliate earnings commission scheme
             $affiliate_reference = WalletMetaEntity::model()->findByAttributes(['reference_key'=>'Affiliate Commission']);
-            //For Cashback earnings commission scheme
-            $agents = AgentInfo::model()->findAll();
-            $cashback_references = [];
-            foreach ($agents as $agent){
-                array_push($cashback_references, $agent->wallet_reference_id);
-            }
             //For Payouts
             $payout_reference = WalletMetaEntity::model()->findByAttributes(['reference_key'=>'Payout']);
             //For Order Payment reference
             $order_payment_reference = WalletMetaEntity::model()->findByAttributes(['reference_key'=>Yii::app()->params['WalletTransactions']]);
             //For Reserve Wallet
-            $reserveWallet = WalletTypeEntity::model()->findByAttributes(['wallet_type'=>Yii::app()->params['ReserveWallet']]);
             $userId = Yii::app()->user->getId();
             $userWallet = WalletTypeEntity::model()->findByAttributes(['wallet_type'=>'User']);
             $allTransactionsData = [];
@@ -130,19 +116,7 @@ class WalletController extends Controller
                         ->order('created_at desc')
                         ->queryAll();
 
-                } elseif ($item == 1){
-                    //Cashback
-                    $commissionRecords = Yii::app()->db->createCommand()
-                        ->select('sum(amount) as amount, transaction_comment, transaction_status, reference_id, min(created_at) as created_at')
-                        ->from('wallet')
-                        ->where('user_id=:uid',[':uid'=>$userId])
-                        ->andWhere('wallet_type_id=:wId',[':wId'=>$userWallet->wallet_type_id])
-                        ->andWhere(['in', 'reference_id', $cashback_references])
-                        ->andWhere('transaction_type=:type',[':type'=>Yii::app()->params['CreditTransactionType']])
-                        ->group('transaction_comment, transaction_status')
-                        ->order('created_at desc')
-                        ->queryAll();
-                } elseif ($item == 2){
+                }  elseif ($item == 2){
                     //Affiliates
                     $commissionRecords = Yii::app()->db->createCommand()
                         ->select('amount, transaction_comment, transaction_status, transaction_type, reference_id, reference_num, created_at')
@@ -162,17 +136,6 @@ class WalletController extends Controller
                         ->andWhere('transaction_type=:type',[':type'=>Yii::app()->params['DebitTransactionType']])
                         ->andWhere('reference_id=:rId',[':rId'=>$payout_reference->reference_id])
                         ->group('reference_id, transaction_comment, transaction_status, reference_num')
-                        ->order('created_at desc')
-                        ->queryAll();
-                } elseif ($item == 4){
-                    //Order Payments
-                    $commissionRecords = Yii::app()->db->createCommand()
-                        ->select('amount, transaction_comment, transaction_status, reference_id, reference_num, created_at')
-                        ->from('wallet')
-                        ->where('user_id=:uid',[':uid'=>$userId])
-                        ->andWhere(['in','wallet_type_id',[$userWallet->wallet_type_id, $reserveWallet->wallet_type_id]])
-                        ->andWhere('transaction_type=:type',[':type'=>Yii::app()->params['DebitTransactionType']])
-                        ->andWhere('reference_id=:rId',[':rId'=>$order_payment_reference->reference_id])
                         ->order('created_at desc')
                         ->queryAll();
                 } else {
@@ -200,22 +163,7 @@ class WalletController extends Controller
                         $transaction_type = $record['transaction_type'];
                         $reference_id = $affiliate_reference->reference_id;
                         $uniqueness_checker = "affiliate_level_".$level."_".trim($dateArr[1])."_with_transaction_type_".$transaction_type;
-                    } elseif (in_array($record['reference_id'], $cashback_references)){
-                        //For Cashback Reference
-                        $temp['scheme'] = "Cashback";
-                        $dateArr = explode('for',$record['transaction_comment']);
-                        $tempArr = explode(', ',$dateArr[1]);
-                        $comment_month = date('F', strtotime($tempArr[0].'-'.$tempArr[1]));
-                        $comment_month_number = date('m', strtotime($tempArr[0].'-'.$tempArr[1]));
-                        $comment_date_arr = explode(' ', $dateArr[1]);
-                        $comment_year = $comment_date_arr[2];
-                        $monthLastDate = date("d F, Y", mktime(0, 0, 0, $comment_month_number+1,0,$comment_year));
-                        $temp['date'] = '1 '.$comment_month.', '.$comment_year.' - '.$monthLastDate;
-                        $temp['description'] = "Cashback Earnings for ".$comment_month.", ".$comment_year;
-                        $transaction_type = Yii::app()->params['CreditTransactionType'];
-                        $reference_id = 4;
-                        $uniqueness_checker = "cashback_earning_".$comment_month."_".$comment_year;
-                    }  elseif (isset($order_payment_reference->reference_id) && ($record['reference_id'] == $order_payment_reference->reference_id)){
+                    } elseif (isset($order_payment_reference->reference_id) && ($record['reference_id'] == $order_payment_reference->reference_id)){
                         //For Order Payment Reference
                         $temp['scheme'] = "Order Payment";
                         $temp['date'] = date('d F, Y',strtotime($record['created_at']));
@@ -304,69 +252,6 @@ class WalletController extends Controller
             $orderPaymentData[$uniqueness_checker] = $temp;
         }
         echo json_encode($orderPaymentData);
-    }
-
-    public function actionGetCommissionData(){
-
-            /*
-             *  Static Commission Values
-             *  0 -> All
-             *  1 -> Cashback Earnings
-             * */
-
-            //For Cashback earnings commission scheme
-            $agents = AgentInfo::model()->findAll();
-            $cashback_references = [];
-            foreach ($agents as $agent){
-                array_push($cashback_references, $agent->wallet_reference_id);
-            }
-            $userId = Yii::app()->user->getId();
-            $userWallet = WalletTypeEntity::model()->findByAttributes(['wallet_type'=>'User']);
-            $commissionsData = [];
-
-            $commissionRecords = Yii::app()->db->createCommand()
-                ->select('sum(amount) as amount, transaction_comment, transaction_status, reference_id')
-                ->from('wallet')
-                ->where('user_id=:uid',[':uid'=>$userId])
-                ->andWhere('wallet_type_id=:wId',[':wId'=>$userWallet->wallet_type_id])
-                ->andWhere('transaction_type=:type',[':type'=>Yii::app()->params['CreditTransactionType']])
-                ->andWhere(['in','reference_id',$cashback_references])
-                ->group('transaction_comment, transaction_status')
-                ->order('created_at desc')
-                ->queryAll();
-
-            foreach ($commissionRecords as $record){
-                $temp = array();
-                //For Cashback Reference
-                $dateArr = explode('for',$record['transaction_comment']);
-                $tempArr = explode(', ',$dateArr[1]);
-                $comment_month = date('F', strtotime($tempArr[0].'-'.$tempArr[1]));
-                $comment_month_number = date('m', strtotime($tempArr[0].'-'.$tempArr[1]));
-                $comment_date_arr = explode(' ', $dateArr[1]);
-                $comment_year = $comment_date_arr[2];
-                $monthLastDate = date("d F, Y", mktime(0, 0, 0, $comment_month_number+1,0,$comment_year));
-                $temp['date'] = '1 '.$comment_month.', '.$comment_year.' - '.$monthLastDate;
-                $temp['description'] = "Cashback Earnings for ".$comment_month.", ".$comment_year;
-                $temp['earnings'] = '€'.money_format('%(#1n',$record['amount']);
-                $temp['transaction_status'] = ServiceHelper::getTransactionStatusDetails($record['transaction_status'], Yii::app()->params['CreditTransactionType'], 4);
-                $temp['earning_date'] = $monthLastDate;
-                $uniqueness_checker = "cashback_earning_".$comment_month."_".$comment_year;
-                //print $dateArr[1]." ".$comment_month." ".$comment_month_number." ".$uniqueness_checker."<br>";
-                $commissionsData[$uniqueness_checker] = $temp;
-            }
-
-            /*//To sort the commission data by a user defined function
-            //uksort — Sort an array by keys using a user-defined comparison function
-            uksort($commissionData, function($a1, $a2) {
-                $time1 = strtotime($a1);
-                $time2 = strtotime($a2);
-
-                return $time2 - $time1;
-            });*/
-
-
-            echo json_encode($commissionsData);
-
     }
 
     public function actionGetAffiliateData(){

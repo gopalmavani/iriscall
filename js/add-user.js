@@ -5,48 +5,87 @@ var KTAddUser = function () {
 	// Private Variables
 	var _wizardEl;
 	var _formEl;
-	var _wizard;
+	var _wizardObj;
 	var _avatar;
 	var _validations = [];
 
 	// Private Functions
 	var _initWizard = function () {
 		// Initialize form wizard
-		_wizard = new KTWizard(_wizardEl, {
+		_wizardObj = new KTWizard(_wizardEl, {
 			startStep: 1, // initial active step number
-			clickableSteps: true  // allow step clicking
+			clickableSteps: false  // allow step clicking
 		});
 
 		// Validation before going to next page
-		_wizard.on('beforeNext', function (wizard) {
-			// Don't go to the next step yet
-			_wizard.stop();
+		_wizardObj.on('change', function (wizard) {
+			if (wizard.getStep() > wizard.getNewStep()) {
+				return; // Skip if stepped back
+			}
 
-			// Validate form
+			// Validate form before change wizard step
 			var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
-			validator.validate().then(function (status) {
-		        if (status == 'Valid') {
-					_wizard.goNext();
-					KTUtil.scrollTop();
-				} else {
-					Swal.fire({
-		                text: "Sorry, looks like there are some errors detected, please try again.",
-		                icon: "error",
-		                buttonsStyling: false,
-		                confirmButtonText: "Ok, got it!",
-						customClass: {
-							confirmButton: "btn font-weight-bold btn-light"
-						}
-		            }).then(function() {
+
+			if (validator) {
+				validator.validate().then(function (status) {
+					console.log(status);
+					console.log(validator);
+					if (status == 'Valid') {
+						wizard.goTo(wizard.getNewStep());
+
 						KTUtil.scrollTop();
-					});
-				}
-		    });
+					} else {
+						Swal.fire({
+							text: "Sorry, looks like there are some errors detected, please try again.",
+							icon: "error",
+							buttonsStyling: false,
+							confirmButtonText: "Ok, got it!",
+							customClass: {
+								confirmButton: "btn font-weight-bold btn-light"
+							}
+						}).then(function () {
+							KTUtil.scrollTop();
+						});
+					}
+				});
+			}
+
+			return false;  // Do not change wizard step, further action will be handled by he validator
 		});
 
-		// Change Event
-		_wizard.on('change', function (wizard) {
+		// Change event
+		_wizardObj.on('changed', function (wizard) {
 			KTUtil.scrollTop();
+		});
+
+		// Submit event
+		_wizardObj.on('submit', function (wizard) {
+			Swal.fire({
+				text: "All is good! Please confirm the form submission.",
+				icon: "success",
+				showCancelButton: true,
+				buttonsStyling: false,
+				confirmButtonText: "Yes, submit!",
+				cancelButtonText: "No, cancel",
+				customClass: {
+					confirmButton: "btn font-weight-bold btn-primary",
+					cancelButton: "btn font-weight-bold btn-default"
+				}
+			}).then(function (result) {
+				if (result.value) {
+					_formEl.submit(); // Submit form
+				} else if (result.dismiss === 'cancel') {
+					Swal.fire({
+						text: "Your form has not been submitted!.",
+						icon: "error",
+						buttonsStyling: false,
+						confirmButtonText: "Ok, got it!",
+						customClass: {
+							confirmButton: "btn font-weight-bold btn-primary",
+						}
+					});
+				}
+			});
 		});
 	}
 
@@ -58,59 +97,67 @@ var KTAddUser = function () {
 			_formEl,
 			{
 				fields: {
-					firstname: {
+                    'UserInfo[first_name]': {
 						validators: {
 							notEmpty: {
 								message: 'First Name is required'
 							}
 						}
 					},
-					lastname: {
+					'UserInfo[last_name]': {
 						validators: {
 							notEmpty: {
 								message: 'Last Name is required'
 							}
 						}
 					},
-					companyname: {
-						validators: {
-							notEmpty: {
-								message: 'Company Name is required'
-							}
-						}
-					},
-					phone: {
+                    'UserInfo[phone]': {
 						validators: {
 							notEmpty: {
 								message: 'Phone is required'
-							},
-							phone: {
-								country: 'US',
-								message: 'The value is not a valid US phone number. (e.g 5554443333)'
 							}
 						}
 					},
-					email: {
+                    password: {
+						validators: {
+							notEmpty: {
+								message: 'Password is required'
+							}
+						}
+					},
+                    confirm_password: {
+                        validators: {
+                            identical: {
+                                compare: function() {
+                                    return _formEl.querySelector('[name="password"]').value;
+                                },
+                                message: 'The password and its confirm are not the same'
+                            }
+                        }
+                    },
+					'UserInfo[email]': {
 						validators: {
 							notEmpty: {
 								message: 'Email is required'
 							},
 							emailAddress: {
 								message: 'The value is not a valid email address'
-							}
-						}
-					},
-					companywebsite: {
-						validators: {
-							notEmpty: {
-								message: 'Website URL is required'
-							}
+							},
+                            remote: {
+                                message: 'Email Already Exist in System. Please login',
+                                method: 'POST',
+                                url: '../checkEmail'
+                            }
 						}
 					}
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
-					bootstrap: new FormValidation.plugins.Bootstrap()
+					// Bootstrap Framework Integration
+					bootstrap: new FormValidation.plugins.Bootstrap({
+						//eleInvalidClass: '',
+						eleValidClass: ''
+					})
 				}
 			}
 		));
@@ -120,37 +167,107 @@ var KTAddUser = function () {
 			{
 				fields: {
 					// Step 2
-					communication: {
+					'UserInfo[street]': {
 						validators: {
+							notEmpty: {
+								message: 'Please enter street name'
+							}
+						}
+					},
+                    'UserInfo[building_num]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter building number'
+                            }
+                        }
+                    },
+                    'UserInfo[city]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter City'
+                            }
+                        }
+                    },
+                    'UserInfo[postcode]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter post code'
+                            }
+                        }
+                    },
+					/*'UserInfo[country]': {
+                        validators: {
+
+                            /!*choice: {
+                            	max:1,
+                                message: 'Please select a country'
+                            }*!/
+                        }
+                    }*/
+                    'UserInfo[business_name]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter Business Name'
+                            }
+                        }
+                    },
+                    'UserInfo[vat_number]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter Vat Number'
+                            }
+                        }
+                    },
+                    'UserInfo[busAddress_street]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter street name'
+                            }
+                        }
+                    },
+                    'UserInfo[busAddress_building_num]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter building number'
+                            }
+                        }
+                    },
+                    'UserInfo[busAddress_city]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter City'
+                            }
+                        }
+                    },
+                    'UserInfo[busAddress_postcode]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter post code'
+                            }
+                        }
+                    },
+                    'UserInfo[busAddress_country]': {
+                        validators: {
 							choice: {
-								min: 1,
-								message: 'Please select at least 1 option'
-							}
-						}
-					},
-					language: {
-						validators: {
-							notEmpty: {
-								message: 'Please select a language'
-							}
-						}
-					},
-					timezone: {
-						validators: {
-							notEmpty: {
-								message: 'Please select a timezone'
-							}
-						}
-					}
+                                max:1,
+                                message: 'Please select a country'
+                            }
+                        }
+                    }
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
-					bootstrap: new FormValidation.plugins.Bootstrap()
+                    excluded: new FormValidation.plugins.Excluded(),
+					// Bootstrap Framework Integration
+					bootstrap: new FormValidation.plugins.Bootstrap({
+						//eleInvalidClass: '',
+						eleValidClass: ''
+					})
 				}
 			}
 		));
 
-		_validations.push(FormValidation.formValidation(
+		/*_validations.push(FormValidation.formValidation(
 			_formEl,
 			{
 				fields: {
@@ -192,10 +309,14 @@ var KTAddUser = function () {
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
-					bootstrap: new FormValidation.plugins.Bootstrap()
+					// Bootstrap Framework Integration
+					bootstrap: new FormValidation.plugins.Bootstrap({
+						//eleInvalidClass: '',
+						eleValidClass: '',
+					})
 				}
 			}
-		));
+		));*/
 	}
 
 	var _initAvatar = function () {
