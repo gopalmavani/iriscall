@@ -198,7 +198,7 @@
                                 <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline"><?= $user->full_name; ?></span>
                             </div>
                             <span class="symbol symbol-35">
-                                <span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30">U</span>
+                                <span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30"><?= substr($user->full_name, 0, 1); ?></span>
                             </span>
                         </div>
                     </div>

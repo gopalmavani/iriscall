@@ -83,10 +83,6 @@ class UserController extends Controller
                     }else{
                         $payout->modified_at = date('Y-m-d H:i:s');
                     }
-                    if(isset($_POST['reserve_wallet_commission_status'])){
-                        $model->reserve_wallet_commission_status = $_POST['reserve_wallet_commission_status'];
-                        $model->save(false);
-                    }
                     $payout->user_id = $model->user_id;
                     $payout->bank_name = $_POST['payout']['bank_name'];
                     if(isset($_POST['payout']['bank_building_num'])){
@@ -123,7 +119,8 @@ class UserController extends Controller
                             Yii::app()->user->setFlash('error', 'Error on profile updated');
                         }
                     }
-                } elseif(isset($_POST['first_name'])) {
+                }
+                if(isset($_POST['first_name'])) {
                     $model->first_name = $_POST['first_name'];
                     if(isset($_POST['middle_name'])){
                         $model->full_name = $_POST['first_name']." ".$_POST['middle_name']." ".$_POST['last_name'];
@@ -140,67 +137,55 @@ class UserController extends Controller
                         $model->privacy_disclosure = 0;
                     }
                     $model->date_of_birth = $_POST['date_of_birth'];
-                    $model->modified_at = date('Y-m-d H:i:s');
-                    if(isset($_POST['building_num'])){
-                        $model->building_num = $_POST['building_num'];
-                        $model->postcode = $_POST['postcode'];
-                        $model->street = $_POST['street'];
-                        $model->country = $_POST['country'];
-                        $model->region = $_POST['region'];
-                        $model->phone = $_POST['phone'];
-                        $model->city = $_POST['city'];
-                    }
-                    if(isset($_POST['business_name'])){
-                        $model->business_name = $_POST['business_name'];
-                        $model->vat_number = $_POST['vat_number'];
-                    }
-                    if(isset($_POST['businesstype']) && ($_POST['businesstype'] == 1)){
-                        $model->business_name = "";
-                        $model->vat_number = "";
-                        $model->busAddress_building_num = "";
-                        $model->busAddress_street = "";
-                        $model->busAddress_region = "";
-                        $model->busAddress_city = "";
-                        $model->busAddress_postcode = "";
-                        $model->busAddress_country = "";
-                    }else {
-                        if(isset($_POST['is_different_address'])){
-                            $model->busAddress_building_num = $_POST['busAddress_building_num'];
-                            $model->busAddress_city = $_POST['busAddress_city'];
-                            $model->busAddress_street = $_POST['busAddress_street'];
-                            $model->busAddress_postcode = $_POST['busAddress_postcode'];
-                            $model->busAddress_region = $_POST['busAddress_region'];
-                            $model->busAddress_country = $_POST['busAddress_country'];
-                        }else{
-                            if(isset($_POST['building_num'])){
-                                $model->busAddress_building_num = $_POST['building_num'];
-                                $model->busAddress_city = $_POST['city'];
-                                $model->busAddress_street = $_POST['street'];
-                                $model->busAddress_postcode = $_POST['postcode'];
-                                $model->busAddress_region = $_POST['region'];
-                                $model->busAddress_country = $_POST['country'];
-                            }
+                }
+                if(isset($_POST['building_num'])){
+                    $model->building_num = $_POST['building_num'];
+                    $model->postcode = $_POST['postcode'];
+                    $model->street = $_POST['street'];
+                    $model->country = $_POST['country'];
+                    $model->region = $_POST['region'];
+                    $model->phone = $_POST['phone'];
+                    $model->city = $_POST['city'];
+                }
+                if(isset($_POST['business_name'])){
+                    $model->business_name = $_POST['business_name'];
+                    $model->vat_number = $_POST['vat_number'];
+                }
+                if(isset($_POST['busAddress_building_num'])){
+                    if(isset($_POST['is_different_address'])){
+                        $model->busAddress_building_num = $_POST['busAddress_building_num'];
+                        $model->busAddress_city = $_POST['busAddress_city'];
+                        $model->busAddress_street = $_POST['busAddress_street'];
+                        $model->busAddress_postcode = $_POST['busAddress_postcode'];
+                        $model->busAddress_region = $_POST['busAddress_region'];
+                        $model->busAddress_country = $_POST['busAddress_country'];
+                    }else{
+                        if(isset($_POST['building_num'])){
+                            $model->busAddress_building_num = $_POST['building_num'];
+                            $model->busAddress_city = $_POST['city'];
+                            $model->busAddress_street = $_POST['street'];
+                            $model->busAddress_postcode = $_POST['postcode'];
+                            $model->busAddress_region = $_POST['region'];
+                            $model->busAddress_country = $_POST['country'];
+                        } else {
+                            $model->busAddress_building_num = $model->building_num;
+                            $model->busAddress_city = $model->city;
+                            $model->busAddress_street = $model->street;
+                            $model->busAddress_postcode = $model->postcode;
+                            $model->busAddress_region = $model->region;
+                            $model->busAddress_country = $model->country;
                         }
                     }
-                    if($model->save(false)){
-                        Yii::app()->user->setFlash('success', 'Profile updated successfully');
-                    }else{
-                        Yii::app()->user->setFlash('error', 'Error on profile updated');
-                    }
-                } elseif(isset($_POST['new_password'])){
+                }
+                if(isset($_POST['new_password'])){
                     $model->modified_at = date('Y-m-d H:i:s');
                     if($model->save(false)){
                         Yii::app()->user->setFlash('success', 'Password changed successfully');
                     }else{
                         Yii::app()->user->setFlash('error', 'Password has been not changed');
                     }
-                } else {
-                    $model->modified_at = date('Y-m-d H:i:s');
-                    if(isset($_POST['email']['notification-mail'])){
-                        $model->notification_mail = 1;
-                    }else{
-                        $model->notification_mail = 0;
-                    }
+                }
+                if(isset($_POST['email']['market-mail'])){
                     $address = $model->building_num . ", " . $model->street . ", " .$model->region . ", " .$model->city . ", " . ServiceHelper::getCountryNameFromId($model->country);
                     $url = Yii::app()->params['MailChimpURL'];
                     if($model->language == "Dutch"){
@@ -209,7 +194,7 @@ class UserController extends Controller
                         $listId = Yii::app()->params['MailChimpEnglishListId'];
                     }
                     $authorization = Yii::app()->params['MailChimpAuthorizationId'];
-                    if(isset($_POST['email']['market-mail'])){
+                    if($_POST['email']['market-mail'] == 1){
                         $model->marketting_mail = 1;
                         if($model->marketting_mail == 1){
                             $curl = curl_init();
@@ -237,10 +222,8 @@ class UserController extends Controller
                                     "content-type: application/json"
                                 ),
                             ));
-
                             $response = curl_exec($curl);
                             $err = curl_error($curl);
-
                             curl_close($curl);
                         }
                     } else {
@@ -261,17 +244,29 @@ class UserController extends Controller
                                 "content-type: application/json"
                             ),
                         ));
-
                         $response = curl_exec($curl);
                         $err = curl_error($curl);
-
                         curl_close($curl);
                     }
+                    $model->modified_at = date('Y-m-d H:i:s');
                     if($model->save()){
                         Yii::app()->user->setFlash('success', 'Profile updated successfully');
                     }else{
                         Yii::app()->user->setFlash('error', 'Error on profile updated');
                     }
+                }
+                if(isset($_POST['email']['notification-mail'])){
+                    if($_POST['email']['notification-mail'] == 1){
+                        $model->notification_mail = 1;
+                    } else {
+                        $model->notification_mail = 0;
+                    }
+                }
+                $model->modified_at = date('Y-m-d H:i:s');
+                if($model->save(false)){
+                    Yii::app()->user->setFlash('success', 'Profile updated successfully');
+                }else{
+                    Yii::app()->user->setFlash('error', 'Error on profile updated');
                 }
             } else {
                 Yii::app()->user->setFlash('error', 'Error while updating profile!! Please try again after some time or contact Support');
