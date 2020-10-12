@@ -6,200 +6,177 @@ $this->pageTitle = "Order Detail";
         border: unset;
     }
 </style>
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-grid--stretch">
-    <div class="kt-body kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-grid--stretch" id="kt_body">
-        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-            <!-- begin:: Subheader -->
-            <div class="kt-subheader kt-grid__item" id="kt_subheader">
-                <div class="kt-container kt-container--fluid ">
-                    <div class="kt-subheader__main">
-                        <h3 class="kt-subheader__title"> Order Details </h3>
-                        <span class="kt-subheader__separator kt-hidden"></span>
-                        <div class="kt-subheader__breadcrumbs"> <a href="<?= Yii::app()->createUrl('order/index'); ?>" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a> <span class="kt-subheader__breadcrumbs-separator"></span> <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Order</span> </div>
-                    </div>
-                </div>
+<div class="subheader py-2 py-lg-6 subheader-transparent" id="kt_subheader">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <h5 class="text-dark font-weight-bold my-1 mr-5">All Orders</h5>
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="<?= Yii::app()->createUrl('order/index'); ?>" class="text-muted">Orders</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="<?= Yii::app()->createUrl('order/detail/'.$order->order_id); ?>" class="text-muted"><?= $order->order_id ?></a>
+                    </li>
+                </ul>
             </div>
-            <!-- end:: Subheader -->
-            <!-- begin:: Content -->
-            <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-                <div class="row">
-                    <div class="col-md-6 col-xl-8">
-                        <div class="kt-portlet">
-                            <div class="kt-portlet__head">
-                                <div class="kt-portlet__head-label">
-                                    <h3 class="kt-portlet__head-title"> Transaction Details</h3>
-                                </div>
-                                <div class="kt-portlet__head-toolbar">
-                                    <?php if (isset($order->invoice_number)) { ?>
-                                        <span class="pull-right">
-                                            <a style="margin-top:-5%" class="btn btn-default" target="_blank" href="<?php echo Yii::app()->createUrl('invoice/Generateinvoice/'.$order->order_info_id); ?>" ><i class="fa fa-arrow-circle-down"></i> Invoice</a></button>
-                                            <a style="margin-top:-5%" class="btn btn-default" target="_blank" href="<?php echo Yii::app()->createUrl('invoice/View/'.$order->order_info_id); ?>" ><i class="fa fa-print fa-lg"></i>   Print Invoice</a>
+        </div>
+    </div>
+</div>
+<div class="d-flex flex-column-fluid" id="vue-div">
+    <div class="container">
+        <div class="d-flex flex-row">
+            <div class="flex-row-fluid ml-lg-12">
+                <div class="card card-custom gutter-b">
+                    <div class="card-body p-0">
+                        <div class="row justify-content-center py-8 px-8 py-md-27 px-md-0">
+                            <div class="col-md-10">
+                                <div class="d-flex justify-content-between pb-10 pb-md-20 flex-column flex-md-row">
+                                    <h1 class="display-4 font-weight-boldest mb-10">ORDER DETAILS</h1>
+                                    <div class="d-flex flex-column align-items-md-end px-0">
+                                        <a href="<?= Yii::app()->createUrl('home/index'); ?>" class="mb-5">
+                                            <img src="<?= Yii::app()->baseUrl ?>/images/logos/iriscall-logo.svg" alt="" />
+                                        </a>
+                                        <span class="d-flex flex-column align-items-md-end opacity-70">
+                                            <span>Cecilia Chapman, 711-2880 Nulla St, Mankato</span>
+                                            <span>Mississippi 96522</span>
                                         </span>
-                                    <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="border-bottom w-100"></div>
+                                <div class="d-flex justify-content-between pt-6">
+                                    <div class="d-flex flex-column flex-root">
+                                        <span class="font-weight-bolder mb-2">ORDER DATE</span>
+                                        <span class="opacity-70"><?php echo date('M d, Y', strtotime($order['created_date'])); ?></span>
+                                    </div>
+                                    <div class="d-flex flex-column flex-root">
+                                        <span class="font-weight-bolder mb-2">ORDER NO.</span>
+                                        <span class="opacity-70"><?= $order->order_id; ?></span>
+                                    </div>
+                                    <div class="d-flex flex-column flex-root">
+                                        <span class="font-weight-bolder mb-2">Transaction Status.</span>
+                                        <span class="opacity-70"><?= $orderStatus->field_label; ?></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="kt-portlet__body">
-                                <div class="kt-portlet__content">
-                                    <p class="pull-left">
-                                        <?php if ($order->order_status == 1) { ?>
-                                            Payment of <?php echo "&euro;" . round($order->netTotal,2) ?> is received by CBM!<br>
-                                        <?php } ?>
-                                        Your transaction is
-                                        <?php if ($orderStatus->field_label == 'Pending') { ?>
-                                            <b class="label label-warning"
-                                               style="font-size: 100%;"><?php print_r($orderStatus->field_label); ?></b>
-                                        <?php } elseif ($orderStatus->field_label == 'Success') { ?>
-                                            <b class="label label-success"
-                                               style="font-size: 100%;"><?php print_r($orderStatus->field_label); ?></b>
-                                        <?php } elseif ($orderStatus->field_label == 'Reserved-Pending') { ?>
-                                            <b class="label label-warning"
-                                               style="font-size: 100%;"><?php print_r($orderStatus->field_label); ?></b>
-                                        <?php } else { ?>
-                                            <b class="label label-danger"
-                                               style="font-size: 100%;"><?php print_r($orderStatus->field_label); ?></b>
-                                        <?php } ?>
-
-                                    </p>
-                                    <p class="pull-right">
-                                        Order No : <?php echo $order->order_id; ?><br>
-                                        Date : <?php echo date('d-M-Y', strtotime($order['created_date'])); ?>
-                                    </p>
-                                    <table class="table table-borderless table-vcenter">
+                        </div>
+                        <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
+                            <div class="col-md-10">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="pl-0 font-weight-bold text-muted text-uppercase">Ordered Items</th>
+                                                <th class="text-right font-weight-bold text-muted text-uppercase">Qty</th>
+                                                <th class="text-right font-weight-bold text-muted text-uppercase">Unit Price</th>
+                                                <th class="text-right pr-0 font-weight-bold text-muted text-uppercase">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($orderlineitem as $item) {
+                                                $product = ProductInfo::model()->findByAttributes(['product_id' => $item->product_id]);
+                                                if (isset($product)) {
+                                                    ?>
+                                                    <tr class="font-weight-boldest">
+                                                        <td class="border-0 pl-0 pt-7 d-flex align-items-center">
+                                                            <div class="symbol symbol-40 flex-shrink-0 mr-4 bg-light">
+                                                                <div class="symbol-label" style="background-image: url('<?php echo Yii::app()->baseUrl . $product->image; ?>');"></div>
+                                                            </div>
+                                                            <?php echo $item->product_name; ?>
+                                                        </td>
+                                                        <td class="text-right pt-7 align-middle">
+                                                            <?php echo $item->item_qty; ?>
+                                                        </td>
+                                                        <td class="text-right pt-7 align-middle">
+                                                            <?php echo $product->price; ?>
+                                                        </td>
+                                                        <td class="text-primary pr-0 pt-7 text-right align-middle">
+                                                            &euro; <?php echo ($item->item_qty * $product->price); ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php }
+                                                } ?>
+                                            <?php if ($order->discount > 0) { ?>
+                                                <tr>
+                                                    <td style="border-top: 0"></td>
+                                                    <td style="border-top: 0"></td>
+                                                    <td style="border-top: 0" class="text-right">Discount</td>
+                                                    <td class="text-primary pr-0 pt-7 text-right align-middle">&euro;<?php echo $order->discount; ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                            <?php if ($order->voucher_discount > 0) { ?>
+                                                <tr>
+                                                    <td style="border-top: 0"></td>
+                                                    <td style="border-top: 0"></td>
+                                                    <td style="border-top: 0" class="text-right">Voucher Discount</td>
+                                                    <td class="text-primary pr-0 pt-7 text-right align-middle">&euro;<?php echo $order->voucher_discount; ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                            <?php if ($order->vat > 0) { ?>
+                                                <tr>
+                                                    <td style="border-top: 0"></td>
+                                                    <td style="border-top: 0"></td>
+                                                    <td style="border-top: 0" class="text-right">Vat@<?= $order->vat_percentage; ?>%</td>
+                                                    <td class="text-primary pr-0 pt-7 text-right align-middle">&euro;<?php echo $order->vat; ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                            <tr class="success">
+                                                <td style="border-top: 0"></td>
+                                                <td style="border-top: 0"></td>
+                                                <td style="border-top: 0" class="text-right">Total</td>
+                                                <td class="text-primary pr-0 pt-7 text-right align-middle">&euro;<?php echo round($order->netTotal,2); ?></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center bg-gray-100 py-8 px-8 py-md-10 px-md-0 mx-0">
+                            <div class="col-md-10">
+                                <div class="table-responsive">
+                                    <table class="table">
                                         <thead>
                                         <tr>
-                                            <td>
-                                            </td>
-                                            <td>
-                                                <b>Product Details</b>
-                                            </td>
-                                            <td class="text-right">
-                                                <b>Quantity</b>
-                                            </td>
-                                            <td class="text-right">
-                                                <b>Price</b>
-                                            </td>
+                                            <th class="font-weight-bold text-muted text-uppercase">PAYMENT TYPE</th>
+                                            <th class="font-weight-bold text-muted text-uppercase">PAYMENT STATUS</th>
+                                            <th class="font-weight-bold text-muted text-uppercase">PAYMENT DATE</th>
+                                            <th class="font-weight-bold text-muted text-uppercase text-right">TOTAL PAID</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach ($orderlineitem as $item) {
-                                            $product = ProductInfo::model()->findByAttributes(['product_id' => $item->product_id]);
-                                            if (isset($product)) {
-                                                ?>
-                                                <tr>
-                                                    <td style="width: 55px;">
-                                                        <img src="<?php echo Yii::app()->baseUrl . $product->image; ?>"
-                                                             class="img-responsive">
-                                                    </td>
-                                                    <td>
-                                                        <a class="h5"
-                                                           href="<?php echo Yii::app()->createUrl('product/detail/' . $item->product_id); ?>"><?php echo $item->product_name; ?></a>
-                                                        <!-- <div class="font-s12 text-muted hidden-xs"><?php //echo $product->short_description;
-                                                        ?></div> -->
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <div class="font-w600 text-success"><?php echo $item->item_qty; ?></div>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <div class="font-w600 text-success">&euro; <?php echo $product->price; ?></div>
-                                                    </td>
+                                            <?php foreach ($orderpayment as $value) { ?>
+                                                <tr class="font-weight-bolder">
+                                                    <td><?= $value->transaction_mode; ?></td>
+                                                    <?php if($value->payment_status == 0) { ?>
+                                                        <td><span class="label font-weight-bold label-lg  label-light-danger label-inline">Failed</span></td>
+                                                    <?php } elseif ($value->payment_status == 1) { ?>
+                                                        <td><span class="label font-weight-bold label-lg  label-light-success label-inline">Success</span></td>
+                                                    <?php } else { ?>
+                                                        <td><span class="label font-weight-bold label-lg  label-light-info label-inline">Pending</span></td>
+                                                    <?php } ?>
+                                                    <td><?php echo date('M d, Y', strtotime($value->payment_date)); ?></td>
+                                                    <td class="text-primary font-size-h3 font-weight-boldest text-right">&euro;<?= round($value->total,2); ?></td>
                                                 </tr>
-                                            <?php }
-                                        }
-                                        ?>
-                                        <tr class="success">
-                                            <td class="text-right" colspan="3">
-                                                <span class="h4 font-w600">Sub Total</span>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="h4 font-w600 text-success">&euro; <?php echo $order->orderTotal; ?></div>
-                                            </td>
-                                        </tr>
+                                            <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-xl-4">
-                        <div class="kt-portlet">
-                            <div class="kt-portlet__head">
-                                <div class="kt-portlet__head-label">
-                                    <h3 class="kt-portlet__head-title">Order Summary</h3>
-                                </div>
-                            </div>
-                            <div class="kt-portlet__body">
-                                <div class="kt-portlet__content">
-                                    <table class="table table-borderless table-vcenter" id="payment-detail-table">
-                                        <tbody>
-                                        <tr>
-                                            <td>Order Total</td>
-                                            <td class="text-right">&euro;<?= $order->orderTotal; ?></td>
-                                        </tr>
-                                        <?php if ($order->discount > 0) { ?>
-                                            <tr>
-                                                <td>Discount</td>
-                                                <td class="text-right">&euro;<?php echo $order->discount; ?></td>
-                                            </tr>
-                                        <?php } ?>
-                                        <?php if ($order->voucher_discount > 0) { ?>
-                                            <tr>
-                                                <td>Voucher Discount</td>
-                                                <td class="text-right">&euro;<?php echo $order->voucher_discount; ?></td>
-                                            </tr>
-                                        <?php } ?>
-                                        <?php if ($order->vat > 0) { ?>
-                                            <tr>
-                                                <td>Vat@<?= $order->vat_percentage; ?>%</td>
-                                                <td class="text-right">&euro;<?php echo $order->vat; ?></td>
-                                            </tr>
-                                        <?php } ?>
+                        <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
+                            <div class="col-md-10">
+                                <div class="d-flex justify-content-between">
+                                    <?php if (isset($order->invoice_number)) { ?>
+                                        <a class="btn btn-light-primary font-weight-bold" target="_blank" href="<?php echo Yii::app()->createUrl('invoice/Generateinvoice/'.$order->order_info_id); ?>" >Invoice</a>
+                                        <a class="btn btn-primary font-weight-bold" target="_blank" href="<?php echo Yii::app()->createUrl('invoice/View/'.$order->order_info_id); ?>" >Print Invoice</a>
+                                    <?php } ?>
 
-                                        <tr class="success">
-                                            <td class="text-right" colspan="1">
-                                                <span class="h4 font-w600">Total</span>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="h4 font-w600 text-success">&euro;<?php echo round($order->netTotal,2); ?></div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-xl-8">
-                        <div class="kt-portlet">
-                            <div class="kt-portlet__head">
-                                <div class="kt-portlet__head-label">
-                                    <h3 class="kt-portlet__head-title">Payment Summary</h3>
-                                </div>
-                            </div>
-                            <div class="kt-portlet__body">
-                                <div class="kt-portlet__content">
-                                    <table class="table table-borderless table-vcenter" id="payment-detail-table">
-                                        <tr>
-                                            <td style="border-bottom: 1px solid #e9ecef">Payment Option</td>
-                                            <td style="border-bottom: 1px solid #e9ecef" class="text-right">Amount</td>
-                                        </tr>
-                                        <tbody>
-                                        <?php foreach ($orderpayment as $value) { ?>
-                                            <tr>
-                                                <td><?= $value->transaction_mode; ?></td>
-                                                <td class="text-right">&euro;<?= round($value->total,2); ?></td>
-                                            </tr>
-                                        <?php } ?>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- end:: Content -->
         </div>
     </div>
 </div>
