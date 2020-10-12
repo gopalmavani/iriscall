@@ -1,19 +1,10 @@
-<style>
-    .kt-active {
-        background-color: #f5f6fc !important;
-        color: #044e80 !important;
-    }
-    .kt-active:hover {
-        color: #044e80 !important;
-    }
-</style>
 <div id="kt_header" class="header flex-column header-fixed">
     <div class="header-top">
         <div class="container">
             <div class="d-none d-lg-flex align-items-center mr-3">
                 <!--begin::Logo-->
                 <a href="<?= Yii::app()->createUrl('home/index'); ?>" class="mr-20">
-                    <img alt="Logo" src="<?= Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" class="max-h-35px" />
+                    <img alt="Logo" src="<?= Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo-white.png" class="max-h-35px" />
                 </a>
                 <!--end::Logo-->
             </div>
