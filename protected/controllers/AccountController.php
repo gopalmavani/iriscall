@@ -101,6 +101,7 @@ class AccountController extends Controller
             } else {
                 $telecom_account = new TelecomAccountDetails();
             }
+            Yii::app()->user->setFlash('success', 'Account details changed successfully');
         } else {
             $telecom_account = new TelecomAccountDetails();
         }

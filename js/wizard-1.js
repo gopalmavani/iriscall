@@ -131,6 +131,13 @@ var KTWizard1 = function () {
 			if (wizard.getStep() > wizard.getNewStep()) {
 				return; // Skip if stepped back
 			}
+			//console.log(wizard.getStep());
+            if(wizard.getStep() == 3){
+				//Remove the save and close button
+				$('#save-and-close').hide();
+			} else {
+                $('#save-and-close').show();
+			}
 			var cardError = 0;
 			if(wizard.getStep() == 2){
 				if($('input[type=radio][name=payment_method]:checked').val() == 'CreditCard'){
