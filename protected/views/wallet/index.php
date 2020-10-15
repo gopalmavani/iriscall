@@ -51,111 +51,99 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
             <div class="col-xl-12">
                 <div class="card card-custom gutter-b">
                     <div class="card-body">
-                        <div class="example">
-                            <div class="example-preview">
-                                <ul class="nav nav-tabs nav-tabs-line">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" data-toggle="tab" href="#all_trans_tab">All</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#affiliates_tab">Affiliate Earnings</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#payouts_tab" tabindex="-1" aria-disabled="true">Payouts</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="all_trans_tab" role="tabpanel">
-                                        <div class="row d-flex align-items-center mb-3">
-                                            <div class="col-md-9 col-lg-10">
-                                                <div class="checkbox-inline" style="margin: 15px">
-                                                    <label for="all_trans_affiliates" class="checkbox">
-                                                        <input type="checkbox" name="all_trans" id="all_trans_affiliates" value="2"
-                                                                checked=""><span></span>Affiliate Earnings
-                                                    </label>
-                                                    <!--<label for="all_trans_cashback" class="checkbox">
-                                                        <input type="checkbox" name="all_trans" id="all_trans_cashback" value="1"
-                                                                checked=""><span></span>Cashback
-                                                    </label>-->
-                                                    <label for="all_trans_payouts" class="checkbox">
-                                                        <input type="checkbox" name="all_trans" id="all_trans_payouts" value="3"
-                                                                checked=""><span></span>Payouts
-                                                    </label>
-                                                    <!--<label for="all_trans_order_payments" class="checkbox">
-                                                        <input type="checkbox" name="all_trans" id="all_trans_order_payments" value="4"
-                                                                checked="">Order Payments<span></span>
-                                                    </label>-->
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="table-responsive table-responsive3 mb-4">
-                                            <table class="table table-wallet" id="all_trans_table">
-                                                <thead role="rowgroup" class="thead-light">
-                                                <tr>
-                                                    <th role="columnheader">Type</th>
-                                                    <th role="columnheader">Description</th>
-                                                    <th role="columnheader">Amount</th>
-                                                    <th role="columnheader">Status</th>
-                                                    <th role="columnheader">Date</th>
-                                                    <th role="columnheader" style="display: none">Sorting Date</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="all_trans_table_body" role="rowgroup"></tbody>
-                                            </table>
-                                            <div class="pages" align="right">
-                                            </div>
+                        <ul class="nav nav-tabs nav-tabs-line">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#all_trans_tab">All</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#affiliates_tab">Affiliate Earnings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#payouts_tab" tabindex="-1" aria-disabled="true">Payouts</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="all_trans_tab" role="tabpanel">
+                                <div class="row d-flex align-items-center mb-3">
+                                    <div class="col-md-9 col-lg-10">
+                                        <div class="checkbox-inline" style="margin: 15px">
+                                            <label for="all_trans_affiliates" class="checkbox">
+                                                <input type="checkbox" name="all_trans" id="all_trans_affiliates" value="2"
+                                                       checked=""><span></span>Affiliate Earnings
+                                            </label>
+                                            <label for="all_trans_payouts" class="checkbox">
+                                                <input type="checkbox" name="all_trans" id="all_trans_payouts" value="3"
+                                                       checked=""><span></span>Payouts
+                                            </label>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="affiliates_tab" role="tabpanel">
-                                        <div class="row d-flex align-items-center mb-3">
-                                            <div class="col-md-9 col-lg-10">
-                                                <div class="checkbox-inline" style="margin: 15px">
-                                                    <label for="affiliate_first_tier" class="checkbox">
-                                                        <input type="checkbox" name="affiliates" id="affiliate_first_tier" value="1"
-                                                                checked=""><span></span>First Tier
-                                                    </label>
-                                                    <label for="affiliate_second_tier" class="checkbox">
-                                                        <input type="checkbox" name="affiliates" id="affiliate_second_tier" value="2"
-                                                                checked=""><span></span>Second Tier
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-wallet" id="affiliate_table">
-                                                <thead>
-                                                <tr>
-                                                    <th>Tier</th>
-                                                    <th>Amount</th>
-                                                    <th>Status</th>
-                                                    <th>Order Id</th>
-                                                    <th>From</th>
-                                                    <th>Date</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="affiliate_table_body"></tbody>
-                                            </table>
-                                            <div class="pages" align="right"></div>
+                                </div>
+                                <div class="table-responsive table-responsive3 mb-4">
+                                    <table class="table table-wallet" id="all_trans_table">
+                                        <thead role="rowgroup" class="thead-light">
+                                        <tr>
+                                            <th role="columnheader">Type</th>
+                                            <th role="columnheader">Description</th>
+                                            <th role="columnheader">Amount</th>
+                                            <th role="columnheader">Status</th>
+                                            <th role="columnheader">Date</th>
+                                            <th role="columnheader" style="display: none">Sorting Date</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="all_trans_table_body" role="rowgroup"></tbody>
+                                    </table>
+                                    <div class="pages" align="right">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="affiliates_tab" role="tabpanel">
+                                <div class="row d-flex align-items-center mb-3">
+                                    <div class="col-md-9 col-lg-10">
+                                        <div class="checkbox-inline" style="margin: 15px">
+                                            <label for="affiliate_first_tier" class="checkbox">
+                                                <input type="checkbox" name="affiliates" id="affiliate_first_tier" value="1"
+                                                       checked=""><span></span>First Tier
+                                            </label>
+                                            <label for="affiliate_second_tier" class="checkbox">
+                                                <input type="checkbox" name="affiliates" id="affiliate_second_tier" value="2"
+                                                       checked=""><span></span>Second Tier
+                                            </label>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="payouts_tab" role="tabpanel">
-                                        <div class="alert alert-info mb-5 mt-5">Please note that you are eligible for payout when the total balance in your wallet reaches 50€. An administration fee of 5€ will be deducted with every payout.</div>
-                                        <div class="table-responsive">
-                                            <table class="table table-wallet" id="payout_table">
-                                                <thead>
-                                                <tr>
-                                                    <th>Description</th>
-                                                    <th>Amount</th>
-                                                    <th>Status</th>
-                                                    <th>Date</th>
-                                                    <th>Paid On</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="payout_table_body"></tbody>
-                                            </table>
-                                            <div class="pages" align="right"></div>
-                                        </div>
-                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-wallet" id="affiliate_table">
+                                        <thead>
+                                        <tr>
+                                            <th>Tier</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Order Id</th>
+                                            <th>From</th>
+                                            <th>Date</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="affiliate_table_body"></tbody>
+                                    </table>
+                                    <div class="pages" align="right"></div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="payouts_tab" role="tabpanel">
+                                <div class="alert alert-info mb-5 mt-5">Please note that you are eligible for payout when the total balance in your wallet reaches 50€. An administration fee of 5€ will be deducted with every payout.</div>
+                                <div class="table-responsive">
+                                    <table class="table table-wallet" id="payout_table">
+                                        <thead>
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Paid On</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="payout_table_body"></tbody>
+                                    </table>
+                                    <div class="pages" align="right"></div>
                                 </div>
                             </div>
                         </div>
@@ -246,18 +234,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
             type: "POST",
             success: function (response) {
                 setDataInTables(response, 'payout_table');
-            }
-        });
-    }
-
-    //To Get Order Payment Data
-    function getOrderPayment() {
-        var orderPaymentUrl = "<?= Yii::app()->createUrl('wallet/getOrderPaymentData'); ?>";
-        $.ajax({
-            url: orderPaymentUrl,
-            type: "POST",
-            success: function (response) {
-                setDataInTables(response, 'order_payments_table');
             }
         });
     }

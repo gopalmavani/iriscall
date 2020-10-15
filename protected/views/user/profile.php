@@ -1,4 +1,9 @@
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl ?>/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" />
+<style>
+    .has-error input {
+        border-color: red;
+    }
+</style>
 <div class="subheader py-2 py-lg-4 subheader-transparent" id="kt_subheader">
     <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <!--begin::Details-->
@@ -421,6 +426,12 @@
     });
 
     $("#update-Profile").validate({
+        debug: true,
+        errorClass: "text-danger",
+        errorElement: "div",
+        onfocusout: false,
+        onkeyup: false,
+        onclick: false,
         rules: {
             first_name:"required",
             last_name:"required",
@@ -436,6 +447,12 @@
         }
     });
     $("#update-account-profile").validate({
+        debug: true,
+        errorClass: "text-danger",
+        errorElement: "div",
+        onfocusout: false,
+        onkeyup: false,
+        onclick: false,
         rules: {
             building_num:"required",
             postcode: {
@@ -500,7 +517,7 @@
     });
     $("form[id='update-profile-password']").validate({
         debug: true,
-        errorClass: "help-block",
+        errorClass: "text-danger",
         errorElement: "div",
         onfocusout: false,
         onkeyup: false,

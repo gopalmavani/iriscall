@@ -38,13 +38,13 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/style.bund
             <div class="kt-portlet kt-portlet--height-fluid kt-portlet--skin-solid kt-portlet-- kt-bg-primary">
                 <div class="kt-portlet__body pt-0">
                     <?php if (isset($success)){ ?>
-                        <div style="font-weight: 600; color: #FFF;padding: 17px 10px 0px 10px;"><?php echo $success; ?></div>
+                        <div style="font-weight: 600;"><?php echo $success; ?></div>
                     <?php }?>
                     <?php if (isset($error)){ ?>
-                        <div style="font-weight: 600; color: darkred;padding: 17px 10px 0px 10px;"><?php echo $error; ?></div>
+                        <div style="font-weight: 600; color: darkred;"><?php echo $error; ?></div>
                     <?php }?>
                     <?php if (isset($login) && !empty($login)){ ?>
-                    <div style="font-weight: 600;color: #FFF;margin-top: 10px;">You can login from <a href="<?= Yii::app()->createurl('home/login'); ?>">here</a></div>
+                    <div style="font-weight: 600;margin-top: 10px;">You can login from <a href="<?= Yii::app()->createurl('home/login'); ?>">here</a></div>
                     <?php }?>
                 </div>
             </div>
