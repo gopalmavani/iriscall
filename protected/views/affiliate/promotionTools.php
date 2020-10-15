@@ -30,7 +30,7 @@ $this->pageTitle = Yii::app()->name . '| Affiliates';
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="mb-3"><img src="<?= Yii::app()->baseUrl; ?>/images/img-mmc-demo.jpg" class="img rounded" style="width: 100% !important; height: auto !important;"></div>
+                        <!--<div class="mb-3"><img src="<?/*= Yii::app()->baseUrl; */?>/images/img-mmc-demo.jpg" class="img rounded" style="width: 100% !important; height: auto !important;"></div>-->
                         <div class="mb-3">
                             <input v-model="model_link" type="text" class="form-control" name="link" id="myInput">
                         </div>

@@ -228,7 +228,7 @@
                                         </a>
                                     </li>
                                     <li class="menu-item" aria-haspopup="true">
-                                        <a target="_blank" href="<?= Yii::app()->createUrl('affiliate/promotiontools'); ?>" class="menu-link">
+                                        <a href="<?= Yii::app()->createUrl('affiliate/promotiontools'); ?>" class="menu-link">
                                             <span class="menu-text">Promotion Tools</span>
                                             <span class="menu-desc"></span>
                                         </a>

@@ -363,12 +363,14 @@ class HomeController extends Controller
                             $payout->save();
                         }
                     }
-                    $mail = new YiiMailer('welcome', array('activationUrl' => $activationUrl));
-                    //$mail->setFrom('info@micromaxcash.com', 'Micromaxcash');
-                    $mail->setFrom('info@cbmglobal.io', 'CBM Global');
-                    $mail->setSubject("Email Verification");
-                    $mail->setTo($model->email);
-                    $mail->send();
+                    if(Yii::app()->params['env'] != 'local'){
+                        $mail = new YiiMailer('welcome', array('activationUrl' => $activationUrl));
+                        //$mail->setFrom('info@micromaxcash.com', 'Micromaxcash');
+                        $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+                        $mail->setSubject("Email Verification");
+                        $mail->setTo($model->email);
+                        $mail->send();
+                    }
 
                     //Add to mailchimp list
                     if ($model->marketting_mail == 1) {
@@ -415,11 +417,16 @@ class HomeController extends Controller
                         'success' => 'We have sent a email verification link to your email address.'
                     ]);
                 } else {
+                    if(is_null($user_response['success_response'])){
+                        $notification_msg = "Some issue while registration at SIO. Kindly contact support";
+                    } else {
+                        $notification_msg = $user_response['success_response']['message'];
+                    }
                     $loginForm = new LoginForm();
                     $this->layout = 'newlogin';
                     $this->render('login', [
                         'model' => $loginForm,
-                        'success' => $user_response['success_response']['message']
+                        'success' => $notification_msg
                     ]);
                 }
             }  else {
