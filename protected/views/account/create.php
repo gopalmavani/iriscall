@@ -20,13 +20,24 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                 </ul>
             </div>
         </div>
-        <div class="d-flex align-items-center">
-            <button type="button" onclick="saveAndContinue()" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save and continue</button>
-        </div>
+        <!--<div class="d-flex align-items-center">
+            <button type="button"  class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save and continue</button>
+        </div>-->
     </div>
 </div>
 <div class="d-flex flex-column-fluid" id="vue-div">
     <div class="container">
+        <?php
+        if(Yii::app()->user->hasFlash('success')) { ?>
+            <div class="alert alert-success info" role="alert">
+                <?php echo Yii::app()->user->getFlash('success'); ?>
+            </div>
+        <?php }else{ ?>
+            <div class="alert alert-error" role="alert">
+                <?php echo Yii::app()->user->getFlash('error'); ?>
+            </div>
+            <?php
+        } ?>
         <div class="card card-custom">
             <div class="card-body p-0">
                 <!--begin::Wizard-->
@@ -298,6 +309,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     <div>
                                         <button type="button" class="btn btn-success font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-submit">Submit</button>
                                         <button type="button" class="btn btn-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-next">Next</button>
+                                        <button type="button" onclick="saveAndContinue()" class="btn btn-primary font-weight-bolder text-uppercase px-9 py-4" id="save-and-close">Save and close</button>
                                     </div>
                                 </div>
                             </form>
