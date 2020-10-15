@@ -207,24 +207,6 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-xl-6">
-                                                                </div>
-                                                                <div class="col-xl-6">
-                                                                    <div class="form-group" id="confirm_password_group">
-                                                                        <label for="confirm_password">Repeat
-                                                                            Password<span>*</span></label>
-                                                                        <input type="password" id="confirm_password"
-                                                                               class="form-control" name="confirm_password">
-                                                                        <div class="text-sm text-grey">Password Strength</div>
-                                                                        <div class="progress progress-striped active">
-                                                                            <div id="jak_pstrength" class="progress-bar"
-                                                                                 role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                                                                                 aria-valuemax="100" style="width: 0%"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-xl-6">
                                                                     <label style="margin-bottom: 10px;">Gender :</label>
                                                                     <div class="row mb1">
                                                                         <div class="col-4 col-sm-4 col-md-3 col-lg-2">
@@ -248,29 +230,19 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xl-6">
-                                                                    <label style="margin-bottom: 10px;">Account Type:</label>
-                                                                    <div class="row mb1">
-                                                                        <div class="col-4 col-sm-4 col-md-3 col-lg-3">
-                                                                            <div class="form-group">
-                                                                                <div class="custom-radio" style="width: max-content;">
-                                                                                    <input type="radio" id="personal" name="accountType" checked
-                                                                                           value="personal">
-                                                                                    <label class="custom-control-label" for="personal">Personal</label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-4 col-sm-4 col-md-3 col-lg-3">
-                                                                            <div class="form-group">
-                                                                                <div class="custom-radio" style="width: max-content;">
-                                                                                    <input type="radio" id="corporate" name="accountType" value="corporate">
-                                                                                    <label class="custom-control-label"
-                                                                                           for="corporate">Corporate</label>
-                                                                                </div>
-                                                                            </div>
+                                                                    <div class="form-group" id="confirm_password_group">
+                                                                        <label for="confirm_password">Repeat
+                                                                            Password<span>*</span></label>
+                                                                        <input type="password" id="confirm_password"
+                                                                               class="form-control" name="confirm_password">
+                                                                        <div class="text-sm text-grey">Password Strength</div>
+                                                                        <div class="progress progress-striped active">
+                                                                            <div id="jak_pstrength" class="progress-bar"
+                                                                                 role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                                                                 aria-valuemax="100" style="width: 0%"></div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                         <!--end: Form Wizard Step 1-->
@@ -308,7 +280,9 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xl-6">
-                                                                    <?php echo $form->dropDownListControlGroup($model, 'country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control', 'label' => 'Country ')); ?>
+                                                                    <div class="form-group <?php echo $model->hasErrors('country') ? 'has-error' : ''; ?>">
+                                                                        <?php echo $form->dropDownListControlGroup($model, 'country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control', 'label' => 'Country')); ?>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -499,7 +473,7 @@
                                                             </div>
                                                             <div class="row mb2">
                                                                 <div class="col-md-12">
-                                                                    <div class="checkbox-single custom-control">
+                                                                    <div class="checkbox-single custom-control form-group form-check">
                                                                         <input type="checkbox" id="privacy" name="privacy">
                                                                         <span></span>
                                                                         <label for="privacy">I accept the <a target="_blank" href="https://www.cbmglobal.io/legal/terms-conditions.html">privacy

@@ -197,13 +197,12 @@ var KTAddUser = function () {
                     },
 					/*'UserInfo[country]': {
                         validators: {
-
-                            /!*choice: {
+							choice: {
                             	max:1,
                                 message: 'Please select a country'
-                            }*!/
+                            }
                         }
-                    }*/
+                    },*/
                     'UserInfo[business_name]': {
                         validators: {
                             notEmpty: {
@@ -298,6 +297,14 @@ var KTAddUser = function () {
 								message: 'BIC-CODE is required'
 							}
 						}
+					},
+					privacy: {
+                        validators: {
+                            choice: {
+                                min: 1,
+                                message: 'Please accept the privacy policy'
+                            }
+                        }
 					}
 				},
 				plugins: {
