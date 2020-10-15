@@ -309,7 +309,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     <div>
                                         <button type="button" class="btn btn-success font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-submit">Submit</button>
                                         <button type="button" class="btn btn-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-next">Next</button>
-                                        <button type="button" onclick="saveAndContinue()" class="btn btn-primary font-weight-bolder text-uppercase px-9 py-4" id="save-and-close">Save and close</button>
                                     </div>
                                 </div>
                             </form>
@@ -392,8 +391,5 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             }
         });
     });
-    function saveAndContinue() {
-        $("#kt_form").submit();
-    }
 </script>
 <script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js' ?>"></script>

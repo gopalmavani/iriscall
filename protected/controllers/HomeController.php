@@ -279,7 +279,23 @@ class HomeController extends Controller
                     $model->attributes = $_POST['UserInfo'];
                     //$model->date_of_birth = date('Y-m-d', strtotime($_POST['UserInfo']['date_of_birth']));
                     //$model->date_of_birth = date('Y-m-d');
-                    if ($_POST['accountType'] == 'personal') {
+                    if (!empty($model->business_name)) {
+                        if (isset($_POST['sameAddress'])) {
+                            $model->busAddress_building_num = $_POST['UserInfo']['building_num'];
+                            $model->busAddress_street = $_POST['UserInfo']['street'];
+                            $model->busAddress_region = $_POST['UserInfo']['region'];
+                            $model->busAddress_city = $_POST['UserInfo']['city'];
+                            $model->busAddress_postcode = $_POST['UserInfo']['postcode'];
+                            $model->busAddress_country = $_POST['UserInfo']['country'];
+                        } else {
+                            $model->busAddress_building_num = $_POST['UserInfo']['busAddress_building_num'];
+                            $model->busAddress_street = $_POST['UserInfo']['busAddress_street'];
+                            $model->busAddress_region = $_POST['UserInfo']['busAddress_region'];
+                            $model->busAddress_city = $_POST['UserInfo']['busAddress_city'];
+                            $model->busAddress_postcode = $_POST['UserInfo']['busAddress_postcode'];
+                            $model->busAddress_country = $_POST['UserInfo']['busAddress_country'];
+                        }
+                    } else {
                         $model->business_name = "";
                         $model->vat_number = "";
                         $model->busAddress_building_num = "";
@@ -288,24 +304,6 @@ class HomeController extends Controller
                         $model->busAddress_city = "";
                         $model->busAddress_postcode = "";
                         $model->busAddress_country = "";
-                    } else {
-                        if (!empty($model->business_name)) {
-                            if (isset($_POST['sameAddress'])) {
-                                $model->busAddress_building_num = $_POST['UserInfo']['building_num'];
-                                $model->busAddress_street = $_POST['UserInfo']['street'];
-                                $model->busAddress_region = $_POST['UserInfo']['region'];
-                                $model->busAddress_city = $_POST['UserInfo']['city'];
-                                $model->busAddress_postcode = $_POST['UserInfo']['postcode'];
-                                $model->busAddress_country = $_POST['UserInfo']['country'];
-                            } else {
-                                $model->busAddress_building_num = $_POST['UserInfo']['busAddress_building_num'];
-                                $model->busAddress_street = $_POST['UserInfo']['busAddress_street'];
-                                $model->busAddress_region = $_POST['UserInfo']['busAddress_region'];
-                                $model->busAddress_city = $_POST['UserInfo']['busAddress_city'];
-                                $model->busAddress_postcode = $_POST['UserInfo']['busAddress_postcode'];
-                                $model->busAddress_country = $_POST['UserInfo']['busAddress_country'];
-                            }
-                        }
                     }
                     $model->setScenario('signUp');
                     $model->sponsor_id = $id;
