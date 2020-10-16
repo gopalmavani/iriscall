@@ -195,14 +195,13 @@ var KTAddUser = function () {
                             }
                         }
                     },
-					/*'UserInfo[country]': {
+					'UserInfo[country]': {
                         validators: {
-							choice: {
-                            	max:1,
+                            notEmpty: {
                                 message: 'Please select a country'
                             }
                         }
-                    },*/
+                    },
                     'UserInfo[business_name]': {
                         validators: {
                             notEmpty: {
@@ -247,8 +246,7 @@ var KTAddUser = function () {
                     },
                     'UserInfo[busAddress_country]': {
                         validators: {
-							choice: {
-                                max:1,
+                            notEmpty: {
                                 message: 'Please select a country'
                             }
                         }
@@ -257,6 +255,11 @@ var KTAddUser = function () {
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
                     excluded: new FormValidation.plugins.Excluded(),
+                    icon: new FormValidation.plugins.Icon({
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    }),
 					// Bootstrap Framework Integration
 					bootstrap: new FormValidation.plugins.Bootstrap({
 						//eleInvalidClass: '',
@@ -298,18 +301,23 @@ var KTAddUser = function () {
 							}
 						}
 					},
-					privacy: {
+                    privacy: {
                         validators: {
-                            choice: {
-                                min: 1,
+                            notEmpty: {
                                 message: 'Please accept the privacy policy'
                             }
                         }
-					}
+                    }
+
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
                     excluded: new FormValidation.plugins.Excluded(),
+                    icon: new FormValidation.plugins.Icon({
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    }),
 					// Bootstrap Framework Integration
 					bootstrap: new FormValidation.plugins.Bootstrap({
 						//eleInvalidClass: '',
