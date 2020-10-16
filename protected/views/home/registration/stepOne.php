@@ -281,7 +281,7 @@
                                                                 </div>
                                                                 <div class="col-xl-6">
                                                                     <div class="form-group <?php echo $model->hasErrors('country') ? 'has-error' : ''; ?>">
-                                                                        <?php echo $form->dropDownListControlGroup($model, 'country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control', 'label' => 'Country')); ?>
+                                                                        <?php echo $form->dropDownListControlGroup($model, 'country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control form-check', 'label' => 'Country')); ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -354,7 +354,7 @@
                                                                         </div>
                                                                         <div class="col-xl-6">
                                                                             <div class="form-group <?php echo $model->hasErrors('busAddress_country') ? 'has-error' : ''; ?>">
-                                                                                <?php echo $form->dropDownListControlGroup($model, 'busAddress_country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control', 'label' => 'Country *')); ?>
+                                                                                <?php echo $form->dropDownListControlGroup($model, 'busAddress_country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control form-check', 'label' => 'Country *')); ?>
                                                                             </div>
                                                                         </div>
                                                                     </div>
