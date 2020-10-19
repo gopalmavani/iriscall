@@ -54,6 +54,12 @@ class AccountController extends Controller
             //$telecom_accounts = TelecomAccountDetails::model()->findAllByAttributes(['user_id'=>$user_id]);
         } else {
             $telecom_user_details = new TelecomUserDetails();
+            $telecom_user_details->setAttributes($user->attributes, false);
+
+            $userPayoutInfo = UserPayoutInfo::model()->findByAttributes(['user_id'=>$user_id]);
+            if(isset($userPayoutInfo->user_id)){
+                $telecom_user_details->setAttributes($userPayoutInfo->attributes, false);
+            }
         }
 
         if(isset($_GET['tariff_product_id'])){
@@ -97,6 +103,7 @@ class AccountController extends Controller
                 $telecom_account->attributes = $_POST;
                 $telecom_account->user_id = $user->user_id;
                 $telecom_account->email = $user->email;
+                $telecom_account->telecom_request_status = 0;
                 $telecom_account->save(false);
             } else {
                 $telecom_account = new TelecomAccountDetails();

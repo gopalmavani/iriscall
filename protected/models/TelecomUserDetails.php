@@ -6,20 +6,55 @@
  * The followings are the available columns in table 'telecom_user_details':
  * @property integer $id
  * @property integer $user_id
+ * @property string $first_name
+ * @property string $middle_name
+ * @property string $last_name
  * @property string $email
  * @property integer $client_id
- * @property integer $agent_id
- * @property string $agent_name
- * @property string $bus_number
- * @property string $nationality
- * @property integer $company_since_in_months
+ * @property integer $gender
+ * @property string $date_of_birth
+ * @property string $phone
  * @property string $landline_number
+ * @property string $extra_email
+ * @property string $language
+ * @property string $send_invoice_via
+ * @property string $invoice_detail_type
+ * @property string $building_num
+ * @property string $bus_num
+ * @property string $street
+ * @property string $city
+ * @property string $postcode
+ * @property string $country
+ * @property string $nationality
+ * @property string $billing_name
+ * @property string $billing_building_num
+ * @property string $billing_bus_num
+ * @property string $billing_street
+ * @property string $billing_city
+ * @property string $billing_postcode
+ * @property string $billing_country
+ * @property string $business_name
+ * @property string $business_country
+ * @property string $vat_number
+ * @property double $vat_rate
+ * @property integer $company_since_in_months
  * @property string $payment_method
+ * @property string $bank_name
+ * @property string $bank_building_num
+ * @property string $bank_street
+ * @property string $bank_postcode
+ * @property string $bank_city
+ * @property string $bank_country
+ * @property string $account_name
+ * @property string $iban
+ * @property string $bic_code
  * @property string $credit_card_type
  * @property string $credit_card_number
  * @property string $credit_card_name
  * @property integer $expiry_date_month
  * @property integer $expiry_date_year
+ * @property integer $agent_id
+ * @property string $agent_name
  * @property string $comments
  * @property string $created_at
  * @property string $modified_at
@@ -43,13 +78,19 @@ class TelecomUserDetails extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, client_id, user_id, company_since_in_months, expiry_date_month, expiry_date_year', 'numerical', 'integerOnly'=>true),
+            array('first_name, last_name', 'required'),
+			array('id, client_id, user_id, company_since_in_months, expiry_date_month, expiry_date_year, vat_rate, agent_id, gender', 'numerical', 'integerOnly'=>true),
             array('created_at, modified_at', 'safe'),
-            array('email, credit_card_name', 'length', 'max'=>80),
+            array('email, credit_card_name, first_name, last_name, middle_name', 'length', 'max'=>80),
             array('agent_name, bus_number, nationality, landline_number, payment_method, credit_card_type, credit_card_number', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, client_id, user_id, company_since_in_months, expiry_date_month, expiry_date_year, email, credit_card_name, agent_name, bus_number, nationality, landline_number, payment_method, credit_card_type, credit_card_number, created_at, modified_at', 'safe', 'on'=>'search'),
+			array('id, client_id, user_id, date_of_birth, phone, extra_email, language, 
+			 send_invoice_via, invoice_detail_type, building_num, street, city, postcode, country, bus_number, nationality
+			 billing_name, billing_building_num, billing_street, billing_city, billing_postcode, billing_country, billing_bus_number,
+			 business_name, business_country, vat_number, vat_rate, bank_name, bank_building_num, bank_street, bank_city, bank_postcode, bank_country,
+			 account_name, iban, bic_code, comments,
+			 company_since_in_months, expiry_date_month, expiry_date_year, email, credit_card_name, agent_name, nationality, landline_number, payment_method, credit_card_type, credit_card_number, created_at, modified_at', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,6 +115,7 @@ class TelecomUserDetails extends CActiveRecord
 			'client_id' => 'Client',
 			'user_id' => 'User',
             'email' => 'Email',
+            'date_of_birth' => 'Date Of Birth',
             'agent_id' => 'Agent',
             'agent_name' => 'Agent Name',
             'bus_number' => 'Bus Number',
@@ -115,6 +157,7 @@ class TelecomUserDetails extends CActiveRecord
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('email',$this->email, true);
 		$criteria->compare('agent_id',$this->agent_id);
+        $criteria->compare('date_of_birth',$this->date_of_birth,true);
 		$criteria->compare('agent_name',$this->agent_name, true);
 		$criteria->compare('bus_number',$this->bus_number, true);
 		$criteria->compare('nationality',$this->nationality, true);

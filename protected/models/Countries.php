@@ -10,6 +10,7 @@
  * @property string $flag_name
  * @property string $business_vat
  * @property string $personal_vat
+ * @property string $nationality
  */
 class Countries extends CActiveRecord
 {

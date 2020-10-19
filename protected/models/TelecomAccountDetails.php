@@ -8,18 +8,24 @@
  * @property integer $user_id
  * @property integer $client_id
  * @property string $email
+ * @property string $account_type
+ * @property string $rate
  * @property string $phone_number
  * @property string $sim_card_number
  * @property string $old_sim_card_number
+ * @property integer $contract_duration_in_months
  * @property integer $is_voice_mail_enabled
  * @property string $tariff_plan
  * @property string $extra_options
  * @property string $comments
+ * @property string $activation_date
+ * @property integer $credit_limit
  * @property string $previous_operator_client_id
  * @property string $previous_operator_name
  * @property string $previous_operator_client_invoice_name
  * @property string $authorised_person_name
  * @property string $authorised_person_vat_number
+ * @property integer $telecom_request_status
  * @property string $created_at
  * @property string $modified_at
 
@@ -42,13 +48,13 @@ class TelecomAccountDetails extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, client_id, user_id, is_voice_mail_enabled', 'numerical', 'integerOnly'=>true),
+			array('id, client_id, user_id, is_voice_mail_enabled, telecom_request_status', 'numerical', 'integerOnly'=>true),
             array('created_at, modified_at', 'safe'),
             array('email, extra_options, previous_operator_name, previous_operator_client_invoice_name, authorised_person_name, authorised_person_vat_number', 'length', 'max'=>80),
             array('phone_number, sim_card_number, old_sim_card_number, tariff_plan, previous_operator_client_id', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, client_id, user_id, is_voice_mail_enabled, email, extra_options, previous_operator_name, previous_operator_client_invoice_name, authorised_person_name, authorised_person_vat_number, phone_number, sim_card_number, old_sim_card_number, tariff_plan, previous_operator_client_id, created_at, modified_at', 'safe', 'on'=>'search'),
+			array('id, client_id, user_id, is_voice_mail_enabled, email, telecom_request_status, extra_options, previous_operator_name, previous_operator_client_invoice_name, authorised_person_name, authorised_person_vat_number, phone_number, sim_card_number, old_sim_card_number, tariff_plan, previous_operator_client_id, created_at, modified_at', 'safe', 'on'=>'search'),
 		);
 	}
 

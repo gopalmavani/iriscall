@@ -16,7 +16,41 @@ var KTWizard1 = function () {
 			_formEl,
 			{
 				fields: {
-
+                    first_name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'First Name is required'
+                            }
+                        }
+                    },
+                    last_name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Last Name is required'
+                            }
+                        }
+                    },
+                    phone: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Phone is required'
+                            }
+                        }
+                    },
+                    date_of_birth: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Birth-date is required'
+                            }
+                        }
+                    },
+                    landline_number: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Land line number as an alternate contact number is required'
+                            }
+                        }
+                    }
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -34,43 +68,90 @@ var KTWizard1 = function () {
 			_formEl,
 			{
 				fields: {
-                    cc_number: {
-						validators: {
-							notEmpty: {
-								message: 'Credit card number is required'
-							}
-						}
-					},
-                    cc_exp_month: {
-                        selector: '.cc-exp-field-m',
-						validators: {
-							notEmpty: {
-								message: 'Expiration month is required'
-							},
-							digits: {
-								message: 'The value added is not valid'
-							}
-						}
-					},
-                    cc_exp_year: {
-                        selector: '.cc-exp-field-y',
-						validators: {
-							notEmpty: {
-								message: 'Expiration year is required'
-							},
-							digits: {
-								message: 'The value added is not valid'
-							}
-						}
-					},
-                    cc_name: {
-                        selector: '.cc-name',
-						validators: {
-							notEmpty: {
-								message: 'Name is required'
-							}
-						}
-					}
+                    street: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter street name'
+                            }
+                        }
+                    },
+                    building_num: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter building number'
+                            }
+                        }
+                    },
+                    city: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter City'
+                            }
+                        }
+                    },
+                    postcode: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter post code'
+                            }
+                        }
+                    },
+                    country: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select a country'
+                            }
+                        }
+                    },
+                    nationality: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select a nationality'
+                            }
+                        }
+                    },
+                    billing_name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter Billing name'
+                            }
+                        }
+                    },
+                    billing_street: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter street name'
+                            }
+                        }
+                    },
+                    billing_building_num: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter building number'
+                            }
+                        }
+                    },
+                    billing_city: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter City'
+                            }
+                        }
+                    },
+                    billing_postcode: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter post code'
+                            }
+                        }
+                    },
+                    billing_country: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select a country'
+                            }
+                        }
+                    }
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -89,9 +170,38 @@ var KTWizard1 = function () {
 			_formEl,
 			{
 				fields: {
+                    business_name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter Business name'
+                            }
+                        }
+                    },
+                    vat_number: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter VAT number'
+                            }
+                        }
+                    },
+                    business_country: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select a Country'
+                            }
+                        }
+                    },
+                    vat_rate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter vat rate'
+                            }
+                        }
+                    }
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
+                    excluded: new FormValidation.plugins.Excluded(),
 					// Bootstrap Framework Integration
 					bootstrap: new FormValidation.plugins.Bootstrap({
 						//eleInvalidClass: '',
@@ -106,9 +216,80 @@ var KTWizard1 = function () {
 			_formEl,
 			{
 				fields: {
+					payment_method: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select a payment method'
+                            }
+                        }
+                    },
+                    bank_name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter bank name'
+                            }
+                        }
+                    },
+                    bank_street: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter street name'
+                            }
+                        }
+                    },
+                    bank_building_num: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter building number'
+                            }
+                        }
+                    },
+                    bank_city: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter City'
+                            }
+                        }
+                    },
+                    bank_postcode: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter post code'
+                            }
+                        }
+                    },
+                    bank_country: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select a country'
+                            }
+                        }
+                    },
+                    account_name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter account name'
+                            }
+                        }
+                    },
+                    iban: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter IBAN number'
+                            }
+                        }
+                    },
+                    bic_code: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter BIC code'
+                            }
+                        }
+                    }
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
+                    excluded: new FormValidation.plugins.Excluded(),
 					// Bootstrap Framework Integration
 					bootstrap: new FormValidation.plugins.Bootstrap({
 						//eleInvalidClass: '',
@@ -117,6 +298,40 @@ var KTWizard1 = function () {
 				}
 			}
 		));
+
+        // Step 5
+        _validations.push(FormValidation.formValidation(
+            _formEl,
+            {
+                fields: {
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap({
+                        //eleInvalidClass: '',
+                        eleValidClass: '',
+                    })
+                }
+            }
+        ));
+
+        // Step 6
+        _validations.push(FormValidation.formValidation(
+            _formEl,
+            {
+                fields: {
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap({
+                        //eleInvalidClass: '',
+                        eleValidClass: '',
+                    })
+                }
+            }
+        ));
 	}
 
 	var _initWizard = function () {
@@ -132,9 +347,12 @@ var KTWizard1 = function () {
 				return; // Skip if stepped back
 			}
 			var cardError = 0;
-			if(wizard.getStep() == 2){
+			console.log("Wizard steps: "+wizard.getStep());
+			if(wizard.getStep() == 4){
 				if($('input[type=radio][name=payment_method]:checked').val() == 'CreditCard'){
+					console.log("Inside validation One");
 					if(!card.isValid()){
+                        console.log("Inside validation Two");
                         Swal.fire({
                             text: "Sorry, looks like there are some errors detected in credit card details",
                             icon: "error",
@@ -148,8 +366,11 @@ var KTWizard1 = function () {
                         });
                         cardError = 1;
 					}
+				} else {
+                    cardError = 0;
 				}
 			}
+			console.log("Card Error: "+cardError);
 
 			// Validate form before change wizard step
 			var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
@@ -158,6 +379,7 @@ var KTWizard1 = function () {
 				validator.validate().then(function (status) {
 					if (status == 'Valid' && cardError == 0) {
 						wizard.goTo(wizard.getNewStep());
+                        console.log("Going to step: "+wizard.getNewStep());
 
 						KTUtil.scrollTop();
 					} else {
