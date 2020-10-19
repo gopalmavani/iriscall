@@ -170,7 +170,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center" style="float: right;">
-                                        <a href="<?= Yii::app()->createUrl('home/index'); ?>" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
+                                        <a href="<?= Yii::app()->createUrl('home/index'); ?>" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-3">Back</a>
                                         <button type="submit" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save Changes</button>
                                     </div>
                                 </div>
@@ -341,7 +341,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center" style="float: right;">
-                                        <a href="<?= Yii::app()->createUrl('home/index'); ?>" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
+                                        <a href="<?= Yii::app()->createUrl('home/index'); ?>" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-3">Back</a>
                                         <button type="submit" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save Changes</button>
                                     </div>
                                 </div>
@@ -386,7 +386,7 @@
                                     </div>
                                     <!--end::Group-->
                                     <div class="d-flex align-items-center" style="float: right;">
-                                        <a href="<?= Yii::app()->createUrl('home/index'); ?>" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
+                                        <a href="<?= Yii::app()->createUrl('home/index'); ?>" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-3">Back</a>
                                         <button type="submit" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save Changes</button>
                                     </div>
                                 </div>
@@ -409,6 +409,9 @@
         }
     });
     var email = "<?= $model->email; ?>";
+    var business_name = "<?= $model->business_name; ?>";
+    var building_num = "<?= $model->building_num; ?>";
+    var busAddress_building_num = "<?= $model->busAddress_building_num; ?>";
     var verify_pass_url = "<?= Yii::app()->createUrl('user/verifyOldPassword'); ?>";
 
     $(document).ready(function(){
@@ -431,6 +434,19 @@
                 $(".business_details").hide();
             }
         });
+
+        if(business_name != ''){
+            $('.is_business_type').prop('checked', true);
+            $(".business_details").show();
+        }
+
+        if(building_num == busAddress_building_num){
+            $('.is_different_address').prop('checked', false);
+            $(".differentAddress").hide();
+        } else {
+            $('.is_different_address').prop('checked', true);
+            $(".differentAddress").show();
+        }
     });
 
     $("#update-Profile").validate({
@@ -553,7 +569,7 @@
         messages: {
             'current_password': {
                 required: "Please enter current password",
-                remote: "Issue with current password"
+                remote: "Incorrect current password"
             },
             'new_password': {
                 required: "Please enter new password",

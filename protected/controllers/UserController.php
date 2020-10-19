@@ -146,6 +146,8 @@ class UserController extends Controller
                     $model->region = $_POST['region'];
                     $model->phone = $_POST['phone'];
                     $model->city = $_POST['city'];
+                    $model->language = $_POST['language'];
+                    $model->phone = $_POST['phone'];
                 }
                 if(isset($_POST['business_name'])){
                     $model->business_name = $_POST['business_name'];
