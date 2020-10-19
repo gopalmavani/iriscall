@@ -5,6 +5,11 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit-card/styles/skeuocard.css');
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit-card/styles/demo.css');
 ?>
+<style>
+    .datepicker{
+        width: unset;
+    }
+</style>
 <div class="subheader py-2 py-lg-6 subheader-transparent" id="kt_subheader">
     <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <div class="d-flex align-items-center flex-wrap mr-1">
@@ -51,7 +56,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     <h3 class="wizard-title">1. Enter Basic details</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
-                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                    
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <polygon points="0 0 24 0 24 24 0 24" />
@@ -59,13 +64,47 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
                                         </g>
                                     </svg>
-                                    <!--end::Svg Icon-->
+                                    
+                                </span>
+                            </div>
+                            <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
+                                <div class="wizard-label">
+                                    <i class="wizard-icon flaticon-home "></i>
+                                    <h3 class="wizard-title">2. Add address details</h3>
+                                </div>
+                                <span class="svg-icon svg-icon-xl wizard-arrow">
+                                    
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <polygon points="0 0 24 0 24 24 0 24" />
+                                            <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)" x="11" y="5" width="2" height="14" rx="1" />
+                                            <path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                        </g>
+                                    </svg>
+                                    
+                                </span>
+                            </div>
+                            <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
+                                <div class="wizard-label">
+                                    <i class="wizard-icon flaticon-earth-globe "></i>
+                                    <h3 class="wizard-title">3. Add business details</h3>
+                                </div>
+                                <span class="svg-icon svg-icon-xl wizard-arrow">
+                                    
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <polygon points="0 0 24 0 24 24 0 24" />
+                                            <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)" x="11" y="5" width="2" height="14" rx="1" />
+                                            <path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                        </g>
+                                    </svg>
+                                    
                                 </span>
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
                                     <i class="wizard-icon flaticon-piggy-bank"></i>
-                                    <h3 class="wizard-title">2. Payment Details</h3>
+                                    <h3 class="wizard-title">4. Payment Details</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -80,10 +119,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
                                     <i class="wizard-icon flaticon-upload-1"></i>
-                                    <h3 class="wizard-title">3. Upload Documents</h3>
+                                    <h3 class="wizard-title">5. Upload Documents</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
-                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <polygon points="0 0 24 0 24 24 0 24" />
@@ -91,13 +129,12 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
                                         </g>
                                     </svg>
-                                    <!--end::Svg Icon-->
                                 </span>
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
                                     <i class="wizard-icon flaticon-trophy"></i>
-                                    <h3 class="wizard-title">4. Create Account</h3>
+                                    <h3 class="wizard-title">6. Create Account</h3>
                                 </div>
                             </div>
                         </div>
@@ -107,53 +144,365 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             <form class="form" id="kt_form" method="POST">
                                 <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
                                     <h4 class="mb-10 font-weight-bold text-dark">Enter/Verify Basic Details</h4>
-                                    <!--begin::Input-->
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <div class="form-group">
+                                                <label>First Name</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="first_name" placeholder="First Name" value="<?= $telecom_user_detail->first_name; ?>" />
+                                                <span class="form-text text-muted">Please enter your First Name.</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4">
+                                            <div class="form-group">
+                                                <label>Middle Name</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="middle_name" placeholder="Middle Name" value="<?= $telecom_user_detail->middle_name; ?>" />
+                                                <span class="form-text text-muted">Please enter your Middle Name.</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4">
+                                            <div class="form-group">
+                                                <label>Last Name</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="last_name" placeholder="Last Name" value="<?= $telecom_user_detail->last_name; ?>" />
+                                                <span class="form-text text-muted">Please enter your Last Name.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Date Of Birth</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" id="date_of_birth" placeholder="Select date of birth" name="date_of_birth" value="<?= $telecom_user_detail->date_of_birth; ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label>Gender</label>
+                                                <div class="col-form-label">
+                                                    <div class="radio-inline">
+                                                        <label class="radio radio-success">
+                                                            <input value="1" <?php if ($telecom_user_detail->gender == 1) { echo "checked";} ?> type="radio" class="check" id="minimal-radio-1" name="gender">
+                                                            <span></span>Male
+                                                        </label>
+                                                        <label class="radio radio-success">
+                                                            <input value="2" <?php if ($telecom_user_detail->gender != 1) { echo "checked";} ?> type="radio" class="check" id="minimal-radio-1" name="gender">
+                                                            <span></span>Female
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="text" class="form-control form-control-solid form-control-lg" name="email" value="<?= $user->email; ?>" disabled/>
+                                        <label>Fix Email</label>
+                                        <input type="text" class="form-control form-control-solid form-control-lg" name="email" value="<?= $telecom_user_detail->email; ?>" disabled/>
                                         <span class="form-text text-muted"></span>
                                     </div>
-                                    <!--end::Input-->
-                                    <!--begin::Input-->
+                                    
+                                    
+                                    <div class="form-group">
+                                        <label>Extra Email</label>
+                                        <input type="text" class="form-control form-control-solid form-control-lg" name="extra_email" placeholder="Additional Email" value="<?= $telecom_user_detail->extra_email; ?>" />
+                                        <span class="form-text text-muted">Additional email for backup purpose.</span>
+                                    </div>
+                                    
+                                    
                                     <div class="form-group">
                                         <label>Agent Name</label>
                                         <input type="text" class="form-control form-control-solid form-control-lg" name="agent_name" placeholder="Agent Name" value="<?= $telecom_user_detail->agent_name; ?>" />
                                         <span class="form-text text-muted">Agent Name.</span>
                                     </div>
-                                    <!--end::Input-->
+                                    
                                     <div class="row">
-                                        <div class="col-xl-4">
-                                            <!--begin::Input-->
+                                        <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Bus number</label>
-                                                <input type="text" class="form-control form-control-solid form-control-lg" name="bus_number" placeholder="Address Bus number" value="<?= $telecom_user_detail->bus_number; ?>" />
-                                                <span class="form-text text-muted">Please enter your bus number.</span>
+                                                <label>Phone Number</label>
+                                                <input type="tel" class="form-control form-control-solid form-control-lg" name="phone" placeholder="Contact number please" value="<?= $telecom_user_detail->phone; ?>" />
+                                                <span class="form-text text-muted">Please enter phone number.</span>
                                             </div>
-                                            <!--end::Input-->
                                         </div>
-                                        <div class="col-xl-4">
-                                            <!--begin::Input-->
+                                        <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Company's Age in months</label>
-                                                <input type="number" class="form-control form-control-solid form-control-lg" name="company_since_in_months" placeholder="1, 2, 12, 24, etc.." value="<?= $telecom_user_detail->company_since_in_months; ?>" />
-                                                <span class="form-text text-muted">Time period in months from your company's inception.</span>
-                                            </div>
-                                            <!--end::Input-->
-                                        </div>
-                                        <div class="col-xl-4">
-                                            <!--begin::Input-->
-                                            <div class="form-group">
-                                                <label>Landline Number</label>
-                                                <input type="number" class="form-control form-control-solid form-control-lg" name="landline_number" placeholder="Contact number please" value="<?= $telecom_user_detail->landline_number; ?>" />
+                                                <label>Landline Number (Fixed)</label>
+                                                <input type="tel" class="form-control form-control-solid form-control-lg" name="landline_number" placeholder="Contact number please" value="<?= $telecom_user_detail->landline_number; ?>" />
                                                 <span class="form-text text-muted">Please enter land-line number as an extra contact information.</span>
                                             </div>
-                                            <!--end::Input-->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <div class="form-group">
+                                                <label>Language</label>
+                                                <select name="language" id="language" class="form-control">
+                                                    <option value="Dutch">Dutch</option>
+                                                    <option value="English">English</option>
+                                                    <option value="French">French</option>
+                                                    <option value="Nederlands">Nederlands</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4">
+                                            
+                                            <div class="form-group">
+                                                <label>Send Invoice VIA</label>
+                                                <select name="send_invoice_via" id="send_invoice_via" class="form-control">
+                                                    <option value="Email">Email</option>
+                                                    <option value="Post">Post</option>
+                                                    <option value="Post + Email">Post + Email</option>
+                                                </select>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="col-xl-4">
+                                            
+                                            <div class="form-group">
+                                                <label>Invoice Detail Type</label>
+                                                <select name="invoice_detail_type" id="invoice_detail_type" class="form-control">
+                                                    <option value="Standard">Standard</option>
+                                                    <option value="FullDetail">Full detail</option>
+                                                    <option value="FullFreeDetail">Full free detail</option>
+                                                    <option value="NoDetail">No detail</option>
+                                                </select>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pb-5" data-wizard-type="step-content">
+                                    <h4 class="mb-10 font-weight-bold text-dark">Add Address related Details</h4>
+
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label>Building Number</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="building_num" placeholder="Building number please" value="<?= $telecom_user_detail->building_num; ?>" />
+                                                <span class="form-text text-muted">Please enter building number.</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6">
+
+                                            <div class="form-group">
+                                                <label>Bus Number</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="bus_num" placeholder="Bus number please" value="<?= $telecom_user_detail->bus_num; ?>" />
+                                                <span class="form-text text-muted">Please enter bus number.</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6">
+
+                                            <div class="form-group">
+                                                <label>Street</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="street" placeholder="Street" value="<?= $telecom_user_detail->street; ?>" />
+                                                <span class="form-text text-muted">Please enter street details.</span>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-xl-6">
+
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="city" placeholder="City" value="<?= $telecom_user_detail->city; ?>" />
+                                                <span class="form-text text-muted">Please enter city details.</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4">
+
+                                            <div class="form-group">
+                                                <label>Postcode</label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="postcode" placeholder="Postcode" value="<?= $telecom_user_detail->postcode; ?>" />
+                                                <span class="form-text text-muted">Please enter postcode details.</span>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-xl-4">
+
+                                            <div class="form-group">
+                                                <label for="country">Country</label>
+                                                <select name="country" id="country" class="form-control">
+                                                    <?php
+                                                    $country = Yii::app()->ServiceHelper->getCountry(); ?>
+                                                    <option value="">Select Country</option>
+                                                    <?php foreach ($country as $key => $value) { ?>
+                                                        <option value="<?php echo $key; ?>"><?php echo $value ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-xl-4">
+
+                                            <div class="form-group">
+                                                <label>Nationality</label>
+                                                <select name="nationality" id="nationality" class="form-control">
+                                                    <?php
+                                                    $nationality = Yii::app()->ServiceHelper->getNationality(); ?>
+                                                    <option value="">Select Nationality</option>
+                                                    <?php foreach ($nationality as $key => $value) { ?>
+                                                        <option value="<?php echo $key; ?>"><?php echo $value ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <h5 class="mb-10 font-weight-bold text-dark">Billing Address</h5>
+                                    <div class="form-group row">
+                                        <div class="col-1">
+                                            <span class="switch switch-outline switch-icon switch-success">
+                                                <label>
+                                                    <input type="checkbox" name="is_different_address" class="is_different_address" "<?php if (!empty($telecom_user_detail->business_name) && (($telecom_user_detail->busAddress_building_num != $telecom_user_detail->building_num) || ($telecom_user_detail->busAddress_street != $telecom_user_detail->street) || ($telecom_user_detail->busAddress_region != $telecom_user_detail->region) || ($telecom_user_detail->busAddress_city != $telecom_user_detail->city) || ($telecom_user_detail->busAddress_postcode != $telecom_user_detail->postcode) || ($telecom_user_detail->busAddress_country != $telecom_user_detail->country))){ echo "checked";} ?>">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                        <label class="col-8 col-form-label">Use different address for billing purpose:</label>
+                                    </div>
+                                    <div class="differentAddress" style="display: none;">
+                                        <div class="form-group">
+                                            <label>Billing Name</label>
+                                            <input type="text" class="form-control form-control-solid form-control-lg" name="billing_name" placeholder="Billing Name" value="<?= $telecom_user_detail->billing_name; ?>" />
+                                            <span class="form-text text-muted">Name to be on invoice.</span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+
+                                                <div class="form-group">
+                                                    <label>Building Number</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="billing_building_num" placeholder="Building number please" value="<?= $telecom_user_detail->billing_building_num; ?>" />
+                                                    <span class="form-text text-muted">Please enter building number.</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-xl-6">
+
+                                                <div class="form-group">
+                                                    <label>Bus Number</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="billing_bus_num" placeholder="Bus number please" value="<?= $telecom_user_detail->billing_bus_num; ?>" />
+                                                    <span class="form-text text-muted">Please enter bus number.</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+
+                                                <div class="form-group">
+                                                    <label>Street</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="billing_street" placeholder="Street" value="<?= $telecom_user_detail->billing_street; ?>" />
+                                                    <span class="form-text text-muted">Please enter street details.</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-xl-6">
+
+                                                <div class="form-group">
+                                                    <label>City</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="billing_city" placeholder="City" value="<?= $telecom_user_detail->billing_city; ?>" />
+                                                    <span class="form-text text-muted">Please enter city details.</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+
+                                                <div class="form-group">
+                                                    <label>Postcode</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="billing_postcode" placeholder="Postcode" value="<?= $telecom_user_detail->billing_postcode; ?>" />
+                                                    <span class="form-text text-muted">Please enter postcode details.</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-xl-6">
+
+                                                <div class="form-group">
+                                                    <label for="billing_country">Country</label>
+                                                    <select name="billing_country" id="billing_country" class="form-control">
+                                                        <?php
+                                                        $country = Yii::app()->ServiceHelper->getCountry(); ?>
+                                                        <option value="">Select Country</option>
+                                                        <?php foreach ($country as $key => $value) { ?>
+                                                            <option value="<?php echo $key; ?>"><?php echo $value ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pb-5" data-wizard-type="step-content">
+                                    <h4 class="mb-10 font-weight-bold text-dark">Some Business Details</h4>
+                                    <div class="form-group row">
+                                        <div class="col-1">
+                                            <span class="switch switch-outline switch-icon switch-success">
+                                                <label>
+                                                    <input type="checkbox" name="is_business_type" class="is_business_type" />
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                        <label class="col-3 col-form-label">Add Business details:</label>
+                                    </div>
+                                    <div class="business_details" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label>Business Name</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="business_name" placeholder="Business Name" value="<?= $telecom_user_detail->business_name; ?>" />
+                                                    <span class="form-text text-muted">Please enter Business Name.</span>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label>VAT Number</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="vat_number" placeholder="VAT Number" value="<?= $telecom_user_detail->vat_number; ?>" />
+                                                    <span class="form-text text-muted">Please enter VAT Number.</span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label for="business_country">Business Country</label>
+                                                    <select name="business_country" id="business_country" class="form-control">
+                                                        <?php
+                                                        $country = Yii::app()->ServiceHelper->getCountry(); ?>
+                                                        <option value="">Select Country</option>
+                                                        <?php foreach ($country as $key => $value) { ?>
+                                                            <option value="<?php echo $key; ?>"><?php echo $value ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label>VAT Rate</label>
+                                                    <input type="number" class="form-control form-control-solid form-control-lg" name="vat_rate" placeholder="VAT Rate" value="<?= $telecom_user_detail->vat_rate; ?>" />
+                                                    <span class="form-text text-muted">Please enter VAT rate.</span>
+                                                </div>
+                                                
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
                                     <h4 class="mb-10 font-weight-bold text-dark">Add Payment Details</h4>
-                                    <!--begin::Input-->
+                                    
                                     <div class="form-group row">
                                         <label class="col-form-label col-12">Choose required payment method</label>
                                         <div class="col-9 col-form-label">
@@ -173,8 +522,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             </div>
                                         </div>
                                     </div>
-                                    <!--end::Input-->
-                                    <!--begin::Input-->
                                     <div class="credit-card-payment-div" style="display: none">
                                         <div class="credit-card-input no-js form-group" id="skeuocard">
                                             <p class="no-support-warning">
@@ -204,9 +551,99 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <input type="text" name="cc_cvc" id="cc_cvc" placeholder="123" maxlength="3" size="3">
                                         </div>
                                     </div>
+                                    <div class="bank-transfer-div" style="display: none">
+                                        <div class="form-group">
+                                            <label>Bank Name</label>
+                                            <input type="text" class="form-control form-control-solid form-control-lg" name="bank_name" placeholder="Bank Name" value="<?= $telecom_user_detail->bank_name; ?>" />
+                                            <span class="form-text text-muted">Name of the bank.</span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label>Building Number</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="bank_building_num" placeholder="Building number please" value="<?= $telecom_user_detail->bank_building_num; ?>" />
+                                                    <span class="form-text text-muted">Please enter building number.</span>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label>Street</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="bank_street" placeholder="Street" value="<?= $telecom_user_detail->bank_street; ?>" />
+                                                    <span class="form-text text-muted">Please enter street details.</span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label>City</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="bank_city" placeholder="City" value="<?= $telecom_user_detail->bank_city; ?>" />
+                                                    <span class="form-text text-muted">Please enter city details.</span>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label>Postcode</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="bank_postcode" placeholder="Postcode" value="<?= $telecom_user_detail->bank_postcode; ?>" />
+                                                    <span class="form-text text-muted">Please enter postcode details.</span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label for="bank_country">Country</label>
+                                                    <select name="bank_country" id="bank_country" class="form-control">
+                                                        <?php
+                                                        $country = Yii::app()->ServiceHelper->getCountry(); ?>
+                                                        <option value="">Select Country</option>
+                                                        <?php foreach ($country as $key => $value) { ?>
+                                                            <option value="<?php echo $key; ?>"><?php echo $value ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label>Account Name</label>
+                                            <input type="text" class="form-control form-control-solid form-control-lg" name="account_name" placeholder="Account Name" value="<?= $telecom_user_detail->account_name; ?>" />
+                                            <span class="form-text text-muted">Please add Account Name in the bank.</span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label>iBAN</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="iban" placeholder="IBAN number" value="<?= $telecom_user_detail->iban; ?>" />
+                                                    <span class="form-text text-muted">Please enter iBan number.</span>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-xl-6">
+                                                
+                                                <div class="form-group">
+                                                    <label>BIC Code</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="bic_code" placeholder="BIC Code" value="<?= $telecom_user_detail->bic_code; ?>" />
+                                                    <span class="form-text text-muted">Please enter BIC Code details.</span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
-                                    <h3 class="mb-10 font-weight-bold text-dark">Upload KYC Documents</h3>
+                                    <h4 class="mb-10 font-weight-bold text-dark">Upload KYC Documents</h4>
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-12 col-sm-12">File: Passport</label>
                                         <div class="col-lg-12 col-md-9 col-sm-12">
@@ -243,34 +680,34 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
                                     <h4 class="mb-10 font-weight-bold text-dark">Create New Account</h4>
-                                    <!--begin::Input-->
-                                    <div class="form-group">
-                                        <label>Phone Number</label>
-                                        <input type="tel" class="form-control form-control-solid form-control-lg" name="phone_number" value="<?= $telecom_account->phone_number; ?>"/>
-                                        <span class="form-text text-muted">Please enter your new phone number.</span>
-                                    </div>
-                                    <!--end::Input-->
-                                    <!--begin::Input-->
-                                    <div class="form-group">
-                                        <label>Sim Card Number</label>
-                                        <input type="tel" class="form-control form-control-solid form-control-lg" name="sim_card_number" placeholder="Sim card number" value="<?= $telecom_account->sim_card_number; ?>" />
-                                        <span class="form-text text-muted">Please enter new sim card number.</span>
-                                    </div>
-                                    <!--end::Input-->
-                                    <div class="form-group row">
-                                        <div class="col-1">
-                                            <span class="switch switch-outline switch-icon switch-success">
-                                                <label>
-                                                    <input type="checkbox" name="is_voice_mail_enabled" class="is_voice_mail_enabled" "<?php if ($telecom_account->is_voice_mail_enabled == 1){ echo "checked";} ?>">
-                                                    <span></span>
-                                                </label>
-                                            </span>
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label col-8">Account Type</label>
+                                                <div class="col-8">
+                                                    <select  name="account_type" id="account_type" class="form-control form-control-line">
+                                                        <option value="NewActivation">New Activation</option>
+                                                        <option value="Prepaid">Prepaid</option>
+                                                        <option value="PostpaidDomestic">Postpaid Domestic</option>
+                                                        <option value="PostpaidBusiness">Postpaid Business</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <label class="col-3 col-form-label">Use Voice mail</label>
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label col-8">Rate</label>
+                                                <div class="col-8">
+                                                    <select  name="rate" id="rate" class="form-control form-control-line">
+                                                        <option value="Iriscall">Iriscall</option>
+                                                        <option value="Iriscall Home">Iriscall Home</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-xl-6">
-                                            <!--begin::Input-->
                                             <div class="form-group">
                                                 <label class="col-form-label col-4">Tariff Plan</label>
                                                 <div class="col-8">
@@ -282,25 +719,43 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                     </select>
                                                 </div>
                                             </div>
-                                            <!--end::Input-->
                                         </div>
                                         <div class="col-xl-6">
-                                            <!--begin::Input-->
                                             <div class="form-group">
                                                 <label>Extra options</label>
                                                 <input type="text" class="form-control form-control-solid form-control-lg" name="extra_options" value="<?= $telecom_account->extra_options; ?>" />
                                                 <span class="form-text text-muted">Extra data or calls.</span>
                                             </div>
-                                            <!--end::Input-->
                                         </div>
                                     </div>
-                                    <!--begin::Input-->
+                                    <div class="form-group row">
+                                        <div class="col-1">
+                                            <span class="switch switch-outline switch-icon switch-success">
+                                                <label>
+                                                    <input type="checkbox" name="is_voice_mail_enabled" class="is_voice_mail_enabled" "<?php if ($telecom_account->is_voice_mail_enabled == 1){ echo "checked";} ?>">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                        <label class="col-3 col-form-label">Use Voice mail</label>
+                                    </div>
                                     <div class="form-group">
                                         <label>Comments</label>
                                         <input type="text" class="form-control form-control-solid form-control-lg" name="comments" placeholder="Extra details" value="<?= $telecom_account->comments; ?>" />
                                         <span class="form-text text-muted">Any extra details that need to be mentioned.</span>
                                     </div>
-                                    <!--end::Input-->
+                                    <hr>
+                                    <h4 class="mb-10 font-weight-bold text-dark">Applicable for those who have received the SIM card kit</h4>
+                                    <div class="form-group">
+                                        <label>Phone Number</label>
+                                        <input type="tel" class="form-control form-control-solid form-control-lg" name="phone_number" value="<?= $telecom_account->phone_number; ?>"/>
+                                        <span class="form-text text-muted">Please enter your new phone number.</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sim Card Number</label>
+                                        <input type="tel" class="form-control form-control-solid form-control-lg" name="sim_card_number" placeholder="Sim card number" value="<?= $telecom_account->sim_card_number; ?>" />
+                                        <span class="form-text text-muted">Please enter new sim card number.</span>
+                                    </div>
                                 </div>
                                 <div class="d-flex justify-content-between border-top mt-5 pt-10">
                                     <div class="mr-2">
@@ -323,6 +778,27 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 <script src="<?= Yii::app()->baseUrl . '/plugins/credit-card/javascripts/skeuocard.min.js' ?>"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+
+        if($('.is_different_address').is(":checked")){
+            $(".differentAddress").show();
+        }else {
+            $(".differentAddress").hide();
+        }
+        $('.is_different_address').on('change',function(){
+            if($('.is_different_address').is(":checked")){
+                $(".differentAddress").show();
+            }else {
+                $(".differentAddress").hide();
+            }
+        });
+        $('.is_business_type').on('change',function(){
+            if($('.is_business_type').is(":checked")){
+                $(".business_details").show();
+            }else {
+                $(".business_details").hide();
+            }
+        });
+
         card = new Skeuocard($("#skeuocard"), {
             validationState: {
                 number: true,
@@ -389,7 +865,21 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             } else {
                 $('.credit-card-payment-div').hide();
             }
+            if($(this).val() == 'BankTransfer'){
+                $('.bank-transfer-div').show();
+            } else {
+                $('.bank-transfer-div').hide();
+            }
+        });
+
+        $('#date_of_birth').datepicker({
+            todayHighlight: true,
+            orientation: "bottom left",
+            templates: {
+                leftArrow: '<i class="la la-angle-left"></i>',
+                rightArrow: '<i class="la la-angle-right"></i>'
+            }
         });
     });
 </script>
-<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js' ?>"></script>
+<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.2' ?>"></script>

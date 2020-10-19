@@ -1,7 +1,9 @@
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl ?>/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" />
 <style>
     .has-error input {
         border-color: red;
+    }
+    .datepicker{
+        width: unset;
     }
 </style>
 <div class="subheader py-2 py-lg-4 subheader-transparent" id="kt_subheader">
@@ -268,7 +270,7 @@
                                             <div class="col-4">
                                                 <input type="text" name="business_name" id="business_name" value="<?php echo $model->business_name ?>" class="form-control form-control-line">
                                             </div>
-                                            <label class="col-form-label col-2 text-lg-right text-left">Postcode</label>
+                                            <label class="col-form-label col-2 text-lg-right text-left">Vat Number</label>
                                             <div class="col-4">
                                                 <input type="text" name="vat_number" id="vat_number" value="<?php echo $model->vat_number ?>" class="form-control form-control-line">
                                             </div>
@@ -396,10 +398,16 @@
         </div>
     </div>
 </div>
-<script src="<?php echo Yii::app()->request->baseUrl ?>/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl ?>/plugins/jquery-validation/jquery.validate.min.js"></script>
 <script type="text/javascript">
-    $('#date_of_birth').bootstrapMaterialDatePicker({maxDate: new Date(),time:false});
+    $('#date_of_birth').datepicker({
+        todayHighlight: true,
+        orientation: "bottom left",
+        templates: {
+            leftArrow: '<i class="la la-angle-left"></i>',
+            rightArrow: '<i class="la la-angle-right"></i>'
+        }
+    });
     var email = "<?= $model->email; ?>";
     var verify_pass_url = "<?= Yii::app()->createUrl('user/verifyOldPassword'); ?>";
 
