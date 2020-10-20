@@ -161,6 +161,7 @@ class UserController extends Controller
                         $model->busAddress_postcode = $_POST['busAddress_postcode'];
                         $model->busAddress_region = $_POST['busAddress_region'];
                         $model->busAddress_country = $_POST['busAddress_country'];
+                        $model->business_phone = $_POST['business_phone'];
                     }else{
                         if(isset($_POST['building_num'])){
                             $model->busAddress_building_num = $_POST['building_num'];
@@ -169,6 +170,7 @@ class UserController extends Controller
                             $model->busAddress_postcode = $_POST['postcode'];
                             $model->busAddress_region = $_POST['region'];
                             $model->busAddress_country = $_POST['country'];
+                            $model->business_phone = $_POST['phone'];
                         } else {
                             $model->busAddress_building_num = $model->building_num;
                             $model->busAddress_city = $model->city;
@@ -176,6 +178,7 @@ class UserController extends Controller
                             $model->busAddress_postcode = $model->postcode;
                             $model->busAddress_region = $model->region;
                             $model->busAddress_country = $model->country;
+                            $model->business_phone = $model->phone;
                         }
                     }
                 }
