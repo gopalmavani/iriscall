@@ -84,41 +84,6 @@ class TestCaseHelper extends CApplicationComponent {
         $order_affiliate_test_case['details'] = $detailString;
         array_push($test_cases, $order_affiliate_test_case);
 
-        //License-Nodes Check.
-        $sql = "select email, total_licenses, available_licenses, total_licenses-available_licenses as cbm_license_used, used_cnt, unused_cnt,
-                    total_licenses-available_licenses-used_cnt as diff from cbm_user_licenses 
-                    inner join (select email_address as ema, 
-                    sum(case when matrix_node_num is not null then 1 else 0 end) as used_cnt, 
-                    sum(case when matrix_node_num is null then 1 else 0 end) as unused_cnt 
-                    from cbm_user_accounts where email_address is not null group by email_address) as tmptable on email = ema 
-                    where total_licenses-available_licenses-used_cnt != 0 AND email != 'system@system.com' ORDER BY `diff` DESC";
-        $license_nodes = Yii::app()->db->createCommand($sql)->queryAll();
-
-        $license_nodes_test_case = array();
-        $license_nodes_test_case['name'] = "Used Licenses to Nodes check";
-        $license_nodes_test_case['description'] = "Comparison of user's used licenses with their matrix nodes";
-        $license_nodes_test_case['status'] = 1;
-
-        $detailString = '<div class="row">';
-        foreach ($license_nodes as $detail){
-            $license_nodes_test_case['status'] = 0;
-            $detailString .= '<div class="col-md-4">
-                                  <div class="block block-themed block-rounded">
-                                    <div class="block-header bg-flat">
-                                        <h3 class="block-title" style="text-transform: none">Email Address: <br>' . $detail['email'] . '</h3>  
-                                    </div>
-                                    <div class="block-content">
-                                        <p>Matrix data shows <strong class="h4">' . $detail['used_cnt'] . '</strong> used licenses, while the system licenses count
-                                         shows <strong class="h4">' . $detail['cbm_license_used'] . '</strong> used licenses.</p>
-                                    </div>
-                                  </div>
-                              </div>';
-
-        }
-        $detailString .= '</div>';
-        $license_nodes_test_case['details'] = $detailString;
-        array_push($test_cases, $license_nodes_test_case);
-
         //Orphan node test
         $sql = "SELECT * FROM `fifty_euro_matrix` where id not in 
                   (SELECT lchild from fifty_euro_matrix where lchild is not null)  and id not in 
