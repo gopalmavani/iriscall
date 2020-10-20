@@ -472,14 +472,26 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row mb2">
-                                                                <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div class="col-md-9">
+                                                                        <span class="switch switch-outline switch-icon switch-success">
+                                                                            <label>
+                                                                                <input type="checkbox" name="privacy" class="privacy" />
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </span>
+                                                                    </div>
+                                                                    <label class="col-md-3 col-form-label">I accept the <a target="_blank" href="https://www.cbmglobal.io/legal/terms-conditions.html">privacy
+                                                                            policy*</a></label>
+                                                                </div>
+                                                                <!--<div class="col-md-12">
                                                                     <div class="checkbox-single custom-control form-group form-check">
                                                                         <input type="checkbox" id="privacy" name="privacy">
                                                                         <span></span>
                                                                         <label for="privacy">I accept the <a target="_blank" href="https://www.cbmglobal.io/legal/terms-conditions.html">privacy
                                                                                 policy*</a></label>
                                                                     </div>
-                                                                </div>
+                                                                </div>-->
                                                             </div>
                                                         </div>
                                                         <!--end: Form Wizard Step 3-->
@@ -513,7 +525,7 @@
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins.bundle.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/prismjs.bundle.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/scripts.bundle.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-user.js', CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-user.js?v=0.0.1', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/jaktutorial.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wizard/jquery.validate.min.js', CClientScript::POS_END);
 //Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/wizard.js');
@@ -546,15 +558,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wiz
         $('.btnCollapse').on('click', function () {
             $('#sidebar').toggleClass('active');
         });
-        /*$('#UserInfo_date_of_birth').bootstrapMaterialDatePicker(
-            {
-                maxDate: new Date(),
-                format: 'LL',
-                time: false
-            }
-        );*/
-        //var accountType = "<?php //echo $_GET['accountType']; ?>";
-        //$('#accountType').val(accountType);
 
         $("#password").keyup(function () {
             passwordStrength($(this).val());
@@ -569,295 +572,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wiz
                 $('#custom_mail_checker').show();
             }
         });
-
-        /*jQuery.validator.addMethod("visibleEmailEquals", function(value, element) {
-            if(element.id == 'confirm_email'){
-                if($('#confirm_email').is(":visible")){
-                    if($('#confirm_email').val() == $('#email').val()){
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            }
-        }, "The Email you entered doesn’t match.");
-        jQuery.validator.addMethod("visiblePasswordEquals", function(value, element) {
-            if(element.id == 'confirm_password'){
-                if($('#confirm_password').is(":visible")){
-                    if($('#confirm_password').val() == $('#password').val()){
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            }
-        }, "The Password you entered doesn’t match.");
-        var validator = $(".validation-wizard1").validate({
-            ignore: ".ignore",
-            errorClass: "text-danger",
-            errorElement: "span",
-            successClass: "text-success",
-            highlight: function (element, errorClass) {
-                $(element).parent().parent().addClass(errorClass);
-            },
-            unhighlight: function (element, errorClass) {
-                $(element).parent().parent().removeClass(errorClass);
-            },
-            errorPlacement: function (error, element) {
-                jQuery(element).parents('.form-group').append(error);
-            },
-            submitHandler: function (form) {
-                console.log("INside Handler");
-                return false;
-            },
-            rules: {
-                'UserInfo[first_name]': {
-                    required: true
-                },
-                'UserInfo[last_name]': {
-                    required: true
-                },
-                'UserInfo[email]': {
-                    required: true,
-                    email: true,
-                    remote: {
-                        url: '',
-                        type: 'post',
-                        data: {
-                            'UserInfo[email]': function () {
-                                return $('#email').val();
-                            }
-                        }
-                    }
-                },
-                'confirm_email': {
-                    required: "#confirm_email:visible",
-                    visibleEmailEquals: true
-                },
-                'UserInfo[phone]': {
-                    required: true,
-                    number: true,
-                },
-                'UserInfo[date_of_birth]': {
-                    required: true,
-                },
-                'UserInfo[street]': {
-                    required: true
-                },
-                'UserInfo[building_num]': {
-                    required: true
-                },
-                'UserInfo[city]': {
-                    required: true
-                },
-                'UserInfo[postcode]': {
-                    required: true,
-                },
-                'UserInfo[country]': {
-                    required: true
-                },
-                'password': {
-                    required: "#password:visible",
-                },
-                'UserInfo[business_name]': {
-                    required: "#UserInfo_business_name:visible"
-                },
-                'UserInfo[vat_number]': {
-                    required: "#UserInfo_vat_number:visible"
-                },
-                'confirm_password': {
-                    required: "#confirm_password:visible",
-                    visiblePasswordEquals: true
-                    //equalTo: '#password'
-                },
-                'UserInfo[busAddress_street]': {
-                    required: "#UserInfo_busAddress_street:visible"
-                },
-                'UserInfo[busAddress_building_num]': {
-                    required: "#UserInfo_busAddress_building_num:visible"
-                },
-                'UserInfo[busAddress_city]': {
-                    required: "#UserInfo_busAddress_city:visible"
-                },
-                'UserInfo[busAddress_postcode]': {
-                    required: "#UserInfo_busAddress_postcode:visible",
-                },
-                'UserInfo[busAddress_country]': {
-                    required: "#UserInfo_busAddress_country:visible"
-                },
-                'payout_bank': {
-                    required: "#bank:visible"
-                },
-                'payout_accountname': {
-                    required: "#account:visible"
-                },
-                'payout_biccode': {
-                    required: "#bic:visible"
-                },
-                'payout_iban': {
-                    required: "#iban:visible"
-                },
-                'privacy': {
-                    required: "#privacy:visible"
-                },
-                'payout_street': {
-                    required: function () {
-                        if($('#payoutDetailsId').is(":checked")){
-                            return !checkIfInEU();
-                        } else {
-                            return false;
-                        }
-                    }
-                },
-                'payout_house': {
-                    required: function () {
-                        if($('#payoutDetailsId').is(":checked")){
-                            return !checkIfInEU();
-                        } else {
-                            return false;
-                        }
-                    }
-                },
-                'payout_city': {
-                    required: function () {
-                        if($('#payoutDetailsId').is(":checked")){
-                            return !checkIfInEU();
-                        } else {
-                            return false;
-                        }
-                    }
-                },
-                'payout_post': {
-                    required: function () {
-                        if($('#payoutDetailsId').is(":checked")){
-                            return !checkIfInEU();
-                        } else {
-                            return false;
-                        }
-                    }
-                },
-                'payout_region': {
-                    required: function () {
-                        if($('#payoutDetailsId').is(":checked")){
-                            return !checkIfInEU();
-                        } else {
-                            return false;
-                        }
-                    }
-                },
-                'payout_country': {
-                    required: function () {
-                        if($('#payoutDetailsId').is(":checked")){
-                            return !checkIfInEU();
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-            },
-            messages: {
-                'UserInfo[first_name]': {
-                    required: "Please enter first name.",
-                },
-                'UserInfo[last_name]': {
-                    required: "Please enter last name.",
-                },
-                'UserInfo[email]': {
-                    required: "Please enter email.",
-                    email: "Please enter valid email.",
-                    remote: "Email Already Exist in System. Please login"
-                },
-                'confirm_email': {
-                    required: "Please enter confirm email.",
-                    //equalTo: "The Email you entered doesn’t match."
-                },
-                'UserInfo[phone]': {
-                    required: "Please enter phone number.",
-                    number: "it contains only numbers.",
-                },
-                'UserInfo[date_of_birth]': {
-                    required: "Please select your date of birth."
-                },
-                'UserInfo[street]': {
-                    required: "Please enter street name."
-                },
-                'UserInfo[building_num]': {
-                    required: "Please enter house number."
-                },
-                'UserInfo[city]': {
-                    required: "Please enter city name."
-                },
-                'UserInfo[postcode]': {
-                    required: "Please enter postcode.",
-                },
-                'UserInfo[country]': {
-                    required: "Please select country."
-                },
-                'password': {
-                    required: "Please enter password.",
-                },
-                'confirm_password': {
-                    required: "Please enter confirm password.",
-                    //equalTo: "The Password you entered doesn’t match."
-                },
-                'UserInfo[business_name]': {
-                    required: "Please enter Company Name."
-                },
-                'UserInfo[vat_number]': {
-                    required: "Please enter Vat number."
-                },
-                'UserInfo[busAddress_street]': {
-                    required: "Please enter street name."
-                },
-                'UserInfo[busAddress_building_num]': {
-                    required: "Please enter house number."
-                },
-                'UserInfo[busAddress_city]': {
-                    required: "Please enter city name."
-                },
-                'UserInfo[busAddress_postcode]': {
-                    required: "Please enter postal code.",
-                },
-                'UserInfo[busAddress_country]': {
-                    required: "Please select country."
-                },
-                'payout_bank': {
-                    required: "Please enter bank name."
-                },
-                'privacy': {
-                    required: "Please accept the privacy policy"
-                },
-                'payout_biccode': {
-                    required: "Please enter biccode."
-                },
-                'payout_iban': {
-                    required: "Please enter Iban."
-                },
-                'payout_street': {
-                    required: "Please enter street."
-                },
-                'payout_house': {
-                    required: "Please enter house number."
-                },
-                'payout_city': {
-                    required: "Please enter city."
-                },
-                'payout_post': {
-                    required: "Please enter post code."
-                },
-                'payout_region': {
-                    required: "Please enter region."
-                },
-                'payout_country': {
-                    required: "Please enter country."
-                }
-            }
-        });
-        console.log(validator.errorList);*/
     });
 
     function disable_if_present(selectorArr){
@@ -934,10 +648,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wiz
         } else {
             return false;
         }
-    }
-
-    function formValidation() {
-
     }
 </script>
 

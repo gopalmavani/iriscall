@@ -38,15 +38,9 @@ $folder = Yii::app()->params['basePath'];
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 
-    <link rel="shortcut icon" href="<?php echo Yii::app()->request->baseUrl; ?>/images/logos/favicon.ico">
+    <link rel="shortcut icon" href="<?php echo Yii::app()->request->baseUrl; ?>/images/logos/iriscall-favicon.png">
 
     <title><?php echo ucfirst(Yii::app()->params['applicationName']); ?></title>
-    <?php
-    if(isset($theme))
-    {  if($theme != 'oneui.min.css'){?>
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl . '/plugins/css/themes/'.$theme;  ?>" class="appended" >
-    <?php }
-    }?>
 </head>
 <body>
 <div id="page-container" class="sidebar-l sidebar-o side-scroll header-navbar-fixed">
@@ -156,32 +150,6 @@ $folder = Yii::app()->params['basePath'];
                                 <!-- Sales Tab -->
                                 <div class="tab-pane fade fade-left" id="tabs-side-overlay-sales">
                                     <div class="block pull-r-l">
-                                        <!-- Stats -->
-                                        <!-- <div class="block-content pull-t">
-                                            <div class="row items-push">
-                                                <div class="col-xs-6">
-                                                    <div class="font-w700 text-gray-darker text-uppercase">Sales</div>
-                                                    <a class="h3 font-w300 text-primary" href="javascript:void(0)">22030</a>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <div class="font-w700 text-gray-darker text-uppercase">Balance</div>
-                                                    <a class="h3 font-w300 text-primary" href="javascript:void(0)">$ 4.589,00</a>
-                                                </div>
-                                            </div>
-                                        </div> -->
-                                        <!-- END Stats -->
-
-                                        <!-- Today -->
-<!--                                        <div class="block-content block-content-full block-content-mini bg-gray-lighter">-->
-                                            <!-- <div class="row">
-                                                <div class="col-xs-6">
-                                                    <span class="font-w600 font-s13 text-gray-darker text-uppercase">Today</span>
-                                                </div>
-                                                <div class="col-xs-6 text-right">
-                                                    <span class="font-s13 text-muted">$996</span>
-                                                </div>
-                                            </div> -->
-<!--                                        </div>-->
                                         <?php if (count(NotificationHelper::ShowNotiticationVpamm()) > 0){ ?>
                                             <a href="javascript:void(0);" class="pull-right deleteall deleteAllVpamm"  style="margin-right: 20px;">
                                                Clear All
@@ -265,7 +233,7 @@ $folder = Yii::app()->params['basePath'];
                     </button>
                     <?php $application = strtolower(preg_replace("/[^a-zA-Z0-9]+/", "", Yii::app()->params['applicationName']))?>
                     <a class="h5 text-white " href="<?php echo Yii::app()->createUrl('admin/home/index'); ?>">
-                        <img src="<?php echo Yii::app()->baseUrl.'/images/logos/logo-8.png' ?>" style="max-width: 200px; max-height: 50px;">
+                        <img src="<?php echo Yii::app()->baseUrl.'/images/logos/iriscall-logo-white.png' ?>" style="max-width: 200px; max-height: 50px;">
                     </a>
                 </div>
                 <div class="side-content" id="mainmenu">
@@ -285,18 +253,6 @@ $folder = Yii::app()->params['basePath'];
                     </ul>
                     <ul class="nav-main" id="yw1">
                         <?php $action = Yii::app()->controller->id;
-                        if($action == 'cbmuseraccount' || $action == 'matrix'  ){ $open = "open";}else{ $open = "";} ?>
-                        <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-codepen"></i> <span class=""> <?= Yii::app()->params['appName']; ?> Accounts </span></a>
-                            <ul>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/cbmuseraccount/index'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/cbmuseraccount/index');?>"><i class="fa fa-user"></i> <span class="sidebar-mini-hide"> <?= Yii::app()->params['appName']; ?> User Accounts </span></a></li>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/cbmuseraccount/settings'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/cbmuseraccount/settings');?>"><i class="fa fa-user"></i> <span class="sidebar-mini-hide"> Account Email Settings </span></a></li>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/matrix/mmcmatrix'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/matrix/mmcmatrix');?>"><i class="fa fa-user"></i> <span class="sidebar-mini-hide"> MMC Matrix </span></a></li>
-                            </ul>
-                        </li>
-                        <?php $action = Yii::app()->controller->id;
                         if($action == 'productInfo' || $action == 'categories'){ $open = "open";}else{ $open = "";} ?>
                         <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-product-hunt"></i> <span class=""> Product </span></a>
                             <ul>
@@ -314,46 +270,12 @@ $folder = Yii::app()->params['basePath'];
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/orderInfo/admin');?>"><i class="fa fa-file-text-o"></i> <span class="sidebar-mini-hide"> Orders </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/orderCreditMemo/admin'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/orderCreditMemo/admin');?>"><i class="fa fa-book"></i> <span class="sidebar-mini-hide"> Order Credit Memo </span></a></li>
-                                <?php /*if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/subscription/admin'){ $active = "active";}else{ $active = " ";} */?><!--
-                                <li><a class="<?/*= $active; */?>" href="<?php /*echo Yii::app()->createUrl('/admin/subscription/admin');*/?>"><i class="fa fa-product-hunt"></i> <span class="sidebar-mini-hide"> Subscription </span></a></li>-->
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/orderInfo/settings'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/orderInfo/settings');?>"><i class="fa fa-cogs"></i> <span class="sidebar-mini-hide"> Settings </span></a></li>
                             </ul>
                         </li>
-                        <?php $action = Yii::app()->controller->id;
-                        if($action == 'mt4' || $action == 'withdrawal'){ $open = "open";}else{ $open = "";} ?>
-                        <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-ticket"></i> <span class=""> Mt4 Manager </span></a>
-                            <ul>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/mt4/accounts'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/mt4/accounts');?>"><i class="fa fa-ticket"></i> <span class="sidebar-mini-hide"> Accounts </span></a></li>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/mt4/depositWithdraw'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/mt4/depositWithdraw');?>"><i class="fa fa-cogs"></i> <span class="sidebar-mini-hide"> Deposit </span></a></li>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/withdrawal/index'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/withdrawal/index');?>"><i class="fa fa-cogs"></i> <span class="sidebar-mini-hide"> Manage Withdrawals </span></a></li>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/mt4/settings'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/mt4/settings');?>"><i class="fa fa-cogs"></i> <span class="sidebar-mini-hide"> VPAMM </span></a></li>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/mt4/statalysegraph'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/mt4/statalysegraph');?>"><i class="fa fa-bar-chart"></i> <span class="">Statalyse Graph</span></a></li>
-                            </ul>
-                        </li>
-
-                        <?php $action = Yii::app()->controller->id;
-                            if($action == 'commission'){ $open = "open";}else{ $open = "";} ?>
-                        <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-euro"></i> <span class=""> Commission </span></a>
-                            <ul>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/commission/index'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/commission/index"><i class="fa fa-money');?>"></i> <span class="sidebar-mini-hide"> Commission Calculation </span></a></li>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/commission/comparison'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/commission/comparison"><i class="fa fa-align-justify');?>"></i> <span class="sidebar-mini-hide"> Commission Comparison </span></a></li>
-                            </ul>
-                        </li>
-
                         <?php $action = Yii::app()->controller->id;
                         if($action == 'wallet' || $action == 'walletTypeEntity'){ $open = "open";}else{ $open = "";} ?>
                         <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="si si-wallet"></i> <span class=""> Wallet Management </span></a>
                             <ul>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/wallet/payoutindex'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/wallet/payoutindex"><i class="fa fa-money');?>"></i> <span class="sidebar-mini-hide"> Payout Details </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/wallet/overview'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/wallet/overview"><i class="si si-wallet');?>"></i> <span class="sidebar-mini-hide"> Wallet Overview </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/wallet/user'){ $active = "active";}else{ $active = " ";} ?>
@@ -427,12 +349,6 @@ $folder = Yii::app()->params['basePath'];
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         <li class="dropdown-header">Profile</li>
-
-                                        <li>
-                                            <a tabindex="-1" href="<?php echo Yii::app()->createUrl('admin/settings/index'); ?>">
-                                                <i class="si si-settings pull-right"></i>Settings
-                                            </a>
-                                        </li>
                                         <li>
                                             <a tabindex="-1" href="<?php echo Yii::app()->createUrl('user/autologin').'?id='.Yii::app()->session['adminLoginId'] ?>">
                                                 <i class="fa fa-arrow-right pull-right"></i>Go to front-end

@@ -28,8 +28,6 @@ var KTAddUser = function () {
 
 			if (validator) {
 				validator.validate().then(function (status) {
-					console.log(status);
-					console.log(validator);
 					if (status == 'Valid') {
 						wizard.goTo(wizard.getNewStep());
 

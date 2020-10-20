@@ -1082,27 +1082,4 @@ class OrderInfoController extends CController
 
         echo json_encode($json_data);
     }
-
-    /**
-     * Opens settings page for order module.
-     */
-    public function actionSettings()
-    {
-        date_default_timezone_set('Europe/Berlin');
-        if (isset($_POST['hidden_email'])) {
-            $permission = $_POST['hidden_email'];
-            $user_id = Yii::app()->user->id;
-            $firstsql = "SELECT value from settings where module_name = 'order_email' and settings_key = 'email_permission'";
-            $result = Yii::app()->db->createCommand($firstsql)->queryAll();
-            if (!empty($result)) {
-                $modified_date = date('Y-m-d H:i:s');
-                $sql = "UPDATE settings set value = " . "'$permission'" . ", modified_date = " . "'$modified_date'" . " where module_name = 'order_email' and settings_key = 'email_permission'";
-            } else {
-                $sql = "INSERT INTO settings (`user_id`,`module_name`,`settings_key`,`value`) values ('$user_id','order_email','email_permission','$permission')";
-            }
-            Yii::app()->db->createCommand($sql)->execute();
-            $_SESSION['delete'] = "Order settings saved successfully...";
-        }
-        $this->render('settings');
-    }
 }

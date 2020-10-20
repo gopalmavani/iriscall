@@ -64,8 +64,6 @@
                 <div class="block-header">
                     <ul class="block-options">
                         <div class='picker'>
-<!--                            <i class="fa fa-calendar"></i>-->
-                            <!--<input type="text" name="daterange" value="/01/2018 - 01/15/2018"  />-->
                             <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
@@ -110,87 +108,7 @@
                     <br>
                     <div id="order">
                         <table class="table table-borderless table-striped table-vcenter order" >
-
-                                <tbody >
-
-                                </tbody>
-
-                        </table>
-                    </div>
-
-
-                    <!--<div class="pull-right m-b-10">-->
-                        <?php //echo CHtml::link('See More', array('orderInfo/admin'),['class'=>'text-smooth']); ?>
-                    <!--</div>-->
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="block block-opt-refresh-icon4">
-                <div class="block-header">
-                    <ul class="block-options">
-<!--                        <li>-->
-<!--                            <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>-->
-<!--                        </li>-->
-                        <li>
-                            <button id="cbmuseraccount" type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-                        </li>
-                        <li>
-                            <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
-                        </li>
-                        <li>
-                            <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="block-content clearfix overscroll" style="height: 495px; overflow-y: hidden;">
-                    <table class="table table-borderless table-striped table-vcenter" id="cbmAccUser">
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <div class="pull-right m-b-10">
-                        <?php //echo CHtml::link('See More', array('cbmuseraccount/index'),['class'=>'text-smooth']); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="block">
-                <ul class="nav nav-tabs nav-tabs-alt" data-toggle="tabs">
-<!--                <ul class="nav nav-tabs nav-tabs-alt" data-toggle="tabs">-->
-                    <li class="pull-right">
-                       <ul class="block-options" style="margin-top:10px; margin-right:15px; ">
-<!--                           <li>-->
-<!--                               <button id="cbmuseraccount" type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>-->
-<!--                           </li>-->
-                           <li>
-                               <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
-                           </li>
-                           <li>
-                               <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
-                           </li>
-                       </ul>
-                    </li>
-                </ul>
-                <div class="block-content tab-content">
-                    <div class="tab-pane active scroll" id="btabs-alt-static-home" >
-                        <h4 class="push-15">Not Registered With Us </h4>
-                        <table class="table table-borderless table-striped table-vcenter" id="cbmAccUser">
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane scroll" id="btabs-alt-static-profile">
-                        <!--<h4 class="font-w300 push-15">Not Registered With Mt4</h4>-->
-                        <h4 class="push-15">Not Registered With Mt4 </h4>
-                        <table class="table table-borderless table-striped table-vcenter" id="cbmAccUser">
-                            <tbody>
-
+                            <tbody >
                             </tbody>
                         </table>
                     </div>
@@ -198,71 +116,6 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <!-- Main Dashboard Chart -->
-            <div class="block" id="chartDisplay">
-                <div class="block-header">
-                    <ul class="block-options">
-                        <!--<li>
-                            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-                        </li>-->
-                        <li>
-                            <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
-                        </li>
-                        <li>
-                            <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
-                        </li>
-                    </ul>
-                    <h3 class="block-title">Commision Monthly Overview</h3>
-                </div>
-
-                <div class="block-content text-center">
-                    <div class="row items-push text-center">
-                        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- END Main Dashboard Chart -->
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="block block-opt-refresh-icon4 ">
-                <div class="block-header bg-gray-lighter ">
-                    <ul class="block-options">
-                        <!--                        <li>-->
-                        <!--                            <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>-->
-                        <!--                        </li>-->
-                        <li>
-                            <button type="button" id="latestDeposit" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-                        </li>
-                        <li>
-                            <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
-                        </li>
-                        <li>
-                            <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
-                        </li>
-                    </ul>
-                    <h3 class="block-title">Latest Deposits / Withdraw</h3>
-                </div>
-                <div class="block-content clearfix">
-                    <table class="table table-borderless table-striped table-vcenter" id="DepositLatest">
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                    <div class="pull-right m-b-10">
-                        <?php echo CHtml::link('See More', array('mt4/depositWithdraw'),['class'=>'text-smooth']); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
 </div>
 <!-- END Page Content -->
 <script src="<?php echo Yii::app()->baseUrl. '/plugins/slick/slick.min.js'; ?>"></script>
@@ -357,85 +210,4 @@
 
 
     });
-</script>
-
-<script>
-
-    $(document).ready(function () {
-
-        $.ajax({
-            url: '<?php echo Yii::app()->createUrl('admin/home/ChartWallet')?>',
-            type: "get",
-            beforeSend: function (response) {
-                $('#chartDisplay').addClass('block-opt-refresh');
-            },
-            success: function (response) {
-                $('#chartDisplay').removeClass('block-opt-refresh');
-                var result = jQuery.parseJSON(response);
-                /*var asd = result.data;*/
-
-                if((result.status == false)){
-                    $('#container').css("height","50px");
-                    $('#container').html("<span align='center'>No Data Found</span>");
-                }else{
-                    Highcharts.chart('container', {
-                        chart: {
-                            type: 'column'
-                        },
-                        title: {
-                            text: 'Monthly Commision Average Graph'
-                        },
-                        /*subtitle: {
-                         text: 'Source: WorldClimate.com'
-                         },*/
-                        xAxis: {
-                            categories: [
-                                'Jan',
-                                'Feb',
-                                'Mar',
-                                'Apr',
-                                'May',
-                                'Jun',
-                                'Jul',
-                                'Aug',
-                                'Sep',
-                                'Oct',
-                                'Nov',
-                                'Dec'
-                            ],
-                            crosshair: true
-                        },
-                        yAxis: {
-                            min: 0,
-                            title: {
-                                text: 'Commission'
-                            }
-                        },
-                        tooltip: {
-                            headerFormat: '<span style="font-size:10px;">{point.key}</span><table>',
-                            pointFormat: '<tr><td style="color:{series.color};padding:0"></td>' +
-                            '<td style="padding:0;width: 50px;"><b>{point.y:.1f} </b></td></tr>',
-                            footerFormat: '</table>',
-
-                            useHTML: true
-                        },credits: {
-                            enabled: false
-                        },
-                        plotOptions: {
-                            column: {
-                                pointPadding: 0.2,
-                                borderWidth: 0
-                            }
-                        },
-                        series:result.series
-
-                    });
-                }
-
-            }
-        });
-
-
-
-    })
 </script>
