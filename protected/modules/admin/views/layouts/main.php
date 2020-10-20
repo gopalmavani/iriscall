@@ -276,8 +276,8 @@ $folder = Yii::app()->params['basePath'];
                         if($action == 'wallet' || $action == 'walletTypeEntity'){ $open = "open";}else{ $open = "";} ?>
                         <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="si si-wallet"></i> <span class=""> Wallet Management </span></a>
                             <ul>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/wallet/overview'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/wallet/overview"><i class="si si-wallet');?>"></i> <span class="sidebar-mini-hide"> Wallet Overview </span></a></li>
+                                <?php /*if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/wallet/overview'){ $active = "active";}else{ $active = " ";} */?><!--
+                                <li><a class="<?/*= $active; */?>" href="<?php /*echo Yii::app()->createUrl('/admin/wallet/overview"><i class="si si-wallet');*/?>"></i> <span class="sidebar-mini-hide"> Wallet Overview </span></a></li>-->
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/wallet/user'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/wallet/user');?>"><i class="si si-wallet"></i> <span class="sidebar-mini-hide"> User Balance </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/wallet/admin'){ $active = "active";}else{ $active = " ";} ?>
