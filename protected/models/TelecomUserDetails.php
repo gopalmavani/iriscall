@@ -78,10 +78,10 @@ class TelecomUserDetails extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-            array('first_name, last_name', 'required'),
+            array('first_name, last_name, email, phone, building_num, street, city, postcode, country, nationality', 'required'),
 			array('id, client_id, user_id, company_since_in_months, expiry_date_month, expiry_date_year, vat_rate, agent_id, gender', 'numerical', 'integerOnly'=>true),
             array('created_at, modified_at', 'safe'),
-            array('email, credit_card_name, first_name, last_name, middle_name', 'length', 'max'=>80),
+            array('email, extra_email, credit_card_name, first_name, last_name, middle_name', 'length', 'max'=>80),
             array('agent_name, bus_number, nationality, landline_number, payment_method, credit_card_type, credit_card_number', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
