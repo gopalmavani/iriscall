@@ -314,7 +314,9 @@ $folder = Yii::app()->params['basePath'];
                         </li>
                         <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/admin');?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> Company </span></a></li>
                         <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrinfo');?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> CDR </span></a></li>
-                   </ul>                </div>
+                        <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/telecom/index');?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> Telecom Details </span></a></li>
+                   </ul>
+                </div>
                 <!-- mainmenu -->
 
             </div>
