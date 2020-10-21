@@ -645,7 +645,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                 <div class="pb-5" data-wizard-type="step-content">
                                     <h4 class="mb-10 font-weight-bold text-dark">Upload KYC Documents</h4>
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-12 col-sm-12">File: Passport</label>
+                                        <label class="col-form-label col-lg-12 col-sm-12 passport_label">File: Passport</label>
                                         <div class="col-lg-12 col-md-9 col-sm-12">
                                             <div class="dropzone dropzone-default" id="passport_file">
                                                 <div class="dropzone-msg dz-message needsclick">
@@ -656,7 +656,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-12 col-sm-12">File: SEPA</label>
+                                        <label class="col-form-label col-lg-12 col-sm-12 sepa_label">File: SEPA</label>
                                         <div class="col-lg-12 col-md-9 col-sm-12">
                                             <div class="dropzone dropzone-default" id="sepa_file">
                                                 <div class="dropzone-msg dz-message needsclick">
@@ -667,7 +667,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-12 col-sm-12">File: Articles Of Association</label>
+                                        <label class="col-form-label col-lg-12 col-sm-12 aoa_label">File: Articles Of Association</label>
                                         <div class="col-lg-12 col-md-9 col-sm-12">
                                             <div class="dropzone dropzone-default" id="aoa_file">
                                                 <div class="dropzone-msg dz-message needsclick">
@@ -686,10 +686,10 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <label class="col-form-label col-8">Account Type</label>
                                                 <div class="col-8">
                                                     <select  name="account_type" id="account_type" class="form-control form-control-line">
-                                                        <option value="NewActivation">New Activation</option>
-                                                        <option value="Prepaid">Prepaid</option>
-                                                        <option value="PostpaidDomestic">Postpaid Domestic</option>
-                                                        <option value="PostpaidBusiness">Postpaid Business</option>
+                                                        <option value="NewActivation" selected>New Activation</option>
+                                                        <option value="Prepaid" disabled>Prepaid</option>
+                                                        <option value="PostpaidDomestic" disabled>Postpaid Domestic</option>
+                                                        <option value="PostpaidBusiness" disabled>Postpaid Business</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -777,6 +777,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 <script src="<?= Yii::app()->baseUrl . '/plugins/credit-card/javascripts/vendor/cssua.min.js' ?>"></script>
 <script src="<?= Yii::app()->baseUrl . '/plugins/credit-card/javascripts/skeuocard.min.js' ?>"></script>
 <script type="text/javascript">
+    var passport_file_count = 0;
+    var sepa_file_count = 0;
+    var aoa_file_count = 0;
     $(document).ready(function () {
 
         if($('.is_different_address').is(":checked")){
@@ -818,9 +821,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             maxFilesize: 2, // MB
             addRemoveLinks: true,
             success: function (file, response) {
+                passport_file_count = 1;
                 var imgName = response;
                 file.previewElement.classList.add("dz-success");
-                console.log("Successfully uploaded :" + imgName);
             },
             error: function (file, response) {
                 file.previewElement.classList.add("dz-error");
@@ -834,9 +837,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             maxFilesize: 2, // MB
             addRemoveLinks: true,
             success: function (file, response) {
+                sepa_file_count = 1;
                 var imgName = response;
                 file.previewElement.classList.add("dz-success");
-                console.log("Successfully uploaded :" + imgName);
             },
             error: function (file, response) {
                 file.previewElement.classList.add("dz-error");
@@ -850,9 +853,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             maxFilesize: 2, // MB
             addRemoveLinks: true,
             success: function (file, response) {
+                aoa_file_count = 1;
                 var imgName = response;
                 file.previewElement.classList.add("dz-success");
-                console.log("Successfully uploaded :" + imgName);
             },
             error: function (file, response) {
                 file.previewElement.classList.add("dz-error");
@@ -875,6 +878,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         $('#date_of_birth').datepicker({
             todayHighlight: true,
             orientation: "bottom left",
+            startDate: "01-01-1950",
+            endDate: "0d",
             templates: {
                 leftArrow: '<i class="la la-angle-left"></i>',
                 rightArrow: '<i class="la la-angle-right"></i>'

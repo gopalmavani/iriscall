@@ -347,12 +347,9 @@ var KTWizard1 = function () {
 				return; // Skip if stepped back
 			}
 			var cardError = 0;
-			console.log("Wizard steps: "+wizard.getStep());
 			if(wizard.getStep() == 4){
 				if($('input[type=radio][name=payment_method]:checked').val() == 'CreditCard'){
-					console.log("Inside validation One");
 					if(!card.isValid()){
-                        console.log("Inside validation Two");
                         Swal.fire({
                             text: "Sorry, looks like there are some errors detected in credit card details",
                             icon: "error",
@@ -362,7 +359,7 @@ var KTWizard1 = function () {
                                 confirmButton: "btn font-weight-bold btn-light"
                             }
                         }).then(function () {
-                            KTUtil.scrollTop();
+                            //KTUtil.scrollTop();
                         });
                         cardError = 1;
 					}
@@ -370,16 +367,54 @@ var KTWizard1 = function () {
                     cardError = 0;
 				}
 			}
-			console.log("Card Error: "+cardError);
+			var fileError = 0;
+			if(wizard.getStep() == 5){
+			    if(passport_file_count == 0){
+			        $('.passport_label').addClass('text-danger');
+                    $('.passport_label').html('Passport is required');
+                    fileError = fileError + 1;
+                } else {
+                    $('.passport_label').removeClass('text-danger');
+                    $('.passport_label').html('File: Passport');
+                }
+                if(sepa_file_count == 0){
+                    $('.sepa_label').addClass('text-danger');
+                    $('.sepa_label').html('SEPA is required');
+                    fileError = fileError + 1;
+                } else {
+                    $('.sepa_label').removeClass('text-danger');
+                    $('.sepa_label').html('File: SEPA');
+                }
+                if(aoa_file_count == 0){
+                    $('.aoa_label').addClass('text-danger');
+                    $('.aoa_label').html('Articles Of Association is required');
+                    fileError = fileError + 1;
+                } else {
+                    $('.aoa_label').removeClass('text-danger');
+                    $('.aoa_label').html('File: Articles Of Association');
+                }
+                if(fileError > 0){
+                    Swal.fire({
+                        text: "Sorry, looks like there are some errors detected while uploading documents",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light"
+                        }
+                    }).then(function () {
+                        //KTUtil.scrollTop();
+                    });
+                }
+            }
 
 			// Validate form before change wizard step
 			var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
 
 			if (validator) {
 				validator.validate().then(function (status) {
-					if (status == 'Valid' && cardError == 0) {
+					if (status == 'Valid' && cardError == 0 && fileError == 0) {
 						wizard.goTo(wizard.getNewStep());
-                        console.log("Going to step: "+wizard.getNewStep());
 
 						KTUtil.scrollTop();
 					} else {
@@ -392,7 +427,7 @@ var KTWizard1 = function () {
 								confirmButton: "btn font-weight-bold btn-light"
 							}
 						}).then(function () {
-							KTUtil.scrollTop();
+							//KTUtil.scrollTop();
 						});
 					}
 				});

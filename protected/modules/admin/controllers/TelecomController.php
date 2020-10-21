@@ -124,6 +124,11 @@ class TelecomController extends CController{
             if(isset($_POST['TelecomUserDetails'])){
                 $this->saveTelecomUserDetails($_POST['TelecomUserDetails']);
 
+                $userInfo = UserInfo::model()->findByAttributes(['email'=>$_POST['TelecomUserDetails']['email']]);
+                if(isset($_FILES)){
+                    $this->uploadfiles($userInfo->user_id, $_FILES);
+                }
+
                 $model = new TelecomUserDetails('search');
                 $model->unsetAttributes();  // clear any default values
                 if (isset($_GET['TelecomUserDetails']))
@@ -191,6 +196,45 @@ class TelecomController extends CController{
         $this->render('view', array(
             'model' => $model
         ));
+    }
+
+    public function uploadfiles($user_id, $files){
+        $uploadDir = 'uploads/'.$user_id.'/';
+        if(!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        if(isset($files['passport']['name'])){
+            $uploadFile = $uploadDir . basename($files['passport']['name']);
+            $documentId = 1;
+            if(move_uploaded_file($files['passport']['tmp_name'], $uploadFile)){
+                $documentPath = $uploadDir . $files['passport']['name'];
+                $this->addDocumentPathToDB($user_id, $documentId, $documentPath);
+            }
+        }
+        if(isset($files['sepa']['name'])){
+            $uploadFile = $uploadDir . basename($files['sepa']['name']);
+            $documentId = 2;
+            if(move_uploaded_file($files['sepa']['tmp_name'], $uploadFile)){
+                $documentPath = $uploadDir . $files['sepa']['name'];
+                $this->addDocumentPathToDB($user_id, $documentId, $documentPath);
+            }
+        }
+        if(isset($files['articles_of_association']['name'])){
+            $uploadFile = $uploadDir . basename($files['articles_of_association']['name']);
+            $documentId = 3;
+            if(move_uploaded_file($files['articles_of_association']['tmp_name'], $uploadFile)){
+                $documentPath = $uploadDir . $files['articles_of_association']['name'];
+                $this->addDocumentPathToDB($user_id, $documentId, $documentPath);
+            }
+        }
+    }
+
+    protected function addDocumentPathToDB($userId, $documentId, $documentPath){
+        $document = new TelecomUserDocuments();
+        $document->user_id = $userId;
+        $document->document_id = $documentId;
+        $document->document_path = $documentPath;
+        $document->save(false);
     }
 }
 ?>

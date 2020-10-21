@@ -3,7 +3,6 @@
 /* @var $model TelecomUserDetails */
 /* @var $form CActiveForm */
 ?>
-
 <div class="row">
     <div class="col-md-12">
         <div class="pull-right" style="margin: 0px 15px 15px 0px;">
@@ -26,7 +25,8 @@
                             'layout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
                             'enableAjaxValidation' => false,
                             'htmlOptions' => array(
-                                'name' => 'UserProfile'
+                                'name' => 'UserProfile',
+                                'enctype' => 'multipart/form-data',
                             )
                         ));
                         ?>
@@ -377,12 +377,24 @@
                                 </div>
                             </div>
                         </div>
-                        <!--<hr>
+                        <hr>
                         <div class="row">
                             <div class="col-md-12">
                                 <h4>Upload Documents</h4>
                             </div>
-                        </div>-->
+                            <div class="col-md-12">
+                                <label class="control-label" for="TelecomUserDetails_passport">Passport file</label>
+                                <input type="file" name="passport" id="passport_file">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="control-label" for="TelecomUserDetails_sepa">SEPA file</label>
+                                <input type="file" name="sepa" id="sepa_file">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="control-label" for="TelecomUserDetails_aoa">AOA file</label>
+                                <input type="file" name="aoa" id="aoa_file">
+                            </div>
+                        </div>
                     </div>
                     <div class="row col-md-12" align="right">
                         <div class="form-group">
@@ -566,5 +578,4 @@
             form.submit();
         }
     });
-    console.log(validator.errorList);
 </script>
