@@ -236,5 +236,30 @@ class TelecomController extends CController{
         $document->document_path = $documentPath;
         $document->save(false);
     }
+
+    /*
+     * Delete telecom user and account along with all its files
+     * */
+    public function actionDelete()
+    {
+        $telecom_user = TelecomUserDetails::model()->findByPk($_POST['id']);
+
+        TelecomAccountDetails::model()->deleteAll("user_id ='" . $telecom_user->user_id . "'");
+        $path = '/uploads/'.$telecom_user->user_id;
+        UserHelper::deleteFiles($path);
+        TelecomUserDocuments::model()->deleteAll("user_id ='" . $telecom_user->user_id . "'");
+
+
+        if($telecom_user->delete()){
+            echo json_encode([
+                'token' => 1,
+            ]);
+        }
+        else{
+            echo json_encode([
+                'token' => 0,
+            ]);
+        }
+    }
 }
 ?>

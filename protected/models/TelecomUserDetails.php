@@ -56,6 +56,7 @@
  * @property integer $agent_id
  * @property string $agent_name
  * @property string $comments
+ * @property integer $telecom_user_status
  * @property string $created_at
  * @property string $modified_at
 
@@ -79,13 +80,13 @@ class TelecomUserDetails extends CActiveRecord
 		// will receive user inputs.
 		return array(
             array('first_name, last_name, email, phone, building_num, street, city, postcode, country, nationality', 'required'),
-			array('id, client_id, user_id, company_since_in_months, expiry_date_month, expiry_date_year, vat_rate, agent_id, gender', 'numerical', 'integerOnly'=>true),
+			array('id, client_id, user_id, company_since_in_months, expiry_date_month, expiry_date_year, vat_rate, agent_id, gender, telecom_user_status', 'numerical', 'integerOnly'=>true),
             array('created_at, modified_at', 'safe'),
             array('email, extra_email, credit_card_name, first_name, last_name, middle_name', 'length', 'max'=>80),
             array('agent_name, bus_number, nationality, landline_number, payment_method, credit_card_type, credit_card_number', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, client_id, user_id, date_of_birth, phone, extra_email, language, 
+			array('id, client_id, user_id, date_of_birth, phone, extra_email, language, telecom_user_status
 			 send_invoice_via, invoice_detail_type, building_num, street, city, postcode, country, bus_number, nationality
 			 billing_name, billing_building_num, billing_street, billing_city, billing_postcode, billing_country, billing_bus_number,
 			 business_name, business_country, vat_number, vat_rate, bank_name, bank_building_num, bank_street, bank_city, bank_postcode, bank_country,
