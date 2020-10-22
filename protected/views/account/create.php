@@ -17,7 +17,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                 <h5 class="text-dark font-weight-bold my-1 mr-5">New Account</h5>
                 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                     <li class="breadcrumb-item">
-                        <a href="<?= Yii::app()->createUrl('account/index'); ?>" class="text-muted">All Accounts</a>
+                        <a href="<?= Yii::app()->createUrl('telecom/index'); ?>" class="text-muted">All Accounts</a>
                     </li>
                     <li class="breadcrumb-item">
                         <a href="<?= Yii::app()->createUrl('account/create'); ?>" class="text-muted">New Account</a>
@@ -507,18 +507,31 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <label class="col-form-label col-12">Choose required payment method</label>
                                         <div class="col-9 col-form-label">
                                             <div class="radio-inline">
-                                                <label class="radio radio-success">
+                                                <label class="radio radio-success sepa_radio">
                                                     <input value="SEPA" <?php if ($telecom_user_detail->payment_method == "SEPA") { echo "checked";} ?> type="radio" class="check" name="payment_method">
                                                     <span></span>SEPA
                                                 </label>
-                                                <label class="radio radio-success">
+                                                <label class="radio radio-success credit_card_radio">
                                                     <input value="CreditCard" <?php if ($telecom_user_detail->payment_method == "CreditCard") { echo "checked";} ?> type="radio" class="check" name="payment_method">
                                                     <span></span>Credit Card
                                                 </label>
-                                                <label class="radio radio-success">
+                                                <label class="radio radio-success bank_transfer_radio">
                                                     <input value="BankTransfer" <?php if ($telecom_user_detail->payment_method == "BankTransfer") { echo "checked";} ?> type="radio" class="check" name="payment_method">
                                                     <span></span>Bank Transfer
                                                 </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sepa-div" style="display: none;">
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-12 col-sm-12 sepa_label">File: SEPA</label>
+                                            <div class="col-lg-12 col-md-9 col-sm-12">
+                                                <div class="dropzone dropzone-default" id="sepa_file">
+                                                    <div class="dropzone-msg dz-message needsclick">
+                                                        <h3 class="dropzone-msg-title">Drop SEPA file here or click to upload.</h3>
+                                                        <span class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -656,17 +669,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-12 col-sm-12 sepa_label">File: SEPA</label>
-                                        <div class="col-lg-12 col-md-9 col-sm-12">
-                                            <div class="dropzone dropzone-default" id="sepa_file">
-                                                <div class="dropzone-msg dz-message needsclick">
-                                                    <h3 class="dropzone-msg-title">Drop SEPA file here or click to upload.</h3>
-                                                    <span class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
                                         <label class="col-form-label col-lg-12 col-sm-12 aoa_label">File: Articles Of Association</label>
                                         <div class="col-lg-12 col-md-9 col-sm-12">
                                             <div class="dropzone dropzone-default" id="aoa_file">
@@ -782,6 +784,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
     var aoa_file_count = 0;
     $(document).ready(function () {
 
+        //By default
+        $('.bank_transfer_radio').hide();
+
         if($('.is_different_address').is(":checked")){
             $(".differentAddress").show();
         }else {
@@ -797,8 +802,10 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         $('.is_business_type').on('change',function(){
             if($('.is_business_type').is(":checked")){
                 $(".business_details").show();
+                $('.bank_transfer_radio').show();
             }else {
                 $(".business_details").hide();
+                $('.bank_transfer_radio').hide();
             }
         });
 
@@ -873,6 +880,11 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             } else {
                 $('.bank-transfer-div').hide();
             }
+            if($(this).val() == 'SEPA'){
+                $('.sepa-div').show();
+            } else {
+                $('.sepa-div').hide();
+            }
         });
 
         $('#date_of_birth').datepicker({
@@ -887,4 +899,4 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         });
     });
 </script>
-<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.2' ?>"></script>
+<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.3' ?>"></script>
