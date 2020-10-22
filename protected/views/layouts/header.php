@@ -245,8 +245,8 @@
                             </a>
                         </li>
                         <li class="menu-item menu-item-submenu menu-item-rel">
-                            <a href="<?= Yii::app()->createUrl('product/pricing'); ?>" class="menu-link">
-                                <span class="menu-text">Telecom Products</span>
+                            <a href="<?= Yii::app()->createUrl('telecom/index'); ?>" class="menu-link">
+                                <span class="menu-text">Telecom Dashboard</span>
                                 <span class="menu-desc">Tariff plans and packages</span>
                                 <i class="menu-arrow"></i>
                             </a>

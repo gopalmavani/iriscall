@@ -28,7 +28,7 @@ class AccountController extends Controller
         date_default_timezone_set('Europe/Berlin');
 
         setlocale(LC_MONETARY, 'nl_NL.UTF-8');
-        if (Yii::app()->user->isGuest && $action->id != 'receiveStripeHooks'){
+        if (Yii::app()->user->isGuest){
             $this->redirect(Yii::app()->createUrl('home/login'));
         }
         return parent::beforeAction($action);
@@ -37,7 +37,8 @@ class AccountController extends Controller
 
     /**
      * Create account
-     * for a mobile connection
+     * for a new mobile connection
+     * along with new telecom user
      */
     public function actionCreate()
     {
@@ -123,6 +124,51 @@ class AccountController extends Controller
             'products' => $product_data
         ]);
 
+    }
+
+    /*
+     * Create a new mobile connection
+     * Here, telecom user is already created
+     * */
+    public function actionNewconnection(){
+        $user_id = Yii::app()->user->id;
+        $user = UserInfo::model()->findByPk($user_id);
+        $telecom_user_details = TelecomUserDetails::model()->findByAttributes(['user_id'=>$user_id]);
+        $telecom_account = new TelecomAccountDetails();
+
+        if(isset($_GET['tariff_product_id'])){
+            $tariff_product_id = $_GET['tariff_product_id'];
+        } else {
+            $tariff_product_id = '';
+        }
+
+        $product_data = Yii::app()->db->createCommand()
+            ->select('pc.product_id, p.name, p.description , p.image, p.price')
+            ->from('product_category pc')
+            ->join('product_info p','pc.product_id=p.product_id')
+            ->join('categories c','c.category_id=pc.category_id')
+            ->where('c.category_name=:cName', [':cName'=>Yii::app()->params['TelecomProductCategory']])
+            ->andWhere('p.is_active=:pIa', [':pIa' => 1])
+            ->queryAll();
+
+        if(!empty($_POST)){
+            $telecom_account->setAttributes($_POST, false);
+            $telecom_account->user_id = $user->user_id;
+            $telecom_account->email = $user->email;
+            $telecom_account->telecom_request_status = 0;
+            $telecom_account->save(false);
+            Yii::app()->user->setFlash('success', 'Account request added successfully');
+
+            $this->redirect(Yii::app()->createUrl('telecom/index'));
+        }
+
+        $this->render('new-connection', [
+            'user' => $user,
+            'telecom_user_detail' => $telecom_user_details,
+            'telecom_account' => $telecom_account,
+            'tariff_product_id' => $tariff_product_id,
+            'products' => $product_data
+        ]);
     }
 
     /*

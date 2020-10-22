@@ -60,7 +60,11 @@ $this->pageTitle = "View Product pricing";
                                     <span>sed do eiusmod elpors labore et dolore</span>
                                     <span>magna siad enim aliqua</span>
                                 </p>
-                                <a href="<?= Yii::app()->createUrl('account/create') . '?tariff_product_id='.$product['product_id'] ?>" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3">Purchase</a>
+                                <?php if($first_account) { ?>
+                                    <a href="<?= Yii::app()->createUrl('account/create') . '?tariff_product_id='.$product['product_id'] ?>" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3">Purchase</a>
+                                <?php } else { ?>
+                                    <a href="<?= Yii::app()->createUrl('account/newconnection') . '?tariff_product_id='.$product['product_id'] ?>" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3">Purchase</a>
+                                <?php } ?>
                                 <!--end::Content-->
                             </div>
                         </div>

@@ -347,6 +347,7 @@ var KTWizard1 = function () {
 				return; // Skip if stepped back
 			}
 			var cardError = 0;
+            var fileError = 0;
 			if(wizard.getStep() == 4){
 				if($('input[type=radio][name=payment_method]:checked').val() == 'CreditCard'){
 					if(!card.isValid()){
@@ -363,12 +364,34 @@ var KTWizard1 = function () {
                         });
                         cardError = 1;
 					}
+				} else if($('input[type=radio][name=payment_method]:checked').val() == 'SEPA') {
+				    console.log("Inside SEPA");
+                    if(sepa_file_count == 0){
+                        $('.sepa_label').addClass('text-danger');
+                        $('.sepa_label').html('SEPA is required');
+                        fileError = fileError + 1;
+
+                        Swal.fire({
+                            text: "Sorry, looks like there are some errors detected while uploading documents",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-light"
+                            }
+                        }).then(function () {
+                            //KTUtil.scrollTop();
+                        });
+                    } else {
+                        $('.sepa_label').removeClass('text-danger');
+                        $('.sepa_label').html('File: SEPA');
+                    }
 				} else {
                     cardError = 0;
-				}
+                }
 			}
-			var fileError = 0;
 			if(wizard.getStep() == 5){
+                fileError = 0;
 			    if(passport_file_count == 0){
 			        $('.passport_label').addClass('text-danger');
                     $('.passport_label').html('Passport is required');
@@ -376,14 +399,6 @@ var KTWizard1 = function () {
                 } else {
                     $('.passport_label').removeClass('text-danger');
                     $('.passport_label').html('File: Passport');
-                }
-                if(sepa_file_count == 0){
-                    $('.sepa_label').addClass('text-danger');
-                    $('.sepa_label').html('SEPA is required');
-                    fileError = fileError + 1;
-                } else {
-                    $('.sepa_label').removeClass('text-danger');
-                    $('.sepa_label').html('File: SEPA');
                 }
                 if(aoa_file_count == 0){
                     $('.aoa_label').addClass('text-danger');

@@ -329,6 +329,20 @@ class ServiceHelper extends CApplicationComponent
             return false;
         }
     }
+
+    /*
+     * Get Cyclone Field label
+     * */
+    public static function getCycloneFieldLabel($field_name, $field_value){
+        $result_label = '';
+        $cyclone_field = CylFields::model()->findByAttributes(['field_name'=>$field_name]);
+        if(isset($cyclone_field->field_name)){
+            $cyclone_field_value = CylFieldValues::model()->findByAttributes(['field_id'=>$cyclone_field->field_id, 'predefined_value'=>$field_value]);
+            if(isset($cyclone_field_value->field_label))
+                $result_label = $cyclone_field_value->field_label;
+        }
+        return $result_label;
+    }
     
     /*
      * Get discounted license price and other relevant details
