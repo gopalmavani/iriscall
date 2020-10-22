@@ -472,8 +472,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row mb2">
-                                                                <div class="form-group">
-                                                                    <div class="col-md-9">
+                                                                <div class="form-group row" style="width: 100%;">
+                                                                    <div class="col-md-1">
                                                                         <span class="switch switch-outline switch-icon switch-success">
                                                                             <label>
                                                                                 <input type="checkbox" name="privacy" class="privacy" />
@@ -481,7 +481,7 @@
                                                                             </label>
                                                                         </span>
                                                                     </div>
-                                                                    <label class="col-md-3 col-form-label">I accept the <a target="_blank" href="https://www.cbmglobal.io/legal/terms-conditions.html">privacy
+                                                                    <label class="col-md-11 col-form-label">I accept the <a target="_blank" href="https://www.cbmglobal.io/legal/terms-conditions.html">privacy
                                                                             policy*</a></label>
                                                                 </div>
                                                                 <!--<div class="col-md-12">
@@ -525,11 +525,9 @@
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins.bundle.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/prismjs.bundle.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/scripts.bundle.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-user.js?v=0.0.1', CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-user.js?v=0.0.3', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/jaktutorial.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wizard/jquery.validate.min.js', CClientScript::POS_END);
-//Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/wizard.js');
-//Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/toastr/toastr.js');
 ?>
 
 <script type="text/javascript">

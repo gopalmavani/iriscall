@@ -23,12 +23,31 @@ var KTAddUser = function () {
 				return; // Skip if stepped back
 			}
 
+			var checked = 1;
+			console.log("Step:" + wizard.getStep());
+			if(wizard.getStep() == 3){
+                checked = $('.privacy:checkbox:checked').length;
+                if(checked == 0){
+                    Swal.fire({
+                        text: "Sorry, You need to accept the privacy policy to proceed further",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light"
+                        }
+                    }).then(function () {
+                        //KTUtil.scrollTop();
+                    });
+				}
+			}
+
 			// Validate form before change wizard step
 			var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
 
 			if (validator) {
 				validator.validate().then(function (status) {
-					if (status == 'Valid') {
+					if (status == 'Valid' && checked == 1) {
 						wizard.goTo(wizard.getNewStep());
 
 						KTUtil.scrollTop();
@@ -271,6 +290,17 @@ var KTAddUser = function () {
 			_formEl,
 			{
 				fields: {
+                    /*privacy: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please accept the privacy policy'
+                            }, choice: {
+                                min: 1,
+                                max: 1,
+                                message: 'You have to accept all agreements to continue'
+                            }
+                        }
+                    },*/
                     payout_bank: {
 						validators: {
 							notEmpty: {
@@ -298,15 +328,7 @@ var KTAddUser = function () {
 								message: 'BIC-CODE is required'
 							}
 						}
-					},
-                    privacy: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please accept the privacy policy'
-                            }
-                        }
-                    }
-
+					}
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

@@ -91,7 +91,7 @@ class SSOHelper extends CApplicationComponent {
         self::setUnsetData($data, 'building_num', 'building_number');
         //$data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
-        if($data['accountType'] != 'personal'){
+        if(!empty($data['business_name'])){
             if (isset($data['sameAddress'])) {
                 $data['busAddress_building_num'] = $data['building_num'];
                 $data['busAddress_street'] = $data['street'];
