@@ -79,7 +79,7 @@ class AccountController extends Controller
             ->queryAll();
 
         if(!empty($_POST)){
-            $telecom_user_details->attributes = $_POST;
+            $telecom_user_details->setAttributes($_POST, false);
             $telecom_user_details->user_id = $user->user_id;
             $telecom_user_details->email = $user->email;
             if(isset($_POST['cc_type']) && $_POST['cc_type'] != ''){
@@ -95,7 +95,7 @@ class AccountController extends Controller
             $telecom_user_details->save(false);
 
             $telecom_account = new TelecomAccountDetails();
-            $telecom_account->attributes = $_POST;
+            $telecom_account->setAttributes($_POST, false);
             $telecom_account->user_id = $user->user_id;
             $telecom_account->email = $user->email;
             $telecom_account->telecom_request_status = 0;

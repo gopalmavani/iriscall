@@ -349,9 +349,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 
                                         </div>
                                     </div>
-
                                     <hr>
-
                                     <h5 class="mb-10 font-weight-bold text-dark">Billing Address</h5>
                                     <div class="form-group row">
                                         <div class="col-1">

@@ -154,7 +154,7 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-3 text-lg-right text-left">First Name</label>
                                         <div class="col-9">
-                                            <input type="text" name="first_name" value="<?php echo $model->first_name ?>" class="form-control form-control-line">
+                                            <input type="text" name="first_name" value="<?php echo $model->first_name ?>" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--end::Group-->
@@ -162,7 +162,7 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-3 text-lg-right text-left">Middle Name</label>
                                         <div class="col-9">
-                                            <input type="text" name="middle_name" value="<?php echo $model->middle_name ?>" class="form-control form-control-line">
+                                            <input type="text" name="middle_name" value="<?php echo $model->middle_name ?>" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--end::Group-->
@@ -170,7 +170,7 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-3 text-lg-right text-left">Last Name</label>
                                         <div class="col-9">
-                                            <input type="text" name="last_name" value="<?php echo $model->last_name ?>" class="form-control form-control-line">
+                                            <input type="text" name="last_name" value="<?php echo $model->last_name ?>" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--end::Group-->
@@ -178,7 +178,7 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-3 text-lg-right text-left">Fix Email</label>
                                         <div class="col-9">
-                                            <input type="text" name="last_name" value="<?php echo $model->email ?>" class="form-control form-control-line">
+                                            <input type="text" name="last_name" value="<?php echo $model->email ?>" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--end::Group-->
@@ -186,7 +186,7 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-3 text-lg-right text-left">Extra Email</label>
                                         <div class="col-9">
-                                            <input type="text" name="last_name" value="<?php echo $model->extra_email ?>" class="form-control form-control-line">
+                                            <input type="text" name="last_name" value="<?php echo $model->extra_email ?>" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--end::Group-->
@@ -195,11 +195,11 @@ $this->pageTitle = "Telecom details";
                                         <div class="col-9 col-form-label">
                                             <div class="radio-inline">
                                                 <label class="radio radio-success">
-                                                    <input value="1" <?php if ($model->gender == 1) { echo "checked";} ?> type="radio" class="check" id="minimal-radio-1" name="gender">
+                                                    <input value="1" <?php if ($model->gender == 1) { echo "checked";} ?> type="radio" class="check" id="minimal-radio-1" name="gender" disabled>
                                                     <span></span>Male
                                                 </label>
                                                 <label class="radio radio-success">
-                                                    <input value="2" <?php if ($model->gender != 1) { echo "checked";} ?> type="radio" class="check" id="minimal-radio-1" name="gender">
+                                                    <input value="2" <?php if ($model->gender != 1) { echo "checked";} ?> type="radio" class="check" id="minimal-radio-1" name="gender" disabled>
                                                     <span></span>Female
                                                 </label>
                                             </div>
@@ -208,14 +208,14 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-3 text-lg-right text-left">Phone Number</label>
                                         <div class="col-lg-9 col-xl-6">
-                                            <input type="text" name="date_of_birth" value="<?php echo $model->phone ?>" id="date_of_birth" class="form-control form-control-line">
+                                            <input type="text" name="date_of_birth" value="<?php echo $model->phone ?>" id="date_of_birth" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--begin::Group-->
                                     <div class="form-group row">
                                         <label class="col-form-label col-3 text-lg-right text-left">Landline Number</label>
                                         <div class="col-9">
-                                            <input type="text" name="last_name" value="<?php echo $model->landline_number ?>" class="form-control form-control-line">
+                                            <input type="text" name="last_name" value="<?php echo $model->landline_number ?>" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--end::Group-->
@@ -223,7 +223,7 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-3 text-lg-right text-left">Nationality</label>
                                         <div class="col-9">
-                                            <select name="nationality" id="nationality" class="form-control">
+                                            <select name="nationality" id="nationality" class="form-control" disabled>
                                                 <?php
                                                 $nationality = Yii::app()->ServiceHelper->getNationality(); ?>
                                                 <option value="">Select Nationality</option>
@@ -259,11 +259,11 @@ $this->pageTitle = "Telecom details";
                                         <div class="form-group row">
                                             <label class="col-form-label col-2 text-lg-right text-left">Business Name</label>
                                             <div class="col-4">
-                                                <input type="text" name="business_name" value="<?php echo $model->business_name ?>" class="form-control form-control-line">
+                                                <input type="text" name="business_name" value="<?php echo $model->business_name ?>" class="form-control form-control-line" disabled>
                                             </div>
                                             <label class="col-form-label col-2 text-lg-right text-left">VAT Number</label>
                                             <div class="col-4">
-                                                <input type="text" name="vat_number" value="<?php echo $model->vat_number ?>" class="form-control form-control-line">
+                                                <input type="text" name="vat_number" value="<?php echo $model->vat_number ?>" class="form-control form-control-line" disabled>
                                             </div>
                                         </div>
                                         <!--end::Group-->
@@ -271,7 +271,7 @@ $this->pageTitle = "Telecom details";
                                         <div class="form-group row">
                                             <label class="col-form-label col-2 text-lg-right text-left">Country</label>
                                             <div class="col-4">
-                                                <select  name="business_country" id="country-select" class="form-control form-control-line">
+                                                <select  name="business_country" id="country-select" class="form-control form-control-line" disabled>
                                                     <?php
                                                     $country = Yii::app()->ServiceHelper->getCountry();?>
                                                     <option value="">Select Country</option>
@@ -282,7 +282,7 @@ $this->pageTitle = "Telecom details";
                                             </div>
                                             <label class="col-form-label col-2 text-lg-right text-left">VAT Rate</label>
                                             <div class="col-4">
-                                                <input type="text" name="vat_rate" value="<?php echo $model->vat_rate ?>" class="form-control form-control-line">
+                                                <input type="text" name="vat_rate" value="<?php echo $model->vat_rate ?>" class="form-control form-control-line" disabled>
                                             </div>
                                         </div>
                                         <!--end::Group-->
@@ -311,11 +311,11 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-2 text-lg-right text-left">Building Number</label>
                                         <div class="col-4">
-                                            <input type="text" name="building_num" value="<?php echo $model->building_num ?>" class="form-control form-control-line">
+                                            <input type="text" name="building_num" value="<?php echo $model->building_num ?>" class="form-control form-control-line" disabled>
                                         </div>
                                         <label class="col-form-label col-2 text-lg-right text-left">Bus Number</label>
                                         <div class="col-4">
-                                            <input type="text" name="building_num" value="<?php echo $model->bus_num ?>" class="form-control form-control-line">
+                                            <input type="text" name="building_num" value="<?php echo $model->bus_num ?>" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--end::Group-->
@@ -323,22 +323,22 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-2 text-lg-right text-left">Street</label>
                                         <div class="col-4">
-                                            <input type="text" name="street" value="<?php echo $model->street ?>" class="form-control form-control-line">
+                                            <input type="text" name="street" value="<?php echo $model->street ?>" class="form-control form-control-line" disabled>
                                         </div>
                                         <label class="col-form-label col-2 text-lg-right text-left">Postcode</label>
                                         <div class="col-4">
-                                            <input type="text" name="postcode" value="<?php echo $model->postcode ?>" class="form-control form-control-line">
+                                            <input type="text" name="postcode" value="<?php echo $model->postcode ?>" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--end::Group-->
                                     <div class="form-group row">
                                         <label class="col-form-label col-2 text-lg-right text-left">City</label>
                                         <div class="col-4">
-                                            <input type="text" name="city" value="<?php echo $model->city ?>" class="form-control form-control-line">
+                                            <input type="text" name="city" value="<?php echo $model->city ?>" class="form-control form-control-line" disabled>
                                         </div>
                                         <label class="col-form-label col-2 text-lg-right text-left">Country</label>
                                         <div class="col-4">
-                                            <select  name="country" id="country-select" class="form-control form-control-line">
+                                            <select  name="country" id="country-select" class="form-control form-control-line" disabled>
                                                 <?php
                                                 $country = Yii::app()->ServiceHelper->getCountry();?>
                                                 <option value="">Select Country</option>
@@ -363,7 +363,7 @@ $this->pageTitle = "Telecom details";
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2 text-lg-right text-left">Billing Name</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="business_name" id="business_name" value="<?php echo $model->billing_name ?>" class="form-control form-control-line">
+                                                    <input type="text" name="business_name" id="business_name" value="<?php echo $model->billing_name ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                             </div>
 
@@ -371,11 +371,11 @@ $this->pageTitle = "Telecom details";
                                                 <div class="form-group row">
                                                     <label class="col-form-label col-2 text-lg-right text-left">Building Number</label>
                                                     <div class="col-4">
-                                                        <input type="text" name="busAddress_building_num" value="<?php echo $model->billing_building_num ?>" class="form-control form-control-line">
+                                                        <input type="text" name="busAddress_building_num" value="<?php echo $model->billing_building_num ?>" class="form-control form-control-line" disabled>
                                                     </div>
                                                     <label class="col-form-label col-2 text-lg-right text-left">Bus Number</label>
                                                     <div class="col-4">
-                                                        <input type="text" name="busAddress_building_num" value="<?php echo $model->billing_bus_num ?>" class="form-control form-control-line">
+                                                        <input type="text" name="busAddress_building_num" value="<?php echo $model->billing_bus_num ?>" class="form-control form-control-line" disabled>
                                                     </div>
                                                 </div>
                                                 <!--end::Group-->
@@ -383,22 +383,22 @@ $this->pageTitle = "Telecom details";
                                                 <div class="form-group row">
                                                     <label class="col-form-label col-2 text-lg-right text-left">Street</label>
                                                     <div class="col-4">
-                                                        <input type="text" name="busAddress_street" value="<?php echo $model->billing_street ?>" class="form-control form-control-line">
+                                                        <input type="text" name="busAddress_street" value="<?php echo $model->billing_street ?>" class="form-control form-control-line" disabled>
                                                     </div>
                                                     <label class="col-form-label col-2 text-lg-right text-left">Postcode</label>
                                                     <div class="col-4">
-                                                        <input type="text" name="busAddress_postcode" value="<?php echo $model->billing_postcode ?>" class="form-control form-control-line">
+                                                        <input type="text" name="busAddress_postcode" value="<?php echo $model->billing_postcode ?>" class="form-control form-control-line" disabled>
                                                     </div>
                                                 </div>
                                                 <!--end::Group-->
                                                 <div class="form-group row">
                                                     <label class="col-form-label col-2 text-lg-right text-left">City</label>
                                                     <div class="col-4">
-                                                        <input type="text" name="busAddress_city" value="<?php echo $model->billing_city ?>" class="form-control form-control-line">
+                                                        <input type="text" name="busAddress_city" value="<?php echo $model->billing_city ?>" class="form-control form-control-line" disabled>
                                                     </div>
                                                     <label class="col-form-label col-2 text-lg-right text-left">Country</label>
                                                     <div class="col-4">
-                                                        <select  name="busAddress_country" id="country-select" class="form-control form-control-line">
+                                                        <select  name="busAddress_country" id="country-select" class="form-control form-control-line" disabled>
                                                             <?php
                                                             $country = Yii::app()->ServiceHelper->getCountry();?>
                                                             <option value="">Select Country</option>
@@ -435,7 +435,7 @@ $this->pageTitle = "Telecom details";
                                     <div class="form-group row">
                                         <label class="col-form-label col-2 text-lg-right text-left">Payment Method</label>
                                         <div class="col-4">
-                                            <input type="text" name="payment_method" value="<?php echo $model->payment_method ?>" class="form-control form-control-line">
+                                            <input type="text" name="payment_method" value="<?php echo $model->payment_method ?>" class="form-control form-control-line" disabled>
                                         </div>
                                     </div>
                                     <!--end::Group-->
@@ -446,21 +446,21 @@ $this->pageTitle = "Telecom details";
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2 text-lg-right text-left">Credit Card Name</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="credit_card_name" value="<?php echo $model->credit_card_name ?>" class="form-control form-control-line">
+                                                    <input type="text" name="credit_card_name" value="<?php echo $model->credit_card_name ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                                 <label class="col-form-label col-2 text-lg-right text-left">Credit Card Number</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="credit_card_number" value="<?php echo $model->credit_card_number ?>" class="form-control form-control-line">
+                                                    <input type="text" name="credit_card_number" value="<?php echo $model->credit_card_number ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2 text-lg-right text-left">Expiry date month</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="expiry_date_month" value="<?php echo $model->expiry_date_month ?>" class="form-control form-control-line">
+                                                    <input type="text" name="expiry_date_month" value="<?php echo $model->expiry_date_month ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                                 <label class="col-form-label col-2 text-lg-right text-left">Expiry date year</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="expiry_date_year" value="<?php echo $model->expiry_date_year ?>" class="form-control form-control-line">
+                                                    <input type="text" name="expiry_date_year" value="<?php echo $model->expiry_date_year ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                             </div>
                                         </div>
@@ -470,35 +470,35 @@ $this->pageTitle = "Telecom details";
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2 text-lg-right text-left">Bank Name</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="bank_name" value="<?php echo $model->bank_name ?>" class="form-control form-control-line" disabled>
+                                                    <input type="text" name="bank_name" value="<?php echo $model->bank_name ?>" class="form-control form-control-line" disabled disabled>
                                                 </div>
                                             </div>
                                             <!--end::Group-->
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2 text-lg-right text-left">Building Number</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="bank_building_num" value="<?php echo $model->bank_building_num ?>" class="form-control form-control-line">
+                                                    <input type="text" name="bank_building_num" value="<?php echo $model->bank_building_num ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2 text-lg-right text-left">Street</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="bank_street" value="<?php echo $model->bank_street ?>" class="form-control form-control-line">
+                                                    <input type="text" name="bank_street" value="<?php echo $model->bank_street ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                                 <label class="col-form-label col-2 text-lg-right text-left">Postcode</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="bank_postcode" value="<?php echo $model->bank_postcode ?>" class="form-control form-control-line">
+                                                    <input type="text" name="bank_postcode" value="<?php echo $model->bank_postcode ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                             </div>
                                             <!--end::Group-->
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2 text-lg-right text-left">City</label>
                                                 <div class="col-4">
-                                                    <input type="text" name="bank_city" value="<?php echo $model->bank_city ?>" class="form-control form-control-line">
+                                                    <input type="text" name="bank_city" value="<?php echo $model->bank_city ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                                 <label class="col-form-label col-2 text-lg-right text-left">Country</label>
                                                 <div class="col-4">
-                                                    <select  name="bank_country" id="country-select" class="form-control form-control-line">
+                                                    <select  name="bank_country" id="country-select" class="form-control form-control-line" disabled>
                                                         <?php
                                                         $country = Yii::app()->ServiceHelper->getCountry();?>
                                                         <option value="">Select Country</option>
@@ -513,21 +513,21 @@ $this->pageTitle = "Telecom details";
                                                 <div class="col-11">
                                                     <h6 class="text-dark font-weight-bold mb-10">Account Information:</h6>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-2 text-lg-right text-left">Account Name</label>
-                                                    <div class="col-4">
-                                                        <input type="text" name="account_name" value="<?php echo $model->account_name ?>" class="form-control form-control-line">
-                                                    </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-2 text-lg-right text-left">Account Name</label>
+                                                <div class="col-4">
+                                                    <input type="text" name="account_name" value="<?php echo $model->account_name ?>" class="form-control form-control-line" disabled>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-2 text-lg-right text-left">iBan</label>
-                                                    <div class="col-4">
-                                                        <input type="text" name="iban" value="<?php echo $model->iban ?>" class="form-control form-control-line">
-                                                    </div>
-                                                    <label class="col-form-label col-2 text-lg-right text-left">BIC Code</label>
-                                                    <div class="col-4">
-                                                        <input type="text" name="bic_code" value="<?php echo $model->bic_code ?>" class="form-control form-control-line">
-                                                    </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-2 text-lg-right text-left">iBan</label>
+                                                <div class="col-4">
+                                                    <input type="text" name="iban" value="<?php echo $model->iban ?>" class="form-control form-control-line" disabled>
+                                                </div>
+                                                <label class="col-form-label col-2 text-lg-right text-left">BIC Code</label>
+                                                <div class="col-4">
+                                                    <input type="text" name="bic_code" value="<?php echo $model->bic_code ?>" class="form-control form-control-line" disabled>
                                                 </div>
                                             </div>
                                         </div>

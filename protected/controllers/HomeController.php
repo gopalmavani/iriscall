@@ -180,32 +180,6 @@ class HomeController extends Controller
                 array_push($notificationArr, $temp);
             }
 
-            //License notification module
-            $userLicense = CbmUserLicenses::model()->findByAttributes(['email'=> $user->email]);
-            if(isset($userLicense->available_licenses)){
-                $available_licenses = $userLicense->available_licenses;
-                $total_licenses = $userLicense->total_licenses;
-            } else {
-                $available_licenses = 0;
-                $total_licenses = 0;
-            }
-            if(isset($userLicense->available_licenses) && ($userLicense->available_licenses == 0)){
-                $cbmUserAccounts = Yii::app()->db->createCommand()
-                    ->select('count(*) as cnt')
-                    ->from('cbm_user_accounts')
-                    ->where('email_address=:ea',[':ea'=>$user->email])
-                    ->andWhere('matrix_node_num is null')
-                    ->queryRow();
-                if($cbmUserAccounts['cnt'] > 0){
-                    $temp = array();
-                    $temp['type'] = 'warning';
-                    $temp['notification'] = "Warning! Not enough licenses to place all nodes!";
-                    $temp['href'] = Yii::app()->createUrl('product/index');
-                    $temp['a_text'] = "Buy Licenses!";
-                    array_push($notificationArr, $temp);
-                }
-            }
-
             //Level One and two child count
             $levelOneChild = Yii::app()->db->createCommand()
                 ->select('user_id')
@@ -233,8 +207,6 @@ class HomeController extends Controller
                 'levelOneChildCount' => $levelOneChildCount,
                 'levelTwoChildCount' => $levelTwoChildCount,
                 'totalEarnings' => $total_earnings,
-                'availableLicenses' =>$available_licenses,
-                'totalLicenses' =>$total_licenses
             ]);
         }
     }
