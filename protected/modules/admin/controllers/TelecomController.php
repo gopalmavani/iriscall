@@ -199,7 +199,7 @@ class TelecomController extends CController{
     }
 
     public function uploadfiles($user_id, $files){
-        $uploadDir = 'uploads/'.$user_id.'/';
+        $uploadDir = 'protected/runtime/uploads/'.$user_id.'/';
         if(!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
@@ -245,7 +245,7 @@ class TelecomController extends CController{
         $telecom_user = TelecomUserDetails::model()->findByPk($_POST['id']);
 
         TelecomAccountDetails::model()->deleteAll("user_id ='" . $telecom_user->user_id . "'");
-        $path = '/uploads/'.$telecom_user->user_id;
+        $path = '/protected/runtime/uploads/'.$telecom_user->user_id;
         UserHelper::deleteFiles($path);
         TelecomUserDocuments::model()->deleteAll("user_id ='" . $telecom_user->user_id . "'");
 

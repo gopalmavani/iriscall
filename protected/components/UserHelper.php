@@ -18,7 +18,9 @@ class UserHelper extends CApplicationComponent{
                 UserHelper::deleteFiles($file);
             }
 
-            rmdir( $target );
+            //To delete directory of user id only
+            if(is_numeric($target))
+                rmdir( $target );
         } elseif(is_file($target)) {
             unlink( $target );
         }

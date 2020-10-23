@@ -94,22 +94,15 @@ class AccountController extends Controller
             }
             $telecom_user_details->save(false);
 
-            if(isset($_POST['phone_number']) && $_POST['phone_number'] != ''){
-                $telecom_account = TelecomAccountDetails::model()->findByAttributes(['user_id'=>$user_id, 'phone_number'=>$_POST['phone_number']]);
-                if(isset($telecom_account->phone_number)){
-                    $telecom_account->modified_at = date('Y-m-d H:i:s');
-                } else {
-                    $telecom_account = new TelecomAccountDetails();
-                }
-                $telecom_account->attributes = $_POST;
-                $telecom_account->user_id = $user->user_id;
-                $telecom_account->email = $user->email;
-                $telecom_account->telecom_request_status = 0;
-                $telecom_account->save(false);
-            } else {
-                $telecom_account = new TelecomAccountDetails();
-            }
+            $telecom_account = new TelecomAccountDetails();
+            $telecom_account->attributes = $_POST;
+            $telecom_account->user_id = $user->user_id;
+            $telecom_account->email = $user->email;
+            $telecom_account->telecom_request_status = 0;
+            $telecom_account->save(false);
+
             Yii::app()->user->setFlash('success', 'Account details changed successfully');
+            $this->redirect(Yii::app()->createUrl('telecom/index'));
         } else {
             $telecom_account = new TelecomAccountDetails();
         }
@@ -177,7 +170,7 @@ class AccountController extends Controller
     public function actionUploadfiles(){
         if(isset($_FILES)){
             $user_id = Yii::app()->user->id;
-            $uploadDir = 'uploads/'.$user_id.'/';
+            $uploadDir = 'protected/runtime/uploads/'.$user_id.'/';
             if(!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
