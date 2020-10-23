@@ -93,7 +93,7 @@ class SSOHelper extends CApplicationComponent {
 
         if(!empty($data['business_name'])){
             if (isset($data['sameAddress'])) {
-                $data['busAddress_building_num'] = $data['building_num'];
+                $data['busAddress_building_num'] = $data['building_number'];
                 $data['busAddress_street'] = $data['street'];
                 $data['busAddress_region'] = $data['region'];
                 $data['busAddress_city'] = $data['city'];
@@ -104,7 +104,7 @@ class SSOHelper extends CApplicationComponent {
             self::setUnsetData($data, 'busAddress_city', 'business_city');
             self::setUnsetData($data, 'busAddress_street', 'business_street');
             self::setUnsetData($data, 'busAddress_postcode', 'business_postcode');
-            self::setUnsetData($data, 'busAddress_region', 'business_building_number');
+            self::setUnsetData($data, 'busAddress_region', 'business_region');
             self::setUnsetData($data, 'busAddress_country', 'business_country');
         }
 

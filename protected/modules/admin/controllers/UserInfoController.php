@@ -74,7 +74,6 @@ class UserInfoController extends CController
     {
         $model = new UserInfo;
         $payout = new UserPayoutInfo();
-        $registrationStatus = new RegistrationStatus();
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -89,21 +88,6 @@ class UserInfoController extends CController
             return $payoutResult;
         }
 
-        if(isset($_POST['RegistrationStatus'])){
-            $registrationStatus->user_id = $_POST['Status']['uid'];
-            $user = UserInfo::model()->findByPk($registrationStatus->user_id);
-            $registrationStatus->email = $user->email;
-            $registrationStatus->product_id = $_POST['RegistrationStatus']['product_id'];
-            $registrationStatus->step_number = $_POST['RegistrationStatus']['step_number'];
-            $registrationStatus->created_at = date('Y-m-d H:i:s');
-            $registrationStatus->save(false);
-            $result = [
-                'result' => true,
-                'id' => $registrationStatus->user_id,
-            ];
-            return json_encode($result);
-        }
-
         if(isset($_POST['email'])){
             $emailResult = $this->saveUserEmail($_POST['email'],$_POST['Email']['uid']);
             return $emailResult;
@@ -111,8 +95,7 @@ class UserInfoController extends CController
 
         $this->render('create', array(
             'model' => $model,
-            'payout' => $payout,
-            'registrationStatus' => $registrationStatus
+            'payout' => $payout
         ));
     }
 
@@ -391,16 +374,6 @@ class UserInfoController extends CController
 
         $model = $this->loadModel($id);
         $payout = UserPayoutInfo::model()->findByAttributes(['user_id'=> $id]);
-        $registrationStatus = RegistrationStatus::model()->findByAttributes(['user_id'=> $id]);
-        //If in case registration status is not present
-        if(!isset($registrationStatus->email)){
-            $registrationStatus = new RegistrationStatus();
-            $registrationStatus->email = $model->email;
-            $registrationStatus->user_id = $id;
-            $registrationStatus->product_id = 1;
-            $registrationStatus->step_number = 1;
-            $registrationStatus->save(false);
-        }
         if(empty($payout)){
             $payout = new UserPayoutInfo();
         }
@@ -491,17 +464,6 @@ class UserInfoController extends CController
             return $payoutResult;
         }
 
-        if(isset($_POST['RegistrationStatus'])){
-            $registrationStatus->step_number = $_POST['RegistrationStatus']['step_number'];
-            $registrationStatus->modified_at = date('Y-m-d H:i:s');
-            $registrationStatus->save(false);
-            $result = [
-                'result' => true,
-                'id' => $registrationStatus->user_id,
-            ];
-            return json_encode($result);
-        }
-
         if(isset($_POST['Email']['uid'])){
             //echo "<pre>";print_r($_POST);die;
             if(!isset($_POST['email'])){
@@ -533,7 +495,6 @@ class UserInfoController extends CController
         $this->render('update', array(
             'model' => $model,
             'payout' => $payout,
-            'registrationStatus' => $registrationStatus
         ));
     }
 
@@ -573,14 +534,9 @@ class UserInfoController extends CController
         }
         if($wallettable != ''){
             $wallet = Wallet::model()->findByAttributes(['user_id' => $_POST['id']]);
-            $userlicencecount = UserLicenseCount::model()->findByAttributes(['user_id' => $_POST['id']]);
 
             if($wallet != ''){
                 Wallet::model()->deleteAll("user_id ='" . $_POST['id'] . "'");
-            }
-
-            if($userlicencecount != ''){
-                UserLicenseCount::model()->deleteAll("user_id ='" . $_POST['id'] . "'");
             }
         }
 

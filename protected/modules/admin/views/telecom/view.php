@@ -3,7 +3,6 @@
 /* @var $model TelecomUserDetails */
 
 $this->pageTitle = 'View User';
-$id = $model->user_id;
 ?>
 <style type="text/css">
     .block > .nav-tabs > li.active > a, .block > .nav-tabs > li.active > a:hover, .block > .nav-tabs > li.active > a:focus{
@@ -21,9 +20,9 @@ $id = $model->user_id;
         <!--Start Profile tab-->
         <div class="tab-pane fade fade-up in active" id="btabs-animated-slideup-profile">
             <div class="pull-right">
-                <?php echo CHtml::link('Go to list', array('telecom/admin'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+                <?php echo CHtml::link('Go to list', array('telecom/index'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
                 <?php echo CHtml::link('Create', array('telecom/create'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
-                <?php echo CHtml::link('Update', array('telecom/update/'.$id), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+                <?php echo CHtml::link('Update', array('telecom/update/'.$model->id), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
                 <p></p>
             </div>
 
@@ -54,7 +53,13 @@ $id = $model->user_id;
                     'bus_num',
                     'street',
                     'city',
-                    'country',
+                    [
+                        'name' => 'country',
+                        'value' => function($model){
+                            $countryName = ServiceHelper::getCountryNameFromId($model->country);
+                            return $countryName;
+                        }
+                    ],
                     'postcode',
                     'nationality',
                     'billing_name',
@@ -62,11 +67,22 @@ $id = $model->user_id;
                     'billing_bus_num',
                     'billing_street',
                     'billing_city',
-                    'billing_country',
                     'billing_postcode',
-                    'billing_country',
+                    [
+                        'name' => 'billing_country',
+                        'value' => function($model){
+                            $countryName = ServiceHelper::getCountryNameFromId($model->billing_country);
+                            return $countryName;
+                        }
+                    ],
                     'business_name',
-                    'business_country',
+                    [
+                        'name' => 'business_country',
+                        'value' => function($model){
+                            $countryName = ServiceHelper::getCountryNameFromId($model->business_country);
+                            return $countryName;
+                        }
+                    ],
                     'vat_rate',
                     'vat_number',
                     'company_since_in_months',
@@ -76,7 +92,13 @@ $id = $model->user_id;
                     'bank_street',
                     'bank_city',
                     'bank_postcode',
-                    'bank_country',
+                    [
+                        'name' => 'bank_country',
+                        'value' => function($model){
+                            $countryName = ServiceHelper::getCountryNameFromId($model->bank_country);
+                            return $countryName;
+                        }
+                    ],
                     'account_name',
                     'iban',
                     'bic_code',
@@ -91,6 +113,17 @@ $id = $model->user_id;
                     'modified_at',
                 ),
             )); ?>
+        </div>
+    </div>
+</div>
+<div class="block">
+    <div class="block-content tab-content">
+        <div class="row">
+        <?php foreach ($documents as $document) { ?>
+            <div class="col-md-4">
+                <a href="<?= Yii::app()->baseUrl.'/'.$document['document_path']; ?>" download class="btn btn-primary">Download <?= $document['document_name']; ?></a>
+            </div>
+        <?php } ?>
         </div>
     </div>
 </div>

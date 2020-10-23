@@ -258,6 +258,12 @@ class TelecomController extends CController
     public function actionUpdate($id)
     {
         $model = TelecomUserDetails::model()->findByPk($id);
+        $telecom_documents = Yii::app()->db->createCommand()
+            ->select('t.document_id, t.document_name, u.user_id, u.document_path')
+            ->from('telecom_user_documents u')
+            ->join('telecom_documents t', 't.document_id = u.document_id')
+            ->where('u.user_id=:id', [':id' => $model->user_id])
+            ->queryAll();
         if (!empty($_POST)) {
             if (isset($_POST['TelecomUserDetails'])) {
                 $this->saveTelecomUserDetails($_POST['TelecomUserDetails']);
@@ -274,15 +280,23 @@ class TelecomController extends CController
             }
         }
         $this->render('update', array(
-            'model' => $model
+            'model' => $model,
+            'documents' => $telecom_documents
         ));
     }
 
     public function actionView($id)
     {
         $model = TelecomUserDetails::model()->findByPk($id);
+        $telecom_documents = Yii::app()->db->createCommand()
+            ->select('t.document_id, t.document_name, u.user_id, u.document_path')
+            ->from('telecom_user_documents u')
+            ->join('telecom_documents t', 't.document_id = u.document_id')
+            ->where('u.user_id=:id', [':id' => $model->user_id])
+            ->queryAll();
         $this->render('view', array(
-            'model' => $model
+            'model' => $model,
+            'documents' => $telecom_documents
         ));
     }
 
@@ -296,6 +310,7 @@ class TelecomController extends CController
         if (isset($files['passport']['name'])) {
             $uploadFile = $uploadDir . basename($files['passport']['name']);
             $documentId = 1;
+            $this->deleteDocumentIfPresent($user_id, $documentId);
             if (move_uploaded_file($files['passport']['tmp_name'], $uploadFile)) {
                 $documentPath = $uploadDir . $files['passport']['name'];
                 $this->addDocumentPathToDB($user_id, $documentId, $documentPath);
@@ -304,6 +319,7 @@ class TelecomController extends CController
         if (isset($files['sepa']['name'])) {
             $uploadFile = $uploadDir . basename($files['sepa']['name']);
             $documentId = 2;
+            $this->deleteDocumentIfPresent($user_id, $documentId);
             if (move_uploaded_file($files['sepa']['tmp_name'], $uploadFile)) {
                 $documentPath = $uploadDir . $files['sepa']['name'];
                 $this->addDocumentPathToDB($user_id, $documentId, $documentPath);
@@ -312,10 +328,19 @@ class TelecomController extends CController
         if (isset($files['articles_of_association']['name'])) {
             $uploadFile = $uploadDir . basename($files['articles_of_association']['name']);
             $documentId = 3;
+            $this->deleteDocumentIfPresent($user_id, $documentId);
             if (move_uploaded_file($files['articles_of_association']['tmp_name'], $uploadFile)) {
                 $documentPath = $uploadDir . $files['articles_of_association']['name'];
                 $this->addDocumentPathToDB($user_id, $documentId, $documentPath);
             }
+        }
+    }
+
+    protected function deleteDocumentIfPresent($userId, $documentId){
+        $documents = TelecomUserDocuments::model()->findAllByAttributes(['user_id' => $userId, 'document_id' => $documentId]);
+        foreach ($documents as $document){
+            UserHelper::deleteFiles($document->document_path);
+            $document->delete();
         }
     }
 

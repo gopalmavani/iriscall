@@ -4,4 +4,4 @@
 
 $this->pageTitle = 'Update Telecom User';
 ?>
-<?php $this->renderPartial('_form', ['model'=>$model]); ?>
+<?php $this->renderPartial('_form', ['model'=>$model, 'documents'=>$documents]); ?>

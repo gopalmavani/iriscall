@@ -38,9 +38,6 @@
                 <li id="payout_tab">
                     <a href="#user-payout" data-toggle="tab"> Payout Information</a>
                 </li>
-                <li id="status_tab">
-                    <a href="#user-status" data-toggle="tab"> User Status</a>
-                </li>
                 <li id="email_tab">
                     <a href="#user-email" data-toggle="tab"> Notification Email</a>
                 </li>
@@ -427,58 +424,6 @@
                                         )
                                     );
                                     ?>
-                                </div>
-                            </div>
-                        </div>
-                        <?php $this->endWidget(); ?>
-                    </div>
-                </div>
-                <div class="tab-pane" id="user-status">
-                    <div class="block-content block-content-narrow">
-                        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-                            'id'=>'status-info-form',
-                            'layout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
-                            'enableAjaxValidation'=>false,
-                            'htmlOptions' => array(
-                                'enctype' => 'multipart/form-data',
-                                'name' => 'UserStatus',
-                            ),
-                        )); ?>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-material has-error">
-                                    <p id="statusError" class="help-block has-error" style="display: none;"></p>
-                                    <input type="hidden" name="Status[uid]" value="<?php echo $model->user_id;?>" id="Payout_uid">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="alert alert-success" id="userSucc" align="center"  style="display: none;">
-                                    <h4 id="userAddSuccess">User status updated successfully</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group col-md-12<?php echo $registrationStatus->hasErrors('product_id') ? 'has-error' : ''; ?> ">
-                                        <?php
-                                        $productList = CHtml::listData(ProductInfo::model()->findAll(),'product_id','name');
-                                        ?>
-                                        <?php echo $form->dropDownListControlGroup($registrationStatus, 'product_id', $productList, array('prompt' => 'Select Product', 'class' => 'form-control','label'=>'Product')); ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group col-md-12<?php echo $registrationStatus->hasErrors('product_id') ? 'has-error' : ''; ?> ">
-                                        <?php
-                                        $stepList = CHtml::listData(RegistrationSteps::model()->findAllByAttributes(['product_id'=>$registrationStatus->product_id]),'step_number','status_name');
-                                        ?>
-                                        <?php echo $form->dropDownListControlGroup($registrationStatus, 'step_number', $stepList, array('prompt' => 'Select Status', 'class' => 'form-control','label'=>'Status')); ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row col-md-12" align="right">
-                                <div class="form-group">
-                                    <a href="javascript:void(0);"  class="btn btn-primary" id="status_btn">Save and Continue</a>
-                                    <?php echo CHtml::link('Cancel', array('userInfo/admin'),['class' => 'btn btn-default']); ?>
                                 </div>
                             </div>
                         </div>
