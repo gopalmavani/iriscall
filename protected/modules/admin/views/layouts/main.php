@@ -314,7 +314,19 @@ $folder = Yii::app()->params['basePath'];
                         </li>
                         <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/admin');?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> Company </span></a></li>
                         <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrinfo');?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> CDR </span></a></li>
-                        <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/telecom/index');?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> Telecom Details </span></a></li>
+                        <!--<li><a class="nav-menu <?/*= $active; */?>" href="<?php /*echo Yii::app()->createUrl('/admin/telecom/index');*/?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> Telecom Details </span></a></li>-->
+                        <?php $action = Yii::app()->controller->id;
+                        if($action == 'telecom' ){ $open = "open";}else{ $open = "";} ?>
+                        <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="si si-wallet"></i> <span class=""> Telecom </span></a>
+                            <ul>
+                                <?php /*if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/wallet/overview'){ $active = "active";}else{ $active = " ";} */?><!--
+                                <li><a class="<?/*= $active; */?>" href="<?php /*echo Yii::app()->createUrl('/admin/wallet/overview"><i class="si si-wallet');*/?>"></i> <span class="sidebar-mini-hide"> Wallet Overview </span></a></li>-->
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/telecom/index'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/telecom/index');?>"><i class="si si-wallet"></i> <span class="sidebar-mini-hide"> Telecom Details </span></a></li>
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/telecom/accounts'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/telecom/accounts');?>"><i class="si si-wallet"></i> <span class="sidebar-mini-hide"> Telecom Accounts </span></a></li>
+                            </ul>
+                        </li>
                    </ul>
                 </div>
                 <!-- mainmenu -->
