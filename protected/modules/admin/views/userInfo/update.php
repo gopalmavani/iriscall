@@ -5,4 +5,4 @@
 $this->pageTitle = 'Update User';
 
 ?>
-<?php $this->renderPartial('_updateForm', array('model'=>$model,'payout'=>$payout, 'registrationStatus' => $registrationStatus)); ?>
+<?php $this->renderPartial('_updateForm', array('model'=>$model,'payout'=>$payout)); ?>

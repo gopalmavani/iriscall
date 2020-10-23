@@ -8,4 +8,4 @@ $this->pageTitle = 'Create User';
 
 <!--<h1>Create --><!--</h1>-->
 
-<?php $this->renderPartial('_form', array('model'=>$model,'payout' => $payout, 'registrationStatus' => $registrationStatus)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'payout' => $payout)); ?>

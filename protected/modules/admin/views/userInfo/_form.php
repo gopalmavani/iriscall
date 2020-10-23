@@ -36,9 +36,6 @@
                 <li id="payout_tab" class="disabledTab">
                     <a href="#user-payout" data-toggle="tab"> Payout Information</a>
                 </li>
-                <li id="status_tab">
-                    <a href="#user-status" data-toggle="tab"> User Status</a>
-                </li>
                 <li id="email_tab" class="disabledTab">
                     <a href="#user-email" data-toggle="tab"> Notification Email</a>
                 </li>
@@ -87,9 +84,9 @@
                             <div class="col-md-6 email-validate <?php echo $model->hasErrors('email') ? 'has-error' : ''; ?> ">
                                 <?php echo $form->textFieldControlGroup($model, 'email', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); ?>
                                 <p id='email-valid' class='animated fadeInDown  help-block'>Please enter valid Email address.</p>                    </div>
-                            <div class="col-md-6 <?php echo $model->hasErrors('password') ? 'has-error' : ''; ?> ">
-                                <?php echo $form->passwordFieldControlGroup($model, 'password', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); ?>
-                            </div>
+                            <!--<div class="col-md-6 <?php /*echo $model->hasErrors('password') ? 'has-error' : ''; */?> ">
+                                <?php /*echo $form->passwordFieldControlGroup($model, 'password', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); */?>
+                            </div>-->
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -414,58 +411,6 @@
                         <?php $this->endWidget(); ?>
                     </div>
                 </div>
-                <div class="tab-pane" id="user-status">
-                    <div class="block-content block-content-narrow">
-                        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-                            'id'=>'status-info-form',
-                            'layout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
-                            'enableAjaxValidation'=>false,
-                            'htmlOptions' => array(
-                                'enctype' => 'multipart/form-data',
-                                'name' => 'UserStatus',
-                            ),
-                        )); ?>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-material has-error">
-                                    <p id="statusError" class="help-block has-error" style="display: none;"></p>
-                                    <input type="hidden" name="Status[uid]" id="status_uid">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="alert alert-success" id="userSucc" align="center"  style="display: none;">
-                                    <h4 id="userAddSuccess">User status updated successfully</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group col-md-12<?php echo $registrationStatus->hasErrors('product_id') ? 'has-error' : ''; ?> ">
-                                        <?php
-                                        $productList = CHtml::listData(ProductInfo::model()->findAll(),'product_id','name');
-                                        ?>
-                                        <?php echo $form->dropDownListControlGroup($registrationStatus, 'product_id', $productList, array('prompt' => 'Select Product', 'class' => 'form-control','label'=>'Product')); ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group col-md-12<?php echo $registrationStatus->hasErrors('product_id') ? 'has-error' : ''; ?> ">
-                                        <?php
-                                        $stepList = CHtml::listData(RegistrationSteps::model()->findAllByAttributes(['product_id'=>1]),'step_number','status_name');
-                                        ?>
-                                        <?php echo $form->dropDownListControlGroup($registrationStatus, 'step_number', $stepList, array('prompt' => 'Select Status', 'class' => 'form-control','label'=>'Status')); ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row col-md-12" align="right">
-                                <div class="form-group">
-                                    <a href="javascript:void(0);"  class="btn btn-primary" id="status_btn">Save and Continue</a>
-                                    <?php echo CHtml::link('Cancel', array('userInfo/admin'),['class' => 'btn btn-default']); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <?php $this->endWidget(); ?>
-                    </div>
-                </div>
                 <div class="tab-pane" id="user-email">
                     <form method="post" name="mail-setting" id="mail-setting">
                         <div class="row" style="margin-left: 10px;">
@@ -689,73 +634,6 @@
         </div>
     </div>
 </div>
-<!--Hide Show Business Fields Based On Address Type Selection-->
-<!-- <script type="text/javascript">
-    $(document).ready(function(){
-        $('#UserInfo_business_name').hide();
-        $("#UserInfo_vat_number").hide();
-        var label = $("label[for='"+$('#UserInfo_vat_number').attr('id')+"']");
-        label.hide();
-        var label1 = $("label[for='"+$('#UserInfo_business_name').attr('id')+"']");
-        label1.hide();
-        $("#diff_address").hide();
-        $("#check_box").hide();
-        $("#companyAddress").hide();
-    });
-
-    showBusinessField();
-    $("#Addresses_address_type").change(function (e) {
-        showBusinessField();
-    });
-
-    $('#users-info-form input').on('change', function() {
-        var value = ($('input[name=Business]:checked', '#users-info-form').val());
-        if(value == 1){
-            $('#UserInfo_business_name').show();
-            $("#UserInfo_vat_number").show();
-            var label = $("label[for='"+$('#UserInfo_vat_number').attr('id')+"']");
-            label.show();
-            var label1 = $("label[for='"+$('#UserInfo_business_name').attr('id')+"']");
-            label1.show();
-            $("#diff_address").show();
-            $("#check_box").show();
-            if ($('#diff_address').is(":checked")){
-                $("#companyAddress").show();
-            }
-            else {
-                $("#companyAddress").hide();
-            }
-
-        }
-        else{
-            //console.info('individual');
-            $('#UserInfo_business_name').hide();
-            $("#UserInfo_vat_number").hide();
-            var label = $("label[for='"+$('#UserInfo_vat_number').attr('id')+"']");
-            label.hide();
-            var label1 = $("label[for='"+$('#UserInfo_business_name').attr('id')+"']");
-            label1.hide();
-            $("#diff_address").hide();
-            $("#check_box").hide();
-            $("#companyAddress").hide();
-        }
-
-    });
-    function showBusinessField() {
-        if ($('#Addresses_address_type').val() == 1) {
-            $('#business_company').show();
-            $('#business_vat').show();
-            /* Show Business dynamic fields */
-            $('#business_fields').show();
-        } else {
-            $('#business_company').hide();
-            $('#business_vat').hide();
-            /* Hide Business dynamic fields */
-            $('#business_fields').hide();
-        }
-    }
-</script>
- -->
 
 <script type="text/javascript">
     var required_inputs = ["#UserPayoutInfo_bank_name",/*"#UserPayoutInfo_account_name","#UserPayoutInfo_iban","#UserPayoutInfo_bic_code"*/];
@@ -1026,22 +904,6 @@
                 if(databaseRes.result == true){
                     $('#emailError').css('display','none');
                     $("#emailSucc").show().delay(5000).fadeOut();
-                }
-            }
-
-        });
-    });
-
-    $("body").on('click','#status_btn',function () {
-        $.ajax({
-            url: "<?php  echo Yii::app()->createUrl('admin/userInfo/create');  ?>",
-            type: "post",
-            data: $('#status-info-form').serializeArray(),
-            success: function (response) {
-                //var databaseRes = response;
-                if (response.result == true) {
-                    $('#statusError').css('display', 'none');
-                    $("#userAddSuccess").show().delay(5000).fadeOut();
                 }
             }
 

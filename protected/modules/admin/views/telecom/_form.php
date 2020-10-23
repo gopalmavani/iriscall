@@ -382,6 +382,20 @@
                             <div class="col-md-12">
                                 <h4>Upload Documents</h4>
                             </div>
+
+                            <?php if(isset($documents)) { ?>
+                                <div class="col-md-12">
+                                    <span class="text-muted" style="margin: 10px 0">Uploading New documents would remove the previous ones</span>
+                                </div>
+                                <div class="row">
+                                    <?php foreach ($documents as $document) { ?>
+                                        <div class="col-md-4" style="margin-left: 15px;">
+                                            <a href="<?= Yii::app()->baseUrl.'/'.$document['document_path']; ?>" download class="btn btn-primary">Download <?= $document['document_name']; ?></a>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            <?php }?>
+
                             <div class="col-md-12">
                                 <label class="control-label" for="TelecomUserDetails_passport">Passport file</label>
                                 <input type="file" name="passport" id="passport_file">
@@ -395,6 +409,7 @@
                                 <input type="file" name="aoa" id="aoa_file">
                             </div>
                         </div>
+
                     </div>
                     <div class="row col-md-12" align="right">
                         <div class="form-group">
