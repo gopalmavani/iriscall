@@ -112,6 +112,93 @@ class TelecomController extends CController{
         echo json_encode($json_data);
     }
 
+
+    /**
+     * Manages data for server side datatables for telecom accounts details.
+     */
+    public function actionServeraccountdata(){
+        $requestData = $_REQUEST;
+
+        $array_cols = Yii::app()->db->schema->getTable('telecom_account_details')->columns;
+        $array = array();
+        $i = 0;
+        foreach($array_cols as  $key=>$col){
+            $array[$i] = $col->name;
+            $i++;
+        }
+        $columns = $array;
+
+        $sql = "SELECT  * from telecom_account_details where 1=1";
+        if (!empty($requestData['search']['value']))
+        {
+            $sql.=" AND ( user_id LIKE '%" . $requestData['search']['value'] . "%' ";
+            foreach($array_cols as  $key=>$col){
+                if($col->name != 'user_id')
+                {
+                    $sql.=" OR ".$col->name." LIKE '%" . $requestData['search']['value'] . "%'";
+                }
+            }
+            $sql.=")";
+        }
+
+        $j = 0;
+        // getting records as per search parameters
+        foreach($columns as $key=>$column){
+            if( !empty($requestData['columns'][$key]['search']['value']) ){
+                if($column == 'country'){
+                    $Country_code = $requestData['columns'][$key]['search']['value'];
+                    $countryid = ServiceHelper::getCountryNameFromCode($Country_code);
+                    $sql.=" AND $column = ".$countryid."";
+                }else{
+                    $sql.=" AND $column LIKE '%".$requestData['columns'][$key]['search']['value']."%' ";
+                }
+            }
+            $j++;
+        }
+
+        $count_sql = str_replace("*","count(*) as columncount",$sql);
+        $data = Yii::app()->db->createCommand($count_sql)->queryAll();
+        $totalData = $data[0]['columncount'];
+        $totalFiltered = $totalData;
+
+        $sql.=" ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . "  LIMIT " . $requestData['start'] . " ," .
+            $requestData['length'] . "   ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        $data = array();
+        $i=1;
+        foreach ($result as $key => $row)
+        {
+            $nestedData = array();
+            foreach($array_cols as  $key=>$col){
+                $nestedData[] = $row["$col->name"];
+            }
+            $data[] = $nestedData;
+            $i++;
+        }
+
+
+        $json_data = array(
+            "draw" => intval($requestData['draw']),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data   // total data array
+        );
+
+        echo json_encode($json_data);
+    }
+
+    public function actionAccounts(){
+        $model = new TelecomAccountDetails('search');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['TelecomAccountDetails']))
+            $model->attributes = $_GET['TelecomAccountDetails'];
+        $alldata = TelecomAccountDetails::model()->findAll();
+        $this->render('account', [
+            'model' => $model,
+            'alldata' => $alldata,
+        ]);
+    }
+
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -189,6 +276,14 @@ class TelecomController extends CController{
     {
         $model = TelecomUserDetails::model()->findByPk($id);
         $this->render('view', array(
+            'model' => $model
+        ));
+    }
+
+    public function actionAccountdetails($id)
+    {
+        $model = TelecomAccountDetails::model()->findByPk($id);
+        $this->render('accountdetails', array(
             'model' => $model
         ));
     }
