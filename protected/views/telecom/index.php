@@ -67,7 +67,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/js/datatables/
                                 </div>
                                 <!--end::Contacts-->
                                 <div class="mb-10">
-                                    <a href="#" class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2">View More</a>
+                                    <a href="<?= Yii::app()->createUrl('telecom/view').'/'.$telecom_user->id; ?>" class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2">View More</a>
                                     <a href="<?= Yii::app()->createUrl('telecom/pricing') ?>" class="btn btn-sm btn-success font-weight-bolder text-uppercase mr-2">Request New Account</a>
                                 </div>
                             </div>

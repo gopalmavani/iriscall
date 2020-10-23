@@ -327,8 +327,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                     $country = Yii::app()->ServiceHelper->getCountry(); ?>
                                                     <option value="">Select Country</option>
                                                     <?php foreach ($country as $key => $value) { ?>
-                                                        <option value="<?php echo $key; ?>"><?php echo $value ?></option>
-                                                    <?php } ?>
+                                                        <option value="<?php echo $key;?>" <?php if ($telecom_user_detail->country == $key) {echo "selected";}?>><?php echo $value ?></option>
+                                                    <?php  } ?>
                                                 </select>
                                             </div>
 
@@ -342,7 +342,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                     $nationality = Yii::app()->ServiceHelper->getNationality(); ?>
                                                     <option value="">Select Nationality</option>
                                                     <?php foreach ($nationality as $key => $value) { ?>
-                                                        <option value="<?php echo $key; ?>"><?php echo $value ?></option>
+                                                        <option value="<?php echo $key;?>" <?php if ($telecom_user_detail->nationality == $key) {echo "selected";}?>><?php echo $value ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>

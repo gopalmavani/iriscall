@@ -34,7 +34,6 @@ class TelecomController extends Controller
 
     /**
      * Index page
-     *
      */
     public function actionIndex(){
         $user = UserInfo::model()->findByPk(Yii::app()->user->Id);
@@ -48,32 +47,12 @@ class TelecomController extends Controller
             ]);
         } else {
             $this->redirect(Yii::app()->createUrl('telecom/pricing'));
-            $product_data = Yii::app()->db->createCommand()
-                ->select('pc.product_id, p.name, p.description , p.image, p.price')
-                ->from('product_category pc')
-                ->join('product_info p','pc.product_id=p.product_id')
-                ->join('categories c','c.category_id=pc.category_id')
-                ->where('c.category_name=:cName', [':cName'=>Yii::app()->params['TelecomProductCategory']])
-                ->andWhere('p.is_active=:pIa', [':pIa' => 1])
-                ->queryAll();
-
-            $cartData = Yii::app()->db->createCommand()
-                ->select('c.product_id, c.cart_id, name, p.image, qty, amount')
-                ->from('cart c')
-                ->join('product_info p','c.product_id=p.product_id')
-                ->where('user_id=:uId', [':uId'=>Yii::app()->user->getId()])
-                ->queryAll();
-
-            $this->render('pricing',
-                array(
-                    'products' => $product_data,
-                    'user' => $user,
-                    'cartData' => $cartData
-                )
-            );
         }
     }
 
+    /*
+     * Product pricing for telecom products
+     * */
     public function actionPricing(){
         $user = UserInfo::model()->findByPk(Yii::app()->user->Id);
         $product_data = Yii::app()->db->createCommand()
@@ -107,5 +86,16 @@ class TelecomController extends Controller
                 'first_account' => $first_account
             )
         );
+    }
+
+    /*
+     * View Telecom details
+     * */
+    public function actionView($id){
+        $telecom_user = TelecomUserDetails::model()->findByPk($id);
+
+        $this->render('view', [
+            'model' => $telecom_user
+        ]);
     }
 }
