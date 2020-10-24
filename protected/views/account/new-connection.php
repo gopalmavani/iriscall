@@ -1,6 +1,8 @@
 <?php
 $this->pageTitle = "Create new Account";
+Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/signature/css/jquery.signature.css');
 ?>
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">
 <style>
     .datepicker{
         width: unset;
@@ -129,6 +131,9 @@ $this->pageTitle = "Create new Account";
                             </div>
                         </div>
                     </div>
+                    <div class="row signature">
+
+                    </div>
                     <div class="d-flex align-items-center" style="float: right;">
                         <a href="<?= Yii::app()->createUrl('telecom/index'); ?>" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-3">Back</a>
                         <button type="submit" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Create Request</button>
@@ -139,6 +144,8 @@ $this->pageTitle = "Create new Account";
     </div>
 </div>
 <script src="<?php echo Yii::app()->request->baseUrl ?>/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl ?>/plugins/signature/js/jquery.signature.js"></script>
 <script type="text/javascript">
     $("#new-connection").validate({
         debug: true,
@@ -156,5 +163,9 @@ $this->pageTitle = "Create new Account";
         submitHandler: function(form) {
             form.submit();
         }
+    });
+
+    $(document).ready(function () {
+        $('.signature').signature({color: '#00f'});
     });
 </script>
