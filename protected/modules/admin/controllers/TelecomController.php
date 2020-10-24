@@ -211,18 +211,10 @@ class TelecomController extends CController
 
                 $userInfo = UserInfo::model()->findByAttributes(['email' => $_POST['TelecomUserDetails']['email']]);
                 if (isset($_FILES)) {
-                    $this->uploadfiles($userInfo->user_id, $_FILES);
+                    UserHelper::uploadFiles($userInfo->user_id, $_FILES);
                 }
-
-                $model = new TelecomUserDetails('search');
-                $model->unsetAttributes();  // clear any default values
-                if (isset($_GET['TelecomUserDetails']))
-                    $model->attributes = $_GET['TelecomUserDetails'];
-                $alldata = TelecomUserDetails::model()->findAll();
-                $this->render('index', [
-                    'model' => $model,
-                    'alldata' => $alldata,
-                ]);
+                //$this->redirect('admin/telecom/index');
+                $this->redirect(Yii::app()->createUrl('admin/telecom/index'));
             }
         }
         $this->render('create', array(
@@ -264,19 +256,15 @@ class TelecomController extends CController
             ->join('telecom_documents t', 't.document_id = u.document_id')
             ->where('u.user_id=:id', [':id' => $model->user_id])
             ->queryAll();
+
         if (!empty($_POST)) {
             if (isset($_POST['TelecomUserDetails'])) {
                 $this->saveTelecomUserDetails($_POST['TelecomUserDetails']);
 
-                $model = new TelecomUserDetails('search');
-                $model->unsetAttributes();  // clear any default values
-                if (isset($_GET['TelecomUserDetails']))
-                    $model->attributes = $_GET['TelecomUserDetails'];
-                $alldata = TelecomUserDetails::model()->findAll();
-                $this->render('index', [
-                    'model' => $model,
-                    'alldata' => $alldata,
-                ]);
+                if (isset($_FILES)) {
+                    UserHelper::uploadFiles($model->user_id, $_FILES);
+                }
+                $this->redirect(Yii::app()->createUrl('admin/telecom/index'));
             }
         }
         $this->render('update', array(
@@ -298,59 +286,6 @@ class TelecomController extends CController
             'model' => $model,
             'documents' => $telecom_documents
         ));
-    }
-
-
-    public function uploadfiles($user_id, $files)
-    {
-        $uploadDir = 'protected/runtime/uploads/' . $user_id . '/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-        if (isset($files['passport']['name'])) {
-            $uploadFile = $uploadDir . basename($files['passport']['name']);
-            $documentId = 1;
-            $this->deleteDocumentIfPresent($user_id, $documentId);
-            if (move_uploaded_file($files['passport']['tmp_name'], $uploadFile)) {
-                $documentPath = $uploadDir . $files['passport']['name'];
-                $this->addDocumentPathToDB($user_id, $documentId, $documentPath);
-            }
-        }
-        if (isset($files['sepa']['name'])) {
-            $uploadFile = $uploadDir . basename($files['sepa']['name']);
-            $documentId = 2;
-            $this->deleteDocumentIfPresent($user_id, $documentId);
-            if (move_uploaded_file($files['sepa']['tmp_name'], $uploadFile)) {
-                $documentPath = $uploadDir . $files['sepa']['name'];
-                $this->addDocumentPathToDB($user_id, $documentId, $documentPath);
-            }
-        }
-        if (isset($files['articles_of_association']['name'])) {
-            $uploadFile = $uploadDir . basename($files['articles_of_association']['name']);
-            $documentId = 3;
-            $this->deleteDocumentIfPresent($user_id, $documentId);
-            if (move_uploaded_file($files['articles_of_association']['tmp_name'], $uploadFile)) {
-                $documentPath = $uploadDir . $files['articles_of_association']['name'];
-                $this->addDocumentPathToDB($user_id, $documentId, $documentPath);
-            }
-        }
-    }
-
-    protected function deleteDocumentIfPresent($userId, $documentId){
-        $documents = TelecomUserDocuments::model()->findAllByAttributes(['user_id' => $userId, 'document_id' => $documentId]);
-        foreach ($documents as $document){
-            UserHelper::deleteFiles($document->document_path);
-            $document->delete();
-        }
-    }
-
-    protected function addDocumentPathToDB($userId, $documentId, $documentPath)
-    {
-        $document = new TelecomUserDocuments();
-        $document->user_id = $userId;
-        $document->document_id = $documentId;
-        $document->document_path = $documentPath;
-        $document->save(false);
     }
 
     /*
