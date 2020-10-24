@@ -5,6 +5,24 @@ $this->pageTitle = "Create new Account";
     .datepicker{
         width: unset;
     }
+    .wrapper {
+        position: relative;
+        width: 400px;
+        height: 200px;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .signature-pad {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width:400px;
+        height:200px;
+        background-color: white;
+    }
 </style>
 <div class="subheader py-2 py-lg-6 subheader-transparent" id="kt_subheader">
     <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -129,6 +147,17 @@ $this->pageTitle = "Create new Account";
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="signature-div">
+                        <h4 class="font-weight-bold text-dark">Please Sign here</h4>
+                        <div class="wrapper">
+                            <canvas id="signature-pad" class="signature-pad" width=400 height=200></canvas>
+                        </div>
+                        <!--<button id="save-png" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save as PNG</button>-->
+                        <button id="undo" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Undo</button>
+                        <button id="clear" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Clear</button>
+                        <input type="text" class="form-control form-control-solid form-control-lg signature" name="signature" hidden/>
+                    </div>
                     <div class="d-flex align-items-center" style="float: right;">
                         <a href="<?= Yii::app()->createUrl('telecom/index'); ?>" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-3">Back</a>
                         <button type="submit" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Create Request</button>
@@ -139,22 +168,75 @@ $this->pageTitle = "Create new Account";
     </div>
 </div>
 <script src="<?php echo Yii::app()->request->baseUrl ?>/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl ?>/plugins/signature/docs/js/signature_pad.umd.js"></script>
 <script type="text/javascript">
-    $("#new-connection").validate({
-        debug: true,
-        errorClass: "text-danger",
-        errorElement: "div",
-        onfocusout: false,
-        onkeyup: false,
-        onclick: false,
-        rules: {
+    $(document).ready(function () {
+        var canvas = document.getElementById('signature-pad');
 
-        },
-        messages: {
-
-        },
-        submitHandler: function(form) {
-            form.submit();
+        // Adjust canvas coordinate space taking into account pixel ratio,
+        // to make it look crisp on mobile devices.
+        // This also causes canvas to be cleared.
+        function resizeCanvas() {
+            // When zoomed out to less than 100%, for some very strange reason,
+            // some browsers report devicePixelRatio as less than 1
+            // and only part of the canvas is cleared then.
+            var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            canvas.getContext("2d").scale(ratio, ratio);
         }
+
+        window.onresize = resizeCanvas;
+        resizeCanvas();
+
+        var signaturePad = new SignaturePad(canvas, {
+            //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+            backgroundColor: 'rgb(243, 246, 249)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+        });
+
+        document.getElementById('clear').addEventListener('click', function () {
+            signaturePad.clear();
+        });
+
+        document.getElementById('undo').addEventListener('click', function () {
+            var data = signaturePad.toData();
+            if (data) {
+                data.pop(); // remove the last dot or line
+                signaturePad.fromData(data);
+            }
+        });
+
+        $("#new-connection").validate({
+            debug: true,
+            errorClass: "text-danger",
+            errorElement: "div",
+            onfocusout: false,
+            onkeyup: false,
+            onclick: false,
+            rules: {
+                signature: "required"
+            },
+            messages: {
+                signature: "Please sign"
+            },
+            submitHandler: function(form) {
+                console.log(signaturePad.isEmpty());
+                if (signaturePad.isEmpty()) {
+                    Swal.fire({
+                        text: "You need to sign the document please",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light"
+                        }
+                    });
+                } else {
+                    console.log("Submitting it");
+                    $('.signature').val(signaturePad.toDataURL('image/png'));
+                    form.submit();
+                }
+            }
+        });
     });
 </script>
