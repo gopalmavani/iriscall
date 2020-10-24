@@ -21,7 +21,6 @@
                     <div class="block-content block-content-narrow">
                         <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                             'id' => 'telecom-info-form',
-                            'action'=> Yii::app()->createUrl('admin/telecom/create'),
                             'layout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
                             'enableAjaxValidation' => false,
                             'htmlOptions' => array(
