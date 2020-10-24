@@ -28,7 +28,7 @@
  * @property integer $telecom_request_status
  * @property string $created_at
  * @property string $modified_at
-
+ * @property string $signature
  */
 class TelecomAccountDetails extends CActiveRecord
 {
@@ -54,7 +54,7 @@ class TelecomAccountDetails extends CActiveRecord
             array('phone_number, sim_card_number, old_sim_card_number, tariff_plan, previous_operator_client_id', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, client_id, user_id, is_voice_mail_enabled, email, telecom_request_status, extra_options, previous_operator_name, previous_operator_client_invoice_name, authorised_person_name, authorised_person_vat_number, phone_number, sim_card_number, old_sim_card_number, tariff_plan, previous_operator_client_id, created_at, modified_at', 'safe', 'on'=>'search'),
+			array('id, client_id, user_id, is_voice_mail_enabled, email, telecom_request_status, extra_options, previous_operator_name, previous_operator_client_invoice_name, authorised_person_name, authorised_person_vat_number, phone_number, sim_card_number, old_sim_card_number, tariff_plan, previous_operator_client_id, created_at, modified_at, signature', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -93,6 +93,7 @@ class TelecomAccountDetails extends CActiveRecord
             'authorised_person_vat_number' => 'Authorised Person Vat Number',
             'created_at' => 'Created At',
 			'modified_at' => 'Modified At',
+			'signature' => 'Signature',
 		);
 	}
 
@@ -131,6 +132,7 @@ class TelecomAccountDetails extends CActiveRecord
 		$criteria->compare('authorised_person_vat_number',$this->authorised_person_vat_number, true);
 		$criteria->compare('created_at',$this->created_at,true);
 		$criteria->compare('modified_at',$this->modified_at,true);
+		$criteria->compare('signature',$this->signature,true);
 
 		return new CActiveDataProvider($this, array(
 				'pagination' => array(
