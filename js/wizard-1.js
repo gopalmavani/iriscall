@@ -43,13 +43,6 @@ var KTWizard1 = function () {
                                 message: 'Birth-date is required'
                             }
                         }
-                    },
-                    landline_number: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Land line number as an alternate contact number is required'
-                            }
-                        }
                     }
 				},
 				plugins: {
@@ -348,6 +341,30 @@ var KTWizard1 = function () {
 			}
 			var cardError = 0;
             var fileError = 0;
+            if(wizard.getStep() == 2){
+                if($('.is_business_type').is(":checked")){
+                    if(aoa_file_count == 0){
+                        $('.aoa_label').addClass('text-danger');
+                        $('.aoa_label').html('Articles-Of-Association is required');
+                        fileError = fileError + 1;
+
+                        Swal.fire({
+                            text: "Sorry, looks like there are some errors detected while uploading documents",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-light"
+                            }
+                        }).then(function () {
+                            //KTUtil.scrollTop();
+                        });
+                    } else {
+                        $('.aoa_label').removeClass('text-danger');
+                        $('.aoa_label').html('File: Articles of Association');
+                    }
+                }
+            }
 			if(wizard.getStep() == 4){
 				if($('input[type=radio][name=payment_method]:checked').val() == 'CreditCard'){
 					if(!card.isValid()){
@@ -365,8 +382,7 @@ var KTWizard1 = function () {
                         cardError = 1;
 					}
 				} else if($('input[type=radio][name=payment_method]:checked').val() == 'SEPA') {
-				    console.log("Inside SEPA");
-                    if(sepa_file_count == 0){
+				    if(sepa_file_count == 0){
                         $('.sepa_label').addClass('text-danger');
                         $('.sepa_label').html('SEPA is required');
                         fileError = fileError + 1;
