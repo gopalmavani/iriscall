@@ -67,7 +67,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     
                                 </span>
                             </div>
-                            <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
+                            <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
                                     <i class="wizard-icon flaticon-home "></i>
                                     <h3 class="wizard-title">2. Add address details</h3>
@@ -84,7 +84,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     
                                 </span>
                             </div>
-                            <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
+                            <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
                                     <i class="wizard-icon flaticon-earth-globe "></i>
                                     <h3 class="wizard-title">3. Add business details</h3>
@@ -487,14 +487,26 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 
                                             </div>
                                             <div class="col-xl-6">
-                                                
                                                 <div class="form-group">
                                                     <label>VAT Rate</label>
                                                     <input type="number" class="form-control form-control-solid form-control-lg" name="vat_rate" placeholder="VAT Rate" value="<?= $telecom_user_detail->vat_rate; ?>" />
                                                     <span class="form-text text-muted">Please enter VAT rate.</span>
                                                 </div>
-                                                
                                             </div>
+                                        </div>
+                                        <div class="aoa-div-2">
+                                            <!--<div class="form-group row">
+                                                <label class="col-form-label col-lg-12 col-sm-12 sepa_label">File: Articles of Association</label>
+                                                <div class="col-lg-12 col-md-9 col-sm-12">
+                                                    <div class="dropzone dropzone-default" id="aoa_file">
+                                                        <div class="dropzone-msg dz-message needsclick">
+                                                            <h3 class="dropzone-msg-title">Drop Articles-Of-Association file here or click to upload.</h3>
+                                                            <span class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>-->
+                                            <?php $this->renderPartial() ?>
                                         </div>
                                     </div>
                                 </div>
@@ -661,17 +673,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="dropzone dropzone-default" id="passport_file">
                                                 <div class="dropzone-msg dz-message needsclick">
                                                     <h3 class="dropzone-msg-title">Drop Passport file here or click to upload.</h3>
-                                                    <span class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-lg-12 col-sm-12 aoa_label">File: Articles Of Association</label>
-                                        <div class="col-lg-12 col-md-9 col-sm-12">
-                                            <div class="dropzone dropzone-default" id="aoa_file">
-                                                <div class="dropzone-msg dz-message needsclick">
-                                                    <h3 class="dropzone-msg-title">Drop Articles-Of-Association file here or click to upload.</h3>
                                                     <span class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</span>
                                                 </div>
                                             </div>
