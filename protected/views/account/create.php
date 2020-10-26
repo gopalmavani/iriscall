@@ -9,6 +9,10 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
     .datepicker{
         width: unset;
     }
+    .dz-remove{
+        color: red !important;
+        font-size: 12px !important;
+    }
 </style>
 <div class="subheader py-2 py-lg-6 subheader-transparent" id="kt_subheader">
     <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -67,13 +71,13 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     
                                 </span>
                             </div>
-                            <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
+                            <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-home "></i>
-                                    <h3 class="wizard-title">2. Add address details</h3>
+                                    <i class="wizard-icon flaticon-earth-globe "></i>
+                                    <h3 class="wizard-title">2. Add business details</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
-                                    
+
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <polygon points="0 0 24 0 24 24 0 24" />
@@ -81,13 +85,13 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
                                         </g>
                                     </svg>
-                                    
+
                                 </span>
                             </div>
-                            <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
+                            <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-earth-globe "></i>
-                                    <h3 class="wizard-title">3. Add business details</h3>
+                                    <i class="wizard-icon flaticon-home "></i>
+                                    <h3 class="wizard-title">3. Add address details</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
                                     
@@ -172,6 +176,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="form-group">
                                                 <label class="col-form-label">Date Of Birth</label>
                                                 <input type="text" class="form-control form-control-solid form-control-lg" id="date_of_birth" placeholder="Select date of birth" name="date_of_birth" value="<?= $telecom_user_detail->date_of_birth; ?>" />
+                                                <span class="form-text text-muted">You need to be of at-least 18 years to enroll.</span>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
@@ -180,11 +185,11 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="col-form-label">
                                                     <div class="radio-inline">
                                                         <label class="radio radio-success">
-                                                            <input value="1" <?php if ($telecom_user_detail->gender == 1) { echo "checked";} ?> type="radio" class="check" id="minimal-radio-1" name="gender">
+                                                            <input value="1" <?php if ($telecom_user_detail->gender == 1) { echo "checked";} ?> type="radio" class="check" name="gender">
                                                             <span></span>Male
                                                         </label>
                                                         <label class="radio radio-success">
-                                                            <input value="2" <?php if ($telecom_user_detail->gender != 1) { echo "checked";} ?> type="radio" class="check" id="minimal-radio-1" name="gender">
+                                                            <input value="2" <?php if ($telecom_user_detail->gender != 1) { echo "checked";} ?> type="radio" class="check" name="gender">
                                                             <span></span>Female
                                                         </label>
                                                     </div>
@@ -204,14 +209,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <input type="text" class="form-control form-control-solid form-control-lg" name="extra_email" placeholder="Additional Email" value="<?= $telecom_user_detail->extra_email; ?>" />
                                         <span class="form-text text-muted">Additional email for backup purpose.</span>
                                     </div>
-                                    
-                                    
-                                    <div class="form-group">
-                                        <label>Agent Name</label>
-                                        <input type="text" class="form-control form-control-solid form-control-lg" name="agent_name" placeholder="Agent Name" value="<?= $telecom_user_detail->agent_name; ?>" />
-                                        <span class="form-text text-muted">Agent Name.</span>
-                                    </div>
-                                    
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="form-group">
@@ -243,7 +240,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <div class="col-xl-4">
                                             
                                             <div class="form-group">
-                                                <label>Send Invoice VIA</label>
+                                                <label>Send Invoice By</label>
                                                 <select name="send_invoice_via" id="send_invoice_via" class="form-control">
                                                     <option value="Email">Email</option>
                                                     <option value="Post">Post</option>
@@ -264,6 +261,81 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </select>
                                             </div>
                                             
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pb-5" data-wizard-type="step-content">
+                                    <h4 class="mb-10 font-weight-bold text-dark">Some Business Details</h4>
+                                    <div class="form-group row">
+                                        <div class="col-1">
+                                            <span class="switch switch-outline switch-icon switch-success">
+                                                <label>
+                                                    <input type="checkbox" name="is_business_type" class="is_business_type" />
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                        <label class="col-3 col-form-label">Add Business details:</label>
+                                    </div>
+                                    <div class="business_details" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+
+                                                <div class="form-group">
+                                                    <label>Business Name</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="business_name" placeholder="Business Name" value="<?= $telecom_user_detail->business_name; ?>" />
+                                                    <span class="form-text text-muted">Please enter Business Name.</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-xl-6">
+
+                                                <div class="form-group">
+                                                    <label>VAT Number</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="vat_number" placeholder="VAT Number" value="<?= $telecom_user_detail->vat_number; ?>" />
+                                                    <span class="form-text text-muted">Please enter VAT Number.</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+
+                                                <div class="form-group">
+                                                    <label for="business_country">Business Country</label>
+                                                    <select name="business_country" id="business_country" class="form-control">
+                                                        <?php
+                                                        $country = Yii::app()->ServiceHelper->getCountry(); ?>
+                                                        <option value="">Select Country</option>
+                                                        <?php foreach ($country as $key => $value) { ?>
+                                                            <option value="<?php echo $key; ?>"><?php echo $value ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>VAT Rate</label>
+                                                    <input type="number" class="form-control form-control-solid form-control-lg" name="vat_rate" placeholder="VAT Rate" value="<?= $telecom_user_detail->vat_rate; ?>" />
+                                                    <span class="form-text text-muted">Please enter VAT rate.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="aoa-div">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-lg-12 col-sm-12 aoa_label">File: Articles of Association</label>
+                                                <div class="col-lg-12 col-md-9 col-sm-12">
+                                                    <div class="dropzone dropzone-default" id="aoa_file">
+                                                        <div class="dropzone-msg dz-message needsclick">
+                                                            <h3 class="dropzone-msg-title">Drop Articles-Of-Association file here or click to upload.</h3>
+                                                            <h5 class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</h5>
+                                                            <button type="button" class="btn btn-light-primary font-weight-bolder text-uppercase px-9 py-4">Upload here</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php /*$this->renderPartial('upload-file-dropzone', ['document' => 'aoa']); */?>
                                         </div>
                                     </div>
                                 </div>
@@ -437,68 +509,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     </div>
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
-                                    <h4 class="mb-10 font-weight-bold text-dark">Some Business Details</h4>
-                                    <div class="form-group row">
-                                        <div class="col-1">
-                                            <span class="switch switch-outline switch-icon switch-success">
-                                                <label>
-                                                    <input type="checkbox" name="is_business_type" class="is_business_type" />
-                                                    <span></span>
-                                                </label>
-                                            </span>
-                                        </div>
-                                        <label class="col-3 col-form-label">Add Business details:</label>
-                                    </div>
-                                    <div class="business_details" style="display: none;">
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                
-                                                <div class="form-group">
-                                                    <label>Business Name</label>
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="business_name" placeholder="Business Name" value="<?= $telecom_user_detail->business_name; ?>" />
-                                                    <span class="form-text text-muted">Please enter Business Name.</span>
-                                                </div>
-                                                
-                                            </div>
-                                            <div class="col-xl-6">
-                                                
-                                                <div class="form-group">
-                                                    <label>VAT Number</label>
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="vat_number" placeholder="VAT Number" value="<?= $telecom_user_detail->vat_number; ?>" />
-                                                    <span class="form-text text-muted">Please enter VAT Number.</span>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                
-                                                <div class="form-group">
-                                                    <label for="business_country">Business Country</label>
-                                                    <select name="business_country" id="business_country" class="form-control">
-                                                        <?php
-                                                        $country = Yii::app()->ServiceHelper->getCountry(); ?>
-                                                        <option value="">Select Country</option>
-                                                        <?php foreach ($country as $key => $value) { ?>
-                                                            <option value="<?php echo $key; ?>"><?php echo $value ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-                                                
-                                            </div>
-                                            <div class="col-xl-6">
-                                                
-                                                <div class="form-group">
-                                                    <label>VAT Rate</label>
-                                                    <input type="number" class="form-control form-control-solid form-control-lg" name="vat_rate" placeholder="VAT Rate" value="<?= $telecom_user_detail->vat_rate; ?>" />
-                                                    <span class="form-text text-muted">Please enter VAT rate.</span>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pb-5" data-wizard-type="step-content">
                                     <h4 class="mb-10 font-weight-bold text-dark">Add Payment Details</h4>
                                     
                                     <div class="form-group row">
@@ -666,17 +676,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-lg-12 col-sm-12 aoa_label">File: Articles Of Association</label>
-                                        <div class="col-lg-12 col-md-9 col-sm-12">
-                                            <div class="dropzone dropzone-default" id="aoa_file">
-                                                <div class="dropzone-msg dz-message needsclick">
-                                                    <h3 class="dropzone-msg-title">Drop Articles-Of-Association file here or click to upload.</h3>
-                                                    <span class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
                                     <h4 class="mb-10 font-weight-bold text-dark">Create New Account</h4>
@@ -829,9 +828,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                 passport_file_count = 1;
                 var imgName = response;
                 file.previewElement.classList.add("dz-success");
-            },
-            error: function (file, response) {
-                file.previewElement.classList.add("dz-error");
             }
         });
         $('#sepa_file').dropzone({
@@ -845,9 +841,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                 sepa_file_count = 1;
                 var imgName = response;
                 file.previewElement.classList.add("dz-success");
-            },
-            error: function (file, response) {
-                file.previewElement.classList.add("dz-error");
             }
         });
         $('#aoa_file').dropzone({
@@ -857,13 +850,22 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             acceptedFiles: "application/pdf",
             maxFilesize: 2, // MB
             addRemoveLinks: true,
+            //autoProcessQueue: false,
             success: function (file, response) {
                 aoa_file_count = 1;
                 var imgName = response;
-                file.previewElement.classList.add("dz-success");
+                //file.previewElement.classList.add("dz-success");
             },
-            error: function (file, response) {
-                file.previewElement.classList.add("dz-error");
+            removedfile: function (file, response) {
+                $.ajax({
+                    url: "removefiles",
+                    type: "POST",
+                    data: { "document_id" : 3 },
+                    success: function(){
+                        aoa_file_count = 0;
+                        file.previewElement.parentNode.removeChild(file.previewElement);
+                    }
+                });
             }
         });
 
@@ -889,7 +891,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             todayHighlight: true,
             orientation: "bottom left",
             startDate: "01-01-1950",
-            endDate: "0d",
+            endDate: "-18y",
             templates: {
                 leftArrow: '<i class="la la-angle-left"></i>',
                 rightArrow: '<i class="la la-angle-right"></i>'

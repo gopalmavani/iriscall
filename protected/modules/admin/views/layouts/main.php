@@ -9,8 +9,9 @@ $todaydate = strtotime(date('Y-m-d H:i:s'));
 $folder = Yii::app()->params['basePath'];
 ?>
 <style>
-
-
+    .nav-main a > i{
+        min-width: 15px;
+    }
 </style>
 <!DOCTYPE html>
 <html>

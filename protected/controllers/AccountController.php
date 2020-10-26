@@ -82,6 +82,10 @@ class AccountController extends Controller
             $telecom_user_details->setAttributes($_POST, false);
             $telecom_user_details->user_id = $user->user_id;
             $telecom_user_details->email = $user->email;
+            $telecom_user_details->agent_id = $user->sponsor_id;
+            $telecom_user_details->agent_id = $user->sponsor_id;
+            $sponsor = UserInfo::model()->findByPk($user->sponsor_id);
+            $telecom_user_details->agent_name = $sponsor->full_name;
             if(isset($_POST['cc_type']) && $_POST['cc_type'] != ''){
                 $telecom_user_details->credit_card_type = $_POST['cc_type'];
                 $telecom_user_details->credit_card_number = $_POST['cc_number'];
@@ -273,6 +277,28 @@ class AccountController extends Controller
         if(isset($_FILES)){
             $user_id = Yii::app()->user->id;
             UserHelper::uploadFiles($user_id, $_FILES);
+        }
+    }
+
+    /*
+     * Remove files
+     * */
+    public function actionRemovefiles(){
+        if(isset($_POST)){
+            $user_id = Yii::app()->user->id;
+
+            //Default
+            $documentId = $_POST['document_id'];
+            if (isset($files['passport']['name'])) {
+                $documentId = 1;
+            }
+            if (isset($files['sepa']['name'])) {
+                $documentId = 2;
+            }
+            if (isset($files['articles_of_association']['name'])) {
+                $documentId = 3;
+            }
+            UserHelper::deleteDocumentIfPresent($user_id, $documentId);
         }
     }
 }
