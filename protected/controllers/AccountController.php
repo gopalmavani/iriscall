@@ -63,18 +63,21 @@ class AccountController extends Controller
             }
         }
 
-        if(isset($_GET['tariff_product_id'])){
-            $tariff_product_id = $_GET['tariff_product_id'];
-        } else {
-            $tariff_product_id = '';
-        }
-
-        $product_data = Yii::app()->db->createCommand()
+        //Default personal products
+        $personal_product_data = Yii::app()->db->createCommand()
             ->select('pc.product_id, p.name, p.description , p.image, p.price')
             ->from('product_category pc')
             ->join('product_info p','pc.product_id=p.product_id')
             ->join('categories c','c.category_id=pc.category_id')
-            ->where('c.category_name=:cName', [':cName'=>Yii::app()->params['TelecomProductCategory']])
+            ->where('c.category_name=:cName', [':cName'=>Yii::app()->params['TelecomProductPersonalCategory']])
+            ->andWhere('p.is_active=:pIa', [':pIa' => 1])
+            ->queryAll();
+        $business_product_data = Yii::app()->db->createCommand()
+            ->select('pc.product_id, p.name, p.description , p.image, p.price')
+            ->from('product_category pc')
+            ->join('product_info p','pc.product_id=p.product_id')
+            ->join('categories c','c.category_id=pc.category_id')
+            ->where('c.category_name=:cName', [':cName'=>Yii::app()->params['TelecomProductBusinessCategory']])
             ->andWhere('p.is_active=:pIa', [':pIa' => 1])
             ->queryAll();
 
@@ -83,7 +86,8 @@ class AccountController extends Controller
             $telecom_user_details->user_id = $user->user_id;
             $telecom_user_details->email = $user->email;
             $telecom_user_details->agent_id = $user->sponsor_id;
-            $telecom_user_details->agent_id = $user->sponsor_id;
+            $telecom_user_details->send_invoice_via = 'Email';
+            $telecom_user_details->invoice_detail_type = 'Standard';
             $sponsor = UserInfo::model()->findByPk($user->sponsor_id);
             $telecom_user_details->agent_name = $sponsor->full_name;
             if(isset($_POST['cc_type']) && $_POST['cc_type'] != ''){
@@ -117,8 +121,8 @@ class AccountController extends Controller
             'telecom_details_presence' => $telecom_details_present,
             'telecom_documents' => $telecom_documents,
             'telecom_account' => $telecom_account,
-            'tariff_product_id' => $tariff_product_id,
-            'products' => $product_data
+            'personal_products' => $personal_product_data,
+            'business_products' => $business_product_data
         ]);
 
     }
@@ -132,6 +136,13 @@ class AccountController extends Controller
         $user = UserInfo::model()->findByPk($user_id);
         $telecom_user_details = TelecomUserDetails::model()->findByAttributes(['user_id'=>$user_id]);
         $telecom_account = new TelecomAccountDetails();
+        if(isset($telecom_user_details->business_name) && !empty($telecom_user_details->business_name)){
+            $category_name = Yii::app()->params['TelecomProductBusinessCategory'];
+            $telecom_account->rate = 'Iriscall';
+        } else {
+            $category_name = Yii::app()->params['TelecomProductPersonalCategory'];
+            $telecom_account->rate = 'Iriscall Home';
+        }
 
         if(isset($_GET['tariff_product_id'])){
             $tariff_product_id = $_GET['tariff_product_id'];
@@ -144,7 +155,7 @@ class AccountController extends Controller
             ->from('product_category pc')
             ->join('product_info p','pc.product_id=p.product_id')
             ->join('categories c','c.category_id=pc.category_id')
-            ->where('c.category_name=:cName', [':cName'=>Yii::app()->params['TelecomProductCategory']])
+            ->where('c.category_name=:cName', [':cName'=>$category_name])
             ->andWhere('p.is_active=:pIa', [':pIa' => 1])
             ->queryAll();
 

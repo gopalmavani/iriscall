@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'telecom_account_details':
  * @property integer $id
  * @property integer $user_id
+ * @property string $user_name
  * @property integer $client_id
  * @property string $email
  * @property string $account_type
@@ -50,11 +51,11 @@ class TelecomAccountDetails extends CActiveRecord
 		return array(
 			array('id, client_id, user_id, is_voice_mail_enabled, telecom_request_status', 'numerical', 'integerOnly'=>true),
             array('created_at, modified_at', 'safe'),
-            array('email, extra_options, previous_operator_name, previous_operator_client_invoice_name, authorised_person_name, authorised_person_vat_number', 'length', 'max'=>80),
+            array('user_name, email, extra_options, previous_operator_name, previous_operator_client_invoice_name, authorised_person_name, authorised_person_vat_number', 'length', 'max'=>80),
             array('phone_number, sim_card_number, old_sim_card_number, tariff_plan, previous_operator_client_id', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, client_id, user_id, is_voice_mail_enabled, email, telecom_request_status, extra_options, previous_operator_name, previous_operator_client_invoice_name, authorised_person_name, authorised_person_vat_number, phone_number, sim_card_number, old_sim_card_number, tariff_plan, previous_operator_client_id, created_at, modified_at, signature', 'safe', 'on'=>'search'),
+			array('id, client_id, user_id, is_voice_mail_enabled, user_name, email, telecom_request_status, extra_options, previous_operator_name, previous_operator_client_invoice_name, authorised_person_name, authorised_person_vat_number, phone_number, sim_card_number, old_sim_card_number, tariff_plan, previous_operator_client_id, created_at, modified_at, signature', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,6 +79,7 @@ class TelecomAccountDetails extends CActiveRecord
 			'id' => 'Id',
 			'client_id' => 'Client',
 			'user_id' => 'User',
+			'user_name' => 'User Name',
             'email' => 'Email',
             'phone_number' => 'Phone number',
             'sim_card_number' => 'Sim card number',
@@ -118,6 +120,7 @@ class TelecomAccountDetails extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('client_id',$this->client_id);
 		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('user_name',$this->user_name, true);
 		$criteria->compare('email',$this->email, true);
 		$criteria->compare('phone_number',$this->phone_number, true);
 		$criteria->compare('sim_card_number',$this->sim_card_number, true);
