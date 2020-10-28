@@ -56,7 +56,53 @@ var KTWizard1 = function () {
 			}
 		));
 
-		// Step 2
+        // Step 2
+        _validations.push(FormValidation.formValidation(
+            _formEl,
+            {
+                fields: {
+                    business_name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter Business name'
+                            }
+                        }
+                    },
+                    vat_number: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter VAT number'
+                            }
+                        }
+                    },
+                    business_country: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select a Country'
+                            }
+                        }
+                    },
+                    vat_rate: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter vat rate'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    excluded: new FormValidation.plugins.Excluded(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap({
+                        //eleInvalidClass: '',
+                        eleValidClass: '',
+                    })
+                }
+            }
+        ));
+
+		// Step 3
 		_validations.push(FormValidation.formValidation(
 			_formEl,
 			{
@@ -142,52 +188,6 @@ var KTWizard1 = function () {
                         validators: {
                             notEmpty: {
                                 message: 'Please select a country'
-                            }
-                        }
-                    }
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
-                    excluded: new FormValidation.plugins.Excluded(),
-					// Bootstrap Framework Integration
-					bootstrap: new FormValidation.plugins.Bootstrap({
-						//eleInvalidClass: '',
-						eleValidClass: '',
-					})
-				}
-			}
-		));
-
-		// Step 3
-		_validations.push(FormValidation.formValidation(
-			_formEl,
-			{
-				fields: {
-                    business_name: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please enter Business name'
-                            }
-                        }
-                    },
-                    vat_number: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please enter VAT number'
-                            }
-                        }
-                    },
-                    business_country: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select a Country'
-                            }
-                        }
-                    },
-                    vat_rate: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please enter vat rate'
                             }
                         }
                     }
@@ -314,6 +314,20 @@ var KTWizard1 = function () {
             _formEl,
             {
                 fields: {
+                    user_name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter Account user name'
+                            }
+                        }
+                    }/*,
+                    tariff_plan: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter Account user name'
+                            }
+                        }
+                    }*/
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -339,6 +353,80 @@ var KTWizard1 = function () {
 			if (wizard.getStep() > wizard.getNewStep()) {
 				return; // Skip if stepped back
 			}
+			console.log("Wizard Step: "+wizard.getStep());
+
+			//On Click events for edit button in review steps
+            $('#review_basic_toolbar_click').on('click', function () {
+                wizard.goTo(1);
+            });
+            $('#review_business_toolbar_click').on('click', function () {
+                wizard.goTo(2);
+            });
+            $('#review_address_toolbar_click').on('click', function () {
+                wizard.goTo(3);
+            });
+            $('#review_payment_toolbar_click').on('click', function () {
+                wizard.goTo(4);
+            });
+            $('#review_account_toolbar_click').on('click', function () {
+                wizard.goTo(6);
+            });
+
+
+			if(wizard.getStep() == 6){
+			    var formData = $('#kt_form').serializeArray().reduce(function(obj, item) {
+                    obj[item.name] = item.value;
+                    return obj;
+                }, {});
+                console.log(formData);
+
+                //Basic Details
+                $('#review_name').html(formData['first_name'] + " "  + formData['middle_name'] + " " + formData['last_name']);
+			    $('#review_dob').html(formData['date_of_birth']);
+			    if(formData['gender'] == '1')
+			        $('#review_gender').html('Male');
+			    else
+                    $('#review_gender').html('Female');
+			    $('#review_additional_email').html(formData['extra_email']);
+			    $('#review_phone').html(formData['phone']);
+			    $('#review_landline').html(formData['landline_number']);
+
+			    //Business Details
+                $('#review_business_name').html(formData['business_name']);
+                $('#review_business_country').html(formData['business_country'] + "<?= Hi; ?>");
+                $('#review_vat').html(formData['vat_number']);
+
+                //Address Details
+                $('#review_address_details').html(formData['building_num'] + ", "  + formData['bus_num'] + ", <br>" + formData['street'] + ", " + formData['city']
+                                + ", <br>" + formData['country'] + "-"  + formData['postcode']);
+                $('#review_nationality').html(formData['nationality']);
+                $('#review_billing_address').html(formData['billing_name'] + " <br>" + formData['billing_building_num'] + ", "  + formData['billing_bus_num'] + ", <br>" + formData['billing_street'] + ", " + formData['billing_city']
+                    + ", <br>" + formData['billing_country'] + "-"  + formData['billing_postcode']);
+
+                //Payment Details
+                $('#review_payment_method').html(formData['payment_method']);
+                //SEPA
+                $('#review_bank_name').html(formData['bank_name']);
+                $('#review_bank_address').html(formData['bank_building_num'] + ", <br>" + formData['bank_street'] + ", " + formData['bank_city']
+                    + ", <br>" + formData['bank_country'] + "-"  + formData['bank_postcode']);
+                $('#review_bank_account_name').html(formData['account_name']);
+                $('#review_iban').html(formData['iban']);
+                $('#review_bic_code').html(formData['bic_code']);
+                //Credit Card
+                $('#review_credit_card_name').html(formData['cc_name']);
+                $('#review_credit_card_number').html(formData['cc_number']);
+                $('#review_credit_card_expiry').html(formData['cc_exp_month'] + "/" + formData['cc_exp_year']);
+
+                //Account Details
+                $('#review_tariff_plan').html(formData['tariff_plan']);
+                $('#review_account_user_name').html(formData['user_name']);
+                $('#review_account_type').html(formData['account_type']);
+                $('#review_voice_mail').html(formData['is_voice_mail_enabled']);
+                $('#review_account_comments').html(formData['comments']);
+                $('#review_phone_number').html(formData['phone_number']);
+                $('#review_sim_card_number').html(formData['sim_card_number']);
+            }
+
 			var cardError = 0;
             var fileError = 0;
             if(wizard.getStep() == 2){
@@ -347,18 +435,6 @@ var KTWizard1 = function () {
                         $('.aoa_label').addClass('text-danger');
                         $('.aoa_label').html('Articles-Of-Association is required');
                         fileError = fileError + 1;
-
-                        Swal.fire({
-                            text: "Sorry, looks like there are some errors detected while uploading documents",
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light"
-                            }
-                        }).then(function () {
-                            //KTUtil.scrollTop();
-                        });
                     } else {
                         $('.aoa_label').removeClass('text-danger');
                         $('.aoa_label').html('File: Articles of Association');
@@ -381,27 +457,6 @@ var KTWizard1 = function () {
                         });
                         cardError = 1;
 					}
-				} else if($('input[type=radio][name=payment_method]:checked').val() == 'SEPA') {
-				    if(sepa_file_count == 0){
-                        $('.sepa_label').addClass('text-danger');
-                        $('.sepa_label').html('SEPA is required');
-                        fileError = fileError + 1;
-
-                        Swal.fire({
-                            text: "Sorry, looks like there are some errors detected while uploading documents",
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light"
-                            }
-                        }).then(function () {
-                            //KTUtil.scrollTop();
-                        });
-                    } else {
-                        $('.sepa_label').removeClass('text-danger');
-                        $('.sepa_label').html('File: SEPA');
-                    }
 				} else {
                     cardError = 0;
                 }
@@ -415,14 +470,6 @@ var KTWizard1 = function () {
                 } else {
                     $('.passport_label').removeClass('text-danger');
                     $('.passport_label').html('File: Passport');
-                }
-                if(aoa_file_count == 0){
-                    $('.aoa_label').addClass('text-danger');
-                    $('.aoa_label').html('Articles Of Association is required');
-                    fileError = fileError + 1;
-                } else {
-                    $('.aoa_label').removeClass('text-danger');
-                    $('.aoa_label').html('File: Articles Of Association');
                 }
                 if(fileError > 0){
                     Swal.fire({

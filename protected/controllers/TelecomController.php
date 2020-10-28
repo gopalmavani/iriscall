@@ -46,7 +46,7 @@ class TelecomController extends Controller
                 'telecom_accounts' => $telecom_accounts
             ]);
         } else {
-            $this->redirect(Yii::app()->createUrl('telecom/pricing'));
+            $this->redirect(Yii::app()->createUrl('account/create'));
         }
     }
 

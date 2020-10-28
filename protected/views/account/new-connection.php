@@ -57,8 +57,19 @@ $this->pageTitle = "Create new Account";
         <div class="card card-custom">
             <div class="card-body">
                 <form class="form" id="new-connection" method="POST">
-                    <h4 class="mb-10 font-weight-bold text-dark">Create New Account</h4>
+                    <?php $this->renderPartial('product-pricing', ['products' => $products]); ?>
+                    <hr>
+                    <h4 class="mb-10 font-weight-bold text-dark">New Account Details</h4>
                     <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label class="col-form-label col-8">Account User name</label>
+                                <div class="col-6">
+                                    <input type="text" class="form-control form-control-solid form-control-lg" name="user_name" placeholder="User name" value="<?= $telecom_account->user_name; ?>" />
+                                </div>
+                                <span class="form-text text-muted col-4">An identifiable account name.</span>
+                            </div>
+                        </div>
                         <div class="col-xl-6">
                             <div class="form-group">
                                 <label class="col-form-label col-8">Account Type</label>
@@ -72,52 +83,43 @@ $this->pageTitle = "Create new Account";
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group row mt-5">
+                                <div class="col-1 ml-5">
+                                    <span class="switch switch-outline switch-icon switch-success">
+                                        <label>
+                                            <input type="checkbox" name="is_voice_mail_enabled" class="is_voice_mail_enabled" "<?php if ($telecom_account->is_voice_mail_enabled == 1){ echo "checked";} ?>">
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>
+                                <div class="col-3 ml-5">
+                                    <label class="col-form-label">Use Voice mail</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-xl-6">
                             <div class="form-group">
                                 <label class="col-form-label col-8">Rate</label>
                                 <div class="col-8">
-                                    <select  name="rate" id="rate" class="form-control form-control-line">
-                                        <option value="Iriscall">Iriscall</option>
-                                        <option value="Iriscall Home">Iriscall Home</option>
-                                    </select>
+                                    <input type="text" class="form-control form-control-solid form-control-lg" name="rate" value="<?= $telecom_account->rate;?>" disabled/>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="form-group">
-                                <label class="col-form-label col-4">Tariff Plan</label>
-                                <div class="col-8">
-                                    <select  name="tariff_plan" id="tariff_plan" class="form-control form-control-line">
-                                        <?php foreach ($products as $product) { ?>
-                                            <option value="<?php echo $product['product_id'];?>" <?php if ($tariff_product_id == $product['product_id']) {echo "selected";}?>><?php echo $product['name'] ?></option>
-                                        <?php  } ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                    <!--<div class="row">
                         <div class="col-xl-6">
                             <div class="form-group">
                                 <label class="col-form-label col-4">Extra options</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control form-control-solid form-control-lg" name="extra_options" value="<?= $telecom_account->extra_options; ?>" />
+                                    <input type="text" class="form-control form-control-solid form-control-lg" name="extra_options" value="<?/*= $telecom_account->extra_options; */?>" />
                                 </div>
                                 <span class="form-text text-muted col-4">Extra data or calls.</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-1 ml-5">
-                            <span class="switch switch-outline switch-icon switch-success">
-                                <label>
-                                    <input type="checkbox" name="is_voice_mail_enabled" class="is_voice_mail_enabled" "<?php if ($telecom_account->is_voice_mail_enabled == 1){ echo "checked";} ?>">
-                                    <span></span>
-                                </label>
-                            </span>
-                        </div>
-                        <label class="col-3 col-form-label">Use Voice mail</label>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label class="col-form-label col-4">Comments</label>
                         <div class="col-6">
@@ -214,16 +216,27 @@ $this->pageTitle = "Create new Account";
             onkeyup: false,
             onclick: false,
             rules: {
-                signature: "required"
+                user_name: "required"
             },
             messages: {
-                signature: "Please sign"
+                user_name: "Please enter the account user name"
             },
             submitHandler: function(form) {
-                console.log(signaturePad.isEmpty());
+                var error = 0;
+                var message = "";
                 if (signaturePad.isEmpty()) {
+                    error++;
+                    message = "You need to sign the document please";
+
+                }
+                if ($('.tariff_plan').val() == '') {
+                    error++;
+                    message = "You need to select the plan first";
+
+                }
+                if(error > 0){
                     Swal.fire({
-                        text: "You need to sign the document please",
+                        text: message,
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -232,10 +245,10 @@ $this->pageTitle = "Create new Account";
                         }
                     });
                 } else {
-                    console.log("Submitting it");
                     $('.signature').val(signaturePad.toDataURL('image/png'));
                     form.submit();
                 }
+
             }
         });
     });
