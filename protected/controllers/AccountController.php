@@ -56,6 +56,7 @@ class AccountController extends Controller
         } else {
             $telecom_user_details = new TelecomUserDetails();
             $telecom_user_details->setAttributes($user->attributes, false);
+            $telecom_user_details->date_of_birth = '';
 
             $userPayoutInfo = UserPayoutInfo::model()->findByAttributes(['user_id'=>$user_id]);
             if(isset($userPayoutInfo->user_id)){
@@ -115,6 +116,9 @@ class AccountController extends Controller
             $telecom_account = new TelecomAccountDetails();
         }
 
+        $countryArray = ServiceHelper::getCountry();
+        $nationalityArray = ServiceHelper::getNationality();
+
         $this->render('create', [
             'user' => $user,
             'telecom_user_detail' => $telecom_user_details,
@@ -122,7 +126,9 @@ class AccountController extends Controller
             'telecom_documents' => $telecom_documents,
             'telecom_account' => $telecom_account,
             'personal_products' => $personal_product_data,
-            'business_products' => $business_product_data
+            'business_products' => $business_product_data,
+            'countryArray' => $countryArray,
+            'nationalityArray' => $nationalityArray
         ]);
 
     }

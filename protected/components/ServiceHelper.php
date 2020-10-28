@@ -144,7 +144,7 @@ class ServiceHelper extends CApplicationComponent
         $countries = Countries::model()->findAll();
         foreach ($countries as $value) {
             if(!is_null($value->nationality))
-                $country[$value->id] = $value->nationality;
+                $country[$value->id] = trim($value->nationality);
 
         }
         return $country;
