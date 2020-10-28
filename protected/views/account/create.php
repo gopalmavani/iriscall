@@ -13,6 +13,24 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         color: red !important;
         font-size: 12px !important;
     }
+    .wrapper {
+        position: relative;
+        width: 400px;
+        height: 200px;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .signature-pad {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width:400px;
+        height:200px;
+        background-color: white;
+    }
 </style>
 <div class="subheader py-2 py-lg-6 subheader-transparent" id="kt_subheader">
     <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -303,7 +321,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label>VAT Rate</label>
+                                                        <label>VAT Rate (in %)</label>
                                                         <input type="number" class="form-control form-control-solid form-control-lg" name="vat_rate" id="business_vat_rate" placeholder="VAT Rate" value="<?= $telecom_user_detail->vat_rate; ?>" disabled/>
                                                         <span class="form-text text-muted">Applicable VAT rate.</span>
                                                     </div>
@@ -322,7 +340,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <?php /*$this->renderPartial('upload-file-dropzone', ['document' => 'aoa']); */?>
                                             </div>
                                         </div>
                                     </div>
@@ -608,6 +625,16 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 
                                                 </div>
                                             </div>
+                                            <div class="signature-div">
+                                                <h4 class="font-weight-bold text-dark">Please Sign here</h4>
+                                                <div class="wrapper">
+                                                    <canvas id="signature-pad" class="signature-pad" width=400 height=200></canvas>
+                                                </div>
+                                                <!--<button id="save-png" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save as PNG</button>-->
+                                                <button id="undo" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Undo</button>
+                                                <button id="clear" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Clear</button>
+                                                <input type="text" class="form-control form-control-solid form-control-lg signature" name="signature" hidden/>
+                                            </div>
                                         </div>
                                         <div class="credit-card-payment-div" style="display: none">
                                             <div class="credit-card-input no-js form-group" id="skeuocard">
@@ -643,17 +670,63 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     </div>
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
-                                    <div class="col-xxl-7" style="margin: auto">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Upload KYC Documents</h4>
+                                    <h4 class="mb-10 font-weight-bold text-dark" style="text-align: center">Select ID Type</h4>
+                                    <div class="row">
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-4 col-xxl-2 border ribbon ribbon-right" style="margin: 0 10px">
+                                                <div class="ribbon-target bg-primary" style="top: 10px; right: -2px; display: none" id="passport_ribbon">Selected</div>
+                                                <div class="pt-30 pt-md-25 pb-15 px-5 text-center">
+                                                    <div class="d-flex flex-center position-relative mb-25">
+                                                        <img src="<?=  Yii::app()->baseUrl. '/images/passport.jpg' ?>">
+                                                    </div>
+                                                    <span class="font-size-h3 d-block d-block font-weight-bold text-dark-75 py-2">Passport</span>
+                                                    <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" style="margin-top: 10px" onclick="selectID('passport')">Select</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-xxl-2 border ribbon ribbon-right" style="margin: 0 10px">
+                                                <div class="ribbon-target bg-primary" style="top: 10px; right: -2px; display: none" id="driving_ribbon">Selected</div>
+                                                <div class="pt-30 pt-md-25 pb-15 px-5 text-center">
+                                                    <div class="d-flex flex-center position-relative mb-25">
+                                                        <img src="<?=  Yii::app()->baseUrl. '/images/driving.jpg' ?>">
+                                                    </div>
+                                                    <span class="font-size-h3 d-block d-block font-weight-bold text-dark-75 py-2">Driving License</span>
+                                                    <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" style="margin-top: 25px" onclick="selectID('driving')">Select</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-xxl-2 border ribbon ribbon-right" style="margin: 0 10px">
+                                                <div class="ribbon-target bg-primary" style="top: 10px; right: -2px; display: none" id="identification_ribbon">Selected</div>
+                                                <div class="pt-30 pt-md-25 pb-15 px-5 text-center">
+                                                    <div class="d-flex flex-center position-relative mb-25">
+                                                        <img src="<?=  Yii::app()->baseUrl. '/images/belgium_id.jpg' ?>">
+                                                    </div>
+                                                    <span class="font-size-h3 d-block d-block font-weight-bold text-dark-75 py-2">Identification Card</span>
+                                                    <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" onclick="selectID('identification')">Select</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-7" style="margin: auto; display: none" id="kyc_file_upload">
                                         <div class="form-group row">
-                                            <label class="col-form-label col-lg-12 col-sm-12 passport_label">File: Passport</label>
+                                            <label class="col-form-label col-lg-12 col-sm-12 passport_label">Upload here</label>
                                             <div class="col-lg-12 col-md-9 col-sm-12">
                                                 <div class="dropzone dropzone-default" id="passport_file">
                                                     <div class="dropzone-msg dz-message needsclick">
-                                                        <h3 class="dropzone-msg-title">Drop Passport file here or click to upload.</h3>
-                                                        <span class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</span>
+                                                        <h3 class="dropzone-msg-title">Drop the file here or click to upload.</h3>
+                                                        <h5 class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</h5>
+                                                        <button type="button" class="btn btn-light-primary font-weight-bolder text-uppercase px-9 py-4">Upload here</button>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                            <span class="switch switch-outline switch-icon switch-success">
+                                                <label>
+                                                    <input type="checkbox" name="is_document_valid" class="is_document_valid">
+                                                    <span></span>
+                                                    <label class="col-9 col-form-label">I confirm the document is authentic and valid until the expiry date mentioned in document</label>
+                                                </label>
+                                            </span>
                                             </div>
                                         </div>
                                     </div>
@@ -1049,10 +1122,49 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 </div>
 <script src="<?= Yii::app()->baseUrl . '/plugins/credit-card/javascripts/vendor/cssua.min.js' ?>"></script>
 <script src="<?= Yii::app()->baseUrl . '/plugins/credit-card/javascripts/skeuocard.min.js' ?>"></script>
+<script src="<?php echo Yii::app()->request->baseUrl ?>/plugins/signature/docs/js/signature_pad.umd.js"></script>
 <script type="text/javascript">
     var passport_file_count = 0;
     var aoa_file_count = 0;
+    //var nationality_array = JSON.parse('<?php echo json_encode($nationalityArray); ?>', true);
+
     $(document).ready(function () {
+
+
+        //console.log(nationality_array);
+        var canvas = document.getElementById('signature-pad');
+
+        // Adjust canvas coordinate space taking into account pixel ratio,
+        // to make it look crisp on mobile devices.
+        // This also causes canvas to be cleared.
+        function resizeCanvas() {
+            // When zoomed out to less than 100%, for some very strange reason,
+            // some browsers report devicePixelRatio as less than 1
+            // and only part of the canvas is cleared then.
+            var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            canvas.getContext("2d").scale(ratio, ratio);
+        }
+
+        window.onresize = resizeCanvas;
+        resizeCanvas();
+
+        var signaturePad = new SignaturePad(canvas, {
+            backgroundColor: 'rgb(243, 246, 249)'
+        });
+
+        document.getElementById('clear').addEventListener('click', function () {
+            signaturePad.clear();
+        });
+
+        document.getElementById('undo').addEventListener('click', function () {
+            var data = signaturePad.toData();
+            if (data) {
+                data.pop(); // remove the last dot or line
+                signaturePad.fromData(data);
+            }
+        });
 
         //By default
         $('.bank_transfer_radio').hide();
@@ -1147,7 +1259,18 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             success: function (file, response) {
                 passport_file_count = 1;
                 var imgName = response;
-                file.previewElement.classList.add("dz-success");
+                //file.previewElement.classList.add("dz-success");
+            },
+            removedfile: function (file, response) {
+                $.ajax({
+                    url: "removefiles",
+                    type: "POST",
+                    data: { "document_id" : 1 },
+                    success: function(){
+                        passport_file_count = 0;
+                        file.previewElement.parentNode.removeChild(file.previewElement);
+                    }
+                });
             }
         });
         $('#aoa_file').dropzone({
@@ -1209,5 +1332,11 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             }
         });
     });
+
+    function selectID(idType){
+        $('.ribbon-target').hide();
+        $('#'+idType+'_ribbon').show();
+        $('#kyc_file_upload').show();
+    }
 </script>
-<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.2' ?>"></script>
+<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.1' ?>"></script>

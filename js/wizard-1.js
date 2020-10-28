@@ -297,9 +297,17 @@ var KTWizard1 = function () {
             _formEl,
             {
                 fields: {
+                    is_document_valid: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please accept the document terms'
+                            }
+                        }
+                    }
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
+                    excluded: new FormValidation.plugins.Excluded(),
                     // Bootstrap Framework Integration
                     bootstrap: new FormValidation.plugins.Bootstrap({
                         //eleInvalidClass: '',
@@ -374,11 +382,11 @@ var KTWizard1 = function () {
 
 
 			if(wizard.getStep() == 6){
+			    //Add details to review section
 			    var formData = $('#kt_form').serializeArray().reduce(function(obj, item) {
                     obj[item.name] = item.value;
                     return obj;
                 }, {});
-                console.log(formData);
 
                 //Basic Details
                 $('#review_name').html(formData['first_name'] + " "  + formData['middle_name'] + " " + formData['last_name']);
@@ -399,7 +407,7 @@ var KTWizard1 = function () {
                 //Address Details
                 $('#review_address_details').html(formData['building_num'] + ", "  + formData['bus_num'] + ", <br>" + formData['street'] + ", " + formData['city']
                                 + ", <br>" + formData['country'] + "-"  + formData['postcode']);
-                $('#review_nationality').html(formData['nationality']);
+                //$('#review_nationality').html(nationality_array[formData['nationality']]);
                 $('#review_billing_address').html(formData['billing_name'] + " <br>" + formData['billing_building_num'] + ", "  + formData['billing_bus_num'] + ", <br>" + formData['billing_street'] + ", " + formData['billing_city']
                     + ", <br>" + formData['billing_country'] + "-"  + formData['billing_postcode']);
 
@@ -465,24 +473,11 @@ var KTWizard1 = function () {
                 fileError = 0;
 			    if(passport_file_count == 0){
 			        $('.passport_label').addClass('text-danger');
-                    $('.passport_label').html('Passport is required');
+                    $('.passport_label').html('Document is required');
                     fileError = fileError + 1;
                 } else {
                     $('.passport_label').removeClass('text-danger');
-                    $('.passport_label').html('File: Passport');
-                }
-                if(fileError > 0){
-                    Swal.fire({
-                        text: "Sorry, looks like there are some errors detected while uploading documents",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light"
-                        }
-                    }).then(function () {
-                        //KTUtil.scrollTop();
-                    });
+                    $('.passport_label').html('Upload Here');
                 }
             }
 
