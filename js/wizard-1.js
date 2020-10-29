@@ -401,22 +401,22 @@ var KTWizard1 = function () {
 
 			    //Business Details
                 $('#review_business_name').html(formData['business_name']);
-                $('#review_business_country').html(formData['business_country'] + "<?= Hi; ?>");
+                $('#review_business_country').html(country_array[formData['business_country']]);
                 $('#review_vat').html(formData['vat_number']);
 
                 //Address Details
                 $('#review_address_details').html(formData['building_num'] + ", "  + formData['bus_num'] + ", <br>" + formData['street'] + ", " + formData['city']
-                                + ", <br>" + formData['country'] + "-"  + formData['postcode']);
-                //$('#review_nationality').html(nationality_array[formData['nationality']]);
+                                + ", <br>" + country_array[formData['country']] + "-"  + formData['postcode']);
+                $('#review_nationality').html(nationality_array[formData['nationality']]);
                 $('#review_billing_address').html(formData['billing_name'] + " <br>" + formData['billing_building_num'] + ", "  + formData['billing_bus_num'] + ", <br>" + formData['billing_street'] + ", " + formData['billing_city']
-                    + ", <br>" + formData['billing_country'] + "-"  + formData['billing_postcode']);
+                    + ", <br>" + country_array[formData['billing_country']] + "-"  + formData['billing_postcode']);
 
                 //Payment Details
                 $('#review_payment_method').html(formData['payment_method']);
                 //SEPA
                 $('#review_bank_name').html(formData['bank_name']);
                 $('#review_bank_address').html(formData['bank_building_num'] + ", <br>" + formData['bank_street'] + ", " + formData['bank_city']
-                    + ", <br>" + formData['bank_country'] + "-"  + formData['bank_postcode']);
+                    + ", <br>" + country_array[formData['bank_country']] + "-"  + formData['bank_postcode']);
                 $('#review_bank_account_name').html(formData['account_name']);
                 $('#review_iban').html(formData['iban']);
                 $('#review_bic_code').html(formData['bic_code']);
