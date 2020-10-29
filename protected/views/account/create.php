@@ -1126,7 +1126,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 <script type="text/javascript">
     var passport_file_count = 0;
     var aoa_file_count = 0;
-    //var nationality_array = JSON.parse('<?php echo json_encode($nationalityArray); ?>', true);
+    //Used in JS file
+    var nationality_array = JSON.parse('<?php echo json_encode($nationalityArray); ?>', true);
+    var country_array = JSON.parse('<?php echo json_encode($countryArray); ?>', true);
 
     $(document).ready(function () {
 
@@ -1169,6 +1171,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         //By default
         $('.bank_transfer_radio').hide();
         $('#tariff_rate').val('Iriscall');
+        $('#review_fix_email').html('<?= $user->email; ?>');
 
         //For different billing address
         if($('.is_different_address').is(":checked")){
@@ -1339,4 +1342,4 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         $('#kyc_file_upload').show();
     }
 </script>
-<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.1' ?>"></script>
+<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.2' ?>"></script>
