@@ -59,7 +59,7 @@
  * @property integer $telecom_user_status
  * @property string $created_at
  * @property string $modified_at
-
+ * @property string $signature
  */
 class TelecomUserDetails extends CActiveRecord
 {
@@ -91,7 +91,7 @@ class TelecomUserDetails extends CActiveRecord
 			 billing_name, billing_building_num, billing_street, billing_city, billing_postcode, billing_country, billing_bus_number,
 			 business_name, business_country, vat_number, vat_rate, bank_name, bank_building_num, bank_street, bank_city, bank_postcode, bank_country,
 			 account_name, iban, bic_code, comments,
-			 company_since_in_months, expiry_date_month, expiry_date_year, email, credit_card_name, agent_name, nationality, landline_number, payment_method, credit_card_type, credit_card_number, created_at, modified_at', 'safe', 'on'=>'search'),
+			 company_since_in_months, expiry_date_month, expiry_date_year, email, credit_card_name, agent_name, nationality, landline_number, payment_method, credit_card_type, credit_card_number, created_at, modified_at, signature', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -132,6 +132,7 @@ class TelecomUserDetails extends CActiveRecord
             'comments' => 'Comments',
 			'created_at' => 'Created At',
 			'modified_at' => 'Modified At',
+            'signature' => 'Signature',
 		);
 	}
 
@@ -173,6 +174,7 @@ class TelecomUserDetails extends CActiveRecord
 		$criteria->compare('comments',$this->comments, true);
 		$criteria->compare('created_at',$this->created_at,true);
 		$criteria->compare('modified_at',$this->modified_at,true);
+        $criteria->compare('signature',$this->signature,true);
 
 		return new CActiveDataProvider($this, array(
 				'pagination' => array(

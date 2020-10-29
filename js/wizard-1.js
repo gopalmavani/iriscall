@@ -436,6 +436,7 @@ var KTWizard1 = function () {
             }
 
 			var cardError = 0;
+			var SEPASignatureError = 0;
             var fileError = 0;
             if(wizard.getStep() == 2){
                 if($('.is_business_type').is(":checked")){
@@ -452,21 +453,18 @@ var KTWizard1 = function () {
 			if(wizard.getStep() == 4){
 				if($('input[type=radio][name=payment_method]:checked').val() == 'CreditCard'){
 					if(!card.isValid()){
-                        Swal.fire({
-                            text: "Sorry, looks like there are some errors detected in credit card details",
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light"
-                            }
-                        }).then(function () {
-                            //KTUtil.scrollTop();
-                        });
                         cardError = 1;
-					}
+					} else {
+                        cardError = 0;
+                    }
 				} else {
                     cardError = 0;
+                    if (signaturePadSEPA.isEmpty()) {
+                        SEPASignatureError++;
+                    } else {
+                        SEPASignatureError = 0;
+                        $('.signature').val(signaturePadSEPA.toDataURL('image/png'));
+                    }
                 }
 			}
 			if(wizard.getStep() == 5){
@@ -486,7 +484,7 @@ var KTWizard1 = function () {
 
 			if (validator) {
 				validator.validate().then(function (status) {
-					if (status == 'Valid' && cardError == 0 && fileError == 0) {
+					if (status == 'Valid' && cardError == 0 && fileError == 0 && SEPASignatureError == 0) {
 						wizard.goTo(wizard.getNewStep());
 
 						KTUtil.scrollTop();
