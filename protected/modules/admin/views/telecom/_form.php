@@ -337,7 +337,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="bank-payment-div" style="display: none">
+                            <div class="sepa-payment-div" style="display: none">
                                 <div class="col-md-6">
                                     <div class="col-md-12">
                                         <div class="form-group <?php echo $model->hasErrors('bank_name') ? 'has-error' : ''; ?> ">
@@ -431,23 +431,32 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function(){
+        //Default
         $("#company").hide();
         $("#companyAddress").hide();
+        var payment_method = $('#TelecomUserDetails_payment_method option:selected').text();
+        if(payment_method != ''){
+            showPaymentDiv(payment_method);
+        }
 
-        $("#TelecomUserDetails_payment_method").change(function() {
-            var payment_method = $('option:selected', this).text();
+        function showPaymentDiv(payment_method) {
             if(payment_method == 'CreditCard'){
-                $('.bank-payment-div').hide();
+                $('.sepa-payment-div').hide();
                 $('.credit-card-payment-div').show();
             } else {
-                if(payment_method == 'BankTransfer'){
-                    $('.bank-payment-div').show();
+                if(payment_method == 'SEPA'){
+                    $('.sepa-payment-div').show();
                     $('.credit-card-payment-div').hide();
                 } else {
-                    $('.bank-payment-div').hide();
+                    $('.sepa-payment-div').hide();
                     $('.credit-card-payment-div').hide();
                 }
             }
+        }
+
+        $("#TelecomUserDetails_payment_method").change(function() {
+            var payment_method = $('option:selected', this).text();
+            showPaymentDiv(payment_method);
         });
     });
 

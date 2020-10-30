@@ -440,7 +440,7 @@ $this->pageTitle = "Telecom details";
                                     </div>
                                     <!--end::Group-->
                                     <!--begin::Group-->
-                                    <?php if($model->payment_method == 'SEPA') { ?>
+                                    <?php if($model->payment_method == 'BankTransfer') { ?>
                                     <?php } elseif ($model->payment_method == 'CreditCard') { ?>
                                         <div class="credit-card-payment-method">
                                             <div class="form-group row">
@@ -464,8 +464,8 @@ $this->pageTitle = "Telecom details";
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php } elseif ($model->payment_method == 'BankTransfer') { ?>
-                                        <div class="bank-transfer-payment-method">
+                                    <?php } elseif ($model->payment_method == 'SEPA') { ?>
+                                        <div class="sepa-payment-method">
                                             <!--begin::Group-->
                                             <div class="form-group row">
                                                 <label class="col-form-label col-2 text-lg-right text-left">Bank Name</label>
@@ -529,6 +529,9 @@ $this->pageTitle = "Telecom details";
                                                 <div class="col-4">
                                                     <input type="text" name="bic_code" value="<?php echo $model->bic_code ?>" class="form-control form-control-line" disabled>
                                                 </div>
+                                            </div>
+                                            <div class="d-flex align-items-center" style="float: right;">
+                                                <a href="<?= Yii::app()->baseUrl.'/'.$telecom_document_sepa->document_path ?>" download class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base mr-3">Download SEPA Document</a>
                                             </div>
                                         </div>
                                     <?php } else { ?>
