@@ -52,7 +52,6 @@ class AccountController extends Controller
             $telecom_details_present = true;
 
             $telecom_documents = TelecomUserDocuments::model()->findAllByAttributes(['user_id'=>$user_id]);
-            //$telecom_accounts = TelecomAccountDetails::model()->findAllByAttributes(['user_id'=>$user_id]);
         } else {
             $telecom_user_details = new TelecomUserDetails();
             $telecom_user_details->setAttributes($user->attributes, false);
@@ -110,13 +109,23 @@ class AccountController extends Controller
                 $telecom_account->email = $user->email;
                 $telecom_account->telecom_request_status = 0;
                 $telecom_account->save(false);
+
+                //Registration PDF
+                $filePath = $this->generateTelecomRegistrationPDF($telecom_account->user_id, $telecom_account->id);
+                $registrationDocument = TelecomDocuments::model()->findByAttributes(['document_name' => 'Registration']);
+                $telecomDocument = new TelecomUserDocuments();
+                $telecomDocument->user_id = $telecom_account->user_id;
+                $telecomDocument->document_id = $registrationDocument->document_id;
+                $telecomDocument->document_path = $filePath;
+                $telecomDocument->save(false);
             }
 
             //Create PDF
-            $filePath = $this->generatePDF($telecom_account->user_id);
+            $filePath = $this->generateSEPAPDF($telecom_account->user_id);
+            $sepaDocument = TelecomDocuments::model()->findByAttributes(['document_name' => 'SEPA']);
             $telecomDocument = new TelecomUserDocuments();
             $telecomDocument->user_id = $telecom_account->user_id;
-            $telecomDocument->document_id = 2;
+            $telecomDocument->document_id = $sepaDocument->document_id;
             $telecomDocument->document_path = $filePath;
             $telecomDocument->save(false);
 
@@ -195,7 +204,119 @@ class AccountController extends Controller
         ]);
     }
 
-    public function generatePDF($user_id){
+    public function generateTelecomRegistrationPDF($user_id, $telecom_account_id){
+        set_time_limit(-1);
+        $this->layout = false;
+        $telecom_user_details = TelecomUserDetails::model()->findByAttributes(['user_id'=>$user_id]);
+        //$telecom_account_details = TelecomAccountDetails::model()->findByPk($telecom_account_id);
+        $telecom_account_details = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('telecom_account_details t')
+            ->join('product_info p', 't.tariff_plan = p.product_id')
+            ->where('t.id=:tId', [':tId' => $telecom_account_id])
+            ->queryRow();
+        $sepa_html = $this->render('registration-pdf', ['model' => $telecom_user_details, 'account' => $telecom_account_details], true);
+        $final_html = '';
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        // set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Iriscall');
+        $pdf->SetTitle('Iriscall');
+
+        // set default header data
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '', array(0,64,255), array(0,64,128));
+        $pdf->setFooterData(array(0,64,0), array(0,64,128));
+
+        // set header and footer fonts
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        // set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        // set margins
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        // set auto page breaks
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        // set image scale factor
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+        // set some language-dependent strings (optional)
+        if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+            require_once(dirname(__FILE__).'/lang/eng.php');
+            $pdf->setLanguageArray($l);
+        }
+
+        // ---------------------------------------------------------
+
+        // set default font subsetting mode
+        $pdf->setFontSubsetting(true);
+
+        // Set font
+        // dejavusans is a UTF-8 Unicode font, if you only need to
+        // print standard ASCII chars, you can use core fonts like
+        // helvetica or times to reduce file size.
+        //$pdf->SetFont('dejavusans', '', 14, '', true);
+
+        // Add a page
+        // This method has several options, check the source code documentation for more information.
+        $pdf->AddPage();
+        // Set some content to print
+        /*$html =
+        '<h1>Welcome to <a href="http://www.tcpdf.org" style="text-decoration:none;background-color:#CC0000;color:black;">&nbsp;<span style="color:black;">TC</span><span style="color:white;">PDF</span>&nbsp;</a>!</h1>
+        <i>This is the first example of TCPDF library.</i>
+        <p>This text is printed using the <i>writeHTMLCell()</i> method but you can also use: <i>Multicell(), writeHTML(), Write(), Cell() and Text()</i>.</p>
+        <p>Please check the source code documentation and other examples for further information.</p>
+        <p style="color:#CC0000;">TO IMPROVE AND EXPAND TCPDF I NEED YOUR SUPPORT, PLEASE <a href="http://sourceforge.net/donate/index.php?group_id=128076">MAKE A DONATION!</a></p>';*/
+
+        $pdf->setJPEGQuality(75);
+        // Print text using writeHTMLCell()
+
+        //SEPA HTML VIEW
+        $final_html .= $sepa_html;
+        $pdf->writeHTML($final_html, true, false, true, false, '');
+
+        //Signature
+        $image = $telecom_user_details->signature;
+        $imageContent = file_get_contents($image);
+        $path = tempnam(sys_get_temp_dir(), 'prefix');
+        file_put_contents ($path, $imageContent);
+        $img = '<img src="' . $path . '">';
+        $pdf->writeHTML($img, true, false, true, false, '');
+        $pdf->Image('@' . $imageContent, '', '', '', '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+
+        // The '@' character is used to indicate that follows an image data stream and not an image file name
+        //$pdf->Image('@'.$imgdata);
+        //$pdf->Image('images/graph-product1.jpg', 15, 140, 75, 113, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
+
+        //$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+        // ---------------------------------------------------------
+
+        // Close and output PDF document
+        // This method has several options, check the source code documentation for more information.
+        $filename= "registration_".$telecom_user_details->user_id."_".$telecom_user_details->first_name.".pdf";
+        $filelocation = "protected/runtime/uploads/registration/"; //Linux
+        if (!is_dir($filelocation)) {
+            mkdir($filelocation, 0755, true);
+        }
+
+        $relative_file_path = 'protected/runtime/uploads/registration/'.$filename;
+        $fileNL = getcwd() .'/'. $relative_file_path; //Linux
+
+        $pdf->Output($fileNL, 'F');
+        return $relative_file_path;
+        //============================================================+
+        // END OF FILE
+        //============================================================+
+    }
+
+    public function generateSEPAPDF($user_id){
         set_time_limit(-1);
         $this->layout = false;
         $telecom_user_details = TelecomUserDetails::model()->findByAttributes(['user_id'=>$user_id]);
