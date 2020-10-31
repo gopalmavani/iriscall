@@ -150,6 +150,16 @@ class ServiceHelper extends CApplicationComponent
         return $country;
     }
 
+    /*Get Nationality*/
+    public static function getNationalityNameFromId($id)
+    {
+        $country = Countries::model()->findByAttributes(['id' => $id]);
+        if (!isset($country->id))
+            return "";
+        else
+            return trim($country->nationality);
+    }
+
     /* for the Name hide after some words*/
     public static function hideStringGenealogy($id)
     {
