@@ -433,6 +433,9 @@ var KTWizard1 = function () {
                 $('#review_account_comments').html(formData['comments']);
                 $('#review_phone_number').html(formData['phone_number']);
                 $('#review_sim_card_number').html(formData['sim_card_number']);
+
+                //Create Signature
+                createReviewSignature();
             }
 
 			var cardError = 0;
@@ -463,7 +466,7 @@ var KTWizard1 = function () {
                         SEPASignatureError++;
                     } else {
                         SEPASignatureError = 0;
-                        $('.signature').val(signaturePadSEPA.toDataURL('image/png'));
+                        $('.sepa-signature').val(signaturePadSEPA.toDataURL('image/png'));
                     }
                 }
 			}
@@ -514,32 +517,45 @@ var KTWizard1 = function () {
 
 		// Submit event
 		_wizardObj.on('submit', function (wizard) {
-			Swal.fire({
-				text: "All is good! Please confirm the form submission.",
-				icon: "success",
-				showCancelButton: true,
-				buttonsStyling: false,
-				confirmButtonText: "Yes, submit!",
-				cancelButtonText: "No, cancel",
-				customClass: {
-					confirmButton: "btn font-weight-bold btn-primary",
-					cancelButton: "btn font-weight-bold btn-default"
-				}
-			}).then(function (result) {
-				if (result.value) {
-					_formEl.submit(); // Submit form
-				} else if (result.dismiss === 'cancel') {
-					Swal.fire({
-						text: "Your form has not been submitted!.",
-						icon: "error",
-						buttonsStyling: false,
-						confirmButtonText: "Ok, got it!",
-						customClass: {
-							confirmButton: "btn font-weight-bold btn-primary",
-						}
-					});
-				}
-			});
+            if (signaturePadReview.isEmpty()) {
+                Swal.fire({
+                    text: "Sorry, You first need to sign the please.",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light"
+                    }
+                });
+            } else {
+                $('.review-signature').val(signaturePadReview.toDataURL('image/png'));
+                Swal.fire({
+                    text: "All is good! Please confirm the form submission.",
+                    icon: "success",
+                    showCancelButton: true,
+                    buttonsStyling: false,
+                    confirmButtonText: "Yes, submit!",
+                    cancelButtonText: "No, cancel",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-primary",
+                        cancelButton: "btn font-weight-bold btn-default"
+                    }
+                }).then(function (result) {
+                    if (result.value) {
+                        _formEl.submit(); // Submit form
+                    } else if (result.dismiss === 'cancel') {
+                        Swal.fire({
+                            text: "Your form has not been submitted!.",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-primary",
+                            }
+                        });
+                    }
+                });
+            }
 		});
 	}
 
@@ -554,6 +570,28 @@ var KTWizard1 = function () {
 		}
 	};
 }();
+
+function createReviewSignature(){
+    //Signature Pad
+    review_canvas = document.getElementById('review-signature-pad');
+
+    signaturePadReview = new SignaturePad(review_canvas, {
+        backgroundColor: 'rgb(243, 246, 249)'
+        //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+    });
+
+    document.getElementById('review-clear').addEventListener('click', function () {
+        signaturePadReview.clear();
+    });
+
+    document.getElementById('review-undo').addEventListener('click', function () {
+        var data = signaturePadReview.toData();
+        if (data) {
+            data.pop(); // remove the last dot or line
+            signaturePadReview.fromData(data);
+        }
+    });
+}
 
 jQuery(document).ready(function () {
 	KTWizard1.init();

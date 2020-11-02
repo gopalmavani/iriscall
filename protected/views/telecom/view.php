@@ -29,6 +29,10 @@ $this->pageTitle = "Telecom details";
             <!--end::Page Heading-->
         </div>
         <!--end::Info-->
+        <div class="d-flex align-items-center">
+            <!--begin::Actions-->
+            <a href="<?= Yii::app()->baseUrl.'/'.$telecom_document_registration->document_path ?>" download class="btn btn-light-primary font-weight-bolder btn-sm">Download Registration Contract</a>
+        </div>
     </div>
 </div>
 <div class="d-flex flex-column-fluid">
