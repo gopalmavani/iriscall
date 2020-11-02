@@ -118,16 +118,18 @@ class AccountController extends Controller
                 $telecomDocument->document_id = $registrationDocument->document_id;
                 $telecomDocument->document_path = $filePath;
                 $telecomDocument->save(false);
-            }
 
-            //Create PDF
-            $filePath = $this->generateSEPAPDF($telecom_account->user_id);
-            $sepaDocument = TelecomDocuments::model()->findByAttributes(['document_name' => 'SEPA']);
-            $telecomDocument = new TelecomUserDocuments();
-            $telecomDocument->user_id = $telecom_account->user_id;
-            $telecomDocument->document_id = $sepaDocument->document_id;
-            $telecomDocument->document_path = $filePath;
-            $telecomDocument->save(false);
+                //Create PDF
+                if($telecom_user_details->payment_method == 'SEPA'){
+                    $filePath = $this->generateSEPAPDF($telecom_account->user_id, $_POST['sepa_signature']);
+                    $sepaDocument = TelecomDocuments::model()->findByAttributes(['document_name' => 'SEPA']);
+                    $telecomDocument = new TelecomUserDocuments();
+                    $telecomDocument->user_id = $telecom_account->user_id;
+                    $telecomDocument->document_id = $sepaDocument->document_id;
+                    $telecomDocument->document_path = $filePath;
+                    $telecomDocument->save(false);
+                }
+            }
 
             Yii::app()->user->setFlash('success', 'Account details changed successfully');
             $this->redirect(Yii::app()->createUrl('telecom/index'));
@@ -316,7 +318,7 @@ class AccountController extends Controller
         //============================================================+
     }
 
-    public function generateSEPAPDF($user_id){
+    public function generateSEPAPDF($user_id, $sepa_signature){
         set_time_limit(-1);
         $this->layout = false;
         $telecom_user_details = TelecomUserDetails::model()->findByAttributes(['user_id'=>$user_id]);
@@ -391,7 +393,7 @@ class AccountController extends Controller
         $pdf->writeHTML($final_html, true, false, true, false, '');
 
         //Signature
-        $image = $telecom_user_details->signature;
+        $image = $sepa_signature;
         $imageContent = file_get_contents($image);
         $path = tempnam(sys_get_temp_dir(), 'prefix');
         file_put_contents ($path, $imageContent);

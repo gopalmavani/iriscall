@@ -24,7 +24,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         user-select: none;
     }
 
-    .signature-pad {
+    .sepa-signature-pad {
         position: absolute;
         left: 0;
         top: 0;
@@ -565,27 +565,22 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
-
                                                     <div class="form-group">
                                                         <label>City</label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="bank_city" placeholder="City" value="<?= $telecom_user_detail->bank_city; ?>" />
                                                         <span class="form-text text-muted">Please enter city details.</span>
                                                     </div>
-
                                                 </div>
                                                 <div class="col-xl-6">
-
                                                     <div class="form-group">
                                                         <label>Postcode</label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="bank_postcode" placeholder="Postcode" value="<?= $telecom_user_detail->bank_postcode; ?>" />
                                                         <span class="form-text text-muted">Please enter postcode details.</span>
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
-
                                                     <div class="form-group">
                                                         <label for="bank_country">Country</label>
                                                         <select name="bank_country" id="bank_country" class="form-control">
@@ -597,7 +592,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                             <?php } ?>
                                                         </select>
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <hr>
@@ -626,15 +620,15 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 
                                                 </div>
                                             </div>
-                                            <div class="signature-div">
+                                            <div class="sepa-signature-div">
                                                 <h4 class="font-weight-bold text-dark">Please Sign here</h4>
                                                 <div class="wrapper">
-                                                    <canvas id="signature-pad" class="signature-pad" width=400 height=200></canvas>
+                                                    <canvas id="sepa-signature-pad" class="sepa-signature-pad" width=400 height=200></canvas>
                                                 </div>
                                                 <!--<button id="save-png" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save as PNG</button>-->
-                                                <button id="undo" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Undo</button>
-                                                <button id="clear" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Clear</button>
-                                                <input type="text" class="form-control form-control-solid form-control-lg signature" name="signature" hidden/>
+                                                <button id="sepa-undo" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Undo</button>
+                                                <button id="sepa-clear" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Clear</button>
+                                                <input type="text" class="form-control form-control-solid form-control-lg sepa-signature" name="sepa_signature" hidden/>
                                             </div>
                                         </div>
                                         <div class="credit-card-payment-div" style="display: none">
@@ -1102,6 +1096,18 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="review-signature-div">
+                                                <h4 class="font-weight-bold text-dark">Please Sign here</h4>
+                                                <div class="wrapper">
+                                                    <canvas id="review-signature-pad" class="review-signature-pad" width=400 height=200></canvas>
+                                                </div>
+                                                <!--<button id="save-png" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save as PNG</button>-->
+                                                <button id="review-undo" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Undo</button>
+                                                <button id="review-clear" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Clear</button>
+                                                <input type="text" class="form-control form-control-solid form-control-lg review-signature" name="signature" hidden/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between border-top mt-5 pt-10">
@@ -1127,11 +1133,11 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 <script type="text/javascript">
     var passport_file_count = 0;
     var aoa_file_count = 0;
-    var signaturePadSEPA ;
-    var canvas;
     //Used in JS file
     var nationality_array = JSON.parse('<?php echo json_encode($nationalityArray); ?>', true);
     var country_array = JSON.parse('<?php echo json_encode($countryArray); ?>', true);
+    var signaturePadSEPA, signaturePadReview ;
+    var sepa_canvas, review_canvas;
 
     $(document).ready(function () {
 
@@ -1308,21 +1314,21 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 
     function createSignature(){
         //Signature Pad
-        canvas = document.getElementById('signature-pad');
+        sepa_canvas = document.getElementById('sepa-signature-pad');
 
         window.onresize = resizeCanvas;
         resizeCanvas();
 
-        signaturePadSEPA = new SignaturePad(canvas, {
+        signaturePadSEPA = new SignaturePad(sepa_canvas, {
             backgroundColor: 'rgb(243, 246, 249)'
             //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
         });
 
-        document.getElementById('clear').addEventListener('click', function () {
+        document.getElementById('sepa-clear').addEventListener('click', function () {
             signaturePadSEPA.clear();
         });
 
-        document.getElementById('undo').addEventListener('click', function () {
+        document.getElementById('sepa-undo').addEventListener('click', function () {
             var data = signaturePadSEPA.toData();
             if (data) {
                 data.pop(); // remove the last dot or line
@@ -1340,9 +1346,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         // some browsers report devicePixelRatio as less than 1
         // and only part of the canvas is cleared then.
         var ratio =  Math.max(window.devicePixelRatio || 1, 1);
-        canvas.width = canvas.offsetWidth * ratio;
-        canvas.height = canvas.offsetHeight * ratio;
-        canvas.getContext("2d").scale(ratio, ratio);
+        sepa_canvas.width = sepa_canvas.offsetWidth * ratio;
+        sepa_canvas.height = sepa_canvas.offsetHeight * ratio;
+        sepa_canvas.getContext("2d").scale(ratio, ratio);
     }
 
     function selectID(idType){

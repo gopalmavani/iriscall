@@ -93,12 +93,15 @@ class TelecomController extends Controller
      * */
     public function actionView($id){
         $telecom_user = TelecomUserDetails::model()->findByPk($id);
-        $telecom_document_type = TelecomDocuments::model()->findByAttributes(['document_name'=>'SEPA']);
-        $telecom_document_sepa = TelecomUserDocuments::model()->findByAttributes(['document_id'=>$telecom_document_type->document_id, 'user_id'=>$telecom_user->user_id]);
+        $telecom_document_type_sepa = TelecomDocuments::model()->findByAttributes(['document_name'=>'SEPA']);
+        $telecom_document_sepa = TelecomUserDocuments::model()->findByAttributes(['document_id'=>$telecom_document_type_sepa->document_id, 'user_id'=>$telecom_user->user_id]);
+        $telecom_document_type_registration = TelecomDocuments::model()->findByAttributes(['document_name'=>'Registration']);
+        $telecom_document_registration = TelecomUserDocuments::model()->findByAttributes(['document_id'=>$telecom_document_type_registration->document_id, 'user_id'=>$telecom_user->user_id]);
 
         $this->render('view', [
             'model' => $telecom_user,
-            'telecom_document_sepa' => $telecom_document_sepa
+            'telecom_document_sepa' => $telecom_document_sepa,
+            'telecom_document_registration' => $telecom_document_registration
         ]);
     }
 }
