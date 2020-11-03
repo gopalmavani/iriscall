@@ -522,13 +522,13 @@ class HomeController extends Controller
                     $portalToken = $sso_success_response['data']['portal_token'];
 
                     //Email verification with SIO email
-                    /*$afterVerificationUrl = Yii::app()->createAbsoluteUrl('/home/registrationStepOneInitial') . '?token='.$portalToken;
+                    $afterVerificationUrl = Yii::app()->createAbsoluteUrl('/home/registrationStepOneInitial') . '?token='.$portalToken;
                     $response['verification_url'] = $afterVerificationUrl;
                     $mail = new YiiMailer('sso-email-verification', ['activationUrl' => $afterVerificationUrl]);
                     $mail->setFrom('info@cbmglobal.io', 'CBM Global');
                     $mail->setSubject("Email Verification");
                     $mail->setTo($sso_success_response['data']['email']);
-                    $mail->send();*/
+                    $mail->send();
                 } else {
                     //Registration can begin
                     $response['status'] = 1;

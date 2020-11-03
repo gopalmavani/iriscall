@@ -26,12 +26,18 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version 1.6, 2014-07-09
  */
-
+//namespace Iriscall;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 /**
  * Include the the PHPMailer autoloader.
  */
-require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PHPMailer' . DIRECTORY_SEPARATOR . 'PHPMailerAutoload.php');
+//require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PHPMailer' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'PHPMailer.php');
+require_once(dirname(__FILE__) . '/PHPMailer/src/PHPMailer.php');
+require_once(dirname(__FILE__) . '/PHPMailer/src/SMTP.php');
+require_once(dirname(__FILE__) . '/PHPMailer/src/Exception.php');
 
 
 class YiiMailer extends PHPMailer
