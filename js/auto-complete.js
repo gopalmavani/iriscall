@@ -44,7 +44,10 @@ function fillInAddress() {
                 $('#'+addressType+' option').each(function() {
                     if($(this).text() == val) {
                         console.log("Inside");
-                        $(this).attr('selected', 'selected');
+                        console.log($(this));
+                        console.log($(this).val());
+                        $('#'+addressType).val($(this).val());
+                        //$(this).attr('selected', 'selected');
                     }
                 });
 
