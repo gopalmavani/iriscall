@@ -428,12 +428,10 @@ class HomeController extends Controller
         $sioData = 0;
         $apiToken = null;
         $model->phone = '';
-        $countryArray = ServiceHelper::getCountry();
         $this->render('registration/stepOne', [
             'model' => $model,
             'sioData' => $sioData,
             'accountType'=>'personal',
-            'countryArray' => $countryArray
         ]);
     }
 

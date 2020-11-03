@@ -538,7 +538,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wiz
 
 <script type="text/javascript">
     var currentTab = 1;
-    var country_array = JSON.parse('<?php echo json_encode($countryArray); ?>', true);
     $(document).ready(function () {
 
         var sioData = "<?= $sioData; ?>";
