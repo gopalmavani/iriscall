@@ -39,9 +39,11 @@ function fillInAddress() {
             document.getElementById(addressType).value = val;
 
             if(addressType == 'country'){
-                var country_id = country_array[val];
+                console.log(addressType);
+                console.log(val);
                 $('#'+addressType+' option').each(function() {
                     if($(this).text() == val) {
+                        console.log("Inside");
                         $(this).attr('selected', 'selected');
                     }
                 });
