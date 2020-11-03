@@ -250,38 +250,45 @@
                                                         <div class="my-5 step" data-wizard-type="step-content">
                                                             <h5 class="text-dark font-weight-bold mb-10">Setup Your Address</h5>
                                                             <div class="row">
-                                                                <div class="col-xl-6">
+                                                                <div class="col-xl-12">
                                                                     <div class="form-group">
-                                                                        <?php echo $form->textFieldControlGroup($model, 'street', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control', 'label' => 'Street Name')); ?>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-xl-6">
-                                                                    <div class="form-group">
-                                                                        <?php echo $form->textFieldControlGroup($model, 'building_num', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control', 'label' => 'House Number')); ?>
+                                                                        <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text" class="form-control">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-xl-6">
                                                                     <div class="form-group">
-                                                                        <?php echo $form->textFieldControlGroup($model, 'city', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                                                                        <?php echo $form->textFieldControlGroup($model, 'street', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control', 'label' => 'Street Name', 'id' => 'sublocality')); ?>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xl-6">
                                                                     <div class="form-group">
-                                                                        <?php echo $form->textFieldControlGroup($model, 'postcode', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control', 'label' => 'Postal Code')); ?>
+                                                                        <?php echo $form->textFieldControlGroup($model, 'building_num', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control', 'label' => 'House Number', 'id' => 'premise')); ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-xl-6">
                                                                     <div class="form-group">
-                                                                        <?php echo $form->textFieldControlGroup($model, 'region', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control', 'label' => 'Region/State')); ?>
+                                                                        <?php echo $form->textFieldControlGroup($model, 'city', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control', 'id'=>'locality')); ?>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-6">
+                                                                    <div class="form-group">
+                                                                        <?php echo $form->textFieldControlGroup($model, 'postcode', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control', 'label' => 'Postal Code', 'id'=>'postal_code')); ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-xl-6">
+                                                                    <div class="form-group">
+                                                                        <?php echo $form->textFieldControlGroup($model, 'region', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control', 'label' => 'Region/State', 'id'=>'administrative_area_level_1')); ?>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xl-6">
                                                                     <div class="form-group <?php echo $model->hasErrors('country') ? 'has-error' : ''; ?>">
-                                                                        <?php echo $form->dropDownListControlGroup($model, 'country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control form-check', 'label' => 'Country')); ?>
+                                                                        <?php echo $form->dropDownListControlGroup($model, 'country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control form-check', 'label' => 'Country', 'id'=>'country')); ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -517,7 +524,6 @@
             </div>
         </div>
     </div>
-
 <script type="text/javascript">
     var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#0BB783", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#F3F6F9", "dark": "#212121" }, "light": { "white": "#ffffff", "primary": "#D7F9EF", "secondary": "#ECF0F3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#212121", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#ECF0F3", "gray-300": "#E5EAEE", "gray-400": "#D6D6E0", "gray-500": "#B5B5C3", "gray-600": "#80808F", "gray-700": "#464E5F", "gray-800": "#1B283F", "gray-900": "#212121" } }, "font-family": "Poppins" };
 </script>
@@ -532,6 +538,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wiz
 
 <script type="text/javascript">
     var currentTab = 1;
+    var country_array = JSON.parse('<?php echo json_encode($countryArray); ?>', true);
     $(document).ready(function () {
 
         var sioData = "<?= $sioData; ?>";
@@ -648,6 +655,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wiz
         }
     }
 </script>
-
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClUK1XVa7IEl1aTOxGwNrNM04eO303UJc&libraries=places&callback=initAutocomplete" async defer></script>
+        <script src="<?= Yii::app()->baseUrl . '/js/auto-complete.js?v=0.0.1' ?>"></script>
 </body>
 </html>

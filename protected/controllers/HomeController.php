@@ -428,10 +428,12 @@ class HomeController extends Controller
         $sioData = 0;
         $apiToken = null;
         $model->phone = '';
+        $countryArray = ServiceHelper::getCountry();
         $this->render('registration/stepOne', [
             'model' => $model,
             'sioData' => $sioData,
-            'accountType'=>'personal'
+            'accountType'=>'personal',
+            'countryArray' => $countryArray
         ]);
     }
 
@@ -504,7 +506,7 @@ class HomeController extends Controller
             $sso_url = Yii::app()->params['SSO_URL'];
             $data = [
                 'email' => $email,
-                'application' => 'Micromaxcash'
+                'application' => Yii::app()->params['applicationName']
             ];
 
             $sso_response = CurlHelper::executeAction($sso_url.'api/verifyEmail',$data, "POST");
