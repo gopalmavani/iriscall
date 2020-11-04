@@ -159,17 +159,18 @@ var KTAddUser = function () {
 							},
 							emailAddress: {
 								message: 'The value is not a valid email address'
-							},
+							}/*,
                             remote: {
                                 message: 'Email Already Exist in System. Please login',
                                 method: 'POST',
                                 url: '../checkEmail'
-                            }
+                            }*/
 						}
 					}
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
+                    excluded: new FormValidation.plugins.Excluded(),
 					// Bootstrap Framework Integration
 					bootstrap: new FormValidation.plugins.Bootstrap({
 						//eleInvalidClass: '',

@@ -182,7 +182,7 @@
         <td align="center" bgcolor="#fff">
             <br /><small style="font-size:12px;color:#5e5e5f; font-family:open sans, arial;">This is an automatically generated email.<br />
                 Please do not reply as your message will not be received and will be returned to you by the mail server.</small>
-            <p style="font-size:13px;color:#5e5e5f; font-family:open sans, arial;">© <?php echo date('Y');?> Micromaxcash</p>
+            <p style="font-size:13px;color:#5e5e5f; font-family:open sans, arial;">© <?php echo date('Y');?> <?= Yii::app()->params['applicationName']; ?></p>
         </td>
         <td width="4%"></td>
     </tr>

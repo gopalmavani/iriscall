@@ -199,7 +199,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xl-6">
-                                                                    <div class="form-group">
+                                                                    <div class="form-group" id="password_group">
                                                                         <label>Password<span>*</span></label>
                                                                         <input type="password" id="password" class="form-control" name="password" required="required">
                                                                     </div>
@@ -655,6 +655,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wiz
     }
 </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClUK1XVa7IEl1aTOxGwNrNM04eO303UJc&libraries=places&callback=initAutocomplete" async defer></script>
-        <script src="<?= Yii::app()->baseUrl . '/js/auto-complete.js?v=0.0.1' ?>"></script>
+        <script src="<?= Yii::app()->baseUrl . '/js/auto-complete.js?v=0.0.2' ?>"></script>
 </body>
 </html>

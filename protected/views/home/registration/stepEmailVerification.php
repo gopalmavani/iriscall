@@ -9,92 +9,89 @@
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no">
     <meta name="authoring-tool" content="Adobe_Animate_CC">
-    <title>Micromaxcash</title>
+    <title>Iriscall</title>
     <?php
-    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/newtheme/bootstrap.min.css');
+    /*Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/newtheme/bootstrap.min.css');
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/registrationStyle.css');
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/registrationResponsive.css');
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/toastr.min.css');
-    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/animate/animate.min.css');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/animate/animate.min.css');*/
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/wizard-4.css');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/plugins.bundle.css');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/style.bundle.css');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/prismjs.bundle.css');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/custom.css');
     ?>
     <style>
-        #step1-registration{
-            background: #044e80 !important;
-        }
         .boxshadow-content{
             background: #FFF !important;
         }
     </style>
 </head>
-<body id="step1-registration">
-<div class="wrapper">
-    <?php //include("registrationSidebar.php"); ?>
-    <div id="content" style="margin-left: unset !important;">
-        <div class="content-inner">
-            <!--<div class="btnCollapse"> <i></i> </div>-->
-            <div class="container">
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled page-loading">
+<div class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+            <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
                 <div class="row mb9 mb6-md">
                     <div class="col-md-12 text-center">
                         <div class="logo mb3 wow fadeInUp" data-wow-delay="100ms"><img src="<?= Yii::app()->baseUrl. '/images/logo-sio-icon.png'; ?>" class="img-fluid"></div>
                     </div>
                 </div>
-                <div class="row mb3">
-                    <div class="col-md-12 text-center">
-                        <div class="email-box wow fadeInUp boxshadow-content">
-                            <h4 class="text-blue text-semibold text-center mb2 mbsm1 text-uppercase wow fadeInUp" data-wow-delay="200ms">
-                                Welcome to MMC !
-                            </h4>
-                            <p class="mb3 mbsm2 font24 wow fadeInUp" data-wow-delay="250ms">Please enter your email address</p>
-                            <div class="form-group email-input wow fadeInUp"data-wow-delay="300ms">
-                                <input type="email" class="form-control" id="email" required="required">
+                <div class="card card-custom">
+                    <div class="card-header" style="margin: auto">
+                        <div class="card-title">
+                            <h3 class="card-label">Welcome to <?= Yii::app()->params['applicationName'] ?></h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb3 mbsm2 font24 wow fadeInUp text-center" data-wow-delay="250ms">Please enter your email address</p>
+                        <div class="form-group row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <input type="email" class="form-control" id="email" required="required" placeholder="Enter email here">
                             </div>
-                            <div class="mt3 wow fadeInUp" data-wow-delay="350ms">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
                                 <button type="button" onclick="verifyEmail()" class="btn btn-primary">Verify <i class="fa fa-angle-right"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row" id="proceed_registration" style="display: none">
-                    <div class="col-md-12 text-center">
-                        <div class="wow fadeInUp" data-wow-delay="400ms">
-                            <a onclick="proceed_step_initial()" style="color: #fff; background: #28a745 !important;" class="btn">Proceed</a>
-                        </div>
+                <div class="sio-flex text-center">
+                    <div class="sio-logo">
+                        <img src="<?= Yii::app()->baseUrl. '/images/logo-sio-icon.png'; ?>" alt="">
+                    </div>
+                    <div class="sio-text">
+                        <p class="sio-heading">Iriscall registration is powered by Sign In Once</p>
+                        <p class="sio-sub-heading">By continuing with registration, you agree to the
+                            <a target="_blank" href="#">terms & conditions.</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- ########## Page Content End ########## -->
-    <div class="sio-flex">
-        <div class="sio-logo">
-            <img src="<?= Yii::app()->baseUrl. '/images/logo-sio-icon.png'; ?>" alt="">
-        </div>
-        <div class="sio-text">
-            <p class="sio-heading">MMC Global registration is powered by Sign In Once</p>
-            <p class="sio-sub-heading">By continuing with registration, you agree to the
-                <a target="_blank" href="#">terms & conditions.</a></p>
-        </div>
-    </div>
+</div>
+<div class="wrapper">
+
 </div>
 <?php
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/newtheme/jquery.min.js', CClientScript::POS_HEAD);
+/*Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/newtheme/jquery.min.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/newtheme/popper.min.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/newtheme/bootstrap.min.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/toastr.min.js');
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/animate/animate.min.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/animate/animate.min.js');*/
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins.bundle.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/prismjs.bundle.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/scripts.bundle.min.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/jaktutorial.js', CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wizard/jquery.validate.min.js', CClientScript::POS_END);
 ?>
-<script type="text/javascript">
-    new WOW().init();
-</script>
 
 <!-- Sidebar Toggle Script -->
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('.btnCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-        });
-        $('#personalAccount').trigger('click');
-    });
+    $(document).ready(function () {});
     function verifyEmail() {
         var email = $("#email").val();
         if(email == ''){
@@ -112,7 +109,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/ani
                     /*
                     * 0 - Error
                     * 1 - Registration can begin
-                    * 2 - Email exists in CBM itself. Kindly login
+                    * 2 - Email exists in Iriscall itself. Kindly login
                     * 3 - User is already registered at SIO. Please proceed registration with some necessary data.
                     * */
                     if(resp['status'] == 2){
@@ -136,17 +133,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/ani
     function proceed_step_initial() {
         window.location = "<?= Yii::app()->createUrl('home/registrationStepOneInitial'); ?>";
     }
-</script>
-
-<!-- Accordion Script -->
-<script type="text/javascript">
-    $('.panel-collapse').on('show.bs.collapse', function () {
-        $(this).siblings('.panel-heading').addClass('active');
-    });
-
-    $('.panel-collapse').on('hide.bs.collapse', function () {
-        $(this).siblings('.panel-heading').removeClass('active');
-    });
 </script>
 </body>
 </html>
