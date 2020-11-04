@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Micromaxcash - Verify your SIO email</title>
-    <link rel="icon" type="image/png" href="<?= Yii::app()->getBaseUrl(true).'/images/logos/favicon.ico'?>" sizes="16x16" />
+    <title><?= Yii::app()->params['applicationName'] ?> - Verify your SIO email</title>
+    <link rel="icon" type="image/png" href="<?= Yii::app()->getBaseUrl(true).'/images/logos/iriscall-favicon.png'?>" sizes="16x16" />
 </head>
 <body style="margin:0; padding:0;background-color:#ffffff;">
 <style>
@@ -26,7 +26,7 @@
                     <td width="4%">&nbsp;</td>
                     <td align="center">
                         <a href="javascript:void()"  style="display:inline-block;">
-                            <img src="<?= Yii::app()->getBaseUrl(true).'/images/logos/logo-8-inverse.png'; ?>" style="max-width: 100%; margin: 30px 0;"/>
+                            <img src="<?= Yii::app()->getBaseUrl(true).'/images/logos/iriscall-logo.svg'; ?>" style="max-width: 100%; margin: 30px 0;"/>
                         </a>
                     </td>
                     <td width="4%">&nbsp;</td>
@@ -42,13 +42,13 @@
             <h1 style="font-size:32px; text-transform:uppercase; color:#005aa0; margin:30px 0 50px; font-family:open sans, arial; font-weight:bold;">SIO Account Verification</h1>
             <p style="font-size:16px;color:#5e5e5f;font-family:open sans, arial; margin:0 0 20px;">Hi,</p>
 
-            <p style="font-size:16px;margin:0 0 20px; color:#5e5e5f;font-family:open sans, arial;">We've noticed an activation request at MMC through your SIO account. </p>
+            <p style="font-size:16px;margin:0 0 20px; color:#5e5e5f;font-family:open sans, arial;">We've noticed an activation request at Iriscall through your SIO account. </p>
 
             <h2 style="font-family:open sans, arial; margin:0 0 20px; color:#5e5e5f; font-size:28px; line-height:32px; text-transform:uppercase; font-weight:400;">you're moving in the right direction!</h2>
 
             <p style="font-size:16px;margin:0 0 20px; color:#5e5e5f;font-family:open sans, arial;">We just wanted to keep you informed about this activity.!</p>
 
-            <big style="font-family:open sans, arial; font-weight:bold; text-transform:uppercase; color:#d4537d; margin:0; display:block;">Kindly permit us to share some account details with MMC from SIO!</big>
+            <big style="font-family:open sans, arial; font-weight:bold; text-transform:uppercase; color:#d4537d; margin:0; display:block;">Kindly permit us to share some account details with Iriscall from SIO!</big>
 
         </td>
         <td width="4%"></td>
@@ -90,7 +90,7 @@
         <td align="center" bgcolor="#fff">
             <br /><small style="font-size:12px;color:#5e5e5f; font-family:open sans, arial;">This is an automatically generated email.<br />
                 Please do not reply as your message will not be received and will be returned to you by the mail server.</small>
-            <p style="font-size:13px;color:#5e5e5f; font-family:open sans, arial;">© <?php echo date('Y');?> Micromaxcash</p>
+            <p style="font-size:13px;color:#5e5e5f; font-family:open sans, arial;">© <?php echo date('Y');?> <?= Yii::app()->params['applicationName']; ?></p>
         </td>
         <td width="4%"></td>
     </tr>

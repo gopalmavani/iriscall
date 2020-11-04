@@ -424,20 +424,15 @@ class HomeController extends Controller
     public function actionSignup($id){
         $this->layout = false;
         $_SESSION['sponsor_id'] = $id;
-        $model = new UserInfo;
-        $sioData = 0;
         $apiToken = null;
-        $model->phone = '';
-        $this->render('registration/stepOne', [
-            'model' => $model,
-            'sioData' => $sioData,
-            'accountType'=>'personal',
-        ]);
+        $this->render('registration/stepEmailVerification');
     }
 
     public function actionRegistrationStepOneInitial(){
         $this->layout = false;
         $status = 0;
+        $sioData = 0;
+        $model = new UserInfo;
         if(isset($_GET['token'])){
             //Verify portal token with SSO
             $sso_url = Yii::app()->params['SSO_URL'];
@@ -446,16 +441,24 @@ class HomeController extends Controller
             if(!is_null($sso_response['success_response'])) {
                 $sso_success_response = $sso_response['success_response'];
                 if($sso_success_response['status'] == 1){
+                    $model->attributes = SSOHelper::modifyPostDataWRTCBM($sso_success_response['data']['user_info']);
                     $status = 1;
                     $_SESSION['user_present_in_sso'] = $_GET['token'];
+                    $sioData = 1;
                     //$response['message'] = "Thank you for permitting us to use SIO details";
                 } else {
                     $status = -1;
                 }
             }
+        } else {
+            if(isset($_SESSION['user_email'])){
+                $model->email = $_SESSION['user_email'];
+            }
         }
-        $this->render('registration/stepOneInitial', [
+        $this->render('registration/stepOne', [
             'status' => $status,
+            'model' => $model,
+            'sioData' => $sioData
         ]);
     }
 
@@ -498,7 +501,7 @@ class HomeController extends Controller
         if(isset($portalUser->user_id)){
             //Email exists in CBM itself. Kindly login
             $response['status'] = 2;
-            $response['message'] = "Email exists in MMC itself. Kindly login";
+            $response['message'] = "Email exists in Iriscall itself. Kindly login";
         } else {
             //Verify with SSO
             $sso_url = Yii::app()->params['SSO_URL'];
@@ -552,6 +555,7 @@ class HomeController extends Controller
         if(isset($_POST['email'])){
             $email = $_POST['email'];
             $response = $this->verifyEmailWithPortalAndSIO($email);
+            $_SESSION['user_email'] = $email;
         }
         echo json_encode($response);
     }
