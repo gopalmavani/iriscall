@@ -531,7 +531,7 @@
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins.bundle.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/prismjs.bundle.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/scripts.bundle.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-user.js?v=0.0.3', CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-user.js?v=0.0.2', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/jaktutorial.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wizard/jquery.validate.min.js', CClientScript::POS_END);
 ?>
