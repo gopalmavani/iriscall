@@ -23,31 +23,12 @@ var KTAddUser = function () {
 				return; // Skip if stepped back
 			}
 
-			var checked = 1;
-			console.log("Step:" + wizard.getStep());
-			if(wizard.getStep() == 3){
-                checked = $('.privacy:checkbox:checked').length;
-                if(checked == 0){
-                    Swal.fire({
-                        text: "Sorry, You need to accept the privacy policy to proceed further",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light"
-                        }
-                    }).then(function () {
-                        //KTUtil.scrollTop();
-                    });
-				}
-			}
-
 			// Validate form before change wizard step
 			var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
 
 			if (validator) {
 				validator.validate().then(function (status) {
-					if (status == 'Valid' && checked == 1) {
+					if (status == 'Valid') {
 						wizard.goTo(wizard.getNewStep());
 
 						KTUtil.scrollTop();
@@ -66,7 +47,6 @@ var KTAddUser = function () {
 					}
 				});
 			}
-
 			return false;  // Do not change wizard step, further action will be handled by he validator
 		});
 
@@ -77,32 +57,46 @@ var KTAddUser = function () {
 
 		// Submit event
 		_wizardObj.on('submit', function (wizard) {
-			Swal.fire({
-				text: "All is good! Please confirm the form submission.",
-				icon: "success",
-				showCancelButton: true,
-				buttonsStyling: false,
-				confirmButtonText: "Yes, submit!",
-				cancelButtonText: "No, cancel",
-				customClass: {
-					confirmButton: "btn font-weight-bold btn-primary",
-					cancelButton: "btn font-weight-bold btn-default"
-				}
-			}).then(function (result) {
-				if (result.value) {
-					_formEl.submit(); // Submit form
-				} else if (result.dismiss === 'cancel') {
-					Swal.fire({
-						text: "Your form has not been submitted!.",
-						icon: "error",
-						buttonsStyling: false,
-						confirmButtonText: "Ok, got it!",
-						customClass: {
-							confirmButton: "btn font-weight-bold btn-primary",
-						}
-					});
-				}
-			});
+			if($('.privacy').prop('checked')){
+                Swal.fire({
+                    text: "All is good! Please confirm the form submission.",
+                    icon: "success",
+                    showCancelButton: true,
+                    buttonsStyling: false,
+                    confirmButtonText: "Yes, submit!",
+                    cancelButtonText: "No, cancel",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-primary",
+                        cancelButton: "btn font-weight-bold btn-default"
+                    }
+                }).then(function (result) {
+                    if (result.value) {
+                        _formEl.submit(); // Submit form
+                    } else if (result.dismiss === 'cancel') {
+                        Swal.fire({
+                            text: "Your form has not been submitted!.",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-primary",
+                            }
+                        });
+                    }
+                });
+			} else {
+                Swal.fire({
+                    text: "Sorry, You need to accept the privacy policy.",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+			}
 		});
 	}
 
@@ -291,18 +285,8 @@ var KTAddUser = function () {
 			_formEl,
 			{
 				fields: {
-                    /*privacy: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please accept the privacy policy'
-                            }, choice: {
-                                min: 1,
-                                max: 1,
-                                message: 'You have to accept all agreements to continue'
-                            }
-                        }
-                    },*/
-                    payout_bank: {
+                    // Step 3
+					payout_bank: {
 						validators: {
 							notEmpty: {
 								message: 'Bank name is required'

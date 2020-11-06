@@ -373,7 +373,19 @@
                                                         <div class="my-5 step" data-wizard-type="step-content">
                                                             <h5 class="text-dark font-weight-bold mb-10">Enter your Payment Details</h5>
                                                             <div class="row mb2 mb-10">
-                                                                <div class="col-md-12">
+                                                                <div class="form-group row" style="width: 100%;">
+                                                                    <div class="col-md-1">
+                                                                        <span class="switch switch-outline switch-icon switch-success">
+                                                                            <label>
+                                                                                <input type="checkbox" name="payoutDetailsId" id="payoutDetailsId"/>
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </span>
+                                                                    </div>
+                                                                    <label class="col-md-11 col-form-label">I would like to add payout
+                                                                        details</label>
+                                                                </div>
+                                                                <!--<div class="col-md-12">
                                                                     <div class="custom-control custom-checkbox agree">
                                                                         <input type="checkbox" id="payoutDetailsId"
                                                                                name="payoutDetailsId">
@@ -381,7 +393,7 @@
                                                                                for="payoutDetailsId">I would like to add payout
                                                                             details</label><span></span>
                                                                     </div>
-                                                                </div>
+                                                                </div>-->
                                                             </div>
                                                             <div id="payoutDetails" style="display: none">
                                                                 <div class="row mb3">
@@ -531,7 +543,7 @@
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins.bundle.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/prismjs.bundle.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/scripts.bundle.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-user.js?v=0.0.2', CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/add-user.js?v=0.0.3', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/jaktutorial.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/wizard/jquery.validate.min.js', CClientScript::POS_END);
 ?>
