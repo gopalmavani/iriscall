@@ -28,11 +28,154 @@ class AccountController extends Controller
         date_default_timezone_set('Europe/Berlin');
 
         setlocale(LC_MONETARY, 'nl_NL.UTF-8');
-        if (Yii::app()->user->isGuest){
+
+        //Action that needs to be allowed for guest user
+        $allowedActionArr = ['createguestaccount', 'uploadfiles'];
+        if (Yii::app()->user->isGuest && !in_array($action->id, $allowedActionArr)) {
             $this->redirect(Yii::app()->createUrl('home/login'));
         }
         return parent::beforeAction($action);
 
+    }
+
+    /*
+     * Create Guest User account in Iriscall and SIO
+     * */
+    protected function createSIOUser($request, $userId){
+        $modified_data = SSOHelper::modifyPostDataWRTSSOForNewUser($request);
+        $modified_data['sponsor_id'] = Yii::app()->params['SystemUserId'];
+        $modified_data['password'] = 'W3lcome@sys';
+        $sso_url = Yii::app()->params['SSO_URL'];
+        $user_response = CurlHelper::executeAction($sso_url."api/createUser", $modified_data, "POST");
+        $user = UserInfo::model()->findByPk($userId);
+        if(!is_null($user_response['success_response']) && ($user_response['success_response']['status'] == 1)){
+            $user->setAttributes($request, false);
+            $user->full_name = $user->first_name . ' ' . $user->last_name;
+            $user->save(false);
+            $user_id = $user->user_id;
+        } else {
+            //Delete the guest user from Iriscall
+            $user->delete();
+            $user_id = '';
+        }
+        return $user_id;
+    }
+
+    /*
+     * Create Guest account for user in telecom from wordpress website
+     * */
+    public function actionCreateguestaccount(){
+        $this->layout = 'iriscallwordpress';
+
+        //Create a guest dummy user
+        $user = new UserInfo();
+        $user->first_name = 'Guest';
+        $user->last_name = 'User';
+        $user->full_name = 'Guest User';
+        $user->email = 'guest@user-'.ServiceHelper::randomString().'.com';
+        $user->save(false);
+
+        $telecom_user_details = new TelecomUserDetails();
+        $telecom_details_present = false;
+        $telecom_documents = [];
+
+        //Default personal products
+        $personal_product_data = Yii::app()->db->createCommand()
+            ->select('pc.product_id, p.name, p.description , p.image, p.price')
+            ->from('product_category pc')
+            ->join('product_info p','pc.product_id=p.product_id')
+            ->join('categories c','c.category_id=pc.category_id')
+            ->where('c.category_name=:cName', [':cName'=>Yii::app()->params['TelecomProductPersonalCategory']])
+            ->andWhere('p.is_active=:pIa', [':pIa' => 1])
+            ->queryAll();
+        $business_product_data = Yii::app()->db->createCommand()
+            ->select('pc.product_id, p.name, p.description , p.image, p.price')
+            ->from('product_category pc')
+            ->join('product_info p','pc.product_id=p.product_id')
+            ->join('categories c','c.category_id=pc.category_id')
+            ->where('c.category_name=:cName', [':cName'=>Yii::app()->params['TelecomProductBusinessCategory']])
+            ->andWhere('p.is_active=:pIa', [':pIa' => 1])
+            ->queryAll();
+
+        if(!empty($_POST)){
+            $userId = $this->createSIOUser($_POST, $user->user_id);
+            if($userId != ''){
+                $telecom_user_details->setAttributes($_POST, false);
+                $user = UserInfo::model()->findByPk($userId);
+                $telecom_user_details->user_id = $user->user_id;
+                $telecom_user_details->email = $user->email;
+                $telecom_user_details->agent_id = $user->sponsor_id;
+                $telecom_user_details->send_invoice_via = 'Email';
+                $telecom_user_details->invoice_detail_type = 'Standard';
+                $sponsor = UserInfo::model()->findByPk($user->sponsor_id);
+                $telecom_user_details->agent_name = $sponsor->full_name;
+                if(isset($_POST['cc_type']) && $_POST['cc_type'] != ''){
+                    $telecom_user_details->credit_card_type = $_POST['cc_type'];
+                    $telecom_user_details->credit_card_number = $_POST['cc_number'];
+                    $telecom_user_details->credit_card_name = $_POST['cc_name'];
+                    $telecom_user_details->expiry_date_month = $_POST['cc_exp_month'];
+                    $telecom_user_details->expiry_date_year = $_POST['cc_exp_year'];
+                }
+                if($telecom_details_present){
+                    $telecom_user_details->modified_at = date('Y-m-d H:i:s');
+                }
+                $telecom_user_details->save(false);
+
+                if(isset($telecom_user_details->signature) && !empty($telecom_user_details->signature)){
+                    $telecom_account = new TelecomAccountDetails();
+                    $telecom_account->setAttributes($_POST, false);
+                    $telecom_account->user_id = $user->user_id;
+                    $telecom_account->email = $user->email;
+                    $telecom_account->telecom_request_status = 0;
+                    $telecom_account->save(false);
+
+                    //Registration PDF
+                    $filePath = $this->generateTelecomRegistrationPDF($telecom_account->user_id, $telecom_account->id);
+                    $registrationDocument = TelecomDocuments::model()->findByAttributes(['document_name' => 'Registration']);
+                    $telecomDocument = new TelecomUserDocuments();
+                    $telecomDocument->user_id = $telecom_account->user_id;
+                    $telecomDocument->document_id = $registrationDocument->document_id;
+                    $telecomDocument->document_path = $filePath;
+                    $telecomDocument->save(false);
+
+                    //Create PDF
+                    if($telecom_user_details->payment_method == 'SEPA'){
+                        $filePath = $this->generateSEPAPDF($telecom_account->user_id, $_POST['sepa_signature']);
+                        $sepaDocument = TelecomDocuments::model()->findByAttributes(['document_name' => 'SEPA']);
+                        $telecomDocument = new TelecomUserDocuments();
+                        $telecomDocument->user_id = $telecom_account->user_id;
+                        $telecomDocument->document_id = $sepaDocument->document_id;
+                        $telecomDocument->document_path = $filePath;
+                        $telecomDocument->save(false);
+                    }
+                }
+
+                echo "Account details saved successfully";
+                exit;
+                Yii::app()->user->setFlash('success', 'Account details saved successfully');
+                $this->redirect(Yii::app()->createUrl('home/index'));
+            } else {
+                Yii::app()->user->setFlash('error', 'Issue while saving the user at SIO');
+                $this->redirect(Yii::app()->createUrl('home/index'));
+            }
+        } else {
+            $telecom_account = new TelecomAccountDetails();
+        }
+
+        $countryArray = ServiceHelper::getCountry();
+        $nationalityArray = ServiceHelper::getNationality();
+
+        $this->render('create', [
+            'user' => $user,
+            'telecom_user_detail' => $telecom_user_details,
+            'telecom_details_presence' => $telecom_details_present,
+            'telecom_documents' => $telecom_documents,
+            'telecom_account' => $telecom_account,
+            'personal_products' => $personal_product_data,
+            'business_products' => $business_product_data,
+            'countryArray' => $countryArray,
+            'nationalityArray' => $nationalityArray
+        ]);
     }
 
     /**
@@ -249,10 +392,10 @@ class AccountController extends Controller
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
         // set some language-dependent strings (optional)
-        if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+        /*if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
             require_once(dirname(__FILE__).'/lang/eng.php');
             $pdf->setLanguageArray($l);
-        }
+        }*/
 
         // ---------------------------------------------------------
 
@@ -354,10 +497,10 @@ class AccountController extends Controller
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
         // set some language-dependent strings (optional)
-        if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+        /*if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
             require_once(dirname(__FILE__).'/lang/eng.php');
             $pdf->setLanguageArray($l);
-        }
+        }*/
 
         // ---------------------------------------------------------
 

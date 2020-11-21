@@ -1,0 +1,44 @@
+@font-face {
+    font-family: 'metropolisbold';
+    src: url('iriscall_wordpress_fonts/metropolis-bold-webfont.woff2') format('woff2'),
+         url('iriscall_wordpress_fonts/metropolis-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'metropolisextra_bold';
+    src: url('iriscall_wordpress_fonts/metropolis-extrabold-webfont.woff2') format('woff2'),
+         url('iriscall_wordpress_fonts/metropolis-extrabold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'metropolisregular';
+    src: url('iriscall_wordpress_fonts/metropolis-regular-webfont.woff2') format('woff2'),
+         url('iriscall_wordpress_fonts/metropolis-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'metropolissemi_bold';
+    src: url('iriscall_wordpress_fonts/metropolis-semibold-webfont.woff2') format('woff2'),
+         url('iriscall_wordpress_fonts/metropolis-semibold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

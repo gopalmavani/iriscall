@@ -40,7 +40,7 @@ class HomeController extends Controller
     {
         //Action that needs to be allowed before signing up
         $allowedActionArr = ['login', 'signup', 'registrationStepOne', 'registrationStepEmailVerification', 'registrationStepOneDemo',
-            'registrationStepOneInitial', 'verifyEmail', 'completeDemo', 'activation', 'createUserSignup', 'checkEmail', 'jiraWebhook', 'autologin', 'index'];
+            'registrationStepOneInitial', 'verifyEmail', 'completeDemo', 'activation', 'createUserSignup', 'checkEmail', 'jiraWebhook', 'autologin', 'index', 'landing'];
         if (Yii::app()->user->isGuest && !in_array($action->id, $allowedActionArr)) {
             $this->redirect(Yii::app()->createUrl('home/login'));
         }
@@ -52,58 +52,11 @@ class HomeController extends Controller
      */
     public function actionLogin()
     {
-        $this->layout = 'newlogin';
-        $model = new LoginForm;
-
-        // collect user input data
-        if (isset($_POST['LoginForm'])) {
-            $model->attributes = $_POST['LoginForm'];
-            Yii::app()->session['userid'] = md5($model->password);
-            // validate user input and redirect to the previous page if valid
-            if ($model->validate()) {
-                $user = UserInfo::model()->findByAttributes(['email' => $model->username]);
-                if ($user->is_active == 1) {
-                    if ($model->login()) {
-
-                        //Set session for current Login
-                        /*$account_login = CbmAccounts::model()->findByAttributes(['email_address'=>$user->email], ['order' => 'registration_date']);
-                        if(isset($account_login->login))
-                            $_SESSION['loginId'] = $account_login->login;*/
-
-                        $registration_status = RegistrationStatus::model()->findAllByAttributes(['user_id' => $user->user_id]);
-                        $arr_size = sizeof($registration_status);
-                        if ($arr_size == 0) {
-                            $this->redirect('landing');
-                        } elseif ($arr_size == 1) {
-                            $status_record = $registration_status[0];
-                            $max_step = Yii::app()->db->createCommand()
-                                ->select('max(step_number) as step_number')
-                                ->from('registration_steps')
-                                ->where('product_id=:pId', [':pId' => $status_record->product_id])
-                                ->queryRow();
-                            if ($status_record->step_number >= $max_step['step_number']) {
-                                $this->redirect('index');
-                            } else {
-                                $this->redirect('productIndex');
-                            }
-                        } elseif ($arr_size == 2) {
-                            $this->redirect('producIndex');
-                        } else {
-                            $this->redirect('index');
-                        }
-                        $this->redirect('index');
-                    }
-                } else {
-                    $this->render('login', array('model' => $model, 'error' => 'Your account is not active yet. Please activate it before logging it to the system.'));
-                }
-            } else {
-                $this->render('login', array('model' => $model));
-            }
-        } else {
-            // display the login form
-            //$this->render('login', array('model' => $model));
+        if(Yii::app()->user->isGuest){
             $sso_url = Yii::app()->params['SSO_URL'];
             $this->redirect($sso_url.'login?application='.Yii::app()->params['applicationName']);
+        } else {
+            $this->redirect(Yii::app()->createUrl('account/createguestaccount'));
         }
     }
 
@@ -142,12 +95,15 @@ class HomeController extends Controller
 
     /*
      * Landing action to be called
-     * when the user has just registered into the
-     * system
+     * when the user gets in through Wordpress Site
      * **/
     public function actionLanding()
     {
-        $this->render('landing');
+        if(!Yii::app()->user->isGuest){
+            $this->redirect(Yii::app()->createUrl('account/create'));
+        } else {
+            $this->redirect(Yii::app()->createUrl('account/createguestaccount'));
+        }
     }
 
     /**
