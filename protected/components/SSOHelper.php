@@ -84,9 +84,11 @@ class SSOHelper extends CApplicationComponent {
      * */
     public static function modifyPostDataWRTSSOForNewUser($data){
         //To remove first level depth of the user-info
-        $temp = $data['UserInfo'];
-        unset($data['UserInfo']);
-        $data = array_merge($data, $temp);
+        if(isset($data['UserInfo'])){
+            $temp = $data['UserInfo'];
+            unset($data['UserInfo']);
+            $data = array_merge($data, $temp);
+        }
 
         self::setUnsetData($data, 'building_num', 'building_number');
         //$data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));

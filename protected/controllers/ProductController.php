@@ -24,7 +24,9 @@ class ProductController extends Controller
 
     protected function beforeAction($action)
     {
-        if (Yii::app()->user->isGuest){
+        //Action that needs to be allowed for guest user
+        $allowedActionArr = ['getVatPercentage'];
+        if (Yii::app()->user->isGuest && !in_array($action->id, $allowedActionArr)) {
             $this->redirect(Yii::app()->createUrl('home/login'));
         }
         return parent::beforeAction($action);

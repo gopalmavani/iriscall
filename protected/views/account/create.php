@@ -3,7 +3,7 @@ $this->pageTitle = "Create Account";
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/wizard-1.css');
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit-card/styles/skeuocard.reset.css');
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit-card/styles/skeuocard.css');
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit-card/styles/demo.css');
+//Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit-card/styles/demo.css');
 ?>
 <style>
     .datepicker{
@@ -234,7 +234,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         </div>
                                         <div class="form-group">
                                             <label>Fix Email</label>
-                                            <input type="text" class="form-control form-control-solid form-control-lg" name="email" value="<?= $telecom_user_detail->email; ?>" disabled/>
+                                            <input type="text" class="form-control form-control-solid form-control-lg" name="email" value="<?= $telecom_user_detail->email; ?>" <?php if ($telecom_user_detail->email != '') { echo "disabled";} ?> />
                                             <span class="form-text text-muted"></span>
                                         </div>
                                         <div class="form-group">
@@ -672,7 +672,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="ribbon-target bg-primary" style="top: 10px; right: -2px; display: none" id="passport_ribbon">Selected</div>
                                                 <div class="pt-30 pt-md-25 pb-15 px-5 text-center">
                                                     <div class="d-flex flex-center position-relative mb-25">
-                                                        <img src="<?=  Yii::app()->baseUrl. '/images/passport.jpg' ?>">
+                                                        <img class="img-responsive" style="max-width: 100%;" src="<?=  Yii::app()->baseUrl. '/images/passport.jpg' ?>">
                                                     </div>
                                                     <span class="font-size-h3 d-block d-block font-weight-bold text-dark-75 py-2">Passport</span>
                                                     <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" style="margin-top: 10px" onclick="selectID('passport')">Select</button>
@@ -682,7 +682,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="ribbon-target bg-primary" style="top: 10px; right: -2px; display: none" id="driving_ribbon">Selected</div>
                                                 <div class="pt-30 pt-md-25 pb-15 px-5 text-center">
                                                     <div class="d-flex flex-center position-relative mb-25">
-                                                        <img src="<?=  Yii::app()->baseUrl. '/images/driving.jpg' ?>">
+                                                        <img class="img-responsive" style="max-width: 100%;" src="<?=  Yii::app()->baseUrl. '/images/driving.jpg' ?>">
                                                     </div>
                                                     <span class="font-size-h3 d-block d-block font-weight-bold text-dark-75 py-2">Driving License</span>
                                                     <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" style="margin-top: 25px" onclick="selectID('driving')">Select</button>
@@ -692,7 +692,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="ribbon-target bg-primary" style="top: 10px; right: -2px; display: none" id="identification_ribbon">Selected</div>
                                                 <div class="pt-30 pt-md-25 pb-15 px-5 text-center">
                                                     <div class="d-flex flex-center position-relative mb-25">
-                                                        <img src="<?=  Yii::app()->baseUrl. '/images/belgium_id.jpg' ?>">
+                                                        <img class="img-responsive" style="max-width: 100%;" src="<?=  Yii::app()->baseUrl. '/images/belgium_id.jpg' ?>">
                                                     </div>
                                                     <span class="font-size-h3 d-block d-block font-weight-bold text-dark-75 py-2">Identification Card</span>
                                                     <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" onclick="selectID('identification')">Select</button>
@@ -1126,7 +1126,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                 </div>
             </div>
         </div>
-    </div>
 </div>
 <script src="<?= Yii::app()->baseUrl . '/plugins/credit-card/javascripts/vendor/cssua.min.js' ?>"></script>
 <script src="<?= Yii::app()->baseUrl . '/plugins/credit-card/javascripts/skeuocard.min.js' ?>"></script>
