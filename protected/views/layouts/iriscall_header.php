@@ -8,15 +8,24 @@
         line-height: 1.125em !important;
         border-radius: 50px !important;
     }
+    .nav-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .subheader-transparent {
+        display: none;
+    }
 </style>
 <header style="position: inherit">
     <nav class="navbar">
-        <div class="container-fluid">
+        <div class="nav-section">
             <div class="navbar-header">
                 <a class="" href="#"><img class="logo_image" src="https://dev.iriscall.be/mobiel/wp-content/uploads/2020/07/IC-Logo-no-baseline-300x122-1.png" alt="" width="300" height="122"></a>
             </div>
             <div class="nav-right">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" style="flex-direction: row">
                     <li class="active"><a href="#">Mobiel</a></li>
                     <li><a href="#">Features</a></li>
                     <li><a href="#">About</a></li>
