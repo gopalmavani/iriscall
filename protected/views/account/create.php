@@ -1043,8 +1043,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                             <i class="flaticon2-cube"></i>Edit</a>
                                                     </div>
                                                 </div>
-
-
+                                                <div class="card-body">
                                                     <div class="form-group row my-2">
                                                         <label class="col-4 col-form-label">Tariff Plan:</label>
                                                         <div class="col-8">
@@ -1093,7 +1092,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                             <span class="form-control-plaintext font-weight-bolder" id="review_sim_card_number"></span>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
