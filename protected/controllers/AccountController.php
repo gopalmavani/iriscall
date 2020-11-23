@@ -150,8 +150,8 @@ class AccountController extends Controller
                     }
                 }
 
-                echo "Account details saved successfully";
-                exit;
+                //Delete all Guest users if any
+                UserInfo::model()->deleteAll('first_name=:fn', [':fn'=>'Guest']);
                 Yii::app()->user->setFlash('success', 'Account details saved successfully');
                 $this->redirect(Yii::app()->createUrl('home/index'));
             } else {

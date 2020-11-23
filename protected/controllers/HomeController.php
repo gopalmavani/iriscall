@@ -56,7 +56,7 @@ class HomeController extends Controller
             $sso_url = Yii::app()->params['SSO_URL'];
             $this->redirect($sso_url.'login?application='.Yii::app()->params['applicationName']);
         } else {
-            $this->redirect(Yii::app()->createUrl('account/createguestaccount'));
+            $this->redirect(Yii::app()->createUrl('home/index'));
         }
     }
 
@@ -102,7 +102,9 @@ class HomeController extends Controller
         if(!Yii::app()->user->isGuest){
             $this->redirect(Yii::app()->createUrl('account/create'));
         } else {
-            $this->redirect(Yii::app()->createUrl('account/createguestaccount'));
+            $this->layout = 'iriscallwordpress';
+            $this->render('wordpressIriscallEmailVerification');
+            //$this->redirect(Yii::app()->createUrl('account/createguestaccount'));
         }
     }
 
