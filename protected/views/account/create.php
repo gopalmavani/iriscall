@@ -218,12 +218,12 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="form-group">
                                                     <label>Gender</label>
                                                     <div class="col-form-label">
-                                                        <div class="radio-inline">
-                                                            <label class="radio radio-success">
+                                                        <div class="">
+                                                            <label class="radio radio-success radio-inline">
                                                                 <input value="1" <?php if ($telecom_user_detail->gender == 1) { echo "checked";} ?> type="radio" class="check" name="gender">
                                                                 <span></span>Male
                                                             </label>
-                                                            <label class="radio radio-success">
+                                                            <label class="radio radio-success radio-inline">
                                                                 <input value="2" <?php if ($telecom_user_detail->gender != 1) { echo "checked";} ?> type="radio" class="check" name="gender">
                                                                 <span></span>Female
                                                             </label>
@@ -522,15 +522,15 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <label class="col-form-label col-12">Choose required payment method</label>
                                             <div class="col-9 col-form-label">
                                                 <div class="radio-inline">
-                                                    <label class="radio radio-success sepa_radio">
+                                                    <label class="radio radio-success sepa_radio radio-inline">
                                                         <input value="SEPA" <?php if ($telecom_user_detail->payment_method == "SEPA") { echo "checked";} ?> type="radio" class="check" name="payment_method">
                                                         <span></span>SEPA
                                                     </label>
-                                                    <label class="radio radio-success credit_card_radio">
+                                                    <label class="radio radio-success credit_card_radio radio-inline">
                                                         <input value="CreditCard" <?php if ($telecom_user_detail->payment_method == "CreditCard") { echo "checked";} ?> type="radio" class="check" name="payment_method">
                                                         <span></span>Credit Card
                                                     </label>
-                                                    <label class="radio radio-success bank_transfer_radio">
+                                                    <label class="radio radio-success bank_transfer_radio radio-inline">
                                                         <input value="BankTransfer" <?php if ($telecom_user_detail->payment_method == "BankTransfer") { echo "checked";} ?> type="radio" class="check" name="payment_method">
                                                         <span></span>Bank Transfer
                                                     </label>
