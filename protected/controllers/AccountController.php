@@ -152,11 +152,16 @@ class AccountController extends Controller
 
                 //Delete all Guest users if any
                 UserInfo::model()->deleteAll('first_name=:fn', [':fn'=>'Guest']);
-                Yii::app()->user->setFlash('success', 'Account details saved successfully');
-                $this->redirect(Yii::app()->createUrl('home/index'));
+                $this->render('wordpressIriscallThankYou', [
+                    'model' => $user,
+                    'success' => $user->full_name . ', your request has been generated successfully'
+                ]);
             } else {
-                Yii::app()->user->setFlash('error', 'Issue while saving the user at SIO');
-                $this->redirect(Yii::app()->createUrl('home/index'));
+                //Delete all Guest users if any
+                UserInfo::model()->deleteAll('first_name=:fn', [':fn'=>'Guest']);
+                $this->render('wordpressIriscallThankYou', [
+                    'error' => 'Issue while saving your request at SIO, kindly contact the support'
+                ]);
             }
         } else {
             $telecom_account = new TelecomAccountDetails();
