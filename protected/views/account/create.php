@@ -210,7 +210,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label class="col-form-label">Date Of Birth</label>
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" id="date_of_birth" placeholder="Select date of birth" name="date_of_birth" value="<?= $telecom_user_detail->date_of_birth; ?>" />
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" id="date_of_birth" placeholder="Select date/Enter in yyyy-mm-dd format" name="date_of_birth" value="<?= $telecom_user_detail->date_of_birth; ?>" />
                                                     <span class="form-text text-muted">You need to be of at-least 18 years to enroll.</span>
                                                 </div>
                                             </div>
@@ -328,6 +328,18 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="employment_type">Employment Type</label>
+                                                        <select name="employment_type" id="employment_type" class="form-control">
+                                                            <option value="">Select Employment</option>
+                                                            <option value="self_employed">Self Employed</option>
+                                                            <option value="company">Company</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="aoa-div">
                                                 <div class="form-group row">
                                                     <label class="col-form-label col-lg-12 col-sm-12 aoa_label">File: Articles of Association</label>
@@ -351,53 +363,44 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
+                                                    <label>Street</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="street" placeholder="Street" value="<?= $telecom_user_detail->street; ?>" />
+                                                    <span class="form-text text-muted">Please enter street details.</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
                                                     <label>Building Number</label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" name="building_num" placeholder="Building number please" value="<?= $telecom_user_detail->building_num; ?>" />
                                                     <span class="form-text text-muted">Please enter building number.</span>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-xl-6">
-
                                                 <div class="form-group">
                                                     <label>Bus Number</label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" name="bus_num" placeholder="Bus number please" value="<?= $telecom_user_detail->bus_num; ?>" />
                                                     <span class="form-text text-muted">Please enter bus number.</span>
                                                 </div>
-
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xl-6">
-
-                                                <div class="form-group">
-                                                    <label>Street</label>
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="street" placeholder="Street" value="<?= $telecom_user_detail->street; ?>" />
-                                                    <span class="form-text text-muted">Please enter street details.</span>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-xl-6">
-
-                                                <div class="form-group">
-                                                    <label>City</label>
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="city" placeholder="City" value="<?= $telecom_user_detail->city; ?>" />
-                                                    <span class="form-text text-muted">Please enter city details.</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col-xl-4">
-
                                                 <div class="form-group">
                                                     <label>Postcode</label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" name="postcode" placeholder="Postcode" value="<?= $telecom_user_detail->postcode; ?>" />
                                                     <span class="form-text text-muted">Please enter postcode details.</span>
                                                 </div>
-
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>City</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="city" placeholder="City" value="<?= $telecom_user_detail->city; ?>" />
+                                                    <span class="form-text text-muted">Please enter city details.</span>
+                                                </div>
                                             </div>
                                             <div class="col-xl-4">
-
                                                 <div class="form-group">
                                                     <label for="country">Country</label>
                                                     <select name="country" id="country" class="form-control">
@@ -409,10 +412,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                         <?php  } ?>
                                                     </select>
                                                 </div>
-
                                             </div>
                                             <div class="col-xl-4">
-
                                                 <div class="form-group">
                                                     <label>Nationality</label>
                                                     <select name="nationality" id="nationality" class="form-control">
@@ -424,7 +425,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-
                                             </div>
                                         </div>
                                         <hr>
@@ -448,56 +448,45 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
-
-                                                    <div class="form-group">
-                                                        <label>Building Number</label>
-                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="billing_building_num" placeholder="Building number please" value="<?= $telecom_user_detail->billing_building_num; ?>" />
-                                                        <span class="form-text text-muted">Please enter building number.</span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-xl-6">
-
-                                                    <div class="form-group">
-                                                        <label>Bus Number</label>
-                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="billing_bus_num" placeholder="Bus number please" value="<?= $telecom_user_detail->billing_bus_num; ?>" />
-                                                        <span class="form-text text-muted">Please enter bus number.</span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-6">
-
                                                     <div class="form-group">
                                                         <label>Street</label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="billing_street" placeholder="Street" value="<?= $telecom_user_detail->billing_street; ?>" />
                                                         <span class="form-text text-muted">Please enter street details.</span>
                                                     </div>
-
                                                 </div>
                                                 <div class="col-xl-6">
-
                                                     <div class="form-group">
-                                                        <label>City</label>
-                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="billing_city" placeholder="City" value="<?= $telecom_user_detail->billing_city; ?>" />
-                                                        <span class="form-text text-muted">Please enter city details.</span>
+                                                        <label>Building Number</label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="billing_building_num" placeholder="Building number please" value="<?= $telecom_user_detail->billing_building_num; ?>" />
+                                                        <span class="form-text text-muted">Please enter building number.</span>
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
-
+                                                    <div class="form-group">
+                                                        <label>Bus Number</label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="billing_bus_num" placeholder="Bus number please" value="<?= $telecom_user_detail->billing_bus_num; ?>" />
+                                                        <span class="form-text text-muted">Please enter bus number.</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
                                                     <div class="form-group">
                                                         <label>Postcode</label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="billing_postcode" placeholder="Postcode" value="<?= $telecom_user_detail->billing_postcode; ?>" />
                                                         <span class="form-text text-muted">Please enter postcode details.</span>
                                                     </div>
-
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label>City</label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="billing_city" placeholder="City" value="<?= $telecom_user_detail->billing_city; ?>" />
+                                                        <span class="form-text text-muted">Please enter city details.</span>
+                                                    </div>
                                                 </div>
                                                 <div class="col-xl-6">
-
                                                     <div class="form-group">
                                                         <label for="billing_country">Country</label>
                                                         <select name="billing_country" id="billing_country" class="form-control">
@@ -509,7 +498,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                             <?php } ?>
                                                         </select>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -1355,4 +1343,4 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         $('#kyc_file_upload').show();
     }
 </script>
-<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.1' ?>"></script>
+<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.2' ?>"></script>

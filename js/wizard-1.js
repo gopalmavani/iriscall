@@ -88,6 +88,13 @@ var KTWizard1 = function () {
                                 message: 'Please enter vat rate'
                             }
                         }
+                    },
+                    employment_type: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select employment type'
+                            }
+                        }
                     }
                 },
                 plugins: {
@@ -443,13 +450,16 @@ var KTWizard1 = function () {
             var fileError = 0;
             if(wizard.getStep() == 2){
                 if($('.is_business_type').is(":checked")){
-                    if(aoa_file_count == 0){
-                        $('.aoa_label').addClass('text-danger');
-                        $('.aoa_label').html('Articles-Of-Association is required');
-                        fileError = fileError + 1;
-                    } else {
-                        $('.aoa_label').removeClass('text-danger');
-                        $('.aoa_label').html('File: Articles of Association');
+                    var employment_type = $('#employment_type').val();
+                    if(employment_type == 'company'){
+                        if(aoa_file_count == 0){
+                            $('.aoa_label').addClass('text-danger');
+                            $('.aoa_label').html('Articles-Of-Association is required');
+                            fileError = fileError + 1;
+                        } else {
+                            $('.aoa_label').removeClass('text-danger');
+                            $('.aoa_label').html('File: Articles of Association');
+                        }
                     }
                 }
             }
