@@ -3,6 +3,12 @@
 <?php
 setlocale(LC_MONETARY, 'nl_NL.UTF-8');
 ?>
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+    }
+</style>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +16,8 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="<?= Yii::app()->request->baseUrl ?>/images/logos/iriscall-favicon.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Asap+Condensed:500">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,700;1,500&display=swap" rel="stylesheet">
     <title>Iriscall</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -18,8 +25,8 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/plugins.bundle.css');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/style.bundle.css');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/prismjs.bundle.css');
-        Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/iriscall_wordpress.css');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/fonts/iriscall_wordpress_fonts.css');
+        Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/iriscall_wordpress.css?v=0.0.4');
     ?>
 </head>
 <body style="background-color:darkgrey">
