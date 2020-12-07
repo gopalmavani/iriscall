@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="sio-flex text-center">
+    <div class="sio-flex text-center mt-5">
         <div class="sio-logo">
             <img src="<?= Yii::app()->baseUrl. '/images/logo-sio-icon.png'; ?>" alt="">
         </div>
