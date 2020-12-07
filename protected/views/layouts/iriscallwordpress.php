@@ -22,7 +22,7 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/fonts/iriscall_wordpress_fonts.css');
     ?>
 </head>
-<body>
+<body style="background-color:darkgrey">
 <?php echo $this->renderPartial('/layouts/iriscall_header');  ?>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <?php echo $content; ?>

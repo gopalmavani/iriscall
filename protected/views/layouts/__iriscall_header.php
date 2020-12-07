@@ -1,45 +1,25 @@
-<style>
-    .navbar-btn {
-        border-color: #096c9e !important;
-        border-width: 4px !important;
-        padding: 1.4em 2.4em 1.3em !important;
-        font-size: 12px !important;
-        font-weight: 700 !important;
-        line-height: 1.125em !important;
-        border-radius: 50px !important;
-    }
-    .nav-section {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-    }
-    .subheader-transparent {
-        display: none;
-    }
-    .dropdown-menu {
-        position: absolute !important;
-    }
-</style>
-<header style="position: inherit">
-    <nav class="navbar" style="margin-bottom: 0">
-        <div class="nav-section">
+<header>
+    <nav class="navbar">
+        <div class="container-fluid">
             <div class="navbar-header">
+
                 <a class="" href="#"><img class="logo_image" src="https://dev.iriscall.be/mobiel/wp-content/uploads/2020/07/IC-Logo-no-baseline-300x122-1.png" alt="" width="300" height="122"></a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-            <div id="navbar" class="navbar-collapse collapse nav-right" style="text-align: right !important;display: flex !important;justify-content: flex-end;">
+            <div id="navbar" class="navbar-collapse collapse nav-right">
                 <div class="show-mob">
-                    <div class="menu-logo"><img class="logo_image"
-                                                src="https://dev.iriscall.be/mobiel/wp-content/uploads/2020/07/IC-Logo-no-baseline-300x122-1.png">
-                    </div>
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                            aria-expanded="false" aria-controls="navbar">
+                    <div class="menu-logo"><img class="logo_image" src="https://dev.iriscall.be/mobiel/wp-content/uploads/2020/07/IC-Logo-no-baseline-300x122-1.png" ></div>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         X
                     </button>
                 </div>
-                <ul class="nav navbar-nav" style="flex-direction: row">
-                    <li class="dropdown"><a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">Mobiel</a>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown"><a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mobiel</a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#">Zakelijk</a>
@@ -49,8 +29,7 @@
                             <a class="dropdown-item" href="#">Elementor Home</a>
                         </div>
                     </li>
-                    <li class="dropdown"><a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">Features</a>
+                    <li  class="dropdown"><a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Features</a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#">Typography</a>
@@ -62,8 +41,7 @@
                         </div>
                     </li>
 
-                    <li class="dropdown"><a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">About</a>
+                    <li class="dropdown"><a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#">Databundels</a>
@@ -78,11 +56,14 @@
 
                     <li class="hide"><a href="#">Get in Touch</a></li>
 
+
+
                 </ul>
-                <!--<button class="btn navbar-btn show">Get Started</button>-->
+                <button class="btn navbar-btn show">Get Started</button>
             </div>
         </div>
     </nav>
+
 </header>
 <script>
     const $dropdown = $(".dropdown");
