@@ -19,6 +19,15 @@
     }
     .dropdown-menu {
         position: absolute !important;
+        background: #1d202b !important;
+    }
+    header {
+        position: sticky !important;
+        top: 0;
+        z-index: 5;
+    }
+    .nav>li>a:focus, .nav>li>a:hover{
+        background-color: unset;
     }
 </style>
 <header style="position: inherit">
@@ -79,7 +88,7 @@
                     <li class="hide"><a href="#">Get in Touch</a></li>
 
                 </ul>
-                <!--<button class="btn navbar-btn show">Get Started</button>-->
+                <button class="btn navbar-btn show">Get Started</button>
             </div>
         </div>
     </nav>
