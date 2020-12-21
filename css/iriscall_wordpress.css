@@ -13,7 +13,6 @@ body {
     font-size: 1rem !important;
 }
 .navbar{
-    max-width:1260px;
     width:100%;
     margin:auto;
     padding: 0em 15px !important;

@@ -40,7 +40,7 @@
             <div class="navbar-header">
                 <a class="" href="#"><img class="logo_image" src="<?= Yii::app()->baseUrl . '/images/logos/iriscall_logo_white.png' ?>" alt="" width="300" height="122"></a>
             </div>
-            <div id="navbar" class="navbar-collapse collapse nav-right" style="text-align: right !important;display: flex !important;justify-content: flex-end;">
+            <div id="navbar" class="navbar-collapse collapse nav-right" style="display: flex !important;">
                 <div class="show-mob">
                     <div class="menu-logo"><img class="logo_image"
                                                 src="<?= Yii::app()->baseUrl . '/images/logos/iriscall_logo_white.png' ?>">
@@ -81,11 +81,11 @@
 
                 </ul>
                 <button class="btn navbar-btn show">GET STARTED</button>
-                <ul class="nav navbar-nav" style="flex-direction: row">
-                    <li><a href="#">ZAKELIJK</a></li>
-                    <li><a href="#">PARTICULIER</a></li>
-                </ul>
             </div>
+            <ul class="nav navbar-nav" style="flex-direction: row; min-width: 200px">
+                <li><a href="#">ZAKELIJK</a></li>
+                <li><a href="#">PARTICULIER</a></li>
+            </ul>
         </div>
     </nav>
 </header>

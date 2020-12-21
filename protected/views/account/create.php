@@ -285,7 +285,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </label>
                                             </span>
                                             </div>
-                                            <label class="col-3 col-form-label">Add Business details:</label>
+                                            <label class="col-6 col-form-label">Add Business details:</label>
                                         </div>
                                         <div class="business_details" style="display: none;">
                                             <div class="row">
@@ -774,7 +774,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </label>
                                             </span>
                                         </div>
-                                        <label class="col-3 col-form-label">Use Voice mail</label>
+                                        <label class="col-6 col-form-label">Use Voice mail</label>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-xl-6">

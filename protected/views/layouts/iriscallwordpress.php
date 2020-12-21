@@ -8,6 +8,12 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
         font-family: 'Montserrat', sans-serif;
         font-size: 1rem;
     }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label{
+        margin: unset !important;
+    }
+    .dropzone.dropzone-default .dropzone-msg-desc{
+        font-size: large !important;
+    }
 </style>
 <head>
     <meta charset="utf-8">
