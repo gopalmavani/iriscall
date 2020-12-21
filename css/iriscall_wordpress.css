@@ -20,7 +20,7 @@ body {
 }
 
 .navbar-header a img{
-    height: 40px;
+    height: 60px;
     width: auto;
     margin-top:10px;
 }
@@ -63,15 +63,13 @@ h5 {
 }
 
 .navbar-btn {
-    color: #262937;
+    color: #256c9e;
     font-weight: 600;
-    background-color: #fdcf4a !important;
+    background-color: white !important;
     padding:20px 30px;
     font-size: 14px;
     font-style: normal;
     line-height: 1.125em;
-    background: transparent;
-    border-radius:50px;
     margin:0;
 }
 .navbar-nav{
@@ -89,7 +87,7 @@ h5 {
 
 .navbar-nav li a{
     font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
+    font-size: 12px;
     color:#fff;
     text-transform:uppercase;
 }
