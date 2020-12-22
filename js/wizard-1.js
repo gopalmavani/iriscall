@@ -470,7 +470,7 @@ var KTWizard1 = function () {
 					} else {
                         cardError = 0;
                     }
-				} else {
+				} else if($('input[type=radio][name=payment_method]:checked').val() == 'SEPA'){
                     cardError = 0;
                     if(signaturePadSEPA){
                         if (signaturePadSEPA.isEmpty()) {
@@ -480,6 +480,9 @@ var KTWizard1 = function () {
                             $('.sepa-signature').val(signaturePadSEPA.toDataURL('image/png'));
                         }
                     }
+                } else {
+                    cardError = 0;
+                    SEPASignatureError = 0;
                 }
 			}
 			if(wizard.getStep() == 5){
