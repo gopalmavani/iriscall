@@ -472,11 +472,13 @@ var KTWizard1 = function () {
                     }
 				} else {
                     cardError = 0;
-                    if (signaturePadSEPA.isEmpty()) {
-                        SEPASignatureError++;
-                    } else {
-                        SEPASignatureError = 0;
-                        $('.sepa-signature').val(signaturePadSEPA.toDataURL('image/png'));
+                    if(signaturePadSEPA){
+                        if (signaturePadSEPA.isEmpty()) {
+                            SEPASignatureError++;
+                        } else {
+                            SEPASignatureError = 0;
+                            $('.sepa-signature').val(signaturePadSEPA.toDataURL('image/png'));
+                        }
                     }
                 }
 			}

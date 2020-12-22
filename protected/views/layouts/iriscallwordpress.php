@@ -14,6 +14,24 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
     .dropzone.dropzone-default .dropzone-msg-desc{
         font-size: large !important;
     }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-title {
+        font-size: 0.75rem !important;
+    }
+    .wizard.wizard-1 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-icon {
+        font-size: 2.75rem !important;
+    }
+    .radio-inline {
+        margin-top: 10px !important;
+        display: inline-flex !important;
+        padding-left: unset !important;
+    }
+    .col-form-label-new {
+        margin-left: 10px;
+        padding-top: 5px !important;
+    }
+    .step5_button {
+        padding: 6px 12px !important;
+    }
 </style>
 <head>
     <meta charset="utf-8">
@@ -33,6 +51,7 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/prismjs.bundle.css');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/fonts/iriscall_wordpress_fonts.css');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/iriscall_wordpress.css?v=0.0.4');
+        //Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css');
     ?>
 </head>
 <body style="background-color:darkgrey">
@@ -51,6 +70,7 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/wizard/prismjs.bundle.js');
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/scripts.bundle.min.js');
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/widgets.js');
+    //Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js');
 ?>
 </body>
 

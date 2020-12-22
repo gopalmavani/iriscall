@@ -152,35 +152,36 @@ class AccountController extends Controller
 
                 //Delete all Guest users if any
                 UserInfo::model()->deleteAll('first_name=:fn', [':fn'=>'Guest']);
+                $this->layout = 'iriscallwordpress';
                 $this->render('wordpressIriscallThankYou', [
-                    'model' => $user,
                     'success' => $user->full_name . ', your request has been generated successfully'
                 ]);
             } else {
                 //Delete all Guest users if any
                 UserInfo::model()->deleteAll('first_name=:fn', [':fn'=>'Guest']);
+                $this->layout = 'iriscallwordpress';
                 $this->render('wordpressIriscallThankYou', [
                     'error' => 'Issue while saving your request at SIO, kindly contact the support'
                 ]);
             }
         } else {
             $telecom_account = new TelecomAccountDetails();
+
+            $countryArray = ServiceHelper::getCountry();
+            $nationalityArray = ServiceHelper::getNationality();
+
+            $this->render('create', [
+                'user' => $user,
+                'telecom_user_detail' => $telecom_user_details,
+                'telecom_details_presence' => $telecom_details_present,
+                'telecom_documents' => $telecom_documents,
+                'telecom_account' => $telecom_account,
+                'personal_products' => $personal_product_data,
+                'business_products' => $business_product_data,
+                'countryArray' => $countryArray,
+                'nationalityArray' => $nationalityArray
+            ]);
         }
-
-        $countryArray = ServiceHelper::getCountry();
-        $nationalityArray = ServiceHelper::getNationality();
-
-        $this->render('create', [
-            'user' => $user,
-            'telecom_user_detail' => $telecom_user_details,
-            'telecom_details_presence' => $telecom_details_present,
-            'telecom_documents' => $telecom_documents,
-            'telecom_account' => $telecom_account,
-            'personal_products' => $personal_product_data,
-            'business_products' => $business_product_data,
-            'countryArray' => $countryArray,
-            'nationalityArray' => $nationalityArray
-        ]);
     }
 
     /**

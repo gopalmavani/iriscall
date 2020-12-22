@@ -34,7 +34,7 @@
                     <span>sed do eiusmod elpors labore et dolore</span>
                     <span>magna siad enim aliqua</span>
                 </p>
-                <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" onclick="selectProduct(<?= $product['product_id'] ?>)">Select</button>
+                <button type="button" class="btn btn-primary text-uppercase font-weight-bolder" onclick="selectProduct(<?= $product['product_id'] ?>)">Select</button>
                 <!--end::Content-->
             </div>
         </div>
