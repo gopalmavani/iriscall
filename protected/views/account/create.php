@@ -275,7 +275,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
                                     <div class="col-xxl-7" style="margin: auto">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Some Business Details</h4>
+                                        <h4 class="mb-10 font-weight-bold text-dark">Business Details</h4>
                                         <div class="form-group row">
                                             <div class="col-1">
                                             <span class="switch switch-outline switch-icon switch-success">
@@ -285,7 +285,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </label>
                                             </span>
                                             </div>
-                                            <label class="col-6 col-form-label">Add Business details:</label>
+                                            <label class="col-6 col-form-label col-form-label-new">Add Business details:</label>
                                         </div>
                                         <div class="business_details" style="display: none;">
                                             <div class="row">
@@ -359,7 +359,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
                                     <div class="col-xxl-7" style="margin: auto">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Add Address related Details</h4>
+                                        <h4 class="mb-10 font-weight-bold text-dark">Address Details</h4>
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
@@ -438,7 +438,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </label>
                                             </span>
                                             </div>
-                                            <label class="col-8 col-form-label">Use different address for billing purpose:</label>
+                                            <label class="col-8 col-form-label col-form-label-new">Use different address for billing purpose:</label>
                                         </div>
                                         <div class="differentAddress" style="display: none;">
                                             <div class="form-group">
@@ -663,7 +663,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                         <img class="img-responsive" style="max-width: 100%;" src="<?=  Yii::app()->baseUrl. '/images/passport.jpg' ?>">
                                                     </div>
                                                     <span class="font-size-h3 d-block d-block font-weight-bold text-dark-75 py-2">Passport</span>
-                                                    <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" style="margin-top: 10px" onclick="selectID('passport')">Select</button>
+                                                    <button type="button" class="btn btn-primary text-uppercase font-weight-bolder  step5_button" style="margin-top: 10px" onclick="selectID('passport')">Select</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-4 col-xxl-2 border ribbon ribbon-right" style="margin: 0 10px">
@@ -673,7 +673,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                         <img class="img-responsive" style="max-width: 100%;" src="<?=  Yii::app()->baseUrl. '/images/driving.jpg' ?>">
                                                     </div>
                                                     <span class="font-size-h3 d-block d-block font-weight-bold text-dark-75 py-2">Driving License</span>
-                                                    <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" style="margin-top: 25px" onclick="selectID('driving')">Select</button>
+                                                    <button type="button" class="btn btn-primary text-uppercase font-weight-bolder  step5_button" style="margin-top: 25px" onclick="selectID('driving')">Select</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-4 col-xxl-2 border ribbon ribbon-right" style="margin: 0 10px">
@@ -683,7 +683,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                         <img class="img-responsive" style="max-width: 100%;" src="<?=  Yii::app()->baseUrl. '/images/belgium_id.jpg' ?>">
                                                     </div>
                                                     <span class="font-size-h3 d-block d-block font-weight-bold text-dark-75 py-2">Identification Card</span>
-                                                    <button type="button" class="btn btn-primary text-uppercase font-weight-bolder px-15 py-3" onclick="selectID('identification')">Select</button>
+                                                    <button type="button" class="btn btn-primary text-uppercase font-weight-bolder  step5_button" onclick="selectID('identification')">Select</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1343,4 +1343,4 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         $('#kyc_file_upload').show();
     }
 </script>
-<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.2' ?>"></script>
+<script src="<?= Yii::app()->baseUrl . '/js/wizard-1.js?v=0.0.3' ?>"></script>

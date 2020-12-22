@@ -1,7 +1,7 @@
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <div class="row mb9 mb6-md">
         <div class="col-md-12 text-center">
-            <div class="logo mb3 wow fadeInUp" data-wow-delay="100ms"><img src="<?= Yii::app()->baseUrl. '/images/logos/iriscall-logo.svg'; ?>" class="img-fluid"></div>
+            <div class="logo mb3 wow fadeInUp" data-wow-delay="100ms"><img src="<?= Yii::app()->baseUrl . '/images/logos/iriscall_logo_white.png' ?>" style="width: 200px; height: 100px;" class="img-fluid"></div>
         </div>
     </div>
     <div class="card card-custom" style="width:60%; margin: auto">
