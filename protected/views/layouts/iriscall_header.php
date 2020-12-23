@@ -20,7 +20,7 @@
     .subheader-transparent {
         display: none;
     }
-    .dropdown-menu {
+    .dropdown-menu-header {
         position: absolute !important;
         background: #256C9E !important;
     }
@@ -54,7 +54,7 @@
                     <li class="dropdown"><a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">Mobiel <i class="fa fa-angle-down"></i> </a>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu-header" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#">Pakketten</a>
                         </div>
                     </li>
@@ -65,7 +65,7 @@
                     <li class="dropdown"><a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">websites <i class="fa fa-angle-down"></i> </a>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu-header" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#">PRIZEN</a>
                             <a class="dropdown-item" href="#">TEMPLATES</a>
                         </div>
@@ -92,7 +92,7 @@
 <script>
     const $dropdown = $(".dropdown");
     const $dropdownToggle = $(".dropdown-toggle");
-    const $dropdownMenu = $(".dropdown-menu");
+    const $dropdownMenu = $(".dropdown-menu-header");
     const showClass = "show";
 
     $(window).on("load resize", function() {
