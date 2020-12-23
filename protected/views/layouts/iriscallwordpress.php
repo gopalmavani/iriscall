@@ -50,7 +50,7 @@ setlocale(LC_MONETARY, 'nl_NL.UTF-8');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/style.bundle.css');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/prismjs.bundle.css');
         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/fonts/iriscall_wordpress_fonts.css');
-        Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/iriscall_wordpress.css?v=0.0.4');
+        Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/iriscall_wordpress.css?v=0.0.5');
         //Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css');
     ?>
 </head>
