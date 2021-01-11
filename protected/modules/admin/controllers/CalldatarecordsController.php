@@ -305,8 +305,11 @@ class CalldatarecordsController extends Controller
                     curl_close($curl);
                     $response = json_decode($response);
                     if(!empty($response)){
-                        $identity_number = explode("/",$response->cli);
-                        $resource_number = end($identity_number);
+                        $resource_number = '';
+                        if(isset($response->cli)){
+                            $identity_number = explode("/",$response->cli);
+                            $resource_number = end($identity_number);
+                        }
                     }else{
                         $resource_number = '';
                     }
