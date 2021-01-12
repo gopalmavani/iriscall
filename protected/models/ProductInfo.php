@@ -21,6 +21,8 @@
  * @property double $sale_price
  * @property string $sale_start_date
  * @property string $sale_end_date
+ * @property double $level_one_affiliate
+ * @property double $level_two_affiliate
  *
  * The followings are the available model relations:
  * @property ProductAffiliate[] $productAffiliates
@@ -49,14 +51,14 @@ class ProductInfo extends CActiveRecord
 		return array(
 			array('sku, name, price, short_description', 'required'),
 			array('agent, licenses, is_active, is_delete, is_subscription_enabled ', 'numerical', 'integerOnly'=>true),
-			array('price, sale_price', 'numerical'),
+			array('price, sale_price, level_one_affiliate, level_two_affiliate', 'numerical'),
 			array('sku, name, short_description', 'length', 'max'=>255),
 			array('description', 'length', 'max'=>20000),
 			array('image', 'length', 'max'=>80),
 			array('created_at, modified_at, sale_start_date, sale_end_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('product_id, sku, name, price, agent, licenses, description, is_active, image, created_at, modified_at, is_delete, short_description, is_subscription_enabled, sale_price, sale_start_date, sale_end_date', 'safe', 'on'=>'search'),
+			array('product_id, sku, name, price, agent, licenses, description, is_active, image, created_at, modified_at, is_delete, short_description, is_subscription_enabled, sale_price, sale_start_date, sale_end_date, level_one_affiliate, level_two_affiliate', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -99,6 +101,8 @@ class ProductInfo extends CActiveRecord
 			'sale_price' => 'Sale Price',
 			'sale_start_date' => 'Sale Start Date',
 			'sale_end_date' => 'Sale End Date',
+            'level_one_affiliate' => 'Level One Affiliates',
+            'level_two_affiliate' => 'Level Two Affiliates',
 		);
 	}
 
@@ -137,6 +141,8 @@ class ProductInfo extends CActiveRecord
 		$criteria->compare('sale_price',$this->sale_price);
 		$criteria->compare('sale_start_date',$this->sale_start_date,true);
 		$criteria->compare('sale_end_date',$this->sale_end_date,true);
+        $criteria->compare('level_one_affiliate',$this->level_one_affiliate);
+        $criteria->compare('level_two_affiliate',$this->level_two_affiliate);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
