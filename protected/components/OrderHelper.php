@@ -253,58 +253,74 @@ class OrderHelper extends CApplicationComponent
 
         //Wallet type is User
         $wallet_type = WalletTypeEntity::model()->findByAttributes(['wallet_type' => 'User']);
-        $num_licenses = $order->orderTotal / Yii::app()->params['LicenseCost'];
-
-        //credits
-        $level1_credit = $num_licenses * Yii::app()->params['LevelOneAffiliateCommission'];
-        $level2_credit = $num_licenses * Yii::app()->params['LevelTwoAffiliateCommission'];
-
-        //Comments
-        $level1_comment = "Level 1 Affiliate commission from user_id " . $user->user_id . " for order_id " . $orderId;
-        $level2_comment = "Level 2 Affiliate commission from user_id " . $user->user_id . " for order_id " . $orderId;
 
         //Default parent
         $level1_user_id = $systemId;
         $level2_user_id = $systemId;
 
-        if (isset($user->sponsor_id)) {
-            $level1_parent = UserInfo::model()->findByPk($user->sponsor_id);
-            $level1_user_id = $level1_parent->user_id;
-
-            //Distribute Level One Commission
-            WalletHelper::addToWallet($level1_parent->user_id, $wallet_type->wallet_type_id, 0, 3,
-                $orderId, $level1_comment, 1, 2, 1, $level1_credit,
-                date('Y-m-d H:i:s'));
-
-            if (isset($level1_parent->sponsor_id)) {
-                $level2_parent = UserInfo::model()->findByPk($level1_parent->sponsor_id);
-                $level2_user_id = $level2_parent->user_id;
-
-                //Distribute Level One Commission
-                WalletHelper::addToWallet($level2_parent->user_id, $wallet_type->wallet_type_id, 0, 3,
-                    $orderId, $level2_comment, 1, 2, 1, $level2_credit,
-                    date('Y-m-d H:i:s'));
-
+        $orderItems = OrderLineItem::model()->findAllByAttributes(['order_info_id' => $order->order_info_id]);
+        $affiliateDistributed = false;
+        foreach ($orderItems as $orderItem){
+            //Incase of order credit memo created for partial or full order
+            $orderCreditItem = OrderCreditItems::model()->findByAttributes(['order_line_item_id'=>$orderItem->order_line_item_id]);
+            if(isset($orderCreditItem->credit_item_id)){
+                $qty = ($orderItem->item_qty) - ($orderCreditItem->refund_item_qty);
             } else {
-                //Level Two Commission to System
-                WalletHelper::addToWallet($systemId, $wallet_type->wallet_type_id, 0, 3,
-                    $orderId, $level2_comment, 1, 2, 1, $level2_credit,
-                    date('Y-m-d H:i:s'));
+                $qty = $orderItem->item_qty;
             }
-        } else {
-            //Level One Commission to System
-            WalletHelper::addToWallet($systemId, $wallet_type->wallet_type_id, 0, 3,
-                $orderId, $level1_comment, 1, 2, 1, $level1_credit,
-                date('Y-m-d H:i:s'));
+            if($qty > 0){
+                $product = ProductInfo::model()->findByPk($orderItem->product_id);
 
-            //Level Two Commission to System
-            WalletHelper::addToWallet($systemId, $wallet_type->wallet_type_id, 0, 3,
-                $orderId, $level2_comment, 1, 2, 1, $level2_credit,
-                date('Y-m-d H:i:s'));
+                //Comments
+                $level1_comment = "Level 1 Affiliate commission from user_id " . $user->user_id . " for order_id " . $orderId . " and product_id " . $orderItem->product_id;
+                $level2_comment = "Level 2 Affiliate commission from user_id " . $user->user_id . " for order_id " . $orderId . " and product_id " . $orderItem->product_id;
+
+                //credits
+                $level1_credit = $qty * $product->level_one_affiliate;
+                $level2_credit = $qty * $product->level_two_affiliate;
+
+                if (isset($user->sponsor_id)) {
+                    $level1_parent = UserInfo::model()->findByPk($user->sponsor_id);
+                    $level1_user_id = $level1_parent->user_id;
+
+                    //Distribute Level One Commission
+                    WalletHelper::addToWallet($level1_parent->user_id, $wallet_type->wallet_type_id, 0, 1,
+                        $orderId, $level1_comment, 1, 2, 1, $level1_credit,
+                        date('Y-m-d H:i:s'));
+
+                    if (isset($level1_parent->sponsor_id)) {
+                        $level2_parent = UserInfo::model()->findByPk($level1_parent->sponsor_id);
+                        $level2_user_id = $level2_parent->user_id;
+
+                        //Distribute Level One Commission
+                        WalletHelper::addToWallet($level2_parent->user_id, $wallet_type->wallet_type_id, 0, 1,
+                            $orderId, $level2_comment, 1, 2, 1, $level2_credit,
+                            date('Y-m-d H:i:s'));
+
+                    } else {
+                        //Level Two Commission to System
+                        WalletHelper::addToWallet($systemId, $wallet_type->wallet_type_id, 0, 1,
+                            $orderId, $level2_comment, 1, 2, 1, $level2_credit,
+                            date('Y-m-d H:i:s'));
+                    }
+                } else {
+                    //Level One Commission to System
+                    WalletHelper::addToWallet($systemId, $wallet_type->wallet_type_id, 0, 1,
+                        $orderId, $level1_comment, 1, 2, 1, $level1_credit,
+                        date('Y-m-d H:i:s'));
+
+                    //Level Two Commission to System
+                    WalletHelper::addToWallet($systemId, $wallet_type->wallet_type_id, 0, 1,
+                        $orderId, $level2_comment, 1, 2, 1, $level2_credit,
+                        date('Y-m-d H:i:s'));
+                }
+                $affiliateDistributed = true;
+            }
         }
-
-        self::affiliateLevelOne($user->full_name, $level1_user_id);
-        self::affiliateLevelTwo($user->full_name, $level2_user_id);
+        if($affiliateDistributed == true){
+            self::affiliateLevelOne($user->full_name, $level1_user_id);
+            self::affiliateLevelTwo($user->full_name, $level2_user_id);
+        }
     }
 
     public static function generateRefundAffiliates($orderId){
