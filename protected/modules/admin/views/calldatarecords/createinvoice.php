@@ -43,7 +43,9 @@ $this->pageTitle = 'Create Invoice';
                             <label class="control-lable">
                                 Select month
                             </label>
-                            <?php $months = array('01' => 'January', '02' => 'February', '03' => 'March', '04' => 'April', '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August', '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December'); ?>
+                            <?php
+                            $months = array('2020-01-31' => 'January - 2020', '2020-02-29' => 'February - 2020', '2020-03-31' => 'March - 2020', '2020-04-30' => 'April - 2020', '2020-05-31' => 'May - 2020', '2020-06-30' => 'June - 2020', '2020-07-31' => 'July - 2020', '2020-08-31' => 'August - 2020', '2020-09-30' => 'September - 2020', '2020-10-31' => 'October - 2020', '2020-11-30' => 'November - 2020', '2020-12-31' => 'December - 2020','2021-01-31' => 'January - 2021', '2021-02-28' => 'February - 2021', '2021-03-31' => 'March - 2021', '2021-04-30' => 'April - 2021', '2021-05-31' => 'May - 2021', '2021-06-30' => 'June - 2021', '2021-07-31' => 'July - 2021', '2021-08-31' => 'August - 2021', '2021-09-30' => 'September - 2021', '2021-10-31' => 'October - 2021', '2021-11-30' => 'November - 2021', '2021-12-31' => 'December - 2021');
+                            ?>
                             <select name="month" class="form-control">
                                 <option>Select month</option>
                                 <?php

@@ -191,10 +191,11 @@ class CalldatarecordsController extends Controller
         if(isset($_POST) && !empty($_POST['month']) && !empty($_POST['OrganizationInfo']['organisation_id'])){
             $org_id = $_POST['OrganizationInfo']['organisation_id'];
             $month = $_POST['month'];
-            $start = date('Y-'. $month . '-01' );
-            $end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
-            /*$start = '2020-08-01';
-            $end = '2020-08-31';*/
+            $start = date("Y-m-01", strtotime($month));
+            //$end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
+            $end = $month;
+            /*$start = '2020-12-01';
+            $end = '2020-12-31';*/
             $data_array = [];
             /* first row */
             $national_call_cdr_data = Yii::app()->db->createCommand()
