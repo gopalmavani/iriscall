@@ -2,8 +2,8 @@
 /* @var $this RankController */
 /* @var $model Rank */
 
-$this->pageTitle = 'View Ranks';
-$id = $model->rankId;
+$this->pageTitle = 'View Rank';
+$id = $model->id;
 ?>
 <div class="pull-right m-b-10">
 	<?php echo CHtml::link('Go to list', array('rank/admin'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
@@ -14,13 +14,11 @@ $id = $model->rankId;
 	'data'=>$model,
 	'htmlOptions' => array('class' => 'table'),
 	'attributes'=>array(
-		'rankId',
-		'rankName',
-		'rankIcon',
-		'descriptions',
-		'userPaidOut',
-		'rankAbbreviation',
-		'level',
+		'id',
+		'name',
+		'icon',
+		'description',
+		'abbreviation',
 		'created_at',
 		'modified_at',
 	),

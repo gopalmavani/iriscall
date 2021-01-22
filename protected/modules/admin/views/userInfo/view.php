@@ -195,6 +195,13 @@ $admin = Yii::app()->params['mandatoryFields']['admin_id'];
                     'is_delete',
                     'image',*/
 					'auth_level',
+					[
+						'name' => 'rank',
+						'value' => function($model){
+							$fieldValue = Rank::model()->findByAttributes(['id' => $model->rank ]);
+							return $fieldValue->name;
+						}
+					],
 				),
 			)); ?>
 

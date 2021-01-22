@@ -645,13 +645,16 @@ class UserInfoController extends CController
 
             if( !empty($requestData['columns'][$key]['search']['value']) ){
                 if($column == 'sponsor_id'){
-                    $sql.=" AND $column = ".$requestData['columns'][10]['search']['value']."";
+                    $sql.=" AND $column = ".$requestData['columns'][$key]['search']['value']."";
                 }if($column == 'country'){
                     $Country_code = $requestData['columns'][$key]['search']['value'];
                     $countryid = ServiceHelper::getCountryNameFromCode($Country_code);
                     $sql.=" AND $column = ".$countryid."";
                 }else{
                     $sql.=" AND $column LIKE '%".$requestData['columns'][$key]['search']['value']."%' ";
+                }
+                if($column == 'rank'){
+                    $sql.=" AND $column = ".$requestData['columns'][$key]['search']['value']."";
                 }
             }
             //if( !empty($requestData['columns'][$key]['search']['value']) ){   //name
@@ -697,6 +700,14 @@ class UserInfoController extends CController
             if(!is_null($row['sponsor_id']) && $row['sponsor_id']!=''){
                 if(isset(UserInfo::model()->findByPk($row['sponsor_id'])->full_name)){
                     $row['sponsor_id'] = UserInfo::model()->findByPk($row['sponsor_id'])->full_name;
+                }
+                else{
+                    $row['sponsor_id'] = "";
+                }
+            }
+            if(!is_null($row['rank']) && $row['rank']!=''){
+                if(isset(Rank::model()->findByPk($row['rank'])->name)){
+                    $row['rank'] = Rank::model()->findByPk($row['rank'])->name;
                 }
                 else{
                     $row['sponsor_id'] = "";
@@ -1114,5 +1125,47 @@ class UserInfoController extends CController
             }
 
         }
+    }
+
+    //User-Rank mapping
+    public function actionUserRank()
+    {
+        $modified_at = date('Y-m-d H:i:s');
+        $rank = array();
+        $query = Yii::app()->db->createCommand();
+        $rows = $query->select()->from('rank')->queryall();
+        $query->reset();  // clean up the previous query
+        foreach($rows as $value){
+            $rank = $value['id'];
+            if($rank == 3){
+                $query->update('user_info',array(
+                        'rank_id' => $rank, 
+                        'modified_at' => $modified_at
+                    ), 'role=:role', array(':role'=>'Admin'));
+            }elseif($rank == 5){
+                $query->update('user_info',array(
+                        'rank_id' => $rank, 
+                        'modified_at' => $modified_at
+                    ), 'role=:role', array(':role'=>'User'));
+            }elseif($rank == 6){
+                $query->update('user_info',array(
+                        'rank_id' => $rank, 
+                        'modified_at' => $modified_at
+                    ), 'role=:role', array(':role'=>'Employee'));
+            }
+            elseif($rank == 7){
+                $sql = Yii::app()->db->createCommand()
+                    ->update('user_info',array(
+                        'rank_id' => $rank, 
+                        'modified_at' => $modified_at
+                    ), 'role=:role', array(':role'=>'Viewer'));
+            }
+        }
+        $message = [
+            'code' => 200,
+            'message' => "Rank added successfully."
+        ];
+        echo "<pre>";
+        print_r($message);
     }
 }

@@ -307,7 +307,8 @@ $folder = Yii::app()->params['basePath'];
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/walletTypeEntity/admin');?>"><i class="si si-wallet"></i> <span class="sidebar-mini-hide"> Wallet Settings </span></a></li>
                             </ul>
                         </li>
-
+                        <?php if(Yii::app()->controller->id == 'rank'){ $active = "active";}else{ $active = " ";} ?>
+                        <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/rank/admin');?>"><i class="fa fa-sort-numeric-asc"></i><span class="sidebar-mini-hide"> Ranks </span></a></li>
                         <?php /*$action = Yii::app()->controller->id;
                         if($action == 'voucher'){ $open = "open";}else{ $open = "";} */?><!--
                         <li class="<?/*= $open; */?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="si si-wallet"></i> <span class=""> Vouchers</span></a>

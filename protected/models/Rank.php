@@ -35,15 +35,14 @@ class Rank extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('rankName, rankIcon, descriptions, created_at, rankAbbreviation, level', 'required'),
-            array('userPaidOut, level', 'numerical', 'integerOnly'=>true),
-            array('rankName', 'length', 'max'=>100),
-            array('rankIcon, rankAbbreviation', 'length', 'max'=>150),
-            array('descriptions', 'length', 'max'=>250),
-            array('modified_at', 'safe'),
+            array('name, description, abbreviation', 'required'),
+            array('name', 'length', 'max'=>50),
+            //array('icon', 'file', 'allowEmpty'=>true, 'types'=>'jpg,jpeg,gif,png'),
+            array('abbreviation', 'length', 'max'=>10),
+            array('modified_at, created_at', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('rankId, rankName, rankIcon, descriptions, userPaidOut, created_at, modified_at, rankAbbreviation, level', 'safe', 'on'=>'search'),
+            array('id, name, description, abbreviation', 'safe', 'on'=>'search'),
         );
     }
 
@@ -55,7 +54,7 @@ class Rank extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'rankrules' => array(self::HAS_MANY, 'Rankrules', 'rankId'),
+            'userInfo' => array(self::HAS_MANY, 'UserInfo', 'user_id'),
         );
     }
 
@@ -65,15 +64,13 @@ class Rank extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'rankId' => 'Rank',
-            'rankName' => 'Rank Name',
-            'rankIcon' => 'Rank Icon',
-            'descriptions' => 'Descriptions',
-            'userPaidOut' => 'User Paid Out',
+            'id' => 'Rank',
+            'name' => 'Name',
+            'icon' => 'Icon',
+            'description' => 'Description',
+            'abbreviation' => 'Abbreviation',
             'created_at' => 'Created Date',
             'modified_at' => 'Modified Date',
-            'rankAbbreviation' => 'Rank Abbreviation',
-            'level' => 'Level',
         );
     }
 
@@ -95,15 +92,10 @@ class Rank extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('rankId',$this->rankId);
-        $criteria->compare('rankName',$this->rankName,true);
-        $criteria->compare('rankIcon',$this->rankIcon,true);
-        $criteria->compare('descriptions',$this->descriptions,true);
-        $criteria->compare('userPaidOut',$this->userPaidOut);
-        $criteria->compare('created_at',$this->created_at,true);
-        $criteria->compare('modified_at',$this->modified_at,true);
-        $criteria->compare('rankAbbreviation',$this->rankAbbreviation,true);
-        $criteria->compare('level',$this->level);
+        $criteria->compare('id',$this->rankId);
+        $criteria->compare('name',$this->rankName,true);
+        $criteria->compare('description',$this->descriptions,true);
+        $criteria->compare('abbreviation',$this->userPaidOut);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
