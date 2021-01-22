@@ -5,24 +5,24 @@
 
 <div class="view">
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('rankId')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->rankId), array('view', 'id'=>$data->rankId)); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
+	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('rankName')); ?>:</b>
-	<?php echo CHtml::encode($data->rankName); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
+	<?php echo CHtml::encode($data->name); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('rankIcon')); ?>:</b>
-	<?php echo CHtml::encode($data->rankIcon); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('icon')); ?>:</b>
+	<?php echo CHtml::encode($data->icon); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('descriptions')); ?>:</b>
-	<?php echo CHtml::encode($data->descriptions); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('description')); ?>:</b>
+	<?php echo CHtml::encode($data->description); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('userPaidOut')); ?>:</b>
-	<?php echo CHtml::encode($data->userPaidOut); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('abbreviation')); ?>:</b>
+	<?php echo CHtml::encode($data->abbreviation); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('created_at')); ?>:</b>
@@ -32,16 +32,5 @@
 	<b><?php echo CHtml::encode($data->getAttributeLabel('modified_at')); ?>:</b>
 	<?php echo CHtml::encode($data->ModifiedDate); ?>
 	<br />
-
-	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('rankAbbreviation')); ?>:</b>
-	<?php echo CHtml::encode($data->rankAbbreviation); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('level')); ?>:</b>
-	<?php echo CHtml::encode($data->level); ?>
-	<br />
-
-	*/ ?>
 
 </div>

@@ -70,7 +70,7 @@ $this->pageTitle = 'Users';
                             case 'sponsor_id':
                                 /*echo "<td><input type='text' data-column='8' class='text-box' style='width:100%'></td>";
                                 break;*/
-                                ?><td><select class='drop-box' data-column='10' style='width:100%'>
+                                ?><td><select class='drop-box' data-column='11' style='width:100%'>
 									<option value=''>Select</option>
 									<?php foreach($alldata as $userData){ ?>
 									    <option value='<?= $userData->user_id; ?>'><?= $userData->full_name; ?></option>
@@ -84,7 +84,7 @@ $this->pageTitle = 'Users';
 								break;*/
 
 							case 'city':
-								echo "<td><input type='text' data-column='27' class='text-box' style='width:100%'></td>";
+								echo "<td><input type='text' data-column='28' class='text-box' style='width:100%'></td>";
 								break;
 
 							/*case 'postcode':
@@ -94,7 +94,7 @@ $this->pageTitle = 'Users';
 							case 'country':
 								$codesql = "select country_code,country_name from countries";
 								$country = Yii::app()->db->createCommand($codesql)->queryAll();
-								?><td><select class='drop-box' data-column='29' style='width:100%'>
+								?><td><select class='drop-box' data-column='30' style='width:100%'>
 									<option value="">Select</option>
 								<?php foreach($country as $key=>$value){ ?>
 										<option value='<?php echo $value['country_code']; ?>'><?php echo $value['country_name']; ?></option>
@@ -103,7 +103,18 @@ $this->pageTitle = 'Users';
 								</td>
 					<?php
 								break;
-
+							
+							case 'rank':
+								$codesql = "select id,name from rank";
+								$rank = Yii::app()->db->createCommand($codesql)->queryAll();
+								?><td><select class='drop-box' data-column='43' style='width:100%'>
+									<option value="">Select</option>
+								<?php foreach($rank as $key=>$value){ ?>
+										<option value='<?php echo $value['id']; ?>'><?php echo $value['name']; ?></option>
+									<?php } ?>
+								</select>
+								</td>
+								<?php break;
 							/*case 'phone':
 								echo "<td><input type='text' data-column='29' class='text-box' style='width:100%'></td>";
 								break;

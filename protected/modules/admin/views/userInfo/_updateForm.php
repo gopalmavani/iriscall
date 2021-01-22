@@ -96,6 +96,19 @@
                             <?php } ?>
                         </div>
                         <div class="row">
+                            <div class="col-md-4 <?php echo $model->hasErrors('rank') ? 'has-error' : ''; ?>">
+                                <div class="controls">
+                                    <?php echo $form->label($model, 'rank', array('class' => 'control-label')); ?>
+                                    <span class="required">*</span>
+                                    <?php $list = CHtml::listData(Rank::model()->findAll(),'id','name');
+                                    echo $form->dropDownList($model, 'rank', $list, array('class' => 'form-control',
+                                        'empty' => 'Select Rank'));
+                                    ?>
+                                    <span class="help-block"><?php echo $form->error($model, 'rank'); ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-12">
                                 <hr>
                                 <h4>Personal Information</h4>

@@ -3,4 +3,4 @@
 /* @var $model Rank */
 $this->pageTitle = 'Create Rank';
 ?>
-<?php $this->renderPartial('_form', array('model'=>$model, 'rules'=>$rules, 'rulesModel'=>$rulesModel,)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model)); ?>

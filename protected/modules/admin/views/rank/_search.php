@@ -12,48 +12,28 @@
 )); ?>
 
 	<div class="row">
-		<?php echo $form->label($model,'rankId'); ?>
-		<?php echo $form->textField($model,'rankId'); ?>
+		<?php echo $form->label($model,'id'); ?>
+		<?php echo $form->textField($model,'id'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'rankName'); ?>
-		<?php echo $form->textField($model,'rankName',array('size'=>60,'maxlength'=>100)); ?>
+		<?php echo $form->label($model,'name'); ?>
+		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>50)); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'rankIcon'); ?>
-		<?php echo $form->textField($model,'rankIcon',array('size'=>60,'maxlength'=>150)); ?>
+		<?php echo $form->label($model,'icon'); ?>
+		<?php echo $form->textField($model,'icon',array('size'=>60,'maxlength'=>80)); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'descriptions'); ?>
-		<?php echo $form->textField($model,'descriptions',array('size'=>60,'maxlength'=>250)); ?>
+		<?php echo $form->label($model,'description'); ?>
+		<?php echo $form->textField($model,'description',array('size'=>60)); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'userPaidOut'); ?>
-		<?php echo $form->textField($model,'userPaidOut'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'created_at'); ?>
-		<?php echo $form->textField($model,'created_at'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'modified_at'); ?>
-		<?php echo $form->textField($model,'modified_at'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'rankAbbreviation'); ?>
-		<?php echo $form->textField($model,'rankAbbreviation',array('size'=>60,'maxlength'=>150)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'level'); ?>
-		<?php echo $form->textField($model,'level'); ?>
+		<?php echo $form->label($model,'abbreviation'); ?>
+		<?php echo $form->textField($model,'abbreviation',array('size'=>60,'maxlength'=>10)); ?>
 	</div>
 
 	<div class="row buttons">

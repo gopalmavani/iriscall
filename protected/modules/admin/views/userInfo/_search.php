@@ -235,6 +235,11 @@
 		<?php echo $form->textField($model,'role',array('size'=>60,'maxlength'=>80)); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->label($model,'rank_id'); ?>
+		<?php echo $form->textField($model,'rank_id',array('size'=>60,'maxlength'=>80)); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>

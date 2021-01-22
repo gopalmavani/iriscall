@@ -13,6 +13,7 @@ class RankController extends CController
     {
         return array(
             'accessControl', // perform access control for CRUD operations
+            'postOnly + delete', // we only allow deletion via POST request
         );
     }
 
@@ -44,64 +45,25 @@ class RankController extends CController
     public function actionCreate()
     {
         $model = new Rank;
-        $rules = new Rules;
-        $rulesModel = Rules::model()->findAll();
-        $rankRules = new Rankrules;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
-
+        $path = Yii::getPathOfAlias('webroot').'/uploads/icons';
         if (isset($_POST['Rank'])) {
             $model->attributes = $_POST['Rank'];
-            $model->created_at = date('Y-m-d H:i:s');
-            if (isset($_POST['desc']))
-                $des = $_POST['desc'];
-            if (isset($_POST['value2']))
-                $allValue1 = $_POST['value1'];
-            if (isset($_POST['value1']))
-                $allValue2 = $_POST['value2'];
-            $desCount = $_POST['count'];
-
-            if ($model->validate()) {
-                if ($model->save()) {
-                    if ($model->save()) {
-                        $rankId = $model->rankId;
-                        for ($i = 1; $i <= $desCount; $i++) {
-                            if (isset($des[$i])) {
-                                $rankRules = new Rankrules;
-                                $rankRules->rankId = $rankId;
-                                $rankRules->isActive = 1;
-                                $rankRules->ruleId = $i;
-                                $rankRules->created_at = date('Y-m-d H:i:s');
-                                if (isset($_POST['value1'][$i]))
-                                    $rankRules->value1 = $allValue1[$i];
-                                if (isset($_POST['value2'][$i]))
-                                    $rankRules->value2 = $allValue2[$i];
-                                /*echo "<pre>";
-                                print_r($rankRules->attributes);
-                                print_r($model->attributes);*/
-                                if ($rankRules->validate()) {
-                                    $rankRules->save();
-                                } else {
-                                    print_r($rankRules->getErrors());
-                                }
-                            }
-                        }
-                        $this->redirect(array('view', 'id' => $model->rankId));
-                    }
-                } else {
-                    print_r($model->getErrors());
-                }
+            $image = CUploadedFile::getInstance($model, 'icon');
+            if(!empty($image)){
+                $image->saveAs($path.'/'.$image->name);
+                $model->icon =  '/uploads/icons/'.$image->name;
             }
+            $model->created_at = date('Y-m-d H:i:s');
+
+            if($model->save())
+                    $this->redirect(array('view', 'id' => $model->id));
         }
         $this->render('create', array(
-            'model' => $model,
-            'rules' => $rules,
-            'rulesModel' => $rulesModel,
-            'rankRules' => $rankRules,
-
+            'model' => $model
         ));
-
     }
 
     /**
@@ -111,72 +73,21 @@ class RankController extends CController
      */
     public function actionUpdate($id)
     {
-        $model=$this->loadModel($id);
-        $rankRules = Rankrules::model()->findAllByAttributes(array('rankId' => $id));
-        $rankRules1 = Yii::app()->db->createCommand("SELECT * from rankrules where value2!='' ")->queryAll();
-        $rulesModel = Rules::model()->findAll();
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if(isset($_POST['Rank']))
-        {
-
-            if (isset($_POST['Rank'])) {
-
-                $model->attributes = $_POST['Rank'];
-                $model->created_at = date('Y-m-d H:i:s');
-                if (isset($_POST['desc']))
-                    $des = $_POST['desc'];
-                if (isset($_POST['value2']))
-                    $allValue1 = $_POST['value1'];
-                if (isset($_POST['value1']))
-                    $allValue2 = $_POST['value2'];
-                $desCount = $_POST['count'];
-                if ($model->validate()) {
-                    if ($model->save()) {
-                        $rankRules = Rankrules::model()->findAllByAttributes(array('rankId' => $id));
-                        foreach ($rankRules as $data1) {
-                            $data1->delete();
-                        }
-                        $rankId = $model->rankId;
-                        for ($i = 1; $i <= $desCount; $i++) {
-                            if ($_POST['value1'][$i] || $_POST['value2'][$i]){
-
-                                if (isset($des[$i])) {
-                                    $rankRules = new Rankrules;
-                                    $rankRules->rankId = $rankId;
-                                    $rankRules->isActive = 1;
-                                    $rankRules->ruleId = $i;
-                                    $rankRules->created_at = date('Y-m-d H:i:s');
-                                    if (isset($_POST['value1'][$i]))
-                                        $rankRules->value1 = $allValue1[$i];
-                                    if (isset($_POST['value2'][$i]))
-                                        $rankRules->value2 = $allValue2[$i];
-                                    /*echo "<pre>";
-                                    print_r($rankRules->attributes);
-                                    print_r($model->attributes);*/
-                                    if ($rankRules->validate()) {
-                                        $rankRules->save();
-                                    } else {
-                                        print_r($rankRules->getErrors());
-                                    }
-                                }
-                            }
-                        }
-                        $this->redirect(array('view', 'id' => $model->rankId));
-                    } else {
-                        print_r($model->getErrors());
-                    }
-                }
+        $model = $this->loadModel($id);
+        $path = Yii::getPathOfAlias('webroot').'/uploads/icons';
+        if (isset($_POST['Rank'])) {
+            $model->attributes = $_POST['Rank'];
+            $image = CUploadedFile::getInstance($model, 'icon');
+            if(!empty($image)){
+                $image->saveAs($path.'/'.$image->name);
+                $model->icon =  '/uploads/icons/'.$image->name;
             }
+            $model->modified_at = date('Y-m-d H:i:s');
+            if($model->save())
+                    $this->redirect(array('view', 'id' => $model->id));
         }
-
-        $this->render('update',array(
-            'model'=>$model,
-            'rulesModel'=>$rulesModel,
-            'rankRules'=>$rankRules,
-            'rankRules1'=>$rankRules1
+        $this->render('update', array(
+            'model' => $model
         ));
     }
 
@@ -185,13 +96,21 @@ class RankController extends CController
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDeleteRank($id)
+    public function actionDelete()
     {
-        $this->loadModel($id)->delete();
+        $model = Rank::model()->findByAttributes(['id' => $_POST['id']]);
 
-        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-        if(!isset($_GET['ajax']))
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        if(!empty($model)){
+            if (Rank::model()->deleteAll("id ='" .$model->id. "'")){
+                echo json_encode([
+                    'token' => 1,
+                ]);
+            }else{
+                echo json_encode([
+                    'token' => 0,
+                ]);
+            }
+        }
     }
 
     /**
@@ -233,6 +152,88 @@ class RankController extends CController
         if($model===null)
             throw new CHttpException(404,'The requested page does not exist.');
         return $model;
+    }
+
+    /**
+     * Manages data for server side datatables.
+     */
+    public function actionServerdata(){
+
+        $requestData = $_REQUEST;
+
+        $array_cols = Yii::app()->db->schema->getTable('rank')->columns;
+        $array = array();
+        $i = 0;
+        foreach($array_cols as  $key=>$col){
+            $array[$i] = $col->name;
+            $i++;
+        }
+        /*$columns = array(
+            0 => 'id',
+            1 => 'name'
+        );*/
+        $columns = $array;
+
+        $sql = "SELECT  * from rank where 1=1";
+        $data = Yii::app()->db->createCommand($sql)->queryAll();
+        $totalFiltered = count($data);
+
+        if (!empty($requestData['search']['value']))
+        {
+            $sql.=" AND ( id LIKE '%" . $requestData['search']['value'] . "%' ";
+            foreach($array_cols as  $key=>$col){
+                if($col->name != 'id')
+                {
+                    $sql.=" OR ".$col->name." LIKE '%" . $requestData['search']['value'] . "%'";
+                }
+            }
+            $sql.=")";
+        }
+
+        $j = 0;
+        // getting records as per search parameters
+        foreach($columns as $key=>$column){
+            if( !empty($requestData['columns'][$key]['search']['value']) ){   //name
+                $sql.=" AND $column LIKE '%".$requestData['columns'][$key]['search']['value']."%' ";
+            }
+            $j++;
+        }
+
+        $data = Yii::app()->db->createCommand($sql)->queryAll();
+
+        $totalData = count($data);
+        $totalFiltered = $totalData;
+
+        $sql.=" ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . "  LIMIT " . $requestData['start'] . " ," .
+            $requestData['length'] . "   ";
+
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+
+        $data = array();
+        $i=1;
+
+        /*echo "<pre>";
+        print_r($result);die;*/
+        foreach ($result as $key => $row)
+        {
+            $nestedData = array();
+            $nestedData[] = $row['id'];
+            foreach($array_cols as  $key=>$col){
+                $nestedData[] = $row["$col->name"];
+            }
+			// $nestedData[] = $row["employee_age"];
+			// $nestedData[] = '<a href="'.$url.'"><span class="glyphicon glyphicon-pencil"></span></a>';
+            $data[] = $nestedData;
+            $i++;
+        }
+
+        $json_data = array(
+            "draw" => intval($requestData['draw']),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data   // total data array
+        );
+        echo json_encode($json_data);
     }
 
     /**
@@ -328,99 +329,4 @@ class RankController extends CController
             return false;
         }
     }
-
-
-
-    /**
-     * Manages data for server side datatables.
-     */
-    public function actionServerdata(){
-        /*$alldata = Yii::app()->db->createCommand("SELECT * FROM user_info")->queryAll();
-        echo json_encode($alldata);*/
-
-        $requestData = $_REQUEST;
-
-//		$model= new SysUsers();
-        $array_cols = Yii::app()->db->schema->getTable('rank')->columns;
-        $array = array();
-        $i = 0;
-        foreach($array_cols as  $key=>$col){
-            $array[$i] = $col->name;
-            $i++;
-        }
-        /*$columns = array(
-            0 => 'user_id',
-            1 => 'full_name'
-        );*/
-        $columns = $array;
-
-        $sql = "SELECT  * from rank where 1=1";
-        $data = Yii::app()->db->createCommand($sql)->queryAll();
-        $totalFiltered = count($data);
-
-        if (!empty($requestData['search']['value']))
-        {
-            $sql.=" AND ( rankId LIKE '%" . $requestData['search']['value'] . "%' ";
-            foreach($array_cols as  $key=>$col){
-                if($col->name != 'id')
-                {
-                    $sql.=" OR ".$col->name." LIKE '%" . $requestData['search']['value'] . "%'";
-                }
-            }
-            $sql.=")";
-//			$sql.=" OR employee_age LIKE '" . $requestData['search']['value'] . "%')";
-
-        }
-
-        $j = 0;
-        // getting records as per search parameters
-        foreach($columns as $key=>$column){
-            if( !empty($requestData['columns'][$key]['search']['value']) ){   //name
-                $sql.=" AND $column LIKE '%".$requestData['columns'][$key]['search']['value']."%' ";
-            }
-            $j++;
-        }
-
-//		echo $sql;die;
-        $data = Yii::app()->db->createCommand($sql)->queryAll();
-
-        $totalData = count($data);
-        $totalFiltered = $totalData;
-
-        $sql.=" ORDER BY " . $columns[$requestData['order'][0]['column']] . "   " . $requestData['order'][0]['dir'] . "  LIMIT " . $requestData['start'] . " ," .
-            $requestData['length'] . "   ";
-
-        $result = Yii::app()->db->createCommand($sql)->queryAll();
-
-        $data = array();
-        $i=1;
-
-        /*echo "<pre>";
-        print_r($result);die;*/
-        foreach ($result as $key => $row)
-        {
-            $nestedData = array();
-            $nestedData[] = $row['rankId'];
-            foreach($array_cols as  $key=>$col){
-                $nestedData[] = $row["$col->name"];
-            }
-//			$nestedData[] = $row["employee_age"];
-//			$nestedData[] = '<a href="'.$url.'"><span class="glyphicon glyphicon-pencil"></span></a>';
-            $data[] = $nestedData;
-            $i++;
-        }
-        /*echo "<pre>";
-        print_r($data);die;*/
-
-        $json_data = array(
-            "draw" => intval($requestData['draw']),
-            "recordsTotal" => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data" => $data   // total data array
-        );
-
-        echo json_encode($json_data);
-    }
-
-
 }

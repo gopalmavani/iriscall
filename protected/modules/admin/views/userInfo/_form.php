@@ -87,6 +87,15 @@
                             <!--<div class="col-md-6 <?php /*echo $model->hasErrors('password') ? 'has-error' : ''; */?> ">
                                 <?php /*echo $form->passwordFieldControlGroup($model, 'password', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); */?>
                             </div>-->
+                            <div class="col-md-6 <?php echo $model->hasErrors('rank') ? 'has-error' : ''; ?>">
+                                <div class="controls">
+                                    <?php echo $form->label($model, 'rank', array('class' => 'control-label')); ?>
+                                    <span class="required">*</span>
+                                    <?php $list = CHtml::listData(Rank::model()->findAll(),'id','name');
+                                    echo $form->dropDownList($model, 'rank', $list, array('class' => 'form-control','empty' => 'Select Rank')); ?>
+                                    <span class="help-block"><?php echo $form->error($model, 'rank'); ?></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -758,10 +767,10 @@
                 required: true
             },
             'UserInfo[busAddress_postcode]': {
-                required: true,
+                required: true
                 //number: true
             },
-            'UserInfo[busAddress_country]': {
+            'UserInfo[rank]': {
                 required: true
             },
         },
@@ -824,6 +833,9 @@
             },
             'UserInfo[busAddress_country]': {
                 required: "Please select country."
+            },
+            'UserInfo[rank]': {
+                required: "Please select rank."
             },
         },
         highlight: function(element, errorClass) {
