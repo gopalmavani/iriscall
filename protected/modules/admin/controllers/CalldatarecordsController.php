@@ -375,8 +375,13 @@ class CalldatarecordsController extends Controller
                 'cost'=>$cost_calculate['cost'],
                 'comment'=>$cost_calculate['comment'],
             ]);*/
+            if($total_time == '00:00:00'){
+                $comment = '-';
+            }else{
+                $comment = $cost_calculate['comment'];
+            }
             $model['unit_cost'] = $cost_calculate['cost'];
-            $model['comment'] = $cost_calculate['comment'];
+            $model['comment'] = $comment;
             $model->save(false);
         }
         //echo "<pre>";print_r($data);die;
@@ -391,14 +396,16 @@ class CalldatarecordsController extends Controller
         $prefix_start_char = substr($tonumber, 0, 2);
         $to_strlen_prefix = strlen($tonumber);
         $from_strlen_prefix = strlen($fromnumber);
-        $cost_rules = Yii::app()->db->createCommand()
+        /*$cost_rules = Yii::app()->db->createCommand()
             ->select('*')
             ->from('cdr_cost_rules')
             ->where('digit=:digit',[':digit'=>$to_strlen_prefix])
             ->orWhere('from_number_digit=:fndigit',[':fndigit'=>$from_strlen_prefix])
             ->orWhere('start_with=:str_with',[':str_with'=>$prefix_start_char])
             ->order('start_with asc')
-            ->queryAll();
+            ->queryAll();*/
+        $cost_rules = Yii::app()->db->createCommand("SELECT * FROM `cdr_cost_rules` where digit = ".$to_strlen_prefix." or from_number_digit = ".$from_strlen_prefix." or start_with = SUBSTRING($tonumber,0,LENGTH(start_with)) ORDER BY start_with asc");
+        $cost_rules = $cost_rules->queryAll();
         $cost = '0.00';
         $comment = '-';
         foreach ($cost_rules as $rule){
@@ -407,7 +414,7 @@ class CalldatarecordsController extends Controller
                     $cost = $rule['cost'];
                     $comment = $rule['comment'];
                 }if(empty($rule['from_number_digit']) && !empty($rule['start_with'])){
-                    if($rule['start_with'] == $prefix_start_char){
+                    if($rule['start_with'] == substr($tonumber, 0, strlen($rule['start_with']))){
                         $cost = $rule['cost'];
                         $comment = $rule['comment'];
                     }
