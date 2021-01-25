@@ -202,7 +202,8 @@ class CalldatarecordsController extends Controller
                 ->select('count(*) as total_time')
                 ->from('cdr_info')
                 ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                ->andWhere(['like', 'comment', '%National%'])
+                ->andWhere(['like', 'comment', '%National Fixed Call%'])
+                ->orWhere(['like', 'comment', '%National Mobile Call%'])
                 ->andWhere('date>=:fn',[':fn'=>$start])
                 ->andWhere('date<=:fn1',[':fn1'=>$end])
                 ->queryRow();
@@ -365,21 +366,22 @@ class CalldatarecordsController extends Controller
             $total_time = $diff;
             $fromnumber = $cdr['from_number'];
             $cost_calculate = $this->calculateCost($tonumber,$total_time,$fromnumber);
-            /*//echo "<pre>";print_r($cost_calculate);
-            array_push($data,[
+            //echo "<pre>";print_r($cost_calculate);
+            if($total_time <= 0){
+                $comment = '-';
+            }else{
+                $comment = $cost_calculate['comment'];
+            }
+            /*array_push($data,[
                 'id'=>$cdr['id'],
                 'from_number'=>$cdr['from_number'],
                 'from_no_count'=>strlen($cdr['from_number']),
                 'to_number'=>$cdr['to_number'],
                 'to_no_count'=>strlen($cdr['to_number']),
                 'cost'=>$cost_calculate['cost'],
-                'comment'=>$cost_calculate['comment'],
+                'comment'=>$comment,
+                'total_time'=>$total_time,
             ]);*/
-            if($total_time == '00:00:00'){
-                $comment = '-';
-            }else{
-                $comment = $cost_calculate['comment'];
-            }
             $model['unit_cost'] = $cost_calculate['cost'];
             $model['comment'] = $comment;
             $model->save(false);
