@@ -191,17 +191,19 @@ class CalldatarecordsController extends Controller
         if(isset($_POST) && !empty($_POST['month']) && !empty($_POST['OrganizationInfo']['organisation_id'])){
             $org_id = $_POST['OrganizationInfo']['organisation_id'];
             $month = $_POST['month'];
-            $start = date('Y-'. $month . '-01' );
-            $end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
-            /*$start = '2020-08-01';
-            $end = '2020-08-31';*/
+            $start = date("Y-m-01", strtotime($month));
+            //$end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
+            $end = $month;
+            /*$start = '2020-12-01';
+            $end = '2020-12-31';*/
             $data_array = [];
             /* first row */
             $national_call_cdr_data = Yii::app()->db->createCommand()
                 ->select('count(*) as total_time')
                 ->from('cdr_info')
                 ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                ->andWhere(['like', 'comment', '%National%'])
+                ->andWhere(['like', 'comment', '%National Fixed Call%'])
+                ->orWhere(['like', 'comment', '%National Mobile Call%'])
                 ->andWhere('date>=:fn',[':fn'=>$start])
                 ->andWhere('date<=:fn1',[':fn1'=>$end])
                 ->queryRow();
@@ -364,18 +366,24 @@ class CalldatarecordsController extends Controller
             $total_time = $diff;
             $fromnumber = $cdr['from_number'];
             $cost_calculate = $this->calculateCost($tonumber,$total_time,$fromnumber);
-            /*//echo "<pre>";print_r($cost_calculate);
-            array_push($data,[
+            //echo "<pre>";print_r($cost_calculate);
+            if($total_time <= 0){
+                $comment = '-';
+            }else{
+                $comment = $cost_calculate['comment'];
+            }
+            /*array_push($data,[
                 'id'=>$cdr['id'],
                 'from_number'=>$cdr['from_number'],
                 'from_no_count'=>strlen($cdr['from_number']),
                 'to_number'=>$cdr['to_number'],
                 'to_no_count'=>strlen($cdr['to_number']),
                 'cost'=>$cost_calculate['cost'],
-                'comment'=>$cost_calculate['comment'],
+                'comment'=>$comment,
+                'total_time'=>$total_time,
             ]);*/
             $model['unit_cost'] = $cost_calculate['cost'];
-            $model['comment'] = $cost_calculate['comment'];
+            $model['comment'] = $comment;
             $model->save(false);
         }
         //echo "<pre>";print_r($data);die;
@@ -390,14 +398,16 @@ class CalldatarecordsController extends Controller
         $prefix_start_char = substr($tonumber, 0, 2);
         $to_strlen_prefix = strlen($tonumber);
         $from_strlen_prefix = strlen($fromnumber);
-        $cost_rules = Yii::app()->db->createCommand()
+        /*$cost_rules = Yii::app()->db->createCommand()
             ->select('*')
             ->from('cdr_cost_rules')
             ->where('digit=:digit',[':digit'=>$to_strlen_prefix])
             ->orWhere('date=:fndigit',[':fndigit'=>$from_strlen_prefix])
             ->orWhere('start_with=:str_with',[':str_with'=>$prefix_start_char])
             ->order('start_with asc')
-            ->queryAll();
+            ->queryAll();*/
+        $cost_rules = Yii::app()->db->createCommand("SELECT * FROM `cdr_cost_rules` where digit = ".$to_strlen_prefix." or from_number_digit = ".$from_strlen_prefix." or start_with = SUBSTRING($tonumber,0,LENGTH(start_with)) ORDER BY start_with asc");
+        $cost_rules = $cost_rules->queryAll();
         $cost = '0.00';
         $comment = '-';
         foreach ($cost_rules as $rule){
@@ -406,7 +416,7 @@ class CalldatarecordsController extends Controller
                     $cost = $rule['cost'];
                     $comment = $rule['comment'];
                 }if(empty($rule['from_number_digit']) && !empty($rule['start_with'])){
-                    if($rule['start_with'] == $prefix_start_char){
+                    if($rule['start_with'] == substr($tonumber, 0, strlen($rule['start_with']))){
                         $cost = $rule['cost'];
                         $comment = $rule['comment'];
                     }
