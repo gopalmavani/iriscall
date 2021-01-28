@@ -198,7 +198,7 @@ class CalldatarecordsController extends Controller
             $end = '2020-12-31';*/
             $data_array = [];
             /* first row */
-            $national_call_cdr_data = Yii::app()->db->createCommand("SELECT * FROM `cdr_info` where organisation_id = ".$org_id." and (`comment` LIKE '%National Fixed Call%' or `comment` LIKE 'National Mobile Call') and date >= '".$start."' and date <= '$end'");
+            $national_call_cdr_data = Yii::app()->db->createCommand("SELECT count(*) as total_time FROM `cdr_info` where organisation_id = ".$org_id." and (`comment` LIKE '%National Fixed Call%' or `comment` LIKE 'National Mobile Call') and date >= '".$start."' and date <= '$end'");
             $national_call_cdr_data = $national_call_cdr_data->queryRow();
                 /*->select('count(*) as total_time')
                 ->from('cdr_info')
@@ -213,13 +213,13 @@ class CalldatarecordsController extends Controller
             $min = '0';
             if(!empty($national_call_cdr_data['total_time'])){
                 $national_call_total_time = $national_call_cdr_data['total_time'];
-                if(!empty($national_call_total_time)){
+                /*if(!empty($national_call_total_time)){
                     $time = $national_call_total_time;
                     $timesplit=explode(':',$time);
                     $min=($timesplit[0]*60)+($timesplit[1])+(round($timesplit[2]/60,2));
-                }
+                }*/
             }
-            array_push($data_array,['is_min'=>false,'rule'=>'Setup National call','min'=>$min,'total_time'=>$national_call_total_time,'cost'=>'0.025']);
+            array_push($data_array,['is_min'=>false,'rule'=>'Setup National call','min'=>$national_call_total_time,'total_time'=>$national_call_total_time,'cost'=>'0.025']);
             /* second row */
             $cdr_rules = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Fixed Call']);
             $national_fixed_call_cdr_data = Yii::app()->db->createCommand()
