@@ -394,7 +394,7 @@ class CalldatarecordsController extends Controller
             ->select('*')
             ->from('cdr_cost_rules')
             ->where('digit=:digit',[':digit'=>$to_strlen_prefix])
-            ->orWhere('from_number_digit=:fndigit',[':fndigit'=>$from_strlen_prefix])
+            ->orWhere('date=:fndigit',[':fndigit'=>$from_strlen_prefix])
             ->orWhere('start_with=:str_with',[':str_with'=>$prefix_start_char])
             ->order('start_with asc')
             ->queryAll();
@@ -464,6 +464,19 @@ class CalldatarecordsController extends Controller
         $model->unsetAttributes();
         $this->render('calldata',[
             'model'=>$model,
+        ]);
+    }
+
+    /**
+     * This is the cdr details action that is invoked
+     * when an action is not explicitly requested by users.
+     */
+    public function actionCdrdetails()
+    {
+        $model = new CallDataRecordsInfo('search');
+        $model->unsetAttributes();
+        $this->render('cdrdetails',[
+            'model' => $model,
         ]);
     }
 
@@ -660,6 +673,38 @@ class CalldatarecordsController extends Controller
         );
 
         echo json_encode($json_data);
+    }
+
+    public function actionCdrData(){
+
+        $sql = "select id, organisation_id, from_number, from_name, to_number, unit_cost, date, total_time, comment  from cdr_info a where 1=1 ";
+        $inputParams = $_GET;
+        foreach ($inputParams as $key=>$value){
+            if($value){
+                $sql .= "and ". $key ." like '%". $value ."%' ";
+            }
+        }
+        $data = Yii::app()->db->createCommand($sql)->queryAll();
+        $requestParams = Yii::app()->request->getRestParams();
+        echo json_encode($data);
+    }
+
+    public function actionUpdateCdrData(){
+        $requestParams = Yii::app()->request->getRestParams();
+        $cdr = CallDataRecordsInfo::model()->findByPk($requestParams['id']);
+        $cdr->setAttributes($requestParams, false);
+
+        $getDate = $requestParams['date'];
+        $newDate = date("Y-m-d", strtotime($getDate));
+
+        $cdr->from_number = $requestParams['from_number'];
+        $cdr->from_name = $requestParams['from_name'];
+        $cdr->to_number = $requestParams['to_number'];
+        $cdr->unit_cost = $requestParams['unit_cost'];
+        $cdr->date = $newDate;
+        $cdr->total_time = $requestParams['total_time'];
+        $cdr->comment = $requestParams['comment'];
+        $cdr->save(false);
     }
 }
 

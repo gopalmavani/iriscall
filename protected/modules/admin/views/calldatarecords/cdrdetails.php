@@ -1,0 +1,164 @@
+<?php
+/* @var $this CalldatarecordsController */
+/* @var $model CallDataRecordsInfo */
+$this->pageTitle = 'CDR Details';
+$org_id = '';
+$date = '';
+if(isset($_GET['organisation_id'])){
+    $org_id = $_GET['organisation_id'];
+}
+if(isset($_GET['date'])){
+    $date = $_GET['date'];
+}
+?>
+<!-- <style>
+.ui-datepicker-calendar {
+        display: none;
+    }
+</style> -->
+<div class="pull-left m-b-10">
+    <div class="tab-content">
+        <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+            'id' => 'cdr-details-form',
+            'layout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
+            'enableAjaxValidation' => false,
+            'htmlOptions' => array(
+                'name' => 'CDR-Details'
+            )
+        ));
+        ?>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="controls">
+                    <?php $list = CHtml::listData(OrganizationInfo::model()->findAll(),'organisation_id','name');
+                    echo $form->dropDownList($model, 'organisation_id', $list, array('class' => 'form-control', 'id' => 'organization', 'empty' => 'Select Organization')); ?>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="controls">
+                <input type="text" class="form-control" name="date" placeholder='Select Date' id='datepickerfilter'>
+                </div>
+            </div>
+        </div>
+    <?php $this->endWidget(); ?>
+    </div>
+</div>
+<div style="margin-right:10px;" class="col-md-6">
+    <a class="btn btn-outline-primary" id="filter">Filter</a>
+</div>
+<div id="cdr-details-grid"></div>
+
+<!--Begin script-->
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" />
+<!--End script-->
+<script>
+$(document).ready(function(){
+        var MyDateField = function(config) {
+            jsGrid.Field.call(this, config);
+        };
+
+        MyDateField.prototype = new jsGrid.Field({
+
+            itemTemplate: function(value) {
+                return new Date(value).toLocaleDateString();
+            },
+
+            editTemplate: function(value) {
+                return this._editPicker = $("<input>").datepicker().datepicker("setDate", new Date(value));
+            },
+
+            editValue: function() {
+                return this._editPicker.datepicker("getDate").toISOString();
+            }
+        });
+    
+        jsGrid.fields.myDateField = MyDateField;
+
+        $("#cdr-details-grid").jsGrid({
+            width: "100%",
+            height: "auto",
+
+            heading: true,
+            filtering: true,
+            editing: true,
+            sorting: true,
+            paging: true,
+            autoload: true,
+            pageSize: 20,
+            pageButtonCount: 5,
+            noDataContent: "No data found",
+
+            controller: {
+                loadData: function(data) {
+                    var orgID = "<?= $org_id ?>";
+                    var date = "<?= $date ?>";
+                    if(orgID !==''){
+                            data['organisation_id'] = orgID;
+                        }
+                        console.log(orgID);
+                        console.log(data);
+                    if(date !==''){
+                            data['date'] = date;
+                        }
+                    return $.ajax({
+                        type: "GET",
+                        url: "cdrdata",
+                        dataType: "json",
+                        data: data
+                    });
+                },
+
+                updateItem: function(item) {
+                    return $.ajax({
+                        type: "PUT",
+                        url: "updatecdrdata",
+                        data: item
+                    });
+                },
+            },
+    
+            fields: [
+                { name: "id", type: "hidden", css: 'hide'},
+                { name: "from_number", title: "From number", type: "text", headercss: "custom-table-head", width: 60},
+                { name: "from_name", title: "From name", type: "text", headercss: "custom-table-head", width: 70},
+                { name: "to_number", title: "To number", type: "text", headercss: "custom-table-head", width: 60},
+                { name: "unit_cost", title: "Unit cost", type: "text", headercss: "custom-table-head", width: 40},
+                { name: "date", title: "Date", type: "myDateField", headercss: "custom-table-head", width: 60},
+                { name: "total_time", title: "Total time", type: "text", headercss: "custom-table-head", width: 50},
+                { name: "comment", title: "Comment", type: "text", headercss: "custom-table-head"},
+                { type: "control",
+                    deleteButton: false
+                }
+            ]
+        });
+
+    //year-month calender
+    $('#datepickerfilter').datepicker({
+        dateFormat: "yy-mm",
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst){
+                        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                    },
+        beforeShow: function(input, inst) {
+            $('#ui-datepicker-div').addClass('filter-class');
+        }
+    });
+    $('#datepickerfilter').on('click', function(){
+        $('.filter-class .ui-datepicker-calendar').css('display', 'none');
+    });
+
+    $('#filter').on('click', function(){
+        var newUrl = "<?php echo Yii::app()->createUrl('admin/calldatarecords/cdrdetails'); ?>";
+        var organisation_id = $('#organization').val();
+        var date = $('#datepickerfilter').val();
+        newUrl += '?organization_id='+organisation_id+'&date='+date;
+        window.location = newUrl;
+    });
+});
+</script>
