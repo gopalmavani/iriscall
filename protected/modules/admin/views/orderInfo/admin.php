@@ -221,11 +221,14 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
 				"targets": 0,
 				"data": null,
 				"render" : function(data, type, row) {
-					if(data[7] == '1'){
-						return '<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/view/").'/'; ?>'+data[0]+'"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;&nbsp;<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/update/").'/'; ?>'+data[0]+'"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/creditMemo/").'/'; ?>'+data[0]+'"><i class="fa fa-external-link"></i></a>';
-					}else{
-						return '<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/view/").'/'; ?>'+data[0]+'"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;&nbsp;<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/update/").'/'; ?>'+data[0]+'"><i class="fa fa-pencil"></i></a>';
-					}
+                    if(data[7] == '1'){
+                        return '<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/view/").'/'; ?>'+data[0]+'"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;&nbsp;' +
+                            '<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/update/").'/'; ?>'+data[0]+'"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;' +
+                            '<a href="<?php echo Yii::app()->createUrl("invoice/Generateinvoice/").'/'; ?>'+data[0]+'" download><i class="fa fa-download"></i></a>&nbsp;&nbsp;&nbsp;' +
+                            '<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/creditMemo/").'/'; ?>'+data[0]+'"><i class="fa fa-external-link"></i></a>';
+                    }else{
+                        return '<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/view/").'/'; ?>'+data[0]+'"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;&nbsp;<a href="<?php echo Yii::app()->createUrl("admin/orderInfo/update/").'/'; ?>'+data[0]+'"><i class="fa fa-pencil"></i></a>';
+                    }
 				}
 				//"defaultContent": "<a href=''><i class='fa fa-eye'></i></a>&nbsp;&nbsp;<a href=''><i class='fa fa-pencil'></i></a>&nbsp;&nbsp;<a href=''><i class='fa fa-times'></i></a>"
 			},{

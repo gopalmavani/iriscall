@@ -326,7 +326,8 @@ $folder = Yii::app()->params['basePath'];
                         <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/notificationManager/view');?>"><i class="fa fa-bell-o"></i> <span class="sidebar-mini-hide"> Notifications </span></a></li>
                         <?php if(Yii::app()->controller->id == 'test'){ $active = "active";}else{ $active = " ";} ?>
                         <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/test');?>"><i class="fa fa-question"></i><span class="sidebar-mini-hide"> Test Cases </span></a></li>
-
+                        <?php if(Yii::app()->controller->id == 'report'){ $active = "active";}else{ $active = " ";} ?>
+                        <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/report');?>"><i class="fa fa-bar-chart"></i><span class="sidebar-mini-hide"> Reports </span></a></li>
                         <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/nautilus/registration' || Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/nautilus/deposits'){ $open = "open";}else{ $open = "";} ?>
                         <li class="<?= $open; ?>"><a class="nav-submenu hide" data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-ticket"></i> <span class=""> Nautilus Fund </span></a>
                             <ul>

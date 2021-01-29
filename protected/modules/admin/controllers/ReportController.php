@@ -3,53 +3,74 @@
 class ReportController extends CController
 {
 
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return UserIdentity::accessRules();
+    public function actionIndex(){
+        $this->render('index');
     }
 
-    /**
-     * Returns the data model based on the primary key given in the GET variable.
-     * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
-     * @param string $modelName the Name of the model to be loaded
-     * @return UserInfo the loaded model
-     * @throws CHttpException
-     */
-    public function loadModel($id, $modelName)
-    {
-        $model = $modelName::model()->findByPk($id);
-        if ($model === null) {
-            ApiResponse::json(false, 404, [], "The requested page does not exist.");
-            exit;
+    public function actionDownloadinvoices(){
+        ini_set('memory_limit', '-1');
+        set_time_limit(0);
+        if(isset($_GET['start_date'])){
+            $myDateTime = DateTime::createFromFormat('F, Y', $_GET['start_date']);
+            $start_month = $myDateTime->format('m');
+            $start_year = $myDateTime->format('Y');
+        } else {
+            $start_month = date('m');
+            $start_year = date('Y');
         }
-        return $model;
+        $orders = Yii::app()->db->createCommand()
+            ->select('order_info_id')
+            ->from('order_info')
+            ->where('month(invoice_date)=:mId', [':mId'=>$start_month])
+            ->andWhere('year(invoice_date)=:yId', [':yId'=>$start_year])
+            ->queryColumn();
+
+        $filePaths = [];
+        foreach ($orders as $orderInfoId){
+            $filePaths[] = $this->generateinvoice($orderInfoId);
+        }
+
+        $zipFileName = 'invoices_'.$start_year.'_'.$start_month.'.zip';
+        $result = $this->createZipArchive($filePaths, $zipFileName);
+
+        foreach ($filePaths as $path){
+            unlink($path);
+        }
+
+        header("Content-Disposition: attachment; filename=\"".$zipFileName."\"");
+        header("Content-Length: ".filesize($zipFileName));
+        readfile($zipFileName);
+        /*$data = [];
+        foreach ($orders as $orderInfoId){
+            $temp = [];
+            $temp['orderInfo'] = OrderInfo::model()->findByAttributes(array('order_info_id' => $orderInfoId));
+            $temp['orderLineitem'] = OrderLineItem::model()->findAllByAttributes(array('order_info_id' => $orderInfoId));
+            $temp['orderPayment'] = OrderPayment::model()->findAllByAttributes(array('order_info_id' => $orderInfoId));
+            $temp['userInfo'] = UserInfo::model()->findByAttributes(array('user_id' => $data['orderInfo']->user_id));
+            $data[$orderInfoId] = $temp;
+        }*/
     }
 
     /**
      * Generates pdf of view page of report.
      */
-    public function actionGenerateinvoice($id)
+    public function generateinvoice($id)
     {
+        $this->layout = 'invoice';
         $data['orderInfo'] = OrderInfo::model()->findByAttributes(array('order_info_id' => $id));
         $data['orderLineitem'] = OrderLineItem::model()->findAllByAttributes(array('order_info_id' => $id));
         $data['orderPayment'] = OrderPayment::model()->findAllByAttributes(array('order_info_id' => $id));
         $data['userInfo'] = UserInfo::model()->findByAttributes(array('user_id' => $data['orderInfo']->user_id));
 
-        $html = $this->render('invoice', array('data' => $data), true);
+        $html = $this->render('generateinvoice', array('data' => $data), true);
 
         # mPDF
         $mPDF1 = Yii::app()->ePdf->mpdf();
 
         # You can easily override default constructor's params
-        $mPDF1 = Yii::app()->ePdf->mpdf('utf-8', 'A4', 9, 'dejavusans');
+        $mPDF1 = Yii::app()->ePdf->mpdf('utf-8', 'A4', 9, 'oswald');
 
-        $mPDF1->SetHTMLHeader('<div style="text-align: right; font-weight: bold;">Invoice</div>');
+        //$mPDF1->SetHTMLHeader('<div style="text-align: right; font-weight: bold;">Invoice - OD'.$data['orderInfo']->order_id.'</div>');
 
         $mPDF1->SetHTMLFooter('
 
@@ -59,7 +80,7 @@ class ReportController extends CController
         
         <td width="33%" align="center" style="font-weight: bold; font-style: italic;">{PAGENO}/{nbpg}</td>
         
-        <td width="33%" style="text-align: right; ">My document</td>
+        <td width="33%" style="text-align: right; ">CBM Global</td>
         
         </tr></table>
         
@@ -67,57 +88,52 @@ class ReportController extends CController
         $mPDF1->WriteHTML($html);
 
         # Load a stylesheet
-        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css') . '/style.css');
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css') . '/invoiceStyle.css');
+
         $mPDF1->WriteHTML($stylesheet, 1);
 
-        # renderPartial (only 'view' of current controller)
-        //$mPDF1->WriteHTML($this->renderPartial('admin', array(), true));
-
-        # Renders image
-        //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/CYL Logo.png'));
-
+        $filelocation = "protected/runtime/uploads/invoices/"; //Linux
+        if (!is_dir($filelocation)) {
+            mkdir($filelocation, 0755, true);
+        }
+        $filename = $data['orderInfo']->invoice_number.'-'.$data['orderInfo']->user_name.'.pdf';
+        $relative_file_path = 'protected/runtime/uploads/invoices/'.$filename;
+        $fileNL = getcwd() .'/'. $relative_file_path; //Linux
         # Outputs ready PDF
-        $mPDF1->Output();
+        $mPDF1->Output($fileNL, 'F');
 
-        ////////////////////////////////////////////////////////////////////////////////////
+        return $fileNL;
+    }
 
-        # HTML2PDF has very similar syntax
-        $html2pdf = Yii::app()->ePdf->HTML2PDF();
 
-        $html2pdf->SetHTMLHeader('<div style="text-align: right; color: #646464; font-weight: bold;">Invoice</div>');
+    /* create a compressed zip file */
+    function createZipArchive($files = array(), $destination = '', $overwrite = false) {
 
-        $html2pdf->SetHTMLFooter('
-        
-        <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #646464; font-weight: bold;"><tr>
-        
-        <td width="33%"><span style="font-weight: bold; font-style: italic;">{DATE j-m-Y}</span></td>
-        
-        <td width="33%" align="center" style="font-weight: bold; font-style: italic;">{PAGENO}/{nbpg}</td>
-        
-        <td width="33%" style="text-align: right; ">My document</td>
-        
-        </tr></table>
-        
-        ');
+        if(file_exists($destination) && !$overwrite) { return false; }
 
-        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css') . '/style.css');
-        $html2pdf->WriteHTML($stylesheet, 1);
+        $validFiles = array();
+        if(is_array($files)) {
+            foreach($files as $file) {
+                if(file_exists($file)) {
+                    $validFiles[] = $file;
+                }
+            }
+        }
 
-        $html2pdf->WriteHTML($html);
-        $html2pdf->Output();
-
-        ////////////////////////////////////////////////////////////////////////////////////
-
-        # Example from HTML2PDF wiki: Send PDF by email
-        $content_PDF = $html2pdf->Output('', EYiiPdf::OUTPUT_TO_STRING);
-        require_once(dirname(__FILE__) . '/pjmail/pjmail.class.php');
-        $mail = new PJmail();
-        $mail->setAllFrom('webmaster@my_site.net', "My personal site");
-        $mail->addrecipient('deepakvisani@gmail.com');
-        $mail->addsubject("Example sending PDF");
-        $mail->text = "This is an example of sending a PDF file";
-        $mail->addbinattachement("my_document.pdf", $content_PDF);
-        $res = $mail->sendmail();
+        if(count($validFiles)) {
+            $zip = new ZipArchive();
+            if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) == true) {
+                foreach($validFiles as $file) {
+                    $zip->addFile($file, pathinfo($file, PATHINFO_BASENAME));
+                }
+                $zip->close();
+                return file_exists($destination);
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 
     public function actionInvoice($id)
