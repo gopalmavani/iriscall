@@ -270,7 +270,7 @@ $folder = Yii::app()->params['basePath'];
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrinfo'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrinfo');?>"><i class="fa fa-paperclip"></i> <span class="sidebar-mini-hide"> CDR Info </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrdetails'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrdetails');?>"><i class="fa fa-paperclip"></i><span class="sidebar-mini-hide"> CDR Details </span></a></li>
+                                <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrdetails');?>"><i class="fa fa-phone"></i><span class="sidebar-mini-hide"> CDR Details </span></a></li>
                             </ul>
                         </li>
                     </ul>
@@ -307,6 +307,18 @@ $folder = Yii::app()->params['basePath'];
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/wallet/admin');?>"><i class="si si-wallet"></i> <span class="sidebar-mini-hide">All Wallet Transactions </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/walletTypeEntity/admin'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/walletTypeEntity/admin');?>"><i class="si si-wallet"></i> <span class="sidebar-mini-hide"> Wallet Settings </span></a></li>
+                            </ul>
+                        </li>
+                        <?php $action = Yii::app()->controller->id;
+                        if($action == 'settings'){ $open = "open";}else{ $open = "";} ?>
+                        <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-wrench"></i> <span class=""> Settings </span></a>
+                            <ul>
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/settings/index'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/settings/index');?>"><i class="fa fa-get-pocket"></i> <span class="sidebar-mini-hide"> Fetch CDR </span></a></li>
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/settings/getfromnumber'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/settings/getfromnumber');?>"><i class="fa fa-paperclip"></i> <span class="sidebar-mini-hide"> Fetch From Number </span></a></li>
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/settings/cdrinfo'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/settings/costcalculate');?>"><i class="fa fa-calculator"></i><span class="sidebar-mini-hide"> Calculate Cost </span></a></li>
                             </ul>
                         </li>
                         <?php if(Yii::app()->controller->id == 'rank'){ $active = "active";}else{ $active = " ";} ?>
