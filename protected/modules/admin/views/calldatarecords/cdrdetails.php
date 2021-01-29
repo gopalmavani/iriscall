@@ -11,11 +11,11 @@ if(isset($_GET['date'])){
     $date = $_GET['date'];
 }
 ?>
-<!-- <style>
-.ui-datepicker-calendar {
+<style>
+.filter-class .ui-datepicker-calendar {
         display: none;
     }
-</style> -->
+</style>
 <div class="pull-left m-b-10">
     <div class="tab-content">
         <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -31,12 +31,12 @@ if(isset($_GET['date'])){
             <div class="col-md-6">
                 <div class="controls">
                     <?php $list = CHtml::listData(OrganizationInfo::model()->findAll(),'organisation_id','name');
-                    echo $form->dropDownList($model, 'organisation_id', $list, array('class' => 'form-control', 'id' => 'organization', 'empty' => 'Select Organization')); ?>
+                    echo $form->dropDownList($model, 'organisation_id', $list, array('options' => array(isset($_REQUEST['organisation_id']) ? $_REQUEST['organisation_id'] : '' => array('selected'=>true)),'class' => 'form-control', 'name' => 'organisation_id', 'id' => 'organization', 'empty' => 'Select Organization')); ?>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="controls">
-                <input type="text" class="form-control" name="date" placeholder='Select Date' id='datepickerfilter'>
+                <input type="text" class="form-control" name="date" placeholder='Select Date' autocomplete="off", value="<?php echo isset($_REQUEST['date']) ? $_REQUEST['date'] : '' ?>", id='datepickerfilter'>
                 </div>
             </div>
         </div>
@@ -44,7 +44,8 @@ if(isset($_GET['date'])){
     </div>
 </div>
 <div style="margin-right:10px;" class="col-md-6">
-    <a class="btn btn-outline-primary" id="filter">Filter</a>
+    <a class="btn btn-primary" id="filter">Filter</a>
+    <a class="btn btn-outline-primary" id="clearDate">Clear date <i class="fa fa-times"></i></a>
 </div>
 <div id="cdr-details-grid"></div>
 
@@ -99,8 +100,6 @@ $(document).ready(function(){
                     if(orgID !==''){
                             data['organisation_id'] = orgID;
                         }
-                        console.log(orgID);
-                        console.log(data);
                     if(date !==''){
                             data['date'] = date;
                         }
@@ -143,21 +142,34 @@ $(document).ready(function(){
         changeYear: true,
         showButtonPanel: true,
         onClose: function(dateText, inst){
-                        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-                    },
-        beforeShow: function(input, inst) {
+            $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+        },
+        beforeShow: function(dateText, inst) {
             $('#ui-datepicker-div').addClass('filter-class');
-        }
+            if ((datestr = $(this).val()).length > 0) {
+                year = datestr.substring(0, 4);
+                //month = getMonthFromString(datestr.substring(0, datestr.length-6));
+                month = datestr.substring(5);
+                $(this).datepicker('option', 'defaultDate', new Date(year, month-1, 1));
+                $(this).datepicker('setDate', new Date(year, month-1, 1));
+            }
+        },
     });
     $('#datepickerfilter').on('click', function(){
-        $('.filter-class .ui-datepicker-calendar').css('display', 'none');
+        $('.filter-class .ui-datepicker-calendar').hide();
     });
 
+    //clear date
+    var $dates = $('#datepickerfilter').datepicker();
+    $('#clearDate').on('click', function () {
+        $dates.datepicker('setDate', null);
+    });
+    //filter by organization and date
     $('#filter').on('click', function(){
         var newUrl = "<?php echo Yii::app()->createUrl('admin/calldatarecords/cdrdetails'); ?>";
         var organisation_id = $('#organization').val();
         var date = $('#datepickerfilter').val();
-        newUrl += '?organization_id='+organisation_id+'&date='+date;
+        newUrl += '?organisation_id='+organisation_id+'&date='+date;
         window.location = newUrl;
     });
 });
