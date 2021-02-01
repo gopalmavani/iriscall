@@ -47,8 +47,19 @@ if(isset($_GET['date'])){
     <a class="btn btn-primary" id="filter">Filter</a>
     <a class="btn btn-outline-primary" id="clearDate">Clear date <i class="fa fa-times"></i></a>
 </div>
+<div style="margin-top:50px;" class="row">
+    <div class="col-md-6">
+        <label>Show 
+            <select id="records">
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+            </select> 
+        entries</label>
+    </div>
+</div>
 <div id="cdr-details-grid"></div>
-
 <!--Begin script-->
 <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
 <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
@@ -58,82 +69,62 @@ if(isset($_GET['date'])){
 <!--End script-->
 <script>
 $(document).ready(function(){
-        var MyDateField = function(config) {
-            jsGrid.Field.call(this, config);
-        };
 
-        MyDateField.prototype = new jsGrid.Field({
+    $("#cdr-details-grid").jsGrid({
+        width: "100%",
+        height: "auto",
 
-            itemTemplate: function(value) {
-                return new Date(value).toLocaleDateString();
+        heading: true,
+        filtering: true,
+        rowNum: 20,
+        rowList: [20,50,100,200],
+        editing: true,
+        sorting: true,
+        paging: true,
+        autoload: true,
+        pageButtonCount: 5,
+        noDataContent: "No data found",
+
+        controller: {
+            loadData: function(data) {
+                var orgID = "<?= $org_id ?>";
+                var date = "<?= $date ?>";
+                if(orgID !==''){
+                        data['organisation_id'] = orgID;
+                    }
+                if(date !==''){
+                        data['date'] = date;
+                    }
+                return $.ajax({
+                    type: "GET",
+                    url: "cdrdata",
+                    dataType: "json",
+                    data: data
+                });
             },
 
-            editTemplate: function(value) {
-                return this._editPicker = $("<input>").datepicker().datepicker("setDate", new Date(value));
+            updateItem: function(item) {
+                return $.ajax({
+                    type: "PUT",
+                    url: "updatecdrdata",
+                    data: item
+                });
             },
+        },
 
-            editValue: function() {
-                return this._editPicker.datepicker("getDate").toISOString();
+        fields: [
+            { name: "from_number", title: "From number", type: "text", headercss: "custom-table-head", editing: false, width: 60},
+            { name: "from_name", title: "From name", type: "text", headercss: "custom-table-head", editing: false, width: 70},
+            { name: "to_number", title: "To number", type: "text", headercss: "custom-table-head", editing: false, width: 60},
+            { name: "unit_cost", title: "Unit cost", type: "text", headercss: "custom-table-head", width: 40},
+            { name: "date", title: "Date", type: "text", headercss: "custom-table-head", editing: false, width: 60},
+            { name: "total_time", title: "Total time", type: "text", headercss: "custom-table-head", editing: false, width: 50},
+            { name: "comment", title: "Comment", type: "text", headercss: "custom-table-head"},
+            { type: "control",
+                deleteButton: false
             }
-        });
-    
-        jsGrid.fields.myDateField = MyDateField;
-
-        $("#cdr-details-grid").jsGrid({
-            width: "100%",
-            height: "auto",
-
-            heading: true,
-            filtering: true,
-            editing: true,
-            sorting: true,
-            paging: true,
-            autoload: true,
-            pageSize: 20,
-            pageButtonCount: 5,
-            noDataContent: "No data found",
-
-            controller: {
-                loadData: function(data) {
-                    var orgID = "<?= $org_id ?>";
-                    var date = "<?= $date ?>";
-                    if(orgID !==''){
-                            data['organisation_id'] = orgID;
-                        }
-                    if(date !==''){
-                            data['date'] = date;
-                        }
-                    return $.ajax({
-                        type: "GET",
-                        url: "cdrdata",
-                        dataType: "json",
-                        data: data
-                    });
-                },
-
-                updateItem: function(item) {
-                    return $.ajax({
-                        type: "PUT",
-                        url: "updatecdrdata",
-                        data: item
-                    });
-                },
-            },
-    
-            fields: [
-                { name: "id", type: "hidden", css: 'hide'},
-                { name: "from_number", title: "From number", type: "text", headercss: "custom-table-head", width: 60},
-                { name: "from_name", title: "From name", type: "text", headercss: "custom-table-head", width: 70},
-                { name: "to_number", title: "To number", type: "text", headercss: "custom-table-head", width: 60},
-                { name: "unit_cost", title: "Unit cost", type: "text", headercss: "custom-table-head", width: 40},
-                { name: "date", title: "Date", type: "myDateField", headercss: "custom-table-head", width: 60},
-                { name: "total_time", title: "Total time", type: "text", headercss: "custom-table-head", width: 50},
-                { name: "comment", title: "Comment", type: "text", headercss: "custom-table-head"},
-                { type: "control",
-                    deleteButton: false
-                }
-            ]
-        });
+        ]
+    });
 
     //year-month calender
     $('#datepickerfilter').datepicker({
@@ -155,8 +146,10 @@ $(document).ready(function(){
             }
         },
     });
-    $('#datepickerfilter').on('click', function(){
-        $('.filter-class .ui-datepicker-calendar').hide();
+
+    $("#records").on("change", function() {
+        var record = $(this).val();
+        $("#cdr-details-grid").jsGrid("option", "pageSize", record);
     });
 
     //clear date

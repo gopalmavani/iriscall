@@ -32,11 +32,11 @@ class CdrCostRulesInfo extends CActiveRecord
         // will receive user inputs.
         return array(
             array('start_with, digit, cost, country, created_at', 'required'),
-            array('digit,from_number_digit', 'integerOnly'=>true),
+            array('digit,from_number_digit', 'numerical', 'integerOnly'=>true),
             array('cost', 'numerical'),
             array('start_with,from_number_start_with','length', 'max'=>30),
             array('country','length', 'max'=>20),
-            array('created_at', 'safe'),
+            array('created_at, modified_at', 'safe'),
         );
     }
 
@@ -46,6 +46,7 @@ class CdrCostRulesInfo extends CActiveRecord
     public function attributeLabels()
     {
         return array(
+            'id' => 'ID',
             'start_with' => 'Start with',
             'digit' => 'Digit',
             'from_number_start_with' => 'From Start with',
@@ -53,7 +54,8 @@ class CdrCostRulesInfo extends CActiveRecord
             'cost' => 'Cost',
             'country' => 'Country',
             'comment'=> 'Comment',
-            'created_at'=> 'created',
+            'created_at' => 'Created At',
+            'modified_at' => 'Modified At',
         );
     }
 
@@ -74,7 +76,7 @@ class CdrCostRulesInfo extends CActiveRecord
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria=new CDbCriteria;
-
+        $criteria->compare('id',$this->id);
         $criteria->compare('start_with',$this->start_with,true);
         $criteria->compare('digit',$this->digit);
         $criteria->compare('from_number_start_with',$this->from_number_start_with,true);
@@ -83,6 +85,7 @@ class CdrCostRulesInfo extends CActiveRecord
         $criteria->compare('country',$this->country,true);
         $criteria->compare('comment',$this->comment,true);
         $criteria->compare('created_at',$this->created_at,true);
+        $criteria->compare('modified_at',$this->modified_at,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
