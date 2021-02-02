@@ -20,7 +20,19 @@ $id = $model->id;
 		'cost',
 		'from_number_start_with',
 		'from_number_digit',
-		'country',
+		[
+			'name' => 'country',
+			'value' => function($model){
+				$codesql = "select country_name from countries where id = "."'$model->country'";
+					$country = Yii::app()->db->createCommand($codesql)->queryAll();
+					if(!empty($country)){
+						return $country[0]['country_name'];
+					}
+					else{
+						return $model->country;
+					}
+			}
+		],
 		'comment',
 		'created_at',
 		'modified_at'

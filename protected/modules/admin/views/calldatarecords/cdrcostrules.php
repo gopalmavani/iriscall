@@ -75,7 +75,7 @@ $this->pageTitle = 'CDR Cost Rules';
                                 case 'country':
                                     $codesql = "select country_code,country_name from countries";
                                     $country = Yii::app()->db->createCommand($codesql)->queryAll();
-                                    ?><td><select class='drop-box' data-column='30' style='width:100%'>
+                                    ?><td><select class='drop-box' data-column='6' style='width:100%'>
                                         <option value="">Select</option>
                                     <?php foreach($country as $key=>$value){ ?>
                                             <option value='<?php echo $value['country_code']; ?>'><?php echo $value['country_name']; ?></option>
@@ -232,7 +232,7 @@ $this->pageTitle = 'CDR Cost Rules';
             bootbox.confirm("Are you sure you want to delete this CDR cost rule?", function(result){
                 if (result === true){
                     $.ajax({
-                        url: "Delete",
+                        url: "DeleteCdrCostRules",
                         type: "POST",
                         data: {'id': id},
                         beforeSend: function () {

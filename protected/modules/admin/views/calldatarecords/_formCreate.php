@@ -20,26 +20,52 @@
                         'name' => 'cdr-cost-rules-form',
                     )
                 )); ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="col-md-12">
+                            <div class="form-group <?php echo $model->hasErrors('start_with') ? 'has-error' : ''; ?>">
+                                <?php echo $form->textFieldControlGroup($model, 'start_with', array('size' => 50, 'maxlength' => 30, 'autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Enter start with')); ?>
+                            </div>
+                        </div>
 
-				<div class="col-md-6">
-					<div class="col-md-12">
-						<div class="form-group <?php echo $model->hasErrors('start_with') ? 'has-error' : ''; ?>">
-							<?php echo $form->textFieldControlGroup($model, 'start_with', array('size' => 50, 'maxlength' => 30, 'autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Enter start with')); ?>
-						</div>
-					</div>
+                        <div class="col-md-12">
+                            <div class="form-group <?php echo $model->hasErrors('cost') ? 'has-error' : ''; ?>">
+                                <?php echo $form->textFieldControlGroup($model, 'cost', array('autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Enter cost')); ?>
+                            </div>
+                        </div>
+                         
+                        <div class="col-md-12">
+                            <div class="form-group <?php echo $model->hasErrors('from_number_start_with') ? 'has-error' : ''; ?>">
+                                <?php echo $form->textFieldControlGroup($model, 'from_number_start_with', array('autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Enter from number start with')); ?>
+                            </div>
+                        </div>
 
-					<div class="col-md-12">
-						<div class="form-group <?php echo $model->hasErrors('digit') ? 'has-error' : ''; ?>">
-							<?php echo $form->textFieldControlGroup($model, 'digit', array('autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Enter digit')); ?>
-						</div>
-					</div>
+                        <div class="col-md-12">
+                            <div class="form-group <?php echo $model->hasErrors('comment') ? 'has-error' : ''; ?>">
+                                <?php echo $form->textareaControlGroup($model, 'comment', array('autofocus' => 'on', 'class' => 'form-control', 'placeholder' => 'Comment here...')); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12">
+                            <div class="form-group <?php echo $model->hasErrors('digit') ? 'has-error' : ''; ?>">
+                                <?php echo $form->textFieldControlGroup($model, 'digit', array('autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Enter digit')); ?>
+                            </div>
+                        </div>
 
-					<div class="col-md-12">
-						<div class="form-group <?php echo $model->hasErrors('cost') ? 'has-error' : ''; ?>">
-							<?php echo $form->textFieldControlGroup($model, 'cost', array('autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Enter cost')); ?>
-						</div>
-					</div>
-				</div>
+                        <div class="col-md-12">
+                            <div class="form-group <?php echo $model->hasErrors('from_number_digit') ? 'has-error' : ''; ?>">
+                                <?php echo $form->textFieldControlGroup($model, 'from_number_digit', array('size' => 50, 'maxlength' => 30, 'autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Enter from number digit')); ?>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group <?php echo $model->hasErrors('country') ? 'has-error' : ''; ?> ">
+                                <?php echo $form->dropDownListControlGroup($model, 'country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control')); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-12">
@@ -71,13 +97,18 @@ $(document).ready(function () {
                 required: true
             },
             'CdrCostRulesInfo[digit]': {
-                required: true
+                required: true,
+                digits: true
             },
             'CdrCostRulesInfo[cost]': {
-                required: true
+                required: true,
+                digits: true
             },
             'CdrCostRulesInfo[country]': {
                 required: true
+            },
+            'CdrCostRulesInfo[from_number_digit]': {
+                digits: true
             }
         },
         messages: {
@@ -85,13 +116,18 @@ $(document).ready(function () {
                 required: "Please enter the start with."
             },
             'CdrCostRulesInfo[digit]': {
-                required: "Please enter the digit."
+                required: "Please enter the digit.",
+                digits: "Please enter number only."
             },
             'CdrCostRulesInfo[cost]': {
-                required: "Please enter the cost."
+                required: "Please enter the cost.",
+                digits: "Please enter number only."
             },
             'CdrCostRulesInfo[country]': {
                 required: "Please select the country."
+            },
+            'CdrCostRulesInfo[from_number_digit]': {
+                digits: "Please enter number only."
             }
         },
         highlight: function(element, errorClass) {
