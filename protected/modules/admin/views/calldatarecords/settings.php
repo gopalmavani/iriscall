@@ -26,7 +26,7 @@ $this->pageTitle = 'Settings';
             <div class="col-md-7">
             <span>Calculate cost of Call data records.</span>
                 <div class="pull-right m-b-10">
-                    <?php echo CHtml::link('Calculate Cost', array('calldatarecords/cdrinfo'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+                    <?php echo CHtml::link('Calculate Cost', array('calldatarecords/costcalculate'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
                 </div>
             </div>
         </div>
