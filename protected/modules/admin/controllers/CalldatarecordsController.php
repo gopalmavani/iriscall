@@ -741,7 +741,7 @@ class CalldatarecordsController extends Controller
      */
     public function actionCreateCdrCostRules()
     {
-        $model = new CdrCostRulesInfo;
+        $model = new CdrCostRulesInfo();
         // echo '<pre>';
         // print_r($model);die;
         if(isset($_POST['CdrCostRulesInfo']))
@@ -883,7 +883,13 @@ class CalldatarecordsController extends Controller
         // getting records as per search parameters
         foreach($columns as $key=>$column){
             if( !empty($requestData['columns'][$key]['search']['value']) ){   //name
-                $sql.=" AND $column LIKE '%".$requestData['columns'][$key]['search']['value']."%' ";
+                if($column == 'country'){
+                    $Country_code = $requestData['columns'][$key]['search']['value'];
+                    $countryid = ServiceHelper::getCountryNameFromCode($Country_code);
+                    $sql.=" AND $column = ".$countryid."";
+                }else{
+                    $sql.=" AND $column LIKE '%".$requestData['columns'][$key]['search']['value']."%' ";
+                }
             }
             $j++;
         }
@@ -906,6 +912,21 @@ class CalldatarecordsController extends Controller
         foreach ($result as $key => $row)
         {
             $nestedData = array();
+
+            if(ctype_alpha($row['country'])){
+                $countrycode = $row['country'];
+                $country_sql = "select country_name from countries where country_code = "."'$countrycode'";
+                $country_name = Yii::app()->db->createCommand($country_sql)->queryAll();
+                if(!empty($country_name)){
+                    $row['country'] = $country_name[0]['country_name'];
+                }
+            }
+            else if(is_numeric($row['country'])){
+                $countryid = $row['country'];
+                $country_sql = "select country_name from countries where id = "."'$countryid'";
+                $country_name = Yii::app()->db->createCommand($country_sql)->queryAll();
+                $row['country'] = $country_name[0]['country_name'];
+            }
             $nestedData[] = $row['id'];
             foreach($array_cols as  $key=>$col){
                 $nestedData[] = $row["$col->name"];

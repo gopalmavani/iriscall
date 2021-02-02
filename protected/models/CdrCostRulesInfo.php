@@ -32,8 +32,9 @@ class CdrCostRulesInfo extends CActiveRecord
         // will receive user inputs.
         return array(
             array('start_with, digit, cost, country, created_at', 'required'),
-            array('digit,from_number_digit', 'numerical', 'integerOnly'=>true),
             array('cost', 'numerical'),
+            array('digit,cost,from_number_digit', 'numerical', 'integerOnly'=>true),
+            array('comment','length', 'max'=>255),
             array('start_with,from_number_start_with','length', 'max'=>30),
             array('country','length', 'max'=>20),
             array('created_at, modified_at', 'safe'),
@@ -53,7 +54,7 @@ class CdrCostRulesInfo extends CActiveRecord
             'from_number_digit' => 'From Digit',
             'cost' => 'Cost',
             'country' => 'Country',
-            'comment'=> 'Comment',
+            'comment' => 'Comment',
             'created_at' => 'Created At',
             'modified_at' => 'Modified At',
         );
