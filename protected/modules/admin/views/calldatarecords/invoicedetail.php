@@ -43,6 +43,7 @@ $this->pageTitle = 'Invoice details';
     <br>
     <div class="row">
         <button class="btn btn-primary pull-right" style="margin-right: 10px;">Generate Invoice</button>
+        <button class="btn btn-primary pull-right" style="margin-right: 10px;">Generate Order</button>
     </div>
     <div class="row">
         <br>

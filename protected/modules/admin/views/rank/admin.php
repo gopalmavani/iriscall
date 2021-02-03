@@ -3,96 +3,94 @@
 /* @var $model Rank */
 $this->pageTitle = 'Ranks';
 ?>
-
-<!--Begin loader-->
-    <div class="overlay" style="opacity:0.1 !important;position:unset !important;">
-        <div class="loader">
-            <!-- <div class="m-loader m-loader--lg m-loader--success" style="width: 30px; display: inline-block;"></div> -->
-            <p style="font-size: 18px;"><i class="fa fa-cog fa-spin" aria-hidden="true"></i> Loading...</p>
-        </div>
-    </div>
-<!--End loader-->
-
-<div class="row hide" id="mydatatable">
-    <div class="alert alert-success hide" id="delete" align="center">
-        <h4>Rank deleted successfully</h4>
-    </div>
-    <div class="col-md-12">
-        <?php
-			$sql = "SELECT * FROM rank";
-			$result = Yii::app()->db->createCommand($sql)->queryAll();
-			if(!empty($result)){ ?>
-        <div class="pull-right m-b-10">
-            <?php echo CHtml::link('Create', array('rank/create'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
-        </div>
-        <div style="margin-right:10px;" class="pull-right m-b-10">
-            <a class="btn btn-outline-primary" id="clearfilters">Clear Filters <i class="fa fa-times"></i></a>
-        </div>
-        <div id="rank-grid">
-            <table id="rank-table" class="table table-striped table-bordered" width="100%" style="font-size:13px;" cellspacing="0" cellpadding="0">
-                <thead class="custom-table-head">
-                <tr>
-                    <th class="custom-table-head">Action</th>
-                    <?php
-						$array_cols = Yii::app()->db->schema->getTable('rank')->columns;
-						foreach($array_cols as $key=>$col){
-							?>
-                    <th class="custom-table-head"><?php echo ucfirst(str_replace('_',' ',$col->name)); ?></th>
-                    <?php
-						}
-						?>
-                </tr>
-                </thead>
-
-                <thead>
-                <tr>
-                    <?php
-						$arr = array_values($array_cols);
-						foreach($arr as $key=>$col){
-							switch($col->name)
-							{
-								case 'id':
-                                    echo "<td></td>";
-                                    echo "<td><input type='text' data-column='0' class='text-box' style='width:100%'></td>";
-                                    break;
-    
-                                case 'name':
-                                    echo "<td><input type='text' data-column='1' class='text-box' style='width:100%'></td>";
-                                    break;
-    
-                                case 'description':
-                                    echo "<td></td>";
-                                    echo "<td><input type='text' data-column='3' class='text-box' style='width:100%'></td>";
-                                    break;
-    
-                                case 'abbreviation':
-                                    echo "<td><input type='text' data-column='4' class='text-box' style='width:100%'></td>";
-                                    break;
-								default :
-									break;
-							}
-						}
-						?>
-                </tr>
-                </thead>
-            </table>
-        </div>
-        <div class="row"><br/></div>
-        <?php } else { ?>
-        <div class="row">
-            <div align="center">
-                <img src="<?php echo Yii::app()->baseUrl."/plugins/img/product.png"; ?>" height="20%" width="10%"><br /><br />
-                <h2>No rank</h2>
-                <p></p>
-                <div class="row">
-                    <?php echo CHtml::link('Create', array('rank/create'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
-                </div>
-                <br />
+<?php
+$sql = "SELECT * FROM rank";
+$result = Yii::app()->db->createCommand($sql)->queryAll();
+if(!empty($result)){ ?>
+    <!--Begin loader-->
+        <div class="overlay" style="opacity:0.1 !important;position:unset !important;">
+            <div class="loader">
+                <!-- <div class="m-loader m-loader--lg m-loader--success" style="width: 30px; display: inline-block;"></div> -->
+                <p style="font-size: 18px;"><i class="fa fa-cog fa-spin" aria-hidden="true"></i> Loading...</p>
             </div>
         </div>
-        <?php } ?>
+    <!--End loader-->
+    <div class="row hide" id="mydatatable">
+        <div class="alert alert-success hide" id="delete" align="center">
+            <h4>Rank deleted successfully</h4>
+        </div>
+        <div class="col-md-12">
+            <div class="pull-right m-b-10">
+                <?php echo CHtml::link('Create', array('rank/create'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+            </div>
+            <div style="margin-right:10px;" class="pull-right m-b-10">
+                <a class="btn btn-outline-primary" id="clearfilters">Clear Filters <i class="fa fa-times"></i></a>
+            </div>
+            <div id="rank-grid">
+                <table id="rank-table" class="table table-striped table-bordered" width="100%" style="font-size:13px;" cellspacing="0" cellpadding="0">
+                    <thead class="custom-table-head">
+                    <tr>
+                        <th class="custom-table-head">Action</th>
+                        <?php
+                            $array_cols = Yii::app()->db->schema->getTable('rank')->columns;
+                            foreach($array_cols as $key=>$col){
+                                ?>
+                        <th class="custom-table-head"><?php echo ucfirst(str_replace('_',' ',$col->name)); ?></th>
+                        <?php
+                            }
+                            ?>
+                    </tr>
+                    </thead>
+
+                    <thead>
+                    <tr>
+                        <?php
+                            $arr = array_values($array_cols);
+                            foreach($arr as $key=>$col){
+                                switch($col->name)
+                                {
+                                    case 'id':
+                                        echo "<td></td>";
+                                        echo "<td><input type='text' data-column='0' class='text-box' style='width:100%'></td>";
+                                        break;
+        
+                                    case 'name':
+                                        echo "<td><input type='text' data-column='1' class='text-box' style='width:100%'></td>";
+                                        break;
+        
+                                    case 'description':
+                                        echo "<td></td>";
+                                        echo "<td><input type='text' data-column='3' class='text-box' style='width:100%'></td>";
+                                        break;
+        
+                                    case 'abbreviation':
+                                        echo "<td><input type='text' data-column='4' class='text-box' style='width:100%'></td>";
+                                        break;
+                                    default :
+                                        break;
+                                }
+                            }
+                            ?>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row"><br/></div>
+<?php } else { ?>
+<div class="row">
+    <div align="center">
+        <img src="<?php echo Yii::app()->baseUrl."/plugins/img/product.png"; ?>" height="20%" width="10%"><br /><br />
+        <h2>No rank</h2>
+        <p></p>
+        <div class="row">
+            <?php echo CHtml::link('Create', array('rank/create'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
+        </div>
+        <br />
     </div>
 </div>
+<?php } ?>
 <script src="<?php echo Yii::app()->createUrl('/'); ?>/plugins/js/core/bootbox.min.js"></script>
 <script>
     $(document).ready(function() {
