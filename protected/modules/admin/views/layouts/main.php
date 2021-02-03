@@ -35,6 +35,7 @@ $folder = Yii::app()->params['basePath'];
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/sweetalert/sweetalert.css');
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/footable/css/footable.core.css');
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/css/custom.css?v=1');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/toastr.min.css');
     ?>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
@@ -267,8 +268,8 @@ $folder = Yii::app()->params['basePath'];
                             <ul>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/admin'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/admin');?>"><i class="fa fa-users"></i> <span class="sidebar-mini-hide"> iPerity Users </span></a></li>
-                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrinfo'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrinfo');?>"><i class="fa fa-paperclip"></i> <span class="sidebar-mini-hide"> CDR Info </span></a></li>
+                                <!-- <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrinfo'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrinfo');?>"><i class="fa fa-paperclip"></i> <span class="sidebar-mini-hide"> CDR Info </span></a></li> -->
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrdetails'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrdetails');?>"><i class="fa fa-phone"></i><span class="sidebar-mini-hide"> CDR Details </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrcostrules'){ $active = "active";}else{ $active = " ";} ?>
@@ -527,6 +528,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/nes
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/nested-menu/tree.jquery.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/sweetalert/sweetalert.min.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/footable/js/footable.all.min.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/toastr.min.js');
 ?>
 
 
