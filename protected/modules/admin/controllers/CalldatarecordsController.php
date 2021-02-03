@@ -338,7 +338,7 @@ class CalldatarecordsController extends Controller
                         }
                     }
                 }
-                $this->redirect('cdrinfo');
+                $this->redirect('cdrdetails');
             }
         }
         $this->render('index',[
@@ -354,6 +354,7 @@ class CalldatarecordsController extends Controller
             //->andWhere('from_number=:fn',[':fn'=>''])
             ->queryAll();
         //echo "<pre>";print_r($cdr_data);die;
+        $res_data = [];
         if(!empty($cdr_data)){
             foreach ($cdr_data as $data){
                 $from_id = $data['from_id'];
@@ -410,20 +411,38 @@ class CalldatarecordsController extends Controller
                             $from_numer = $response->number;
                         }
                     }
+                    $res = [
+                        'status' => 1,
+                        'message' => 'Fetch from number completed.'
+                    ];
                 }catch(Exception $e){
                     $error = $e->getMessage();
                     print_r($error);die;
+                    $res = [
+                        'status' => 0,
+                        'message' => $error
+                    ];
                 }
                 try{
                     CallDataRecordsInfo::model()->updateAll(array('from_number' => $from_numer), 'from_id=:from_id AND from_number=:from_number',array(':from_id'=>$from_id,'from_number'=>''));
+                    $res = [
+                        'status' => 1,
+                        'message' => 'CDR updated successfully.'
+                    ];
                 }catch (Exception $e){
                     $error = $e->getMessage();
                     echo "<pre>";print_r($from_id);
                     print_r($error);die;
+                    $res = [
+                        'status' => 0,
+                        'message' => $error
+                    ];
                 }
             }
         }
-        $this->redirect('cdrinfo');
+        $res_data = $res;
+        //$this->redirect('cdrdetails');
+        echo json_encode($res_data);
     }
 
     public function actionCostcalculate(){
@@ -459,7 +478,13 @@ class CalldatarecordsController extends Controller
             $model->save(false);
         }
         //echo "<pre>";print_r($data);die;
-        $this->redirect('cdrinfo');
+        //$this->redirect('cdrdetails');
+        $res = [
+            'status' => 1,
+            'message' => 'Cost calculation completed.'
+        ];
+
+        echo json_encode($res);        
     }
 
     /**

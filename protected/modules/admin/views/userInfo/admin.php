@@ -144,7 +144,7 @@ $this->pageTitle = 'Users';
         <?php }  else { ?>
         <div class="row">
             <div align="center">
-                <img src="<?php echo Yii::app()->baseUrl."/plugins/img/order.png"; ?>" height="20%" width="10%"><br /><br />
+                <img src="<?php echo Yii::app()->baseUrl."/plugins/img/users.png"; ?>" height="20%" width="10%"><br /><br />
                 <h2>No User</h2>
                 <p></p>
                 <div class="row">
