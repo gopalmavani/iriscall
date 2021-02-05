@@ -67,7 +67,7 @@ $(document).ready(function () {
                 var resp = JSON.parse(response);
                 if(resp['status'] == 1){
                     toastr.success(resp['message']);
-                } else {
+                }else {
                     toastr.warning(resp['message']);
                 }
             },

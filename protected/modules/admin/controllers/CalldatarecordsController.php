@@ -974,38 +974,46 @@ class CalldatarecordsController extends Controller
 
     public function actionGenerateOrder()
     {
-
+        $model = new OrderInfo;
         if(Yii::app()->request->isPostRequest){
-            if(isset($_POST['org_id']) && $_POST['org_id'] !=''){
+            if(isset($_POST['details']) && $_POST['details'] != '' && isset($_POST['org_id']) && $_POST['org_id'] != ''){
+                $details = json_decode($_POST['details']);
                 $org_id = $_POST['org_id'];
                 $orgInfo = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
-
-                if(isset($_POST['details']) && $_POST['details'] !=''){
-                    $details = json_decode($_POST['details']);
-                    foreach($details as $detail){
-                        if(!empty($detail->min) && $detail->min > 0){
-                            $model = new OrderInfo;
-                            //Get Latest order ID
-                            $Order = OrderInfo::model()->find(array('order' => 'order_id DESC'));
-                            if ($Order == '') {
-                                $model->order_id = 1;
-                            } else {
-                                $model->order_id = $Order['order_id'] + 1;
-                            }
-                            $model->user_id = $orgInfo['user_id'];
-                            $model->order_status = 2;
-                            $model->company = $orgInfo['name'];
-                            $model->user_name = $orgInfo['name'];
-                            $model->created_date = date('Y-m-d H:i:s');
-                            $model->vat = 0;
-                            $model->discount = 0;
-                            $orderTotal = $detail->min * $detail->cost;
-                            $model->orderTotal = $orderTotal;
-                            $netTotal = $orderTotal - $model->discount + $model->vat;
-                            $model->netTotal = $netTotal;
-                            // echo '<pre>';
-                            // print_r($model->netTotal);die;
-                            $model->save(false);
+                $total = [];
+                foreach($details as $value){
+                    if(!empty($value->min) && $value->min > 0){
+                        $total[] = $value->min * $value->cost;
+                    }else{
+                        $res = [
+                            'status' => 0,
+                            'message' => 'Order not created.'
+                        ];
+                    }
+                }
+                if(!empty($total) && $total != ''){
+                    $orderTotal = $total[0] + $total[1] + $total[2] + $total[3];
+                    //Get Latest order ID
+                    $Order = OrderInfo::model()->find(array('order' => 'order_id DESC'));
+                    if ($Order == '') {
+                        $model->order_id = 1;
+                    } else {
+                        $model->order_id = $Order['order_id'] + 1;
+                    }
+                    $model->user_id = $orgInfo['user_id'];
+                    $model->order_status = 2;
+                    $model->company = $orgInfo['name'];
+                    $model->user_name = $orgInfo['name'];
+                    $model->created_date = date('Y-m-d H:i:s');
+                    $model->vat = 0;
+                    $model->discount = 0;
+                    $model->orderTotal = $orderTotal;
+                    $netTotal = $orderTotal - $model->discount + $model->vat;
+                    $model->netTotal = $netTotal;
+                    // echo '<pre>';
+                    // print_r($model->netTotal);die;
+                    if($model->save(false)){
+                        foreach($details as $detail){
                             $productInfo = ProductInfo::model()->findByAttributes(['name' => $detail->rule]);
                             if(!empty($productInfo)){
                                 $orderItem = new OrderLineItem();
@@ -1016,31 +1024,24 @@ class CalldatarecordsController extends Controller
                                 $orderItem->product_id = $productInfo['product_id'];
                                 $orderItem->product_sku = $productInfo['sku'];
                                 $orderItem->created_at = date('Y-m-d H:i:s');
-
-                                if($orderItem->save(false)){
-                                    $orderPayment = new OrderPayment();
-                                    $orderPayment->order_info_id = $model->order_info_id;
-                                    $orderPayment->total = $model->netTotal;
-                                    $orderPayment->payment_mode = 2;
-                                    $orderPayment->payment_status = 2;
-                                    $orderPayment->payment_date = date('Y-m-d H:i:s');
-                                    $orderPayment->created_at = date('Y-m-d H:i:s');
-                                    $orderPayment->transaction_mode = 'Bank Transfer';
-                                    $orderPayment->denomination_id = 1;
-                                    if($orderPayment->save(false)){
-                                        $res = [
-                                            'status' => 1,
-                                            'message' => 'Order created successfully.'
-                                        ];
-                                    }
-                                }
+                                $orderItem->save(false);
                             }
-                        }else{
-                            $res = [
-                                'status' => 0,
-                                'message' => 'Order not created.'
-                            ];
                         }
+                    }    
+                    $orderPayment = new OrderPayment();
+                    $orderPayment->order_info_id = $model->order_info_id;
+                    $orderPayment->total = $model->netTotal;
+                    $orderPayment->payment_mode = 2;
+                    $orderPayment->payment_status = 2;
+                    $orderPayment->payment_date = date('Y-m-d H:i:s');
+                    $orderPayment->created_at = date('Y-m-d H:i:s');
+                    $orderPayment->transaction_mode = 'Bank Transfer';
+                    $orderPayment->denomination_id = 1;
+                    if($orderPayment->save(false)){
+                        $res = [
+                            'status' => 1,
+                            'message' => 'Order created successfully.'
+                        ];
                     }
                 }
             }
