@@ -199,7 +199,11 @@ $admin = Yii::app()->params['mandatoryFields']['admin_id'];
 						'name' => 'rank',
 						'value' => function($model){
 							$fieldValue = Rank::model()->findByAttributes(['id' => $model->rank ]);
-							return $fieldValue->name;
+							if(!empty($fieldValue)){
+								return $fieldValue->name;
+							}else{
+								return $model->rank;
+							}
 						}
 					],
 				),

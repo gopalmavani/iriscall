@@ -43,9 +43,39 @@ $this->pageTitle = 'Invoice details';
     <br>
     <div class="row">
         <button class="btn btn-primary pull-right" style="margin-right: 10px;">Generate Invoice</button>
-        <button class="btn btn-primary pull-right" style="margin-right: 10px;">Generate Order</button>
+        <button class="btn btn-primary pull-right" id="generateorder" style="margin-right: 10px;">Generate Order</button>
     </div>
     <div class="row">
         <br>
     </div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    var details = '<?php echo json_encode($details) ?>';
+    var org_id = "<?php echo $org_id ?>";
+
+    $('#generateorder').click(function(){
+        $.ajax({
+            url: "generateorder",
+            type: "POST",
+            data: {
+                details: details,
+                org_id: org_id
+            },
+            success: function (response) {
+                var resp = JSON.parse(response);
+                if(resp['status'] == 1){
+                    toastr.success(resp['message']);
+                } else {
+                    toastr.warning(resp['message']);
+                }
+            },
+            error: function(xhr, status,error){
+                console.log(error);
+                toastr.error('Something went wrong.');
+            }
+        });
+    });
+});
+</script>
