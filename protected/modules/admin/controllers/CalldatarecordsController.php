@@ -183,7 +183,8 @@ class CalldatarecordsController extends Controller
             }
             array_push($data_array,['is_min'=>false,'rule'=>'Setup International call','min'=>$intenational_total_time,'total_time'=>$intenational_total_time,'cost'=>'0.100']);
             $this->render('invoicedetail',[
-                'details'=>$data_array
+                'details'=>$data_array,
+                'org_id' => $org_id
             ]);
         }
         $this->render('createinvoice',[
@@ -484,7 +485,7 @@ class CalldatarecordsController extends Controller
             'message' => 'Cost calculation completed.'
         ];
 
-        echo json_encode($res);        
+        echo json_encode($res);      
     }
 
     /**
@@ -969,6 +970,82 @@ class CalldatarecordsController extends Controller
             "data" => $data   // total data array
         );
         echo json_encode($json_data);
+    }
+
+    public function actionGenerateOrder()
+    {
+
+        if(Yii::app()->request->isPostRequest){
+            if(isset($_POST['org_id']) && $_POST['org_id'] !=''){
+                $org_id = $_POST['org_id'];
+                $orgInfo = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
+
+                if(isset($_POST['details']) && $_POST['details'] !=''){
+                    $details = json_decode($_POST['details']);
+                    foreach($details as $detail){
+                        if(!empty($detail->min) && $detail->min > 0){
+                            $model = new OrderInfo;
+                            //Get Latest order ID
+                            $Order = OrderInfo::model()->find(array('order' => 'order_id DESC'));
+                            if ($Order == '') {
+                                $model->order_id = 1;
+                            } else {
+                                $model->order_id = $Order['order_id'] + 1;
+                            }
+                            $model->user_id = $orgInfo['user_id'];
+                            $model->order_status = 2;
+                            $model->company = $orgInfo['name'];
+                            $model->user_name = $orgInfo['name'];
+                            $model->created_date = date('Y-m-d H:i:s');
+                            $model->vat = 0;
+                            $model->discount = 0;
+                            $orderTotal = $detail->min * $detail->cost;
+                            $model->orderTotal = $orderTotal;
+                            $netTotal = $orderTotal - $model->discount + $model->vat;
+                            $model->netTotal = $netTotal;
+                            // echo '<pre>';
+                            // print_r($model->netTotal);die;
+                            $model->save(false);
+                            $productInfo = ProductInfo::model()->findByAttributes(['name' => $detail->rule]);
+                            if(!empty($productInfo)){
+                                $orderItem = new OrderLineItem();
+                                $orderItem->order_info_id = $model->order_info_id;
+                                $orderItem->product_name = $productInfo['name'];
+                                $orderItem->item_qty = $detail->min;
+                                $orderItem->item_price = $detail->cost;
+                                $orderItem->product_id = $productInfo['product_id'];
+                                $orderItem->product_sku = $productInfo['sku'];
+                                $orderItem->created_at = date('Y-m-d H:i:s');
+
+                                if($orderItem->save(false)){
+                                    $orderPayment = new OrderPayment();
+                                    $orderPayment->order_info_id = $model->order_info_id;
+                                    $orderPayment->total = $model->netTotal;
+                                    $orderPayment->payment_mode = 2;
+                                    $orderPayment->payment_status = 2;
+                                    $orderPayment->payment_date = date('Y-m-d H:i:s');
+                                    $orderPayment->created_at = date('Y-m-d H:i:s');
+                                    $orderPayment->transaction_mode = 'Bank Transfer';
+                                    $orderPayment->denomination_id = 1;
+                                    if($orderPayment->save(false)){
+                                        $res = [
+                                            'status' => 1,
+                                            'message' => 'Order created successfully.'
+                                        ];
+                                    }
+                                }
+                            }
+                        }else{
+                            $res = [
+                                'status' => 0,
+                                'message' => 'Order not created.'
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+        echo json_encode($res);
     }
 }
 
