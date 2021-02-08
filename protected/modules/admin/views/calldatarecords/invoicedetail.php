@@ -42,7 +42,7 @@ $this->pageTitle = 'Invoice details';
     </table>
     <br>
     <div class="row">
-        <button class="btn btn-primary pull-right" style="margin-right: 10px;">Generate Invoice</button>
+        <!-- <button class="btn btn-primary pull-right" style="margin-right: 10px;">Generate Invoice</button> -->
         <button class="btn btn-primary pull-right" id="generateorder" style="margin-right: 10px;">Generate Order</button>
     </div>
     <div class="row">
@@ -67,6 +67,10 @@ $(document).ready(function () {
                 var resp = JSON.parse(response);
                 if(resp['status'] == 1){
                     toastr.success(resp['message']);
+                    var url = "<?php echo Yii::app()->createUrl('admin/orderInfo/view/').'/'; ?>";
+                    var order_info_id = resp['order_info_id'];
+                    url += order_info_id;
+                    window.location = url;
                 }else {
                     toastr.warning(resp['message']);
                 }

@@ -980,19 +980,22 @@ class CalldatarecordsController extends Controller
                 $details = json_decode($_POST['details']);
                 $org_id = $_POST['org_id'];
                 $orgInfo = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
-                $total = [];
+                //$total = [];
+                $orderTotal = 0;
                 foreach($details as $value){
                     if(!empty($value->min) && $value->min > 0){
-                        $total[] = $value->min * $value->cost;
+                        //$total[] = $value->min * $value->cost;
+                        $orderTotal += $value->min * $value->cost;
                     }else{
                         $res = [
                             'status' => 0,
-                            'message' => 'Order not created.'
+                            'message' => 'Zero quantity order can not be created.'
                         ];
                     }
                 }
-                if(!empty($total) && $total != ''){
-                    $orderTotal = $total[0] + $total[1] + $total[2] + $total[3];
+                if($orderTotal != 0){
+                    //$orderTotal = $total[0] + $total[1] + $total[2] + $total[3];
+
                     //Get Latest order ID
                     $Order = OrderInfo::model()->find(array('order' => 'order_id DESC'));
                     if ($Order == '') {
@@ -1027,7 +1030,7 @@ class CalldatarecordsController extends Controller
                                 $orderItem->save(false);
                             }
                         }
-                    }    
+                    }
                     $orderPayment = new OrderPayment();
                     $orderPayment->order_info_id = $model->order_info_id;
                     $orderPayment->total = $model->netTotal;
@@ -1040,7 +1043,8 @@ class CalldatarecordsController extends Controller
                     if($orderPayment->save(false)){
                         $res = [
                             'status' => 1,
-                            'message' => 'Order created successfully.'
+                            'message' => 'Order created successfully.',
+                            'order_info_id' => $model->order_info_id
                         ];
                     }
                 }
