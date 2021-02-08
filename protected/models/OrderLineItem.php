@@ -72,6 +72,7 @@ class OrderLineItem extends CActiveRecord
 			'order_line_item_id' => 'Order Line Item',
 			'order_info_id' => 'Order Info',
 			'product_name' => 'Product Name',
+			'total_time' => 'Total Time',
 			'item_qty' => 'Item Qty',
 			'item_disc' => 'Item Disc',
 			'item_price' => 'Item Price',
@@ -103,6 +104,7 @@ class OrderLineItem extends CActiveRecord
 		$criteria->compare('order_line_item_id',$this->order_line_item_id);
 		$criteria->compare('order_info_id',$this->order_info_id);
 		$criteria->compare('product_name',$this->product_name,true);
+		$criteria->compare('total_time',$this->total_time,true);
 		$criteria->compare('item_qty',$this->item_qty);
 		$criteria->compare('item_disc',$this->item_disc,true);
 		$criteria->compare('item_price',$this->item_price,true);

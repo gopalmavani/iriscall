@@ -117,7 +117,7 @@
 										$count++;
 									?>
 										<tr class="addMoreProduct">
-										<td class="col-md-6">
+										<!-- <td class="col-md-6">
 											<div class="col-md-12">
 												<div class="form-group">
 													<?php
@@ -125,24 +125,46 @@
 													echo $form->dropDownList($item, 'product_id[]', $productList, [
 														'prompt' => 'Select Product',
 														'class' => 'form-control',
-														'disabled'=>'disabled',
+														//'disabled'=>'disabled',
                                                         'options' => array($item['product_id'] =>array('selected'=>true))
 													]);
 													?>
 												</div>
 											</div>
+										</td> -->
+										<?php if(!empty($item['total_time'])){
+                                            $convert = strtotime($item['total_time']);
+                                            $hour = date('h', $convert);
+                                            $minute = date('i', $convert);
+                                            $time = $hour.' hours and '.$minute.' minutes'; 
+										?>
+										<td class="col-md-6">
+											<div class="col-md-12">
+												<div class="form-group <?php echo $item->hasErrors('product_name') ? 'has-error' : ''; ?>">
+													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="OrderLineItem_product_id" type="textarea" value="<?php  echo $item->attributes['product_name'].' '.$time; ?>" />
+<!--													-->												</div>
+											</div>
 										</td>
+										<?php } else { ?>
+											<td class="col-md-6">
+											<div class="col-md-12">
+												<div class="form-group <?php echo $item->hasErrors('product_name') ? 'has-error' : ''; ?>">
+													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="OrderLineItem_product_id" value="<?php  echo $item->attributes['product_name']; ?>" type="text">
+<!--													-->												</div>
+											</div>
+										</td>
+										<?php } ?>
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $item->hasErrors('item_qty') ? 'has-error' : ''; ?>">
-													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" value="<?php echo $item->attributes['item_qty'];  ?>" type="text">
+													<input autofocus="autofocus" class="form-control" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" value="<?php echo $item->attributes['item_qty'];  ?>" type="text">
 <!--													-->												</div>
 											</div>
 										</td>
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" value="<?php echo $item->attributes['item_disc'];  ?>" type="text">
+													<input autofocus="autofocus" class="form-control" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" value="<?php echo $item->attributes['item_disc'];  ?>" type="text">
 													<?php //echo $form->textField($orderItem, 'item_disc[]', array('autofocus' => 'on','readonly' => 'readonly', 'class' => 'form-control', 'placeholder' => 'Discount')); ?>
 												</div>
 											</div>
@@ -150,7 +172,7 @@
 										<td class="col-md-2 text-center">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" value="<?php echo $item->attributes['item_price'];  ?>" type="text">
+													<input autofocus="autofocus" class="form-control" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" value="<?php echo $item->attributes['item_price'];  ?>" type="text">
 <!--													-->												</div>
 											</div>
 										</td>
