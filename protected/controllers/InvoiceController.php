@@ -1,5 +1,5 @@
 <?php
-
+require_once 'vendor/autoload.php';
 class InvoiceController extends CController
 {
 
@@ -35,11 +35,7 @@ class InvoiceController extends CController
 
         $html = $this->render('generateinvoice', array('data' => $data), true);
 
-        # mPDF
-        $mPDF1 = Yii::app()->ePdf->mpdf();
-
-        # You can easily override default constructor's params
-        $mPDF1 = Yii::app()->ePdf->mpdf('utf-8', 'A4', 9, 'oswald');
+        $mPDF1 = new \Mpdf\Mpdf();
 
         //$mPDF1->SetHTMLHeader('<div style="text-align: right; font-weight: bold;">Invoice - OD'.$data['orderInfo']->order_id.'</div>');
 
@@ -51,7 +47,7 @@ class InvoiceController extends CController
         
         <td width="33%" align="center" style="font-weight: bold; font-style: italic;">{PAGENO}/{nbpg}</td>
         
-        <td width="33%" style="text-align: right; ">MMC Global</td>
+        <td width="33%" style="text-align: right; ">Iriscall</td>
         
         </tr></table>
         
@@ -70,8 +66,7 @@ class InvoiceController extends CController
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/CYL Logo.png'));
 
         # Outputs ready PDF
-        $mPDF1->Output('OD'.$data['orderInfo']->order_id.'_invoice.pdf', 'I');
-
+        $mPDF1->Output($data['orderInfo']->invoice_number.'-'.$data['orderInfo']->user_name.'.pdf', 'I');
     }
 
     public function actionView($id)

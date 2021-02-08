@@ -1,5 +1,6 @@
 {
     "require": {
-        "pusher/pusher-php-server": "^3.0"
+        "pusher/pusher-php-server": "^3.0",
+        "mpdf/mpdf": "^8.0"
     }
 }
