@@ -351,12 +351,12 @@ class OrderHelper extends CApplicationComponent
         OrderHelper::orderConfirmationMail($model->order_info_id);
         //OrderHelper::updateUserStatus($orderId);
 
-        $cbm_accounts = CbmAccounts::model()->findAllByAttributes(['email_address' => $model->email]);
-        foreach ($cbm_accounts as $cbm_account){
-            if (isset($cbm_account->login)) {
-                OrderHelper::generateCBMNodes($cbm_account->login);
-            }
-        }
+        // $cbm_accounts = CbmAccounts::model()->findAllByAttributes(['email_address' => $model->email]);
+        // foreach ($cbm_accounts as $cbm_account){
+        //     if (isset($cbm_account->login)) {
+        //         OrderHelper::generateCBMNodes($cbm_account->login);
+        //     }
+        // }
     }
 
     /*
