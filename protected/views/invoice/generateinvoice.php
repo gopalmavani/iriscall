@@ -16,7 +16,7 @@ if ($data == 0) { ?>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td width="50%" style="position:relative;">
-                            <img style="top: -146px; width: 400px" src="<?php echo Yii::app()->getBaseUrl(true).'/images/logos/logo-8-inverse.png';?>"/>
+                            <img style="top: -146px; width: 400px" src="<?php echo Yii::app()->getBaseUrl(true).'/images/logos/iriscall-logo.svg';?>"/>
                         </td>
                         <td align="right">
                             <h1 style="display: block; font-size: 60px; line-height: 80px !important; margin:0; font-weight: 700;color: #2f61a6;">INVOICE</h1>
@@ -53,7 +53,7 @@ if ($data == 0) { ?>
                 <table style="padding:40px 0;" width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td width="50%">
-                            <h3 style="color: #2f61a6;font-size: 36px;margin-bottom: 18px;">Micromaxcash</h3>
+                            <h3 style="color: #2f61a6;font-size: 36px;margin-bottom: 18px;">Iricall</h3>
                             <p style="font-size:18px;line-height: 20px;">
                                 Force International CVBA<br>
                                 Olenseweg 375<br>
@@ -164,7 +164,7 @@ if ($data == 0) { ?>
             </td>
         </tr>
         <tr><td style="background: #eee;padding: 20px; text-align:center; color:#000; font-size: 20px">
-                MMC is a brand name of <a href="http://force.international/" style="font-weight:bold; color:#000; text-decoration:none;" target="_blank">Force International CVBA</a>
+                Iriscall is a brand name of <a href="http://force.international/" style="font-weight:bold; color:#000; text-decoration:none;" target="_blank">Force International CVBA</a>
             </td></tr>
     </table>
 <?php } ?>
