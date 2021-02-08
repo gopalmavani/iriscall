@@ -1030,7 +1030,7 @@ class CalldatarecordsController extends Controller
                                 $orderItem->save(false);
                             }
                         }
-                    }    
+                    }
                     $orderPayment = new OrderPayment();
                     $orderPayment->order_info_id = $model->order_info_id;
                     $orderPayment->total = $model->netTotal;

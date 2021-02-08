@@ -317,18 +317,18 @@ class OrderInfoController extends CController
                         $model->invoice_date = date('Y-m-d H:i:s');
 
                         //Add Licenses to CBM Order Licenses
-                        foreach ($orderItem as $item) {
-                            $orderLicense = new CbmOrderLicenses();
-                            $orderLicense->user_id = $userInfo->user_id;
-                            $orderLicense->order_info_id = $model->order_info_id;
-                            $orderLicense->product_id = $item->product_id;
-                            $orderLicense->product_name = $item->product_name;
-                            $orderLicense->licenses = $item->item_qty;
-                            $orderLicense->modified_date = date('Y-m-d H:i:s');
-                            $orderLicense->save(false);
+                        // foreach ($orderItem as $item) {
+                        //     $orderLicense = new CbmOrderLicenses();
+                        //     $orderLicense->user_id = $userInfo->user_id;
+                        //     $orderLicense->order_info_id = $model->order_info_id;
+                        //     $orderLicense->product_id = $item->product_id;
+                        //     $orderLicense->product_name = $item->product_name;
+                        //     $orderLicense->licenses = $item->item_qty;
+                        //     $orderLicense->modified_date = date('Y-m-d H:i:s');
+                        //     $orderLicense->save(false);
 
-                            ServiceHelper::modifyCBMUserLicenses($userInfo->user_id, $userInfo->email, $item->item_qty, $item->item_qty);
-                        }
+                        //     ServiceHelper::modifyCBMUserLicenses($userInfo->user_id, $userInfo->email, $item->item_qty, $item->item_qty);
+                        // }
                     }
                 } else {
                     $model->invoice_number = '';
