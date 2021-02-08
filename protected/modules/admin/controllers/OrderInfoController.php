@@ -263,9 +263,9 @@ class OrderInfoController extends CController
                 }*/
 
                 // Update or create Order Line Item
-                /*$orderItemArray = $_POST['OrderLineItem'];
-                $_POST['OrderLineItem']['product_name'][0] = $_POST['OrderLineItem']['product_id'][0];
-                $this->saveOrderItem($_POST['OrderLineItem'],$model->order_info_id);*/
+                // $orderItemArray = $_POST['OrderLineItem'];
+                // $_POST['OrderLineItem']['product_name'][0] = $_POST['OrderLineItem']['product_id'][0];
+                // $this->saveOrderItem($_POST['OrderLineItem'],$model->order_info_id);
 
                 // Update Order All item price,discount,total,net total
                 /*$totalArray = $this->getOrderAllTotal($_POST['OrderLineItem']);

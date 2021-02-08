@@ -1020,8 +1020,11 @@ class CalldatarecordsController extends Controller
                             $productInfo = ProductInfo::model()->findByAttributes(['name' => $detail->rule]);
                             if(!empty($productInfo)){
                                 $orderItem = new OrderLineItem();
+                                if($detail->is_min == 1){
+                                    $orderItem->total_time = $detail->total_time;
+                                }
                                 $orderItem->order_info_id = $model->order_info_id;
-                                $orderItem->product_name = $productInfo['name'];
+                                $orderItem->product_name = $detail->rule;
                                 $orderItem->item_qty = $detail->min;
                                 $orderItem->item_price = $detail->cost;
                                 $orderItem->product_id = $productInfo['product_id'];
