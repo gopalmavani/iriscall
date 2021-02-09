@@ -1021,10 +1021,15 @@ class CalldatarecordsController extends Controller
                             if(!empty($productInfo)){
                                 $orderItem = new OrderLineItem();
                                 if($detail->is_min == 1){
-                                    $orderItem->total_time = $detail->total_time;
+                                    $convert = strtotime($detail->total_time);
+                                    $hour = date('h', $convert);
+                                    $minute = date('i', $convert);
+                                    $time = $hour.' hours and '.$minute.' minutes'; 
+                                    $orderItem->product_name = $detail->rule.' '.$time;
+                                }else{
+                                    $orderItem->product_name = $detail->rule;
                                 }
                                 $orderItem->order_info_id = $model->order_info_id;
-                                $orderItem->product_name = $detail->rule;
                                 $orderItem->item_qty = $detail->min;
                                 $orderItem->item_price = $detail->cost;
                                 $orderItem->product_id = $productInfo['product_id'];

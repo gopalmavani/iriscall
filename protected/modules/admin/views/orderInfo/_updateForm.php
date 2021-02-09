@@ -107,7 +107,7 @@
 										<th class="text-center">Qty</th>
 										<th class="text-center">Discount</th>
 										<th class="text-center">Price</th>
-										<th class="text-center"></th>
+										<th class="text-center">Total</th>
 									</tr>
 									</thead>
 									<tbody class="table" id="productControl">
@@ -132,47 +132,46 @@
 												</div>
 											</div>
 										</td> -->
-										<?php if(!empty($item['total_time'])){
-                                            $convert = strtotime($item['total_time']);
-                                            $hour = date('h', $convert);
-                                            $minute = date('i', $convert);
-                                            $time = $hour.' hours and '.$minute.' minutes'; 
-										?>
-										<td class="col-md-6">
-											<div class="col-md-12">
-												<div class="form-group <?php echo $item->hasErrors('product_name') ? 'has-error' : ''; ?>">
-													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="OrderLineItem_product_id" type="text" value="<?php  echo $item->attributes['product_name'].' '.$time; ?>" />
-<!--													-->												</div>
-											</div>
-										</td>
-										<?php } else { ?>
-											<td class="col-md-6">
+										
+											<td class="col-md-5">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $item->hasErrors('product_name') ? 'has-error' : ''; ?>">
 													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="OrderLineItem_product_id" value="<?php  echo $item->attributes['product_name']; ?>" type="text">
 <!--													-->												</div>
 											</div>
 										</td>
-										<?php } ?>
+										
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $item->hasErrors('item_qty') ? 'has-error' : ''; ?>">
-													<input autofocus="autofocus" class="form-control" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" value="<?php echo $item->attributes['item_qty'];  ?>" type="text">
+													<input autocomplete="off" autofocus="autofocus" class="form-control" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" value="<?php echo $item->attributes['item_qty'];  ?>" type="text">
 <!--													-->												</div>
 											</div>
 										</td>
-										<td class="col-md-2">
+										<td class="col-md-1">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autofocus="autofocus" class="form-control" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" value="<?php echo $item->attributes['item_disc'];  ?>" type="text">
+													<input autocomplete="off" autofocus="autofocus" class="form-control" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" value="<?php echo $item->attributes['item_disc'];  ?>" type="text">
 													<?php //echo $form->textField($orderItem, 'item_disc[]', array('autofocus' => 'on','readonly' => 'readonly', 'class' => 'form-control', 'placeholder' => 'Discount')); ?>
 												</div>
 											</div>
 										</td>
-										<td class="col-md-2 text-center">
+										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autofocus="autofocus" class="form-control" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" value="<?php echo $item->attributes['item_price'];  ?>" type="text">
+													<input autocomplete="off" autofocus="autofocus" class="form-control" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" value="<?php echo $item->attributes['item_price'];  ?>" type="text">
+<!--													-->												</div>
+											</div>
+										</td>
+										<?php
+											$qty = $item->attributes['item_qty'];
+											$price =  $item->attributes['item_price'];
+											$total = $qty * $price;
+										?>
+										<td class="col-md-2">
+											<div class="col-md-12">
+												<div class="form-group ">
+													<input autofocus="autofocus" class="form-control" style="width: 100%;" readonly="readonly" placeholder="Total Price" value="<?php echo $total;  ?>" type="text">
 <!--													-->												</div>
 											</div>
 										</td>
@@ -195,19 +194,19 @@
 									<?php } ?>
 									<tr id="beforePrice">
 										<td colspan="4" class="text-right"><strong>Total Price:</strong></td>
-										<td class="text-right"  id="totalPrice">&euro;<?php echo $model['orderTotal']; ?></td>
+										<td class="text-right"  id="totalPrice"><?php echo $model['orderTotal']; ?></td>
 									</tr>
 									<tr>
 										<td colspan="4" class="text-right"><strong>Total Discount:</strong></td>
-										<td class="text-right"  id="totalDiscount">&euro;<?php echo $model['discount']; ?></td>
+										<td class="text-right"  id="totalDiscount"><?php echo $model['discount']; ?></td>
 									</tr>
 									<tr>
                                         <td colspan="4" class="text-right"><strong>Vat@<?php echo  $model['vat_percentage']; ?>%:</strong></td>
-                                        <td class="text-right"  id="vat_amount">&euro;<?php echo $model['vat']; ?></td>
+                                        <td class="text-right"  id="vat_amount"><?php echo $model['vat']; ?></td>
                                     </tr>
 									<tr class="success">
 										<td colspan="4" class="text-right text-uppercase"><strong>Net Total:</strong></td>
-										<td class="text-right"><strong  id="net_amount">&euro;<?php echo $model['netTotal']; ?></strong></td>
+										<td class="text-right"><strong  id="net_amount"><?php echo $model['netTotal']; ?></strong></td>
 									</tr>
 									</tbody>
 								</table>
@@ -283,7 +282,7 @@
                                                     <td class="col-md-2">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <input autofocus="autofocus" class="form-control" placeholder="Reference" name="OrderPayment[ref_id][]" id="OrderPayment_ref_id" value="<?php echo $item->attributes['payment_ref_id'];  ?>" type="text">
+                                                                <input autocomplete="off" autofocus="autofocus" class="form-control" placeholder="Reference" name="OrderPayment[ref_id][]" id="OrderPayment_ref_id" value="<?php echo $item->attributes['payment_ref_id'];  ?>" type="text">
                                                                 <?php /*echo $form->textFieldControlGroup($orderPayment, 'payment_ref_id', array('autofocus' => 'on', 'class' => 'form-control')); */?>
                                                             </div>
                                                         </div>
@@ -316,7 +315,7 @@
                                                     <td class="col-md-2">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <input autofocus="autofocus" class="form-control" readonly="readonly" placeholder="Amount" name="OrderPayment[amount][]" id="OrderPayment_amount" value="<?php echo $item->attributes['total'];  ?>" type="text">
+                                                                <input autofocus="autofocus" class="form-control" placeholder="Amount" name="OrderPayment[amount][]" id="OrderPayment_amount" value="<?php echo $item->attributes['total'];  ?>" type="text">
                                                             </div>
                                                         </div>
                                                     </td>

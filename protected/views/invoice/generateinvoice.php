@@ -1,3 +1,4 @@
+
 <?php
 setlocale(LC_MONETARY, 'nl_NL.UTF-8');
 if ($data == 0) { ?>
@@ -5,7 +6,7 @@ if ($data == 0) { ?>
         <div class="block-content block-content-narrow">
             <div class="h1 text-center push-30-t push-30 hidden-print">NO INVOICE FOUND</div>
             <hr class="hidden-print">
-
+            
         </div>
     </div>
     <?php
@@ -41,7 +42,7 @@ if ($data == 0) { ?>
                         <td align="right">
                             <h4 style="margin-bottom: 10px; font-size:30px; color: #0b0b0b; text-align: right;">PAYMENT DETAILS</h4>
                             <?php foreach ($data['orderPayment'] as $datum) { ?>
-                                <p style="font-size: 20px; line-height: 20px;"><?php print($datum->transaction_mode.' ('.money_format('%(#1n',$datum->total).')'); ?></p>
+                                <p style="font-size: 20px; line-height: 20px;"><?php print($datum->transaction_mode.' (&euro; '.money_format('%(#1n',$datum->total).')'); ?></p>
                             <?php } ?>
                         </td>
                     </tr>
@@ -101,11 +102,11 @@ if ($data == 0) { ?>
                                         <?php echo $item->product_name; ?>
                                     </h4>
                                     <!--<p style="font-size:14px;"><?/*= $product->description; */?></p>--></td>
-                                <td align="center" bgcolor="#f7f7f8" style="font-size: 24px;"><?php echo money_format('%(#1n',5); ?></td>
+                                <td align="center" bgcolor="#f7f7f8" style="font-size: 24px;">&euro; <?= $item->item_price; ?></td>
                                 <td align="center" bgcolor="#f7f7f8" style="font-size: 24px;"><?= $item->item_qty; ?></td>
-<!--                                --><?php //$total_amount = $item->item_qty * $item->item_price ?>
-                                <td align="right" style="padding-right: 15px; font-size: 24px;" bgcolor="#ededee" ><strong style="font-size: 18px;color: #495b64;"><?php echo money_format('%(#1n',$data['orderInfo']->orderTotal); ?></strong></td>
-                                <?php $subtotal[] = $data['orderInfo']->orderTotal; ?>
+<!--                                --><?php $total_amount = $item->item_qty * $item->item_price ?>
+                                <td align="right" style="padding-right: 15px; font-size: 24px;" bgcolor="#ededee" ><strong style="font-size: 18px;color: #495b64;">&euro; <?= $total_amount; ?></strong></td>
+                                <?php $subtotal = $data['orderInfo']->orderTotal; ?>
                             </tr>
 
                         <?php } ?>
@@ -113,12 +114,12 @@ if ($data == 0) { ?>
                         <tr class="sub-total">
                             <td>&nbsp;</td>
                             <td class="col-label" colspan="2" style="background-color: #ededee; padding:15px; color:#495b65;font-size:26px;">Discount</td>
-                            <td class="col-value" style="background-color: #ededee; color:#495b65;" align="right"><strong style="font-size: 24px;"><?= money_format('%(#1n',($data['orderInfo']->discount + $data['orderInfo']->voucher_discount)); ?></strong></td>
+                            <td class="col-value" style="background-color: #ededee; color:#495b65;" align="right"><strong style="font-size: 24px;">&euro; <?= money_format('%(#1n',($data['orderInfo']->discount + $data['orderInfo']->voucher_discount)); ?></strong></td>
                         </tr>
                         <tr class="sub-total">
                             <td>&nbsp;</td>
                             <td class="col-label" colspan="2" style="background-color: #ededee; padding:15px; color:#495b65;font-size:26px;">Sub Total</td>
-                            <td class="col-value" bgcolor="#ededee" align="right" style="background-color: #ededee;color:#495b65;"><strong style="font-size: 24px;"><?= money_format('%(#1n',(array_sum($subtotal) - ($data['orderInfo']->discount + $data['orderInfo']->voucher_discount))); ?></strong></td>
+                            <td class="col-value" bgcolor="#ededee" align="right" style="background-color: #ededee;color:#495b65;"><strong style="font-size: 24px;">&euro; <?= money_format('%(#1n',($subtotal - ($data['orderInfo']->discount + $data['orderInfo']->voucher_discount))); ?></strong></td>
                         </tr>
                         <tr class="sub-total">
                             <td>&nbsp;</td>
@@ -135,12 +136,12 @@ if ($data == 0) { ?>
                                 ?>
                             <td class="col-label" colspan="2" style="background-color: #ededee; padding:15px; color:#495b65;font-size:26px;">Vat Rate<?php echo $vatpercentage;?></td>
                             <?php }?>
-                            <td class="col-value" bgcolor="#ededee" style="background-color: #ededee;color:#495b65;" align="right"><strong style="font-size: 24px;"><?php echo money_format('%(#1n',$data['orderInfo']->vat); ?></strong></td>
+                            <td class="col-value" bgcolor="#ededee" style="background-color: #ededee;color:#495b65;" align="right"><strong style="font-size: 24px;">&euro; <?php echo money_format('%(#1n',$data['orderInfo']->vat); ?></strong></td>
                         </tr>
                         <tr class="total">
                             <td>&nbsp;</td>
-                            <td class="col-label" colspan="2" style="background-color: #ededee; padding:15px; color:#495b65;font-size:26px;"><strong style="color:#2c5793; font-size:18px;">Total</strong></td>
-                            <td class="col-value" align="right"><strong style="color:#2c5793;font-size:30px;"><?php echo money_format('%(#1n',$data['orderInfo']->netTotal); ?></strong></td>
+                            <td class="col-label" colspan="2" style="background-color: #ededee; padding:15px; color:#495b65;font-size:26px;"><strong style="color:#2c5793; font-size:26px;">Total</strong></td>
+                            <td class="col-value" align="right"><strong style="color:#2c5793;font-size:30px;">&euro; <?php echo money_format('%(#1n',$data['orderInfo']->netTotal); ?></strong></td>
                         </tr>
                         </tbody>
                     </table>
@@ -150,9 +151,18 @@ if ($data == 0) { ?>
         <tr>
             <td align="center" style="padding: 30px 0;"><p style="color: #2f61a6;font-size: 30px;line-height: 36px;">THANK YOU VERY MUCH FOR DOING BUSINESS WITH US.</p></td>
         </tr>
+        <tr><td style="background: #eee;padding: 20px; text-align:center; color:#000; font-size: 20px">
+        We kindly request you to transfer the amount owed of <span>&euro; <b><?php echo $data['orderInfo']->netTotal; ?></b></span> within the due date to IBAN BE85 0689 0467 8106 in the name of IrisCall, stating the invoice number.<br><br>
+
+        In case of non-payment by the due date, IrisCall will send you or the paying third party designated by you a reminder. From the second reminder, the customer will owe a reminder fee of EUR 12.10 including VAT to IrisCall. In addition, after termination of the services, the invoices that are not paid on time will be increased with conventional default interest at 10% on an annual basis, calculated from the due date until full payment, as well as with a 15% damage clause on the outstanding amounts with a minimum of 50.00 euros incl. VAT, without prejudice to IrisCall's right to claim a higher compensation, subject to proof of higher actual damage.<br><br>
+
+        If you have any questions about the invoice or payment, please contact ilka.vandebroeck@iriscall.be.<br><br>
+
+        IrisCall is a trade name of Force International CVBA.
+            </td></tr>
         <tr>
             <td>
-                <table width="100%" border="0" style="padding:20px 0; border-top:1px solid #b8babe;" cellspacing="0" cellpadding="0">
+                <table width="100%" border="0" style="padding:20px 0; margin-top: 115%; border-top:1px solid #b8babe;" cellspacing="0" cellpadding="0">
                     <tbody>
                     <tr>
                         <td width="35%" align="center" style="padding:20px;">
