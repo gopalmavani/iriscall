@@ -141,7 +141,7 @@
 										<td class="col-md-6">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $item->hasErrors('product_name') ? 'has-error' : ''; ?>">
-													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="OrderLineItem_product_id" type="textarea" value="<?php  echo $item->attributes['product_name'].' '.$time; ?>" />
+													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="OrderLineItem_product_id" type="text" value="<?php  echo $item->attributes['product_name'].' '.$time; ?>" />
 <!--													-->												</div>
 											</div>
 										</td>
@@ -195,19 +195,19 @@
 									<?php } ?>
 									<tr id="beforePrice">
 										<td colspan="4" class="text-right"><strong>Total Price:</strong></td>
-										<td class="text-right"  id="totalPrice"><?php echo $model['orderTotal']; ?></td>
+										<td class="text-right"  id="totalPrice">&euro;<?php echo $model['orderTotal']; ?></td>
 									</tr>
 									<tr>
 										<td colspan="4" class="text-right"><strong>Total Discount:</strong></td>
-										<td class="text-right"  id="totalDiscount"><?php echo $model['discount']; ?></td>
+										<td class="text-right"  id="totalDiscount">&euro;<?php echo $model['discount']; ?></td>
 									</tr>
 									<tr>
                                         <td colspan="4" class="text-right"><strong>Vat@<?php echo  $model['vat_percentage']; ?>%:</strong></td>
-                                        <td class="text-right"  id="vat_amount"><?php echo $model['vat']; ?></td>
+                                        <td class="text-right"  id="vat_amount">&euro;<?php echo $model['vat']; ?></td>
                                     </tr>
 									<tr class="success">
 										<td colspan="4" class="text-right text-uppercase"><strong>Net Total:</strong></td>
-										<td class="text-right"><strong  id="net_amount"><?php echo $model['netTotal']; ?></strong></td>
+										<td class="text-right"><strong  id="net_amount">&euro;<?php echo $model['netTotal']; ?></strong></td>
 									</tr>
 									</tbody>
 								</table>
@@ -316,7 +316,7 @@
                                                     <td class="col-md-2">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <input autofocus="autofocus" class="form-control" placeholder="Amount" name="OrderPayment[amount][]" id="OrderPayment_amount" value="<?php echo $item->attributes['total'];  ?>" type="text">
+                                                                <input autofocus="autofocus" class="form-control" readonly="readonly" placeholder="Amount" name="OrderPayment[amount][]" id="OrderPayment_amount" value="<?php echo $item->attributes['total'];  ?>" type="text">
                                                             </div>
                                                         </div>
                                                     </td>

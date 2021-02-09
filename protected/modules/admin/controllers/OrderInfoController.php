@@ -242,7 +242,7 @@ class OrderInfoController extends CController
         $orderItem = OrderLineItem::model()->findAllByAttributes(['order_info_id' => $model->order_info_id]);
         $orderPayment = OrderPayment::model()->findAllByAttributes(['order_info_id' => $model->order_info_id]);
         $userInfo = OrderInfo::model()->findByAttributes(['order_info_id' => $id]);
-
+        
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
         if (isset($_POST['OrderInfo']) && isset($_POST['OrderLineItem']) && isset($_POST['OrderPayment'])) {
@@ -261,17 +261,28 @@ class OrderInfoController extends CController
                         }
                     }
                 }*/
-
+                // Update Order Line Item
+                $orderItemAttributes = $_POST['OrderLineItem'];
+                $key = 0;
+                foreach ($orderItem as $orderItems){
+                    $orderItemtModel = OrderLineItem::model()->findByPk($orderItems->order_line_item_id);
+                    $orderItemtModel->item_qty = $orderItemAttributes['item_qty'][$key];
+                    $orderItemtModel->item_disc = $orderItemAttributes['item_disc'][$key];
+                    $orderItemtModel->item_price = $orderItemAttributes['item_price'][$key];
+                    $orderItemtModel->modified_at = date('Y-m-d H:i:s');
+                    if($orderItemtModel->save(false)){
+                        // Update Order All item price,discount,total,net total
+                        $totalArray = $this->getOrderAllTotal($_POST['OrderLineItem']);
+                        $model->orderTotal = $totalArray['orderTotal'];
+                        $model->discount = $totalArray['orderDiscount'];
+                        $model->netTotal = $totalArray['orderTotal'] + $model->vat;
+                    }
+                    $key++;
+                }
                 // Update or create Order Line Item
                 // $orderItemArray = $_POST['OrderLineItem'];
                 // $_POST['OrderLineItem']['product_name'][0] = $_POST['OrderLineItem']['product_id'][0];
                 // $this->saveOrderItem($_POST['OrderLineItem'],$model->order_info_id);
-
-                // Update Order All item price,discount,total,net total
-                /*$totalArray = $this->getOrderAllTotal($_POST['OrderLineItem']);
-                $model->orderTotal = $totalArray['orderTotal'];
-                $model->discount = $totalArray['orderDiscount'];
-                $model->netTotal = $totalArray['orderTotal'] + $_POST['OrderInfo']['vat'];*/
 
                 // Update Order Payment
 
@@ -281,7 +292,7 @@ class OrderInfoController extends CController
                     $orderPaymentModel->payment_mode = $orderPaymentAttributes['payment_mode'][$k];
                     $orderPaymentModel->payment_status = $orderPaymentAttributes['payment_status'][$k];
                     $orderPaymentModel->payment_ref_id = $orderPaymentAttributes['ref_id'][$k];
-                    $orderPaymentModel->total = $orderPaymentAttributes['amount'][$k];
+                    $orderPaymentModel->total = ($totalArray['orderTotal']) ? $totalArray['orderTotal'] : $orderPaymentAttributes['amount'][$k];
                     $orderPaymentModel->payment_date = $orderPaymentAttributes['payment_date'];
                     $orderPaymentModel->modified_at = date('Y-m-d H:i:s');
 
@@ -793,7 +804,12 @@ class OrderInfoController extends CController
         $itemDiscTotal = 0;
         foreach ($orderItemArray['item_price'] as $key => $item) {
             $itemPriceTotal += ($orderItemArray['item_price'][$key] * $orderItemArray['item_qty'][$key]);
-            $itemDiscTotal += ($orderItemArray['item_disc'][$key] * $orderItemArray['item_qty'][$key]);
+            if(!empty($orderItemArray['item_disc'][$key]) && $orderItemArray['item_disc'][$key] != ''){
+                $itemDiscTotal += ($orderItemArray['item_disc'][$key] * $orderItemArray['item_qty'][$key]);
+            }else{
+                $itemDiscTotal += 0;
+            }
+            
         }
         $result = [
             'orderTotal' => $itemPriceTotal,
