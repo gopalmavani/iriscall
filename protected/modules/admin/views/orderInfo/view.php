@@ -209,18 +209,8 @@ $id = $model->order_info_id;
                                 <tr>
                                     <td>
                                         <a href="<?php echo Yii::app()->createUrl('admin/productInfo/view').'/'.$item['product_id']; ?>" target="_blank">
-                                        <?php if(!empty($item['total_time'])){
-                                            $convert = strtotime($item['total_time']);
-                                            $hour = date('h', $convert);
-                                            $minute = date('i', $convert);
-                                            $time = $hour.' hours and '.$minute.' minutes';
-                                        echo $item['product_name']; ?>
-                                        </a><br>
-                                        <?php echo $time;
-                                        } else { ?>
-                                            <a href="<?php echo Yii::app()->createUrl('admin/productInfo/view').'/'.$item['product_id']; ?>" target="_blank">
-                                           <?php echo $item['product_name']; ?></a>
-                                      <?php } ?>
+                                        <?php echo $item['product_name']; ?>
+                                        </a>
                                     </td>
                                     <td><?php echo $item['product_sku']; ?></td>
                                     <td><?php echo $item['item_qty']; ?></td>
