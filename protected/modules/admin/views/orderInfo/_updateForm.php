@@ -116,42 +116,25 @@
 									foreach($orderItem as $key => $item){
 										$count++;
 									?>
-										<tr class="addMoreProduct">
-										<!-- <td class="col-md-6">
-											<div class="col-md-12">
-												<div class="form-group">
-													<?php
-													$productList = CHtml::listData(ProductInfo::model()->findAll(['order' => 'name']), 'product_id', 'name');
-													echo $form->dropDownList($item, 'product_id[]', $productList, [
-														'prompt' => 'Select Product',
-														'class' => 'form-control',
-														//'disabled'=>'disabled',
-                                                        'options' => array($item['product_id'] =>array('selected'=>true))
-													]);
-													?>
-												</div>
-											</div>
-										</td> -->
-										
-											<td class="col-md-5">
+									<tr class="addMoreProduct">
+										<td class="col-md-5">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $item->hasErrors('product_name') ? 'has-error' : ''; ?>">
 													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="OrderLineItem_product_id" value="<?php  echo $item->attributes['product_name']; ?>" type="text">
-<!--													-->												</div>
+												</div>
 											</div>
 										</td>
-										
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $item->hasErrors('item_qty') ? 'has-error' : ''; ?>">
-													<input autocomplete="off" autofocus="autofocus" class="form-control" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" value="<?php echo $item->attributes['item_qty'];  ?>" type="text">
-<!--													-->												</div>
+													<input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" value="<?php echo $item->attributes['item_qty'];  ?>" type="text">
+												</div>
 											</div>
 										</td>
 										<td class="col-md-1">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autocomplete="off" autofocus="autofocus" class="form-control" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" value="<?php echo $item->attributes['item_disc'];  ?>" type="text">
+													<input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" value="<?php echo $item->attributes['item_disc'];  ?>" type="text">
 													<?php //echo $form->textField($orderItem, 'item_disc[]', array('autofocus' => 'on','readonly' => 'readonly', 'class' => 'form-control', 'placeholder' => 'Discount')); ?>
 												</div>
 											</div>
@@ -159,21 +142,23 @@
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autocomplete="off" autofocus="autofocus" class="form-control" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" value="<?php echo $item->attributes['item_price'];  ?>" type="text">
-<!--													-->												</div>
+													<input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" value="<?php echo $item->attributes['item_price'];  ?>" type="text">
+												</div>
 											</div>
 										</td>
-										<?php
-											$qty = $item->attributes['item_qty'];
-											$price =  $item->attributes['item_price'];
-											$total = $qty * $price;
+										<?php 
+											$discount = (!empty($item->attributes['item_disc'])) ? $item->attributes['item_disc'] : 0;
+											$total = $item->attributes['item_qty'] * $item->attributes['item_price'] - $discount;
 										?>
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autofocus="autofocus" class="form-control" style="width: 100%;" readonly="readonly" placeholder="Total Price" value="<?php echo $total;  ?>" type="text">
-<!--													-->												</div>
+													<input autofocus="autofocus" class="form-control total" readonly="readonly" placeholder="Total Price" value="<?php echo round($total, 3);  ?>" type="text">
+												</div>
 											</div>
+										</td>
+										<td style="display: none;">
+											<input style="display: none;" autofocus="autofocus" class="form-control discount" readonly="readonly" val="" placeholder="Total Discount" type="text">
 										</td>
 										<!-- <td class="col-md-2 text-center">
 											<div class="col-md-12">
@@ -194,19 +179,19 @@
 									<?php } ?>
 									<tr id="beforePrice">
 										<td colspan="4" class="text-right"><strong>Total Price:</strong></td>
-										<td class="text-right"  id="totalPrice"><?php echo $model['orderTotal']; ?></td>
+										<td class="text-right"  id="totalPrice">&euro; <?php echo round($model['orderTotal'], 3); ?></td>
 									</tr>
 									<tr>
 										<td colspan="4" class="text-right"><strong>Total Discount:</strong></td>
-										<td class="text-right"  id="totalDiscount"><?php echo $model['discount']; ?></td>
+										<td class="text-right"  id="totalDiscount">&euro; <?php echo $model['discount']; ?></td>
 									</tr>
 									<tr>
                                         <td colspan="4" class="text-right"><strong>Vat@<?php echo  $model['vat_percentage']; ?>%:</strong></td>
-                                        <td class="text-right"  id="vat_amount"><?php echo $model['vat']; ?></td>
+                                        <td class="text-right"  id="vat_amount">&euro; <?php echo $model['vat']; ?></td>
                                     </tr>
 									<tr class="success">
 										<td colspan="4" class="text-right text-uppercase"><strong>Net Total:</strong></td>
-										<td class="text-right"><strong  id="net_amount"><?php echo $model['netTotal']; ?></strong></td>
+										<td class="text-right"><strong  id="net_amount">&euro; <?php echo round($model['netTotal'],3); ?></strong></td>
 									</tr>
 									</tbody>
 								</table>
@@ -315,7 +300,7 @@
                                                     <td class="col-md-2">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <input autofocus="autofocus" class="form-control" placeholder="Amount" name="OrderPayment[amount][]" id="OrderPayment_amount" value="<?php echo $item->attributes['total'];  ?>" type="text">
+                                                                <input autofocus="autofocus" class="form-control" placeholder="Amount" name="OrderPayment[amount][]" id="OrderPayment_amount" value="<?php echo round($item->attributes['total'], 3);  ?>" type="text">
                                                             </div>
                                                         </div>
                                                     </td>
@@ -346,9 +331,57 @@
 </div>
 
 <script>
-	/*
+$(document).ready(function(){
 
-	 */
+	// calculate everything
+	$(document).on("keyup", ".product", calcAll);
+	//$(".product").on("change", calcAll);
+
+	// function for calculating product details
+	function calcAll() {
+
+		$(".addMoreProduct").each(function () {
+			var qnty = 0;
+			var price = 0;
+			var discount = 0;
+			var total = 0;
+			if (!isNaN(parseFloat($(this).find("#OrderLineItem_item_qty").val()))) {
+				qnty = parseFloat($(this).find("#OrderLineItem_item_qty").val());
+			}
+			if (!isNaN(parseFloat($(this).find("#OrderLineItem_item_disc").val()))) {
+				discount = parseFloat($(this).find("#OrderLineItem_item_disc").val());
+			}
+			if (!isNaN(parseFloat($(this).find("#itemPrice").val()))) {
+				price = parseFloat($(this).find("#itemPrice").val());
+			}
+			disc = qnty * discount;
+			total = qnty * price - discount;
+			$(this).find(".total").val(total.toFixed(3));
+			$(this).find(".discount").val(disc.toFixed(3));
+		});
+
+		// sum all sub totals
+		var sum = 0;
+		$(".total").each(function () {
+			if (!isNaN(this.value) && this.value.length != 0) {
+				sum += parseFloat(this.value);
+			}
+		});
+		// show values of Total price, Net total
+		$("#totalPrice").text(sum.toFixed(3));
+		$("#net_amount").text(sum.toFixed(3));
+		$("#OrderPayment_amount").val(sum.toFixed(3));
+
+		var totalDiscount = 0;
+		$(".discount").each(function () {
+			if (!isNaN(this.value) && this.value.length != 0) {
+				totalDiscount += parseFloat(this.value);
+			}
+		});
+		//show values of Total discount
+		$("#totalDiscount").text(totalDiscount.toFixed(3));
+		
+	}
     /*$("#submit_button").click(function(){
         $("#order-update-form").submit(); // Submit the form
     });*/
@@ -424,4 +457,5 @@
 	//            },
 	//        });
 	//    }
+});
 </script>

@@ -113,7 +113,7 @@ $id = $model->order_info_id;
                                 <span><b>Grand Total: </b></span>
                             </div>
                             <div class="col-md-7">
-                                <span><?php echo $model->netTotal; ?> &euro;</span>
+                                <span>&euro; <?php echo round($model->netTotal, 3); ?></span>
                             </div>
                         </div>
                         <p></p>
@@ -154,7 +154,7 @@ $id = $model->order_info_id;
                                         <tr>
                                             <td><?= Payment::model()->findByPk($value->payment_mode)->gateway; ?></td>
                                             <td><?= $value->payment_ref_id; ?></td>
-                                            <td><?= $value->total; ?></td>
+                                            <td>&euro; <?= round($value->total, 3); ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -202,6 +202,7 @@ $id = $model->order_info_id;
                                 <th  style="text-transform: capitalize;">Quantity</th>
                                 <th  style="text-transform: capitalize;">Discount</th>
                                 <th  style="text-transform: capitalize;">Price</th>
+                                <th  style="text-transform: capitalize;">Total</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -214,8 +215,13 @@ $id = $model->order_info_id;
                                     </td>
                                     <td><?php echo $item['product_sku']; ?></td>
                                     <td><?php echo $item['item_qty']; ?></td>
-                                    <td><?php echo $item['item_disc']; ?></td>
-                                    <td><?php echo $item['item_price']; ?></td>
+                                    <td>&euro; <?php echo $item['item_disc']; ?></td>
+                                    <td>&euro; <?php echo $item['item_price']; ?></td>
+                                    <?php 
+                                        $discount = (!empty($item['item_disc'])) ? $item['item_disc'] : 0;
+                                        $total = $item['item_qty'] * $item['item_price'] - $discount;
+                                    ?>
+                                    <td>&euro; <?php echo round($total, 3); ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>
@@ -232,7 +238,7 @@ $id = $model->order_info_id;
                                 <span><b>Order Total: </b></span>
                             </div>
                             <div class="col-md-3">
-                                <span>&euro; <?php echo $model->orderTotal; ?></span>
+                                <span>&euro; <?php echo round($model->orderTotal, 3); ?></span>
                             </div>
                         </div>
                         <div class="row static-info align-reverse">
@@ -270,7 +276,7 @@ $id = $model->order_info_id;
                                 <span><b>Net Total: </b></span>
                             </div>
                             <div class="col-md-3">
-                                <span>&euro; <?php echo $model->netTotal; ?></span>
+                                <span>&euro; <?php echo round($model->netTotal, 3); ?></span>
                             </div>
                         </div>
                     </div>
@@ -281,7 +287,7 @@ $id = $model->order_info_id;
                     <div class="well">
                         <div class="row static-info align-reverse">
                             <div class="col-md-12">
-                            We kindly request you to transfer the amount owed of <span>&euro; <b><?php echo $model->netTotal; ?></b></span> within the due date to IBAN BE85 0689 0467 8106 in the name of IrisCall, stating the invoice number.<br><br>
+                            We kindly request you to transfer the amount owed of <span>&euro; <b><?php echo round($model->netTotal, 3); ?></b></span> within the due date to IBAN BE85 0689 0467 8106 in the name of IrisCall, stating the invoice number.<br><br>
 
                             In case of non-payment by the due date, IrisCall will send you or the paying third party designated by you a reminder. From the second reminder, the customer will owe a reminder fee of EUR 12.10 including VAT to IrisCall. In addition, after termination of the services, the invoices that are not paid on time will be increased with conventional default interest at 10% on an annual basis, calculated from the due date until full payment, as well as with a 15% damage clause on the outstanding amounts with a minimum of 50.00 euros incl. VAT, without prejudice to IrisCall's right to claim a higher compensation, subject to proof of higher actual damage.<br><br>
 
