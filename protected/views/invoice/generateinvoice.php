@@ -21,7 +21,7 @@ if ($data == 0) { ?>
                         </td>
                         <td align="right">
                             <h1 style="display: block; font-size: 60px; line-height: 80px !important; margin:0; font-weight: 700;color: #2f61a6;">INVOICE</h1>
-                            <h5 style="margin:0 0 30px; font-size: 20px;">INVOICE NO: <?= $data['orderInfo']->invoice_number; ?></h5>
+                            <h5 style="margin:0 0 30px; font-size: 24px;">INVOICE NO: <?= $data['orderInfo']->invoice_number; ?></h5>
                         </td>
                     </tr>
                 </table>
@@ -33,16 +33,16 @@ if ($data == 0) { ?>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td width="30%">
-                            <h4 style="margin-bottom: 10px; font-size:30px; color: #0b0b0b; text-align: right;">ORDER DETAILS</h4>
-                            <p style="font-size: 20px; line-height: 20px;">OrderID : <?= $data['orderInfo']->order_id; ?></p>
-                            <p style="font-size: 20px; line-height: 20px;">Order Date : <?php echo date('d-M-Y', strtotime($data['orderInfo']->invoice_date)); ?></p>
+                            <h4 style="margin-bottom: 10px; font-size:34px; color: #0b0b0b; text-align: right;">ORDER DETAILS</h4>
+                            <p style="font-size: 24px; line-height: 20px;">OrderID : <?= $data['orderInfo']->order_id; ?></p>
+                            <p style="font-size: 24px; line-height: 20px;">Order Date : <?php echo date('d-M-Y', strtotime($data['orderInfo']->invoice_date)); ?></p>
                         </td>
                         <td>&nbsp;
                         </td>
                         <td align="right">
-                            <h4 style="margin-bottom: 10px; font-size:30px; color: #0b0b0b; text-align: right;">PAYMENT DETAILS</h4>
+                            <h4 style="margin-bottom: 10px; font-size:34px; color: #0b0b0b; text-align: right;">PAYMENT DETAILS</h4>
                             <?php foreach ($data['orderPayment'] as $datum) { ?>
-                                <p style="font-size: 20px; line-height: 20px;"><?php print($datum->transaction_mode.' (&euro; '.money_format('%(#1n',$datum->total).')'); ?></p>
+                                <p style="font-size: 24px; line-height: 20px;"><?php print($datum->transaction_mode.' (&euro; '.round(money_format('%(#1n',$datum->total), 3).')'); ?></p>
                             <?php } ?>
                         </td>
                     </tr>
@@ -54,8 +54,8 @@ if ($data == 0) { ?>
                 <table style="padding:40px 0;" width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td width="50%">
-                            <h3 style="color: #2f61a6;font-size: 36px;margin-bottom: 18px;">Iricall</h3>
-                            <p style="font-size:18px;line-height: 20px;">
+                            <h3 style="color: #2f61a6;font-size: 40px;margin-bottom: 18px;">Iricall</h3>
+                            <p style="font-size:24px;line-height: 20px;">
                                 Force International CVBA<br>
                                 Olenseweg 375<br>
                                 2260 Westerlo<br>
@@ -65,8 +65,8 @@ if ($data == 0) { ?>
                                 BIC = GKCCBEBB<br>
                         </td>
                         <td width="50%" align="right">
-                            <h3 style="color: #2f61a6;font-size: 36px;margin-bottom: 18px;"><?php echo $data['userInfo']->full_name; ?></h3>
-                            <p style="font-size:18px;line-height: 20px;">
+                            <h3 style="color: #2f61a6;font-size: 40px;margin-bottom: 18px;"><?php echo $data['userInfo']->full_name; ?></h3>
+                            <p style="font-size:24px;line-height: 20px;">
                                 <?php echo $data['userInfo']->email;?><br>
                                 <?php
                                 if(!is_null($data['orderInfo']->company)) echo "Company : ".$data['orderInfo']->company;?><br>
@@ -88,40 +88,47 @@ if ($data == 0) { ?>
                     <table class="table" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 50px">
                         <thead>
                         <tr>
-                            <th style="padding:20px;border-bottom: 1px solid #b8babe; border-top: 1px solid #b8babe;" bgcolor="#f5f5f5" width="70%" align="left"><h2 style="color:#000;">Product</h2></th>
-                            <th style="padding:20px;border-bottom: 1px solid #b8babe; border-top: 1px solid #b8babe;" bgcolor="#f5f5f5" width="15%" align="left"><h2 style="color:#000;">Price</h2></th>
-                            <th style="padding:20px;border-bottom: 1px solid #b8babe; border-top: 1px solid #b8babe;" bgcolor="#f1f1f1" width="15%" align="center"><h2 style="color:#000;">Unit</h2></th>
-                            <th style="padding:20px;border-bottom: 1px solid #b8babe;border-top: 1px solid #b8babe;" bgcolor="#eee" width="20%" align="right"><h2 style="color:#000;">Amount</h2></th>
+                            <th style="padding:20px;border-bottom: 1px solid #b8babe; border-top: 1px solid #b8babe;" bgcolor="#f5f5f5" align="center"><h2 style="color:#000;">Product</h2></th>
+                            <th style="padding:20px;border-bottom: 1px solid #b8babe; border-top: 1px solid #b8babe;" bgcolor="#f5f5f5" width="15%" align="center"><h2 style="color:#000;">Price</h2></th>
+                            <th style="padding:20px;border-bottom: 1px solid #b8babe; border-top: 1px solid #b8babe;" bgcolor="#f5f5f5" width="15%" align="center"><h2 style="color:#000;">Unit</h2></th>
+                            <th style="padding:20px;border-bottom: 1px solid #b8babe;border-top: 1px solid #b8babe;" bgcolor="#f5f5f5" width="15%" align="center"><h2 style="color:#000;">Discount</h2></th>
+                            <th style="padding:20px;border-bottom: 1px solid #b8babe;border-top: 1px solid #b8babe;" bgcolor="#f5f5f5" width="20%" align="center"><h2 style="color:#000;">Amount</h2></th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php foreach ($data['orderLineitem'] as $item) { ?>
                             <tr>
-                                <td class="col-product" style="padding:20px;">
+                                <td align="center" class="col-product" style="padding:20px;">
                                     <h4 style="font-size: 26px;color: #2f61a6;margin-bottom:5px; text-transform:uppercase;">
                                         <?php echo $item->product_name; ?>
                                     </h4>
-                                    <!--<p style="font-size:14px;"><?/*= $product->description; */?></p>--></td>
+                                    <!--<p style="font-size:14px;"><?/*= $product->description; */?></p>-->
+                                </td>
                                 <td align="center" bgcolor="#f7f7f8" style="font-size: 24px;">&euro; <?= $item->item_price; ?></td>
-                                <td align="center" bgcolor="#f7f7f8" style="font-size: 24px;"><?= $item->item_qty; ?></td>
-<!--                                --><?php $total_amount = $item->item_qty * $item->item_price ?>
-                                <td align="right" style="padding-right: 15px; font-size: 24px;" bgcolor="#ededee" ><strong style="font-size: 18px;color: #495b64;">&euro; <?= $total_amount; ?></strong></td>
+                                <td align="center" bgcolor="#f7f7f8" style="font-size: 24px;"><?= round($item->item_qty, 3) ?></td>
+                                <td align="center" bgcolor="#f7f7f8" style="font-size: 24px;">&euro; <?= (!empty($item->item_disc)) ? $item->item_disc : 0; ?></td>
+                                        <?php 
+                                            $discount = (!empty($item->item_disc)) ? $item->item_disc : 0;
+                                            $total = $item->item_qty * $item->item_price - $discount;
+                                        ?>
+                                <td align="center" style="font-size: 24px;" bgcolor="#f7f7f8" ><strong>&euro; <?= round($total, 3) ?></strong></td>
                                 <?php $subtotal = $data['orderInfo']->orderTotal; ?>
                             </tr>
-
                         <?php } ?>
-
                         <tr class="sub-total">
+                            <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td class="col-label" colspan="2" style="background-color: #ededee; padding:15px; color:#495b65;font-size:26px;">Discount</td>
-                            <td class="col-value" style="background-color: #ededee; color:#495b65;" align="right"><strong style="font-size: 24px;">&euro; <?= money_format('%(#1n',($data['orderInfo']->discount + $data['orderInfo']->voucher_discount)); ?></strong></td>
+                            <td class="col-value" style="background-color: #ededee;  color:#495b65;" align="center"><strong style="font-size: 24px;">&euro; <?= money_format('%(#1n',($data['orderInfo']->discount + $data['orderInfo']->voucher_discount)); ?></strong></td>
                         </tr>
                         <tr class="sub-total">
                             <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             <td class="col-label" colspan="2" style="background-color: #ededee; padding:15px; color:#495b65;font-size:26px;">Sub Total</td>
-                            <td class="col-value" bgcolor="#ededee" align="right" style="background-color: #ededee;color:#495b65;"><strong style="font-size: 24px;">&euro; <?= money_format('%(#1n',($subtotal - ($data['orderInfo']->discount + $data['orderInfo']->voucher_discount))); ?></strong></td>
+                            <td class="col-value" style="background-color: #ededee; color:#495b65;" align="center"><strong style="font-size: 24px;">&euro; <?= round(money_format('%(#1n',($subtotal - ($data['orderInfo']->discount + $data['orderInfo']->voucher_discount))), 3); ?></strong></td>
                         </tr>
                         <tr class="sub-total">
+                            <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <?php
                             if ($data['orderInfo']->vat != 0) {
@@ -136,23 +143,22 @@ if ($data == 0) { ?>
                                 ?>
                             <td class="col-label" colspan="2" style="background-color: #ededee; padding:15px; color:#495b65;font-size:26px;">Vat Rate<?php echo $vatpercentage;?></td>
                             <?php }?>
-                            <td class="col-value" bgcolor="#ededee" style="background-color: #ededee;color:#495b65;" align="right"><strong style="font-size: 24px;">&euro; <?php echo money_format('%(#1n',$data['orderInfo']->vat); ?></strong></td>
+                            <td class="col-value" bgcolor="#ededee" style="background-color: #ededee; color:#495b65;" align="center"><strong style="font-size: 24px;">&euro; <?php echo money_format('%(#1n',$data['orderInfo']->vat); ?></strong></td>
                         </tr>
                         <tr class="total">
                             <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             <td class="col-label" colspan="2" style="background-color: #ededee; padding:15px; color:#495b65;font-size:26px;"><strong style="color:#2c5793; font-size:26px;">Total</strong></td>
-                            <td class="col-value" align="right"><strong style="color:#2c5793;font-size:30px;">&euro; <?php echo money_format('%(#1n',$data['orderInfo']->netTotal); ?></strong></td>
+                            <td class="col-value" align="center"><strong style="color:#2c5793;font-size:30px;">&euro; <?php echo round(money_format('%(#1n',$data['orderInfo']->netTotal), 3); ?></strong></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </td>
         </tr>
-        <tr>
-            <td align="center" style="padding: 30px 0;"><p style="color: #2f61a6;font-size: 30px;line-height: 36px;">THANK YOU VERY MUCH FOR DOING BUSINESS WITH US.</p></td>
-        </tr>
-        <tr><td style="background: #eee;padding: 20px; text-align:center; color:#000; font-size: 20px">
-        We kindly request you to transfer the amount owed of <span>&euro; <b><?php echo $data['orderInfo']->netTotal; ?></b></span> within the due date to IBAN BE85 0689 0467 8106 in the name of IrisCall, stating the invoice number.<br><br>
+        
+        <tr><td style="background: #eee;padding: 50px; text-align:center; color:#000; font-size: 24px">
+        We kindly request you to transfer the amount owed of <span>&euro; <b><?php echo round($data['orderInfo']->netTotal, 3); ?></b></span> within the due date to IBAN BE85 0689 0467 8106 in the name of IrisCall, stating the invoice number.<br><br>
 
         In case of non-payment by the due date, IrisCall will send you or the paying third party designated by you a reminder. From the second reminder, the customer will owe a reminder fee of EUR 12.10 including VAT to IrisCall. In addition, after termination of the services, the invoices that are not paid on time will be increased with conventional default interest at 10% on an annual basis, calculated from the due date until full payment, as well as with a 15% damage clause on the outstanding amounts with a minimum of 50.00 euros incl. VAT, without prejudice to IrisCall's right to claim a higher compensation, subject to proof of higher actual damage.<br><br>
 
@@ -161,8 +167,11 @@ if ($data == 0) { ?>
         IrisCall is a trade name of Force International CVBA.
             </td></tr>
         <tr>
+            <td align="center" style="padding-top:132%;"><p style="color: #2f61a6;font-size: 30px;line-height: 36px;">THANK YOU VERY MUCH FOR DOING BUSINESS WITH US.</p></td>
+        </tr>
+        <tr>
             <td>
-                <table width="100%" border="0" style="padding:20px 0; margin-top: 115%; border-top:1px solid #b8babe;" cellspacing="0" cellpadding="0">
+                <table width="100%" border="0" style="padding:20px 0; border-top:1px solid #b8babe;" cellspacing="0" cellpadding="0">
                     <tbody>
                     <tr>
                         <td width="35%" align="center" style="padding:20px;">
@@ -173,7 +182,7 @@ if ($data == 0) { ?>
                     </tbody></table>
             </td>
         </tr>
-        <tr><td style="background: #eee;padding: 20px; text-align:center; color:#000; font-size: 20px">
+        <tr><td style="background: #eee;padding: 20px; text-align:center; color:#000; font-size: 24px">
                 Iriscall is a brand name of <a href="http://force.international/" style="font-weight:bold; color:#000; text-decoration:none;" target="_blank">Force International CVBA</a>
             </td></tr>
     </table>

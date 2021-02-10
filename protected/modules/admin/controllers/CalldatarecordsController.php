@@ -1029,13 +1029,15 @@ class CalldatarecordsController extends Controller
                                 }else{
                                     $orderItem->product_name = $detail->rule;
                                 }
-                                $orderItem->order_info_id = $model->order_info_id;
-                                $orderItem->item_qty = $detail->min;
-                                $orderItem->item_price = $detail->cost;
-                                $orderItem->product_id = $productInfo['product_id'];
-                                $orderItem->product_sku = $productInfo['sku'];
-                                $orderItem->created_at = date('Y-m-d H:i:s');
-                                $orderItem->save(false);
+                                if(!empty($detail->min) && $detail->min > 0){
+                                    $orderItem->order_info_id = $model->order_info_id;
+                                    $orderItem->item_qty = $detail->min;
+                                    $orderItem->item_price = $detail->cost;
+                                    $orderItem->product_id = $productInfo['product_id'];
+                                    $orderItem->product_sku = $productInfo['sku'];
+                                    $orderItem->created_at = date('Y-m-d H:i:s');
+                                    $orderItem->save(false);
+                                }
                             }
                         }
                     }
