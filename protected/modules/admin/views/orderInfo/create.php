@@ -5,4 +5,4 @@
 $this->pageTitle = 'Create Order';
 
 ?>
-<?php $this->renderPartial('_form', array('model'=>$model,'orderItem'=>$orderItem,'orderPayment' => $orderPayment,'productSubscription' => $productSubscription)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'orderItem'=>$orderItem,'orderPayment' => $orderPayment,'productSubscription' => $productSubscription,'productPrice' => $productPrice)); ?>

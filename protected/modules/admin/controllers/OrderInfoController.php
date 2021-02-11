@@ -221,11 +221,18 @@ class OrderInfoController extends CController
                 $this->redirect(array('view', 'id' => $model->order_info_id));
             }
         }
+        $products = Yii::app()->db->createCommand()->select('product_id,price')->from('product_info')->queryAll();
+        $productPrice = [];
+        foreach($products as $value){
+            $productPrice[$value['product_id']] = $value['price'];
+        }
+        //echo '<pre>';print_r($productPrice);die;
         $this->render('create', array(
             'model' => $model,
             'orderItem' => $orderItem,
             'orderPayment' => $orderPayment,
-            'productSubscription' => $productSubscription
+            'productSubscription' => $productSubscription,
+            'productPrice' => $productPrice
         ));
 
     }

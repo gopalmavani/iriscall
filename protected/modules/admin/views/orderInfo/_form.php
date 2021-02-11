@@ -146,11 +146,12 @@
                                             <div class="col-md-12">
                                                 <div class="form-group" id="product">
                                                     <?php
-                                                    $productList = CHtml::listData(ProductInfo::model()->findAll(['order' => 'name']),'product_id','name');
-                                                    echo $form->dropDownList($orderItem, 'product_id[]', $productList, [
-                                                        'prompt' => 'Select Product',
-                                                        'class' => 'js-select2 form-control',
-                                                    ]);
+                                                        $productList = CHtml::listData(ProductInfo::model()->findAll(['order' => 'name']),'product_id','name');
+                                                        echo $form->dropDownList($orderItem, 'product_id[]', $productList, [
+                                                            'prompt' => 'Select Product',
+                                                            'class' => 'js-select2 form-control product',
+                                                            'id' => 'selected',
+                                                        ]);
                                                     ?>
                                                     <div class="help-block" id="product_msg"></div>
                                                 </div>
@@ -160,8 +161,9 @@
                                             <div class="col-md-12">
                                                 <div class="form-group <?php echo $orderItem->hasErrors('item_qty') ? 'has-error' : ''; ?>" id="qty">
                                                     <?php echo $form->textField($orderItem, 'item_qty[]', [
-                                                        'class' => 'form-control',
+                                                        'class' => 'form-control product',
                                                         'placeholder' => 'Qty',
+                                                        'id' => 'qnty'
                                                     ]); ?>
                                                     <div class="help-block" id="qty_msg"></div>
                                                 </div>
@@ -170,7 +172,7 @@
                                         <td class="col-md-2">
                                             <div class="col-md-12">
                                                 <div class="form-group <?php echo $orderItem->hasErrors('item_disc') ? 'has-error' : ''; ?> ">
-                                                    <?php echo $form->textField($orderItem, 'item_disc[]', array('autofocus' => 'on', 'value'=>0, 'class' => 'form-control', 'placeholder' => 'Discount')); ?>
+                                                    <?php echo $form->textField($orderItem, 'item_disc[]', array('autofocus' => 'on', 'value'=>0, 'id' => 'disc', 'class' => 'form-control product', 'placeholder' => 'Discount')); ?>
                                                 </div>
                                             </div>
                                         </td>
@@ -187,6 +189,12 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        <td style="display: none;">
+											<input style="display: none;" class="form-control hidetotal" readonly="readonly" val="" placeholder="Total Price" type="text">
+										</td>
+                                        <td style="display: none;">
+											<input style="display: none;" class="form-control hidediscount" readonly="readonly" val="" placeholder="Total Discount" type="text">
+										</td>
                                         <!--<td class="col-md-2 text-center"  id="plus_button">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn btn-success btn-add-product">
@@ -374,6 +382,47 @@
 </div>
 
 <script>
+    // calculate everything
+    //$(document).on("keyup", ".product", calcAll);
+	$(".product").on("change", calcAll);
+
+	// function for calculating product details
+	function calcAll() {
+		$(".addMoreProduct").each(function () {
+            var product = '<?php echo json_encode($productPrice); ?>';
+            var data = JSON.parse(product);
+            //console.log(data);
+			var qnty = 0;
+			var price = 0;
+			var discount = 0;
+			var total = 0;
+            if (!isNaN(parseFloat($(this).find("#selected").val()))) {
+				id = parseFloat($(this).find("#selected").val());
+                if(id != ''){
+                    price = data[id];
+                }
+			}
+			if (!isNaN(parseFloat($(this).find("#qnty").val()))) {
+				qnty = parseFloat($(this).find("#qnty").val());
+			}
+			if (!isNaN(parseFloat($(this).find("#disc").val()))) {
+				discount = parseFloat($(this).find("#disc").val());
+			}
+			disc = qnty * discount;
+			total = qnty * price - discount;
+            $(this).find("#itemPrice").val(price.toFixed(3));
+			$(this).find(".hidetotal").val(total.toFixed(3));
+            $(this).find(".hidediscount").val(disc.toFixed(3));
+		});
+
+        var sum = $(".hidetotal").val();
+        var totalDiscount = $(".hidediscount").val();
+		// show values of Total price, Total discount Net total .toFixed(3)
+        $("#totalPrice").text(sum);
+        $("#totalDiscount").text(totalDiscount);
+        $("#netTotalLabel").text(sum);
+	}
+
     $('#order-info-form').on('submit', function (e) {
         //$('#submit_button').attr('disabled', true);
     });
