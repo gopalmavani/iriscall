@@ -166,7 +166,7 @@ $(document).ready(function(){
         newUrl += '?organisation_id='+organisation_id+'&date='+date;
         window.location = newUrl;
     });
-    
+
     //Download CSV file
     $('#downloadCSV').click(function(){
         var fileData = $("#cdr-details-grid").jsGrid('option', 'data');
@@ -186,7 +186,7 @@ $(document).ready(function(){
         var CSV = '';    
         //Set Report title in first row or line
         
-        CSV += ReportTitle + '\r\n\n';
+        //CSV += ReportTitle + '\r\n\n';
 
         //This condition will generate the Label/Header
         if (ShowLabel) {
