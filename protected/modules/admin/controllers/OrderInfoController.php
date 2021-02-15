@@ -260,39 +260,57 @@ class OrderInfoController extends CController
                 $model->attributes = $_POST['OrderInfo'];
 
                 // Delete Order Item
-                /*$oldItems = OrderLineItem::model()->findAllByAttributes(['order_info_id' => $model->order_info_id]);
-                if(!empty($oldItems)){
-                    foreach ($oldItems as $key => $value) {
-                        if (!in_array($value->product_id, $_POST['OrderLineItem']['product_id'])) {
-                            OrderLineItem::model()->deleteAllByAttributes(['order_info_id' => $model->order_info_id, 'product_id' => $value['product_id']]);
-                        }
-                    }
-                }*/
+                // $oldItems = OrderLineItem::model()->findAllByAttributes(['order_info_id' => $model->order_info_id]);
+                // if(!empty($oldItems)){
+                //     foreach ($oldItems as $key => $value) {
+                //         if (!in_array($value->product_id, $_POST['OrderLineItem']['product_id'])) {
+                //             OrderLineItem::model()->deleteAllByAttributes(['order_info_id' => $model->order_info_id, 'product_id' => $value['product_id']]);
+                //         }
+                //     }
+                // }
                 // Update Order Line Item
                 $orderItemAttributes = $_POST['OrderLineItem'];
-                $key = 0;
-                foreach ($orderItem as $orderItems){
-                    $orderItemtModel = OrderLineItem::model()->findByPk($orderItems->order_line_item_id);
-                    $orderItemtModel->item_qty = $orderItemAttributes['item_qty'][$key];
-                    $orderItemtModel->item_disc = $orderItemAttributes['item_disc'][$key];
-                    $orderItemtModel->item_price = $orderItemAttributes['item_price'][$key];
-                    $orderItemtModel->modified_at = date('Y-m-d H:i:s');
-                    if($orderItemtModel->save(false)){
-                        // Update Order All item price,discount,total,net total
-                        $totalArray = $this->getOrderAllTotal($_POST['OrderLineItem']);
-                        $model->orderTotal = $totalArray['orderTotal'];
-                        $model->discount = $totalArray['orderDiscount'];
-                        $model->netTotal = $totalArray['orderTotal'] + $model->vat;
-                    }
-                    $key++;
+                if(isset($orderItemAttributes['product_id'])){
+                    $new = count($orderItemAttributes['product_id']);
+                }else{
+                    $new = 0;
                 }
+                $j = 0;
+                foreach ($orderItem as $orderItems){
+                        //$orderItemtModel = OrderLineItem::model()->findAllByAttributes(['product_name' => $orderItemAttributes['product_name'][$j]]);
+                        $ord = OrderLineItem::model()->findByPk($orderItems->order_line_item_id);
+                        //echo '<pre>';print_r($orderItemAttributes);die;
+                    if(isset($orderItemAttributes['product_id'][$j]) && $orderItemAttributes['product_id'][$j] !== $ord->product_id){
+                        $this->saveOrderItem($_POST['OrderLineItem'],$model->order_info_id);
+                        
+                    }
+                    $j++;
+                    //echo '<pre>';print_r($j);die;
+                    if(!empty($ord)){
+                        $ord->item_qty = $orderItemAttributes['item_qty'][$new];
+                        $ord->item_disc = $orderItemAttributes['item_disc'][$new];
+                        $ord->item_price = $orderItemAttributes['item_price'][$new];
+                        $ord->modified_at = date('Y-m-d H:i:s');
+                        $ord->save(false);
+                    }
+                    $new++;
+                    // foreach ($ord as $updateOrderItem){
+                        
+                    // }
+                }
+                
                 // Update or create Order Line Item
                 // $orderItemArray = $_POST['OrderLineItem'];
-                // $_POST['OrderLineItem']['product_name'][0] = $_POST['OrderLineItem']['product_id'][0];
+                // $_POST['OrderLineItem']['product_name'][0] = $_POST['OrderLineItem']['product_id'][0]
                 // $this->saveOrderItem($_POST['OrderLineItem'],$model->order_info_id);
 
-                // Update Order Payment
+                // Update Order All item price,discount,total,net total
+                $totalArray = $this->getOrderAllTotal($_POST['OrderLineItem']);
+                $model->orderTotal = $totalArray['orderTotal'];
+                $model->discount = $totalArray['orderDiscount'];
+                $model->netTotal = $totalArray['orderTotal'] + $model->vat;
 
+                // Update Order Payment
                 $orderPaymentAttributes = $_POST['OrderPayment'];
                 foreach ($orderPaymentAttributes['payment_id'] as $k=>$orderPaymentAttributeId){
                     $orderPaymentModel = OrderPayment::model()->findByPk($orderPaymentAttributeId);
@@ -385,11 +403,12 @@ class OrderInfoController extends CController
                 }
             }
         }
-
+        $productName = Yii::app()->db->createCommand()->select('product_id,name')->from('product_info')->queryAll();
         $this->render('update', array(
             'model' => $model,
             'orderItem' => $orderItem,
             'orderPayment' => $orderPayment,
+            'productName' => $productName,
         ));
     }
 

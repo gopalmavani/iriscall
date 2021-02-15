@@ -163,7 +163,7 @@
                                                     <?php echo $form->textField($orderItem, 'item_qty[]', [
                                                         'class' => 'form-control product',
                                                         'placeholder' => 'Qty',
-                                                        'id' => 'qnty'
+                                                        'id' => 'OrderLineItem_item_qty'
                                                     ]); ?>
                                                     <div class="help-block" id="qty_msg"></div>
                                                 </div>
@@ -303,6 +303,7 @@
                                         echo $form->dropDownListControlGroup($orderPayment, 'payment_mode', $paymentModeList, [
                                             'prompt' => 'Select Payment Mode',
                                             'class' => 'js-select2 form-control',
+                                            'id' => 'OrderPayment_payment_mode'
                                         ]);
                                         ?>
                                         <div class="help-block" id="payment_mode_msg"></div>
@@ -310,7 +311,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group <?php echo $orderPayment->hasErrors('payment_ref_id') ? 'has-error' : ''; ?> " id="payment_ref">
-                                        <?php echo $form->textFieldControlGroup($orderPayment, 'payment_ref_id', array('autofocus' => 'on', 'class' => 'form-control')); ?>
+                                        <?php echo $form->textFieldControlGroup($orderPayment, 'payment_ref_id', array('autofocus' => 'on', 'class' => 'form-control', 'id' => 'OrderPayment_payment_ref_id')); ?>
                                         <div class="help-block" id="payment_ref_msg"></div>
                                     </div>
                                 </div>
@@ -402,8 +403,8 @@
                     price = data[id];
                 }
 			}
-			if (!isNaN(parseFloat($(this).find("#qnty").val()))) {
-				qnty = parseFloat($(this).find("#qnty").val());
+			if (!isNaN(parseFloat($(this).find("#OrderLineItem_item_qty").val()))) {
+				qnty = parseFloat($(this).find("#OrderLineItem_item_qty").val());
 			}
 			if (!isNaN(parseFloat($(this).find("#disc").val()))) {
 				discount = parseFloat($(this).find("#disc").val());

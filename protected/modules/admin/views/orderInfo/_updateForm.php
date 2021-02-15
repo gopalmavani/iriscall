@@ -97,7 +97,10 @@
 						<!--						<h3 class="block-title">Add Product</h3>-->
 					</div>
 					<div class="">
-						<h4>Product</h4>
+						<div>
+							<h4 class="pull-left">Product</h4>
+							<button type="button" class="btn btn-primary pull-right addRow">Add product</button></th>
+						</div>
 						<div class="row">
 							<div class="col-md-12">
 								<table class="table">
@@ -113,28 +116,28 @@
 									<tbody class="table" id="productControl">
 									<?php
 									$count = 1;
-									foreach($orderItem as $key => $item){
+									foreach($orderItem as $key => $productItem){
 										$count++;
 									?>
-									<tr class="addMoreProduct">
+									<tr id="productrow" class="addMoreProduct">
 										<td class="col-md-5">
 											<div class="col-md-12">
-												<div class="form-group <?php echo $item->hasErrors('product_name') ? 'has-error' : ''; ?>">
-													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="OrderLineItem_product_id" value="<?php  echo $item->attributes['product_name']; ?>" type="text">
+												<div class="form-group <?php echo $productItem->hasErrors('product_name') ? 'has-error' : ''; ?>">
+													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="OrderLineItem_product_id" value="<?php  echo $productItem->attributes['product_name']; ?>" type="text">
 												</div>
 											</div>
 										</td>
 										<td class="col-md-2">
 											<div class="col-md-12">
-												<div class="form-group <?php echo $item->hasErrors('item_qty') ? 'has-error' : ''; ?>">
-													<input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" value="<?php echo $item->attributes['item_qty'];  ?>" type="text">
+												<div class="form-group <?php echo $productItem->hasErrors('item_qty') ? 'has-error' : ''; ?>">
+													<input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" value="<?php echo $productItem->attributes['item_qty'];  ?>" type="text">
 												</div>
 											</div>
 										</td>
 										<td class="col-md-1">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" value="<?php echo $item->attributes['item_disc'];  ?>" type="text">
+													<input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" value="<?php echo $productItem->attributes['item_disc'];  ?>" type="text">
 													<?php //echo $form->textField($orderItem, 'item_disc[]', array('autofocus' => 'on','readonly' => 'readonly', 'class' => 'form-control', 'placeholder' => 'Discount')); ?>
 												</div>
 											</div>
@@ -142,13 +145,13 @@
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" value="<?php echo $item->attributes['item_price'];  ?>" type="text">
+													<input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" value="<?php echo $productItem->attributes['item_price'];  ?>" type="text">
 												</div>
 											</div>
 										</td>
 										<?php 
-											$discount = (!empty($item->attributes['item_disc'])) ? $item->attributes['item_disc'] : 0;
-											$total = $item->attributes['item_qty'] * $item->attributes['item_price'] - $discount;
+											$discount = (!empty($productItem->attributes['item_disc'])) ? $productItem->attributes['item_disc'] : 0;
+											$total = $productItem->attributes['item_qty'] * $productItem->attributes['item_price'] - $discount;
 										?>
 										<td class="col-md-2">
 											<div class="col-md-12">
@@ -158,23 +161,8 @@
 											</div>
 										</td>
 										<td style="display: none;">
-											<input style="display: none;" autofocus="autofocus" class="form-control discount" readonly="readonly" val="" placeholder="Total Discount" type="text">
+											<input style="display: none;" class="discount" val="" placeholder="Total Discount" type="text">
 										</td>
-										<!-- <td class="col-md-2 text-center">
-											<div class="col-md-12">
-												<?php
-                                            end($orderItem);
-                                            if($key == key($orderItem)){ ?>
-                                                <button type="button" class="btn btn-success btn-add-product">
-                                                    <span>+</span>
-                                                </button>
-												<?php }else{ ?>
-                                                <button type="button" class="btn btn-danger btn-remove-product">
-                                                    <span>-</span>
-                                                </button>
-												<?php } ?>
-											</div>
-										</td> -->
 									</tr>
 									<?php } ?>
 									<tr id="beforePrice">
@@ -332,14 +320,23 @@
 
 <script>
 $(document).ready(function(){
-
+	// function for adding a new row
+	var r = 1;
+	$('.addRow').click(function () {
+		r++;
+		$('#productrow').before('<tr id="row' + r + '" class="addMoreProduct"><td class="col-md-5"><div class="col-md-12"><div class="form-group"><select class="js-select2 form-control product" name="OrderLineItem[product_id][]" id="OrderLineItem_product_id"><option value="">Select product</option><?php foreach($productName as $productList){ ?><option value="<?php echo $productList['product_id']; ?>"><?php echo $productList['name']; }?></option></select></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" type="text"/></div></div></td><td class="col-md-1"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autofocus="autofocus" class="form-control total" readonly="readonly" placeholder="Total Price" type="text"/></div></div></td><td style="display: none;"><input style="display: none;" class="discount" val="" placeholder="Total Discount" type="text"></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><button type="button" name="remove" id="' + r + '" class="btn btn-danger btn_remove">X</button></div></div></td></tr>');
+	});
+	// remove row when X is clicked
+	$(document).on('click', '.btn_remove', function () {
+		var button_id = $(this).attr("id");
+		$('#row' + button_id + '').remove();
+	});
 	// calculate everything
 	$(document).on("keyup", ".product", calcAll);
 	//$(".product").on("change", calcAll);
 
 	// function for calculating product details
 	function calcAll() {
-
 		$(".addMoreProduct").each(function () {
 			var qnty = 0;
 			var price = 0;
@@ -380,7 +377,6 @@ $(document).ready(function(){
 		});
 		//show values of Total discount
 		$("#totalDiscount").text(totalDiscount.toFixed(3));
-		
 	}
     /*$("#submit_button").click(function(){
         $("#order-update-form").submit(); // Submit the form
