@@ -215,12 +215,12 @@ $id = $model->order_info_id;
                                     </td>
                                     <td><?php echo $item['product_sku']; ?></td>
                                     <td><?php echo $item['item_qty']; ?></td>
-                                    <td>&euro; <?php echo $item['item_disc']; ?></td>
-                                    <td>&euro; <?php echo $item['item_price']; ?></td>
                                     <?php 
                                         $discount = (!empty($item['item_disc'])) ? $item['item_disc'] : 0;
                                         $total = $item['item_qty'] * $item['item_price'] - $discount;
                                     ?>
+                                    <td>&euro; <?php echo $discount; ?></td>
+                                    <td>&euro; <?php echo $item['item_price']; ?></td>
                                     <td>&euro; <?php echo round($total, 3); ?></td>
                                 </tr>
                             <?php } ?>
@@ -246,7 +246,7 @@ $id = $model->order_info_id;
                                 <span><b>Discount: </b></span>
                             </div>
                             <div class="col-md-3">
-                                <span>&euro; <?php echo $model->discount; ?></span>
+                                <span>&euro; <?php echo (!empty($model->discount)) ? $model->discount : 0; ?></span>
                             </div>
                         </div>
                         <?php 

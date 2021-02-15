@@ -317,19 +317,19 @@
 		</div>
 	</div>
 </div>
-
 <script>
 $(document).ready(function(){
 	// function for adding a new row
 	var r = 1;
 	$('.addRow').click(function () {
 		r++;
-		$('#productrow').before('<tr id="row' + r + '" class="addMoreProduct"><td class="col-md-5"><div class="col-md-12"><div class="form-group"><select class="js-select2 form-control product" name="OrderLineItem[product_id][]" id="OrderLineItem_product_id"><option value="">Select product</option><?php foreach($productName as $productList){ ?><option value="<?php echo $productList['product_id']; ?>"><?php echo $productList['name']; }?></option></select></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" type="text"/></div></div></td><td class="col-md-1"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autofocus="autofocus" class="form-control total" readonly="readonly" placeholder="Total Price" type="text"/></div></div></td><td style="display: none;"><input style="display: none;" class="discount" val="" placeholder="Total Discount" type="text"></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><button type="button" name="remove" id="' + r + '" class="btn btn-danger btn_remove">X</button></div></div></td></tr>');
+		$('#productrow').before('<tr id="row' + r + '" class="addMoreProduct"><td class="col-md-5"><div class="col-md-12"><div class="form-group"><input autocomplete="off" list="dropdown" class="form-control product" name="OrderLineItem[product_id][]" id="OrderLineItem_product_id"><datalist id="dropdown"><?php foreach($productName as $productList){ ?><option value="<?php echo $productList['product_id']; ?>"><?php echo $productList['name']; }?></option></datalist></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty" type="text"/></div></div></td><td class="col-md-1"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product" placeholder="Price" id="itemPrice" name="OrderLineItem[item_price][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autofocus="autofocus" class="form-control total" readonly="readonly" placeholder="Total Price" type="text"/></div></div></td><td style="display: none;"><input style="display: none;" class="discount" val="" placeholder="Total Discount" type="text"></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><button type="button" name="remove" id="' + r + '" class="btn btn-danger btn_remove">X</button></div></div></td></tr>');
 	});
 	// remove row when X is clicked
 	$(document).on('click', '.btn_remove', function () {
 		var button_id = $(this).attr("id");
 		$('#row' + button_id + '').remove();
+		calcAll();
 	});
 	// calculate everything
 	$(document).on("keyup", ".product", calcAll);
@@ -338,10 +338,19 @@ $(document).ready(function(){
 	// function for calculating product details
 	function calcAll() {
 		$(".addMoreProduct").each(function () {
+			var product = '<?php echo json_encode($price); ?>';
+			var data = JSON.parse(product);
 			var qnty = 0;
 			var price = 0;
 			var discount = 0;
 			var total = 0;
+			if (!isNaN(parseFloat($(this).find("#OrderLineItem_product_id").val()))) {
+				id = parseFloat($(this).find("#OrderLineItem_product_id").val());
+                if(id != ''){
+                    amount = data[id];
+					$(this).find("#itemPrice").val(amount.toFixed(3));
+                }
+			}
 			if (!isNaN(parseFloat($(this).find("#OrderLineItem_item_qty").val()))) {
 				qnty = parseFloat($(this).find("#OrderLineItem_item_qty").val());
 			}
