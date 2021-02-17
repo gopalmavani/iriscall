@@ -350,8 +350,8 @@ $(document).ready(function(){
         if(id == 'undefined'){
             id = "new_product";
         } else {
-            var product_price = list['id'];
-            if(list['id'] != ''){
+            var product_price = list[id];
+            if(product_price != ''){
                 $('.custom_product_price').val(product_price);
             }
         }
@@ -388,57 +388,19 @@ $(document).ready(function(){
             }
 			var subtotal = 0;
 
-
-			/*var name = $('.custom_product_name').val();
-			var id = $('#dropdown [value="' + name + '"]').data('value');
-			if(id != undefined){
-				var amount = list[id];
-				var priceID = "itemPrice_" + id;
-				//console.log(priceID);
-				$('#itemPrice_').attr('id', priceID);
-				$("#itemPrice_" + id).val(amount.toFixed(3));
-				//id = '';
-			}*/
-			/*if (!isNaN(parseFloat($(".qty").val()))) {
-				var qnty = parseFloat($(".qty").val());
-			}
-			if (!isNaN(parseFloat($(".disc").val()))) {
-				var discount = parseFloat($(".disc").val());
-			}
-			if (!isNaN(parseFloat($(".price").val()))) {
-				var price = parseFloat($(".price").val());
-			}*/
 			var disc = qnty * discount;
 			discount_sum += (qnty * discount);
 			subtotal_sum += (qnty * price);
 			subtotal = (qnty * price) - (qnty * discount);
 			total += subtotal;
 			$(this).find('.all_product_total').val(subtotal.toFixed(3));
-            /*$(".total").val(total.toFixed(3));
-            $(".discount").val(disc.toFixed(3));*/
 		});
 
-		// sum all sub totals
-		/*var sum = 0;
-		$(".total").each(function () {
-			if (!isNaN(this.value) && this.value.length != 0) {
-				sum += parseFloat(this.value);
-			}
-		});*/
-		// show values of Total price, Net total
+		// show values of Total price,Total discount, Net total, Payment amount
 		$("#totalPrice").text(subtotal_sum.toFixed(3));
         $("#totalDiscount").text(discount_sum.toFixed(3));
 		$("#net_amount").text(total.toFixed(3));
 		$("#OrderPayment_amount").val(total.toFixed(3));
-
-		/*var totalDiscount = 0;
-		$(".discount").each(function () {
-			if (!isNaN(this.value) && this.value.length != 0) {
-				totalDiscount += parseFloat(this.value);
-			}
-		});*/
-		//show values of Total discount
-
 	}
     /*$("#submit_button").click(function(){
         $("#order-update-form").submit(); // Submit the form
