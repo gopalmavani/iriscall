@@ -117,27 +117,29 @@
 									<?php
 									$count = 1;
 									foreach($orderItem as $key => $productItem){
-										$count++;
-									?>
-									<tr id="productrow" class="addMoreProduct">
+                                        ?>
+									<tr id="productrow" class="addMoreProduct" data-row="<?= $count; ?>">
 										<td class="col-md-5">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $productItem->hasErrors('product_name') ? 'has-error' : ''; ?>">
-													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]" id="<?php echo "OrderLineItem_item_product_id_".$productItem->attributes['product_id']; ?>" value="<?php  echo $productItem->attributes['product_name']; ?>" type="text">
+													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]"
+                                                           id="<?php echo "OrderLineItem_item_product_id_".$productItem->attributes['product_id']; ?>" value="<?php  echo $productItem->attributes['product_name']; ?>" type="text">
 												</div>
 											</div>
 										</td>
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $productItem->hasErrors('item_qty') ? 'has-error' : ''; ?>">
-													<input autocomplete="off" autofocus="autofocus" class="form-control product qty" placeholder="Qty" name="OrderLineItem[item_qty][]" id="<?php echo "OrderLineItem_item_qty_".$productItem->attributes['product_id']; ?>" value="<?php echo $productItem->attributes['item_qty']; ?>" type="text">
+													<input autocomplete="off" autofocus="autofocus" class="form-control all_product_qty" placeholder="Qty" name="OrderLineItem[item_qty][]"
+                                                           id="<?php echo "OrderLineItem_item_qty_".$productItem->attributes['product_id']; ?>" value="<?php echo $productItem->attributes['item_qty']; ?>" type="text">
 												</div>
 											</div>
 										</td>
 										<td class="col-md-1">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autocomplete="off" autofocus="autofocus" class="form-control product disc" placeholder="Discount" name="OrderLineItem[item_disc][]" id="<?php echo "OrderLineItem_item_disc_".$productItem->attributes['product_id']; ?>" value="<?php echo $productItem->attributes['item_disc']; ?>" type="text">
+													<input autocomplete="off" autofocus="autofocus" class="form-control all_product_disc" placeholder="Discount" name="OrderLineItem[item_disc][]"
+                                                           id="<?php echo "OrderLineItem_item_disc_".$productItem->attributes['product_id']; ?>" value="<?php echo $productItem->attributes['item_disc']; ?>" type="text">
 													<?php //echo $form->textField($orderItem, 'item_disc[]', array('autofocus' => 'on','readonly' => 'readonly', 'class' => 'form-control', 'placeholder' => 'Discount')); ?>
 												</div>
 											</div>
@@ -145,7 +147,8 @@
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autocomplete="off" autofocus="autofocus" class="form-control product price" placeholder="Price" id="<?php echo "itemPrice_".$productItem->attributes['product_id']; ?>" name="OrderLineItem[item_price][]" value="<?php echo $productItem->attributes['item_price']; ?>" type="text">
+													<input autocomplete="off" autofocus="autofocus" class="form-control all_product_price" placeholder="Price"
+                                                           id="<?php echo "itemPrice_".$productItem->attributes['product_id']; ?>" name="OrderLineItem[item_price][]" value="<?php echo $productItem->attributes['item_price']; ?>" type="text">
 												</div>
 											</div>
 										</td>
@@ -156,7 +159,7 @@
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autofocus="autofocus" class="form-control total" readonly="readonly" placeholder="Total Price" value="<?php echo round($total, 3);  ?>" type="text">
+													<input autofocus="autofocus" class="form-control all_product_total" readonly="readonly" placeholder="Total Price" id="<?php echo "OrderLineItem_product_total_".$productItem->attributes['product_id']; ?>" value="<?php echo round($total, 3);  ?>" type="text">
 												</div>
 											</div>
 										</td>
@@ -164,7 +167,7 @@
 											<input style="display: none;" class="discount" val="" placeholder="Total Discount" type="text">
 										</td>
 									</tr>
-									<?php } ?>
+									<?php $count++; } ?>
 									<tr id="beforePrice">
 										<td colspan="4" class="text-right"><strong>Total Price:</strong></td>
 										<td class="text-right"  id="totalPrice">&euro; <?php echo round($model['orderTotal'], 3); ?></td>
@@ -317,13 +320,16 @@
 		</div>
 	</div>
 </div>
-<script>
+<script type="text/javascript">
+    var r = "<?= $count ?>";
 $(document).ready(function(){
 	// function for adding a new row
-	var r = 1;
 	$('.addRow').click(function () {
-		r++;
-		$('#productrow').before('<tr id="row' + r + '" class="addMoreProduct"><td class="col-md-5"><div class="col-md-12"><div class="form-group"><input autocomplete="off" list="dropdown" class="form-control product name" name="OrderLineItem[product_id][]" id="OrderLineItem_product_id_"><datalist id="dropdown"><?php foreach($productName as $productList){ ?><option data-value="<?php echo $productList['product_id']; ?>" value="<?php echo $productList['name']; ?>"></option><?php }?></datalist></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product qty" placeholder="Qty" name="OrderLineItem[item_qty][]" id="OrderLineItem_item_qty_" type="text"/></div></div></td><td class="col-md-1"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product disc" placeholder="Discount" name="OrderLineItem[item_disc][]" id="OrderLineItem_item_disc_" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" autofocus="autofocus" class="form-control product price" placeholder="Price" id="itemPrice_" name="OrderLineItem[item_price][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autofocus="autofocus" class="form-control total" readonly="readonly" placeholder="Total Price" type="text"/></div></div></td><td style="display: none;"><input style="display: none;" class="discount" val="" placeholder="Total Discount" type="text"></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><button type="button" name="remove" id="' + r + '" class="btn btn-danger btn_remove">X</button></div></div></td></tr>');
+        $('#productrow').before('<tr id="row' + r + '" class="addMoreProduct" data-row = "'+r+'">' +
+            '<td class="col-md-5">' +
+            '<div class="col-md-12"><div class="form-group"><input autocomplete="off" list="dropdown" class="form-control custom_product custom_product_name" name="OrderLineItem[product_id][]" ' +
+            '><datalist id="dropdown"><?php foreach($productName as $productList){ ?><option data-value="<?php echo $productList['product_id']; ?>" value="<?php echo $productList['name']; ?>"></option><?php }?></datalist></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product custom_product_qty all_product_qty" placeholder="Qty" name="OrderLineItem[item_qty][]" type="text" value="0"/></div></div></td><td class="col-md-1"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product custom_product_disc all_product_disc" placeholder="Discount" value="0" name="OrderLineItem[item_disc][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product custom_product_price all_product_price" value="0" placeholder="Price" name="OrderLineItem[item_price][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product_total all_product_total" value="0" readonly="readonly" placeholder="Total Price" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><button type="button" name="remove" id="' + r + '" class="btn btn-danger btn_remove">X</button></div></div></td></tr>');
+        r++;
 	});
 	// remove row when X is clicked
 	$(document).on('click', '.btn_remove', function () {
@@ -332,20 +338,58 @@ $(document).ready(function(){
 		calcAll();
 	});
 	// calculate everything
-	$(document).on("keyup", ".product", calcAll);
-	//$(".product").on("change", calcAll);
+	$(document).on("keyup", ".all_product_price", calcAll);
+	$(document).on("keyup", ".all_product_qty", calcAll);
+	$(document).on("keyup", ".all_product_disc", calcAll);
+
+	$(document).on("change", ".custom_product_name", function() {
+        var product = '<?php echo json_encode($price); ?>';
+        var list = JSON.parse(product);
+        var name = $(this).val();
+        var id = $('#dropdown [value="' + name + '"]').data('value');
+        if(id == 'undefined'){
+            id = "new_product";
+        } else {
+            var product_price = list['id'];
+            if(list['id'] != ''){
+                $('.custom_product_price').val(product_price);
+            }
+        }
+        $(this).attr('id', 'OrderLineItem_product_id_'+id);
+        $('.custom_product_qty').attr('id', 'OrderLineItem_item_qty_'+id);
+        $('.custom_product_disc').attr('id', 'OrderLineItem_item_disc_'+id);
+        $('.custom_product_price').attr('id', 'itemPrice_'+id);
+        $('.custom_product_total').attr('id', 'OrderLineItem_product_total_'+id);
+
+        //Remove Class
+        $('#OrderLineItem_product_id_'+id).removeClass('custom_product_name');
+        $('#OrderLineItem_item_qty_'+id).removeClass('custom_product_qty');
+        $('#OrderLineItem_item_disc_'+id).removeClass('custom_product_disc');
+        $('#itemPrice_'+id).removeClass('custom_product_price');
+        $('#OrderLineItem_product_total_'+id).removeClass('custom_product_total');
+    });
 
 	// function for calculating product details
 	function calcAll() {
-		$(".addMoreProduct").each(function () {
-			var product = '<?php echo json_encode($price); ?>';
-			var list = JSON.parse(product);
-			var qnty = 0;
-			var price = 0;
-			var discount = 0;
-			var total = 0;
+        var product = '<?php echo json_encode($price); ?>';
+        var list = JSON.parse(product);
 
-			var name = $('.name').val();
+        var total = 0;
+        var subtotal_sum = 0;
+        var discount_sum = 0;
+		$(".addMoreProduct").each(function () {
+		    var row = $(this).data('row');
+			//var qnty = parseFloat($('.addMoreProduct[data-row="'+row+'"]').find('.all_product_qty').val());
+			var qnty = parseFloat($(this).find('.all_product_qty').val());
+			var price = parseFloat($(this).find('.all_product_price').val());
+            var discount = 0;
+            if($(this).find('.all_product_disc').val() != ''){
+                discount = parseFloat($(this).find('.all_product_disc').val());
+            }
+			var subtotal = 0;
+
+
+			/*var name = $('.custom_product_name').val();
 			var id = $('#dropdown [value="' + name + '"]').data('value');
 			if(id != undefined){
 				var amount = list[id];
@@ -354,8 +398,8 @@ $(document).ready(function(){
 				$('#itemPrice_').attr('id', priceID);
 				$("#itemPrice_" + id).val(amount.toFixed(3));
 				//id = '';
-			}
-			if (!isNaN(parseFloat($(".qty").val()))) {
+			}*/
+			/*if (!isNaN(parseFloat($(".qty").val()))) {
 				var qnty = parseFloat($(".qty").val());
 			}
 			if (!isNaN(parseFloat($(".disc").val()))) {
@@ -363,33 +407,38 @@ $(document).ready(function(){
 			}
 			if (!isNaN(parseFloat($(".price").val()))) {
 				var price = parseFloat($(".price").val());
-			}
+			}*/
 			var disc = qnty * discount;
-			var total = qnty * price - discount;
-			$(".total").val(total.toFixed(3));
-			$(".discount").val(disc.toFixed(3));
+			discount_sum += (qnty * discount);
+			subtotal_sum += (qnty * price);
+			subtotal = (qnty * price) - (qnty * discount);
+			total += subtotal;
+			$(this).find('.all_product_total').val(subtotal.toFixed(3));
+            /*$(".total").val(total.toFixed(3));
+            $(".discount").val(disc.toFixed(3));*/
 		});
 
 		// sum all sub totals
-		var sum = 0;
+		/*var sum = 0;
 		$(".total").each(function () {
 			if (!isNaN(this.value) && this.value.length != 0) {
 				sum += parseFloat(this.value);
 			}
-		});
+		});*/
 		// show values of Total price, Net total
-		$("#totalPrice").text(sum.toFixed(3));
-		$("#net_amount").text(sum.toFixed(3));
-		$("#OrderPayment_amount").val(sum.toFixed(3));
+		$("#totalPrice").text(subtotal_sum.toFixed(3));
+        $("#totalDiscount").text(discount_sum.toFixed(3));
+		$("#net_amount").text(total.toFixed(3));
+		$("#OrderPayment_amount").val(total.toFixed(3));
 
-		var totalDiscount = 0;
+		/*var totalDiscount = 0;
 		$(".discount").each(function () {
 			if (!isNaN(this.value) && this.value.length != 0) {
 				totalDiscount += parseFloat(this.value);
 			}
-		});
+		});*/
 		//show values of Total discount
-		$("#totalDiscount").text(totalDiscount.toFixed(3));
+
 	}
     /*$("#submit_button").click(function(){
         $("#order-update-form").submit(); // Submit the form
