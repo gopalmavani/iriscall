@@ -271,37 +271,36 @@ class OrderInfoController extends CController
                 // Update Order Line Item
                 $orderItemAttributes = $_POST['OrderLineItem'];
                 if(isset($orderItemAttributes['product_id'])){
-                    $new = count($orderItemAttributes['product_id']);
+                    $i = count($orderItemAttributes['product_name']);
                 }else{
-                    $new = 0;
+                    $i = 0;
                 }
                 $j = 0;
                 foreach ($orderItem as $orderItems){
                         $ord = OrderLineItem::model()->findByPk($orderItems->order_line_item_id);
                         //echo '<pre>';print_r($orderItemAttributes);die;
                     if(isset($orderItemAttributes['product_id'][$j]) && $orderItemAttributes['product_id'][$j] !== $ord->product_id){
-                        //$this->saveOrderItem($_POST['OrderLineItem'],$model->order_info_id);
                         $product = ProductInfo::model()->findByPk($orderItemAttributes['product_id'][$j]);
                         $orderItem = new OrderLineItem();
                         $orderItem->order_info_id = $id;
                         $orderItem->product_name = (!empty($product->name)) ? $product->name : $orderItemAttributes['product_id'][$j];
                         $orderItem->product_id = (!empty($product->product_id)) ? $product->product_id : '';
                         $orderItem->product_sku = (!empty($product->sku)) ? $product->sku : '';
-                        $orderItem->item_qty = $orderItemAttributes['item_qty'][$j];
-                        $orderItem->item_disc = $orderItemAttributes['item_disc'][$j];
-                        $orderItem->item_price = $orderItemAttributes['item_price'][$j];
+                        $orderItem->item_qty = $orderItemAttributes['item_qty'][$i];
+                        $orderItem->item_disc = $orderItemAttributes['item_disc'][$i];
+                        $orderItem->item_price = $orderItemAttributes['item_price'][$i];
                         $orderItem->created_at = date('Y-m-d H:i:s');
                         $orderItem->save(false);
                     }
-                    $j++;
+                    $i++;
                     if(!empty($ord)){
-                        $ord->item_qty = $orderItemAttributes['item_qty'][$new];
-                        $ord->item_disc = $orderItemAttributes['item_disc'][$new];
-                        $ord->item_price = $orderItemAttributes['item_price'][$new];
+                        $ord->item_qty = $orderItemAttributes['item_qty'][$j];
+                        $ord->item_disc = $orderItemAttributes['item_disc'][$j];
+                        $ord->item_price = $orderItemAttributes['item_price'][$j];
                         $ord->modified_at = date('Y-m-d H:i:s');
                         $ord->save(false);
                     }
-                    $new++;
+                    $j++;
                 }
                 
                 // Update or create Order Line Item
@@ -790,9 +789,9 @@ class OrderInfoController extends CController
             $product = ProductInfo::model()->findByPk($value);
             $orderItem = new OrderLineItem();
             $orderItem->order_info_id = $orderInfoId;
-            $orderItem->product_name = (!empty($product->name)) ? $product->name : $orderItemArray['product_id'][$key];
-            $orderItem->product_id = (!empty($product->product_id)) ? $product->product_id : '';
-            $orderItem->product_sku = (!empty($product->sku)) ? $product->sku : '';
+            $orderItem->product_name = $product->name;
+            $orderItem->product_id = $product->product_id;
+            $orderItem->product_sku = $product->sku;
             $orderItem->item_qty = $orderItemArray['item_qty'][$key];
             $orderItem->item_disc = $orderItemArray['item_disc'][$key];
             $orderItem->item_price = $orderItemArray['item_price'][$key];

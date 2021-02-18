@@ -118,7 +118,7 @@
 									$count = 1;
 									foreach($orderItem as $key => $productItem){
                                         ?>
-									<tr id="productrow" class="addMoreProduct" data-row="<?= $count; ?>">
+									<tr class="addMoreProduct" data-row="<?= $count; ?>">
 										<td class="col-md-5">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $productItem->hasErrors('product_name') ? 'has-error' : ''; ?>">
@@ -152,9 +152,11 @@
 												</div>
 											</div>
 										</td>
-										<?php 
-											$discount = (!empty($productItem->attributes['item_disc'])) ? $productItem->attributes['item_disc'] : 0;
-											$total = $productItem->attributes['item_qty'] * $productItem->attributes['item_price'] - $discount;
+										<?php
+											$qnty = $productItem->attributes['item_qty'];
+											$disc = (!empty($productItem->attributes['item_disc'])) ? $productItem->attributes['item_disc'] : 0;
+											$discount = $qnty * $disc;
+											$total = $qnty * $productItem->attributes['item_price'] - $discount;
 										?>
 										<td class="col-md-2">
 											<div class="col-md-12">
@@ -162,9 +164,6 @@
 													<input autofocus="autofocus" class="form-control all_product_total" readonly="readonly" placeholder="Total Price" id="<?php echo "OrderLineItem_product_total_".$productItem->attributes['product_id']; ?>" value="<?php echo round($total, 3);  ?>" type="text">
 												</div>
 											</div>
-										</td>
-										<td style="display: none;">
-											<input style="display: none;" class="discount" val="" placeholder="Total Discount" type="text">
 										</td>
 									</tr>
 									<?php $count++; } ?>
@@ -325,10 +324,10 @@
 $(document).ready(function(){
 	// function for adding a new row
 	$('.addRow').click(function () {
-        $('#productrow').before('<tr id="row' + r + '" class="addMoreProduct" data-row = "'+r+'">' +
+        $('#beforePrice').before('<tr id="row' + r + '" class="addMoreProduct" data-row = "'+r+'">' +
             '<td class="col-md-5">' +
             '<div class="col-md-12"><div class="form-group"><input autocomplete="off" list="dropdown" class="form-control custom_product custom_product_name" name="OrderLineItem[product_id][]" ' +
-            '><datalist id="dropdown"><?php foreach($productName as $productList){ ?><option data-value="<?php echo $productList['product_id']; ?>" value="<?php echo $productList['name']; ?>"></option><?php }?></datalist></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product custom_product_qty all_product_qty" placeholder="Qty" name="OrderLineItem[item_qty][]" type="text" value="0"/></div></div></td><td class="col-md-1"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product custom_product_disc all_product_disc" placeholder="Discount" value="0" name="OrderLineItem[item_disc][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product custom_product_price all_product_price" value="0" placeholder="Price" name="OrderLineItem[item_price][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product_total all_product_total" value="0" readonly="readonly" placeholder="Total Price" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><button type="button" name="remove" id="' + r + '" class="btn btn-danger btn_remove">X</button></div></div></td></tr>');
+            '><datalist id="dropdown"><?php foreach($productName as $productList){ ?><option data-value="<?php echo $productList['product_id']; ?>" value="<?php echo $productList['name']; ?>"></option><?php }?></datalist></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" class="form-control custom_product custom_product_qty all_product_qty" placeholder="Qty" name="OrderLineItem[item_qty][]" type="text" value="0"/></div></div></td><td class="col-md-1"><div class="col-md-12"><div class="form-group"><input autocomplete="off" class="form-control custom_product custom_product_disc all_product_disc" placeholder="Discount" value="0" name="OrderLineItem[item_disc][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" class="form-control custom_product custom_product_price all_product_price" value="0" placeholder="Price" name="OrderLineItem[item_price][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product_total all_product_total" value="0" readonly="readonly" placeholder="Total Price" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><button type="button" name="remove" id="' + r + '" class="btn btn-danger btn_remove">X</button></div></div></td></tr>');
         r++;
 	});
 	// remove row when X is clicked
@@ -347,7 +346,7 @@ $(document).ready(function(){
         var list = JSON.parse(product);
         var name = $(this).val();
         var id = $('#dropdown [value="' + name + '"]').data('value');
-        if(id == 'undefined'){
+        if(id == undefined){
             id = "new_product";
         } else {
             var product_price = list[id];
@@ -371,8 +370,6 @@ $(document).ready(function(){
 
 	// function for calculating product details
 	function calcAll() {
-        var product = '<?php echo json_encode($price); ?>';
-        var list = JSON.parse(product);
 
         var total = 0;
         var subtotal_sum = 0;
@@ -402,9 +399,10 @@ $(document).ready(function(){
 		$("#net_amount").text(total.toFixed(3));
 		$("#OrderPayment_amount").val(total.toFixed(3));
 	}
-    /*$("#submit_button").click(function(){
+
+    $("#submit_button").click(function(){
         $("#order-update-form").submit(); // Submit the form
-    });*/
+    });
 
 	function ProductPrice(productDetails) {
 		var country = $("#OrderInfo_country").val();
