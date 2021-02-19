@@ -366,6 +366,25 @@ $(document).ready(function(){
         $('#OrderLineItem_item_disc_'+id).removeClass('custom_product_disc');
         $('#itemPrice_'+id).removeClass('custom_product_price');
         $('#OrderLineItem_product_total_'+id).removeClass('custom_product_total');
+
+		$('#OrderLineItem_product_id_'+id).on("change", function(){
+			var newName = $(this).val();
+			var newId = $('#dropdown [value="' + newName + '"]').data('value');
+			if(newId !== id || newId == undefined){
+				$('#OrderLineItem_item_qty_'+id).val(0);
+				$('#OrderLineItem_item_disc_'+id).val(0);
+				$('#itemPrice_'+id).val(0);
+				$('#OrderLineItem_product_total_'+id).val(0);
+				if(newId == undefined){
+					$('#itemPrice_'+id).val(0);
+				}else{
+					var new_product_price = list[newId];
+					if(new_product_price != ''){
+						$('#itemPrice_'+id).val(new_product_price);
+					}
+				}
+			}
+		});
     });
 
 	// function for calculating product details
