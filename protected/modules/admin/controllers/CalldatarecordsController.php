@@ -182,6 +182,34 @@ class CalldatarecordsController extends Controller
                 $intenational_total_time = $international_call_cdr_data['total_time'];
             }
             array_push($data_array,['is_min'=>false,'rule'=>'Setup International call','min'=>$intenational_total_time,'total_time'=>$intenational_total_time,'cost'=>'0.100']);
+
+            /* fifth row */
+            $token = base64_encode(Yii::app()->params['com_username'].":".Yii::app()->params['com_password']);
+            $url = 'https://rest.apollo.compass-stack.com/company/'.$org_id.'/users';
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYPEER=>false,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Basic ".$token,
+                    "content-type: application/json"
+                ),
+            ));
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response);
+            $numberOfUsers = 0;
+            if(!empty($response)){
+                $numberOfUsers = count($response);
+            }
+            array_push($data_array,['is_min'=>false,'rule'=>'Number Of Users','min'=>$numberOfUsers,'total_time'=> $numberOfUsers,'cost'=>'8']);
             $this->render('invoicedetail',[
                 'details'=>$data_array,
                 'org_id' => $org_id
@@ -1018,7 +1046,7 @@ class CalldatarecordsController extends Controller
                     if($model->save(false)){
                         foreach($details as $detail){
                             $productInfo = ProductInfo::model()->findByAttributes(['name' => $detail->rule]);
-                            if(!empty($productInfo)){
+                            //if(!empty($productInfo)){
                                 $orderItem = new OrderLineItem();
                                 if($detail->is_min == 1){
                                     $convert = strtotime($detail->total_time);
@@ -1038,7 +1066,7 @@ class CalldatarecordsController extends Controller
                                     $orderItem->created_at = date('Y-m-d H:i:s');
                                     $orderItem->save(false);
                                 }
-                            }
+                            //}
                         }
                     }
                     $orderPayment = new OrderPayment();
