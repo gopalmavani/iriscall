@@ -1061,8 +1061,8 @@ class CalldatarecordsController extends Controller
                                     $orderItem->order_info_id = $model->order_info_id;
                                     $orderItem->item_qty = $detail->min;
                                     $orderItem->item_price = $detail->cost;
-                                    $orderItem->product_id = $productInfo['product_id'];
-                                    $orderItem->product_sku = $productInfo['sku'];
+                                    $orderItem->product_id = (!empty($productInfo['product_id'])) ? $productInfo['product_id'] : '';
+                                    $orderItem->product_sku = (!empty($productInfo['sku'])) ? $productInfo['sku'] : '';
                                     $orderItem->created_at = date('Y-m-d H:i:s');
                                     $orderItem->save(false);
                                 }
