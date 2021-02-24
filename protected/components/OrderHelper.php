@@ -177,7 +177,7 @@ class OrderHelper extends CApplicationComponent
             $product = ProductInfo::model()->findByPk($item->product_id);
             $temp = array();
             $temp['name'] = $item->product_name;
-            $temp['image'] = Yii::app()->getBaseUrl(true) . $product->image;
+            $temp['image'] = (!empty($product->image)) ? Yii::app()->getBaseUrl(true) . $product->image : '';
             $temp['quantity'] = $item->item_qty;
             $temp['price'] = $item->item_price;
             array_push($orderItems, $temp);
@@ -276,8 +276,8 @@ class OrderHelper extends CApplicationComponent
                 $level2_comment = "Level 2 Affiliate commission from user_id " . $user->user_id . " for order_id " . $orderId . " and product_id " . $orderItem->product_id;
 
                 //credits
-                $level1_credit = $qty * $product->level_one_affiliate;
-                $level2_credit = $qty * $product->level_two_affiliate;
+                $level1_credit = $qty * (!empty($product->level_one_affiliate)) ? $product->level_one_affiliate : '' ;
+                $level2_credit = $qty * (!empty($product->level_two_affiliate)) ? $product->level_two_affiliate : '' ;
 
                 if (isset($user->sponsor_id)) {
                     $level1_parent = UserInfo::model()->findByPk($user->sponsor_id);
