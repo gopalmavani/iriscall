@@ -206,10 +206,47 @@ class CalldatarecordsController extends Controller
             curl_close($curl);
             $response = json_decode($response);
             $numberOfUsers = 0;
+            $list = [];
             if(!empty($response)){
                 $numberOfUsers = count($response);
+                foreach($response as $res){
+                    $list[] = $res->entityId;
+                }
             }
-            array_push($data_array,['is_min'=>false,'rule'=>'Number Of Users','min'=>$numberOfUsers,'total_time'=> $numberOfUsers,'cost'=>'8']);
+            $entityId = implode(', ', $list);
+            array_push($data_array,['is_min'=>false,'rule'=>'Number Of Users','min'=>$numberOfUsers,'total_time'=> $numberOfUsers,'cost'=>'8','entityId'=>$entityId]);
+
+            /* sixth row */
+            $exUrl = 'https://rest.apollo.compass-stack.com/company/'.$org_id.'/externalNumbers';
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $exUrl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYPEER=>false,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Basic ".$token,
+                    "content-type: application/json"
+                ),
+            ));
+            $externalNumber = curl_exec($curl);
+            curl_close($curl);
+            $externalNumber = json_decode($externalNumber);
+            $numberOfExternalNumber = 0;
+            $resource = [];
+            if(!empty($externalNumber)){
+                $numberOfExternalNumber = count($externalNumber);
+                foreach($externalNumber as $data){
+                    $resource[] = $data->resourceId;
+                }
+            }
+            $resourceId = implode(', ', $resource);
+            array_push($data_array,['is_min'=>false,'rule'=>'External Numbers','min'=>$numberOfExternalNumber,'total_time'=> $numberOfExternalNumber,'cost'=>'4','resourceId'=>$resourceId]);
             $this->render('invoicedetail',[
                 'details'=>$data_array,
                 'org_id' => $org_id
@@ -1046,7 +1083,7 @@ class CalldatarecordsController extends Controller
                     if($model->save(false)){
                         foreach($details as $detail){
                             $productInfo = ProductInfo::model()->findByAttributes(['name' => $detail->rule]);
-                            //if(!empty($productInfo)){
+                            if(!empty($productInfo)){
                                 $orderItem = new OrderLineItem();
                                 if($detail->is_min == 1){
                                     $convert = strtotime($detail->total_time);
@@ -1061,12 +1098,18 @@ class CalldatarecordsController extends Controller
                                     $orderItem->order_info_id = $model->order_info_id;
                                     $orderItem->item_qty = $detail->min;
                                     $orderItem->item_price = $detail->cost;
-                                    $orderItem->product_id = (!empty($productInfo['product_id'])) ? $productInfo['product_id'] : '';
-                                    $orderItem->product_sku = (!empty($productInfo['sku'])) ? $productInfo['sku'] : '';
+                                    $orderItem->product_id = $productInfo['product_id'];
+                                    $orderItem->product_sku = $productInfo['sku'];
                                     $orderItem->created_at = date('Y-m-d H:i:s');
+                                    if(!empty($detail->resourceId)){
+                                        $orderItem->comment = $detail->resourceId;
+                                    }
+                                    if(!empty($detail->entityId)){
+                                        $orderItem->comment = $detail->entityId;
+                                    }
                                     $orderItem->save(false);
                                 }
-                            //}
+                            }
                         }
                     }
                     $orderPayment = new OrderPayment();
