@@ -321,7 +321,7 @@ class OrderInfoController extends CController
                     $orderPaymentModel->payment_mode = $orderPaymentAttributes['payment_mode'][$k];
                     $orderPaymentModel->payment_status = $orderPaymentAttributes['payment_status'][$k];
                     $orderPaymentModel->payment_ref_id = $orderPaymentAttributes['ref_id'][$k];
-                    $orderPaymentModel->total = ($totalArray['orderTotal']) ? $totalArray['orderTotal'] : $orderPaymentAttributes['amount'][$k];
+                    $orderPaymentModel->total = $orderPaymentAttributes['amount'][$k];
                     $orderPaymentModel->payment_date = $orderPaymentAttributes['payment_date'];
                     $orderPaymentModel->modified_at = date('Y-m-d H:i:s');
 
