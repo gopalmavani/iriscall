@@ -268,41 +268,40 @@ class OrderInfoController extends CController
                 //         }
                 //     }
                 // }
-                // Update Order Line Item
+                // Update/create Order Line Item
                 $orderItemAttributes = $_POST['OrderLineItem'];
-                if(isset($orderItemAttributes['product_id'])){
-                    $i = count($orderItemAttributes['product_name']);
-                }else{
-                    $i = 0;
-                }
-                $j = 0;
-                foreach ($orderItem as $orderItems){
-                        $ord = OrderLineItem::model()->findByPk($orderItems->order_line_item_id);
-                        //echo '<pre>';print_r($orderItemAttributes);die;
-                    if(isset($orderItemAttributes['product_id'][$j]) && $orderItemAttributes['product_id'][$j] !== $ord->product_id){
-                        $product = ProductInfo::model()->findByPk($orderItemAttributes['product_id'][$j]);
-                        $orderItem = new OrderLineItem();
-                        $orderItem->order_info_id = $id;
-                        $orderItem->product_name = (!empty($product->name)) ? $product->name : $orderItemAttributes['product_id'][$j];
-                        $orderItem->product_id = (!empty($product->product_id)) ? $product->product_id : '';
-                        $orderItem->product_sku = (!empty($product->sku)) ? $product->sku : '';
-                        $orderItem->item_qty = $orderItemAttributes['item_qty'][$i];
-                        $orderItem->item_disc = $orderItemAttributes['item_disc'][$i];
-                        $orderItem->item_price = $orderItemAttributes['item_price'][$i];
-                        $orderItem->comment = $orderItemAttributes['comment'][$i];
-                        $orderItem->created_at = date('Y-m-d H:i:s');
-                        $orderItem->save(false);
+                foreach ($orderItemAttributes['product_name'] as $j=>$productItems){
+                    $ord = OrderLineItem::model()->findAllByAttributes(['product_name' => $productItems]);
+                    if(empty($ord)){
+                        $product = ProductInfo::model()->findAllByAttributes(['name' => $productItems]);
+                        $newOrderItem = new OrderLineItem();
+                        if(!empty($product)){
+                            $new = 0;
+                            $newOrderItem->product_id = $product[$new]['product_id'];
+                            $newOrderItem->product_sku = $product[$new]['sku'];
+                            $new++;
+                        }else{
+                            $newOrderItem->product_id = '';
+                            $newOrderItem->product_sku = '';
+                        }
+                        $newOrderItem->order_info_id = $id;
+                        $newOrderItem->product_name = $orderItemAttributes['product_name'][$j];
+                        $newOrderItem->item_qty = $orderItemAttributes['item_qty'][$j];
+                        $newOrderItem->item_disc = $orderItemAttributes['item_disc'][$j];
+                        $newOrderItem->item_price = $orderItemAttributes['item_price'][$j];
+                        $newOrderItem->comment = $orderItemAttributes['comment'][$j];
+                        $newOrderItem->created_at = date('Y-m-d H:i:s');
+                        $newOrderItem->save(false);
+                    }else{
+                        foreach($ord as $oldProduct){
+                            $oldProduct->item_qty = $orderItemAttributes['item_qty'][$j];
+                            $oldProduct->item_disc = $orderItemAttributes['item_disc'][$j];
+                            $oldProduct->item_price = $orderItemAttributes['item_price'][$j];
+                            $oldProduct->comment = $orderItemAttributes['comment'][$j];
+                            $oldProduct->modified_at = date('Y-m-d H:i:s');
+                            $oldProduct->save(false);
+                        }
                     }
-                    $i++;
-                    if(!empty($ord)){
-                        $ord->item_qty = $orderItemAttributes['item_qty'][$j];
-                        $ord->item_disc = $orderItemAttributes['item_disc'][$j];
-                        $ord->item_price = $orderItemAttributes['item_price'][$j];
-                        $ord->comment = $orderItemAttributes['comment'][$j];
-                        $ord->modified_at = date('Y-m-d H:i:s');
-                        $ord->save(false);
-                    }
-                    $j++;
                 }
                 
                 // Update or create Order Line Item
