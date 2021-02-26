@@ -106,10 +106,11 @@
 								<table class="table">
 									<thead>
 									<tr>
-										<th>Product Name</th>
+										<th class="text-center">Product Name</th>
 										<th class="text-center">Qty</th>
 										<th class="text-center">Discount</th>
 										<th class="text-center">Price</th>
+										<th class="text-center">Comment</th>
 										<th class="text-center">Total</th>
 									</tr>
 									</thead>
@@ -119,7 +120,7 @@
 									foreach($orderItem as $key => $productItem){
                                         ?>
 									<tr class="addMoreProduct" data-row="<?= $count; ?>">
-										<td class="col-md-5">
+										<td class="col-md-4">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $productItem->hasErrors('product_name') ? 'has-error' : ''; ?>">
 													<input autofocus="autofocus" readonly="readonly" class="form-control" placeholder="Product name" name="OrderLineItem[product_name][]"
@@ -127,7 +128,7 @@
 												</div>
 											</div>
 										</td>
-										<td class="col-md-2">
+										<td class="col-md-1">
 											<div class="col-md-12">
 												<div class="form-group <?php echo $productItem->hasErrors('item_qty') ? 'has-error' : ''; ?>">
 													<input autocomplete="off" autofocus="autofocus" class="form-control all_product_qty" placeholder="Qty" name="OrderLineItem[item_qty][]"
@@ -144,11 +145,19 @@
 												</div>
 											</div>
 										</td>
-										<td class="col-md-2">
+										<td class="col-md-1">
 											<div class="col-md-12">
 												<div class="form-group ">
 													<input autocomplete="off" autofocus="autofocus" class="form-control all_product_price" placeholder="Price"
                                                            id="<?php echo "itemPrice_".$productItem->attributes['product_id']; ?>" name="OrderLineItem[item_price][]" value="<?php echo $productItem->attributes['item_price']; ?>" type="text">
+												</div>
+											</div>
+										</td>
+										<td class="col-md-3">
+											<div class="col-md-12">
+												<div class="form-group">
+													<textarea autofocus="autofocus" class="form-control all_product_comment" placeholder="Comment" rows="1"
+														id="<?php echo "OrderLineItem_product_total_".$productItem->attributes['product_id']; ?>" name="OrderLineItem[comment][]"><?php echo $productItem->attributes['comment']; ?></textarea>
 												</div>
 											</div>
 										</td>
@@ -161,26 +170,26 @@
 										<td class="col-md-2">
 											<div class="col-md-12">
 												<div class="form-group ">
-													<input autofocus="autofocus" class="form-control all_product_total" readonly="readonly" placeholder="Total Price" id="<?php echo "OrderLineItem_product_total_".$productItem->attributes['product_id']; ?>" value="<?php echo round($total, 3);  ?>" type="text">
+													<input autofocus="autofocus" class="form-control all_product_total text-center" readonly="readonly" placeholder="Total Price" id="<?php echo "OrderLineItem_product_total_".$productItem->attributes['product_id']; ?>" value="<?php echo round($total, 3);  ?>" type="text">
 												</div>
 											</div>
 										</td>
 									</tr>
 									<?php $count++; } ?>
 									<tr id="beforePrice">
-										<td colspan="4" class="text-right"><strong>Total Price:</strong></td>
+										<td colspan="5" class="text-right"><strong>Total Price:</strong></td>
 										<td class="text-right"  id="totalPrice">&euro; <?php echo round($model['orderTotal'], 3); ?></td>
 									</tr>
 									<tr>
-										<td colspan="4" class="text-right"><strong>Total Discount:</strong></td>
+										<td colspan="5" class="text-right"><strong>Total Discount:</strong></td>
 										<td class="text-right"  id="totalDiscount">&euro; <?php echo $model['discount']; ?></td>
 									</tr>
 									<tr>
-                                        <td colspan="4" class="text-right"><strong>Vat@<?php echo  $model['vat_percentage']; ?>%:</strong></td>
+                                        <td colspan="5" class="text-right"><strong>Vat@<?php echo  $model['vat_percentage']; ?>%:</strong></td>
                                         <td class="text-right"  id="vat_amount">&euro; <?php echo $model['vat']; ?></td>
                                     </tr>
 									<tr class="success">
-										<td colspan="4" class="text-right text-uppercase"><strong>Net Total:</strong></td>
+										<td colspan="5" class="text-right text-uppercase"><strong>Net Total:</strong></td>
 										<td class="text-right"><strong  id="net_amount">&euro; <?php echo round($model['netTotal'],3); ?></strong></td>
 									</tr>
 									</tbody>
@@ -325,9 +334,13 @@ $(document).ready(function(){
 	// function for adding a new row
 	$('.addRow').click(function () {
         $('#beforePrice').before('<tr id="row' + r + '" class="addMoreProduct" data-row = "'+r+'">' +
-            '<td class="col-md-5">' +
-            '<div class="col-md-12"><div class="form-group"><input autocomplete="off" list="dropdown" class="form-control custom_product custom_product_name" name="OrderLineItem[product_id][]" ' +
-            '><datalist id="dropdown"><?php foreach($productName as $productList){ ?><option data-value="<?php echo $productList['product_id']; ?>" value="<?php echo $productList['name']; ?>"></option><?php }?></datalist></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" class="form-control custom_product custom_product_qty all_product_qty" placeholder="Qty" name="OrderLineItem[item_qty][]" type="text" value="0"/></div></div></td><td class="col-md-1"><div class="col-md-12"><div class="form-group"><input autocomplete="off" class="form-control custom_product custom_product_disc all_product_disc" placeholder="Discount" value="0" name="OrderLineItem[item_disc][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input autocomplete="off" class="form-control custom_product custom_product_price all_product_price" value="0" placeholder="Price" name="OrderLineItem[item_price][]" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><input class="form-control custom_product_total all_product_total" value="0" readonly="readonly" placeholder="Total Price" type="text"/></div></div></td><td class="col-md-2"><div class="col-md-12"><div class="form-group"><button type="button" name="remove" id="' + r + '" class="btn btn-danger btn_remove">X</button></div></div></td></tr>');
+            '<td class="col-md-4"><div class="col-md-12"><div class="form-group"><input autocomplete="off" list="dropdown" class="form-control custom_product custom_product_name" name="OrderLineItem[product_id][]"><datalist id="dropdown"><?php foreach($productName as $productList){ ?><option data-value="<?php echo $productList['product_id']; ?>" value="<?php echo $productList['name']; ?>"></option><?php }?></datalist></div></div></td>' +
+			'<td class="col-md-1"><div class="col-md-12"><div class="form-group"><input autocomplete="off" class="form-control custom_product custom_product_qty all_product_qty" placeholder="Qty" name="OrderLineItem[item_qty][]" type="text" value="0"/></div></div></td>' +
+			'<td class="col-md-1"><div class="col-md-12"><div class="form-group"><input autocomplete="off" class="form-control custom_product custom_product_disc all_product_disc" placeholder="Discount" value="0" name="OrderLineItem[item_disc][]" type="text"/></div></div></td>' +
+			'<td class="col-md-1"><div class="col-md-12"><div class="form-group"><input autocomplete="off" class="form-control custom_product custom_product_price all_product_price" value="0" placeholder="Price" name="OrderLineItem[item_price][]" type="text"/></div></div></td>' +
+			'<td class="col-md-3"><div class="col-md-12"><div class="form-group "><textarea autofocus="autofocus" class="form-control custom_product custom_product_comment all_product_comment" placeholder="Comment" rows="1" name="OrderLineItem[comment][]"></textarea></div></div></td>' +
+			'<td class="col-md-2"><div class="col-md-12"><div class="form-group"><input class="form-control text-center custom_product_total all_product_total" value="0" readonly="readonly" placeholder="Total Price" type="text"/></div></div></td>' +
+			'<td><button type="button" name="remove" id="' + r + '" class="btn btn-danger btn_remove">X</button></td></tr>');
         r++;
 	});
 	// remove row when X is clicked
@@ -358,6 +371,7 @@ $(document).ready(function(){
         $('.custom_product_qty').attr('id', 'OrderLineItem_item_qty_'+id);
         $('.custom_product_disc').attr('id', 'OrderLineItem_item_disc_'+id);
         $('.custom_product_price').attr('id', 'itemPrice_'+id);
+		$('.custom_product_comment').attr('id', 'OrderLineItem_item_comment_'+id);
         $('.custom_product_total').attr('id', 'OrderLineItem_product_total_'+id);
 
         //Remove Class
@@ -365,6 +379,7 @@ $(document).ready(function(){
         $('#OrderLineItem_item_qty_'+id).removeClass('custom_product_qty');
         $('#OrderLineItem_item_disc_'+id).removeClass('custom_product_disc');
         $('#itemPrice_'+id).removeClass('custom_product_price');
+		$('#OrderLineItem_item_comment_'+id).removeClass('custom_product_comment');
         $('#OrderLineItem_product_total_'+id).removeClass('custom_product_total');
 
 		$('#OrderLineItem_product_id_'+id).on("change", function(){
@@ -374,6 +389,7 @@ $(document).ready(function(){
 				$('#OrderLineItem_item_qty_'+id).val(0);
 				$('#OrderLineItem_item_disc_'+id).val(0);
 				$('#itemPrice_'+id).val(0);
+				$('#OrderLineItem_item_comment_'+id).val('');
 				$('#OrderLineItem_product_total_'+id).val(0);
 				if(newId == undefined){
 					$('#itemPrice_'+id).val(0);

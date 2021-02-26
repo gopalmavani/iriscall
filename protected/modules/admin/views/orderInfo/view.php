@@ -202,6 +202,7 @@ $id = $model->order_info_id;
                                 <th  style="text-transform: capitalize;">Quantity</th>
                                 <th  style="text-transform: capitalize;">Discount</th>
                                 <th  style="text-transform: capitalize;">Price</th>
+                                <th  style="text-transform: capitalize;">Comment</th>
                                 <th  style="text-transform: capitalize;">Total</th>
                             </tr>
                             </thead>
@@ -221,6 +222,7 @@ $id = $model->order_info_id;
                                     ?>
                                     <td>&euro; <?php echo $discount; ?></td>
                                     <td>&euro; <?php echo $item['item_price']; ?></td>
+                                    <td><?php echo $item['comment']; ?></td>
                                     <td>&euro; <?php echo round($total, 3); ?></td>
                                 </tr>
                             <?php } ?>
@@ -230,8 +232,8 @@ $id = $model->order_info_id;
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-6"></div>
-                <div class="col-lg-6">
+                <div class="col-lg-8"></div>
+                <div class="col-lg-4">
                     <div class="well">
                         <div class="row static-info align-reverse">
                             <div class="col-md-8">

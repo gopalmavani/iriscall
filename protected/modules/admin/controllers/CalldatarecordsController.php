@@ -101,6 +101,12 @@ class CalldatarecordsController extends Controller
             $org_id = $_POST['OrganizationInfo']['organisation_id'];
             $month = $_POST['month'];
             $start = date("Y-m-01", strtotime($month));
+            if($month != 'Select month'){
+                $monthName = date("F, Y", strtotime($month));
+            }else{
+                $monthName = '';
+            }
+            
             //$end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
             $end = $month;
             /*$start = '2020-12-01';
@@ -249,7 +255,8 @@ class CalldatarecordsController extends Controller
             array_push($data_array,['is_min'=>false,'rule'=>'External Numbers','min'=>$numberOfExternalNumber,'total_time'=> $numberOfExternalNumber,'cost'=>'4','resourceId'=>$resourceId]);
             $this->render('invoicedetail',[
                 'details'=>$data_array,
-                'org_id' => $org_id
+                'org_id' => $org_id,
+                'monthName' => $monthName
             ]);
         }
         $this->render('createinvoice',[
