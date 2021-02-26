@@ -5,8 +5,9 @@
  * Date: 22-09-2020
  * Time: 16:24
  */
-//echo "<pre>";print_r($details);die;
-$this->pageTitle = 'Invoice details';
+$organisation = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
+$month = ($monthName != '') ? ' for '.$monthName : '';
+$this->pageTitle = 'Invoice details - '.$organisation->name.$month;
 ?>
 <div class="view">
     <table class="table">
@@ -81,5 +82,10 @@ $(document).ready(function () {
             }
         });
     });
+    $('.page-heading',function(){
+        $('.page-heading').parent().removeClass('col-sm-7');
+        $('.page-heading').parent().addClass('col-sm-12');
+    });
+
 });
 </script>

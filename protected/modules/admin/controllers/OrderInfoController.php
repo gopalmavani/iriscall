@@ -289,6 +289,7 @@ class OrderInfoController extends CController
                         $orderItem->item_qty = $orderItemAttributes['item_qty'][$i];
                         $orderItem->item_disc = $orderItemAttributes['item_disc'][$i];
                         $orderItem->item_price = $orderItemAttributes['item_price'][$i];
+                        $orderItem->comment = $orderItemAttributes['comment'][$i];
                         $orderItem->created_at = date('Y-m-d H:i:s');
                         $orderItem->save(false);
                     }
@@ -297,6 +298,7 @@ class OrderInfoController extends CController
                         $ord->item_qty = $orderItemAttributes['item_qty'][$j];
                         $ord->item_disc = $orderItemAttributes['item_disc'][$j];
                         $ord->item_price = $orderItemAttributes['item_price'][$j];
+                        $ord->comment = $orderItemAttributes['comment'][$j];
                         $ord->modified_at = date('Y-m-d H:i:s');
                         $ord->save(false);
                     }
@@ -412,7 +414,6 @@ class OrderInfoController extends CController
         foreach($productName as $value){
             $price[$value['product_id']] = $value['price'];
         }
-        //echo '<pre>';print_r($productName);die;
         $this->render('update', array(
             'model' => $model,
             'orderItem' => $orderItem,
