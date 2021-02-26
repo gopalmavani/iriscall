@@ -132,7 +132,28 @@ $id = $model->order_info_id;
                                 </span>
                             </div>
                         </div>
-
+                        <p></p>
+                        <div class="row">
+                            <div  class="col-md-6">
+                                <span><b>Structured communication:</b></span>
+                            </div class="col-md-7">
+                            <div>
+                                <span>
+                                    <?php echo $model->order_comment ?>
+                                </span>
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <span><b>Reference:</b></span>
+                            </div>
+                            <div class="col-md-7">
+                                <span>
+                                    <?php echo $model->order_comment ?>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -232,14 +253,14 @@ $id = $model->order_info_id;
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-8"></div>
-                <div class="col-lg-4">
+                <div class="col-lg-7"></div>
+                <div class="col-lg-5">
                     <div class="well">
                         <div class="row static-info align-reverse">
                             <div class="col-md-8">
                                 <span><b>Order Total: </b></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 text-right">
                                 <span>&euro; <?php echo round($model->orderTotal, 3); ?></span>
                             </div>
                         </div>
@@ -247,7 +268,7 @@ $id = $model->order_info_id;
                             <div class="col-md-8">
                                 <span><b>Discount: </b></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 text-right">
                                 <span>&euro; <?php echo (!empty($model->discount)) ? $model->discount : 0; ?></span>
                             </div>
                         </div>
@@ -258,7 +279,7 @@ $id = $model->order_info_id;
                                 <div class="col-md-8">
                                     <span><b>Vat(<?php echo round($vatpercent); ?>%): </b></span>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 text-right">
                                     <span>&euro; <?php echo $model->vat; ?></span>
                                 </div>
                             </div>
@@ -267,7 +288,7 @@ $id = $model->order_info_id;
                                 <div class="col-md-8">
                                     <span><b>Vat: </b></span>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 text-right">
                                     <span>&euro; <?php echo $model->vat; ?></span>
                                 </div>
                             </div>
@@ -277,7 +298,7 @@ $id = $model->order_info_id;
                             <div class="col-md-8">
                                 <span><b>Net Total: </b></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 text-right">
                                 <span>&euro; <?php echo round($model->netTotal, 3); ?></span>
                             </div>
                         </div>
