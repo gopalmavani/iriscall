@@ -14,7 +14,7 @@ class WalletHelper extends CApplicationComponent {
         $wallet->denomination_id = $denominationID;
         $wallet->transaction_status = $transactionStatus;
         $wallet->portal_id = $portalId;
-        $wallet->amount = $creditAmount;
+        $wallet->amount = $creditAmount == '' ? 0 : $creditAmount;
         $wallet->created_at = $createdDate;
         $wallet->save(false);
     }
