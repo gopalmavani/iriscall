@@ -49,22 +49,22 @@
 					<div class="col-md-6">
 						<div class="col-md-12 ">
 							<div class="form-group <?php echo $model->hasErrors('vat_number') ? 'has-error' : ''; ?>">
-								<?php echo $form->textFieldControlGroup($model, 'vat_number', array('autofocus' => 'on', 'class' => 'form-control')); ?>
+								<?php echo $form->textFieldControlGroup($model, 'vat_number', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form-group <?php echo $model->hasErrors('company') ? 'has-error' : ''; ?>">
-								<?php echo $form->textFieldControlGroup($model, 'company', array('autofocus' => 'on', 'class' => 'form-control')); ?>
+								<?php echo $form->textFieldControlGroup($model, 'company', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form-group <?php echo $model->hasErrors('building') ? 'has-error' : ''; ?>">
-								<?php echo $form->textFieldControlGroup($model, 'building', array('autofocus' => 'on', 'class' => 'form-control')); ?>
+								<?php echo $form->textFieldControlGroup($model, 'building', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form-group <?php echo $model->hasErrors('street') ? 'has-error' : ''; ?>">
-								<?php echo $form->textFieldControlGroup($model, 'street', array('autofocus' => 'on', 'class' => 'form-control')); ?>
+								<?php echo $form->textFieldControlGroup($model, 'street', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
 							</div>
 						</div>
 					</div>
@@ -72,12 +72,12 @@
 
 						<div class="col-md-12">
 							<div class="form-group <?php echo $model->hasErrors('city') ? 'has-error' : ''; ?>">
-								<?php echo $form->textFieldControlGroup($model, 'city', array('autofocus' => 'on', 'class' => 'form-control')); ?>
+								<?php echo $form->textFieldControlGroup($model, 'city', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form-group <?php echo $model->hasErrors('region') ? 'has-error' : ''; ?>">
-								<?php echo $form->textFieldControlGroup($model, 'region', array('autofocus' => 'on', 'class' => 'form-control')); ?>
+								<?php echo $form->textFieldControlGroup($model, 'region', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
 							</div>
 						</div>
 						<div class="col-md-12">
@@ -87,7 +87,16 @@
 						</div>
 						<div class="col-md-12">
 							<div class="form-group <?php echo $model->hasErrors('postcode') ? 'has-error' : ''; ?>">
-								<?php echo $form->textFieldControlGroup($model, 'postcode', array('autofocus' => 'on', 'class' => 'form-control')); ?>
+								<?php echo $form->textFieldControlGroup($model, 'postcode', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="col-md-12 ">
+							<div class="form-group <?php echo $model->hasErrors('order_comment') ? 'has-error' : ''; ?>">
+								<?php echo $form->textFieldControlGroup($model, 'order_comment', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
 							</div>
 						</div>
 					</div>
