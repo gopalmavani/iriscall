@@ -102,11 +102,12 @@ class CalldatarecordsController extends Controller
             $month = $_POST['month'];
             $start = date("Y-m-01", strtotime($month));
             if($month != 'Select month'){
-                $monthName = date("F, Y", strtotime($month));
+                $getMonth = date("F, Y", strtotime($month));
             }else{
-                $monthName = '';
+                $getMonth = '';
             }
-            
+            $organisation = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
+            $selected = ($getMonth != '') ? $organisation->name.' for '.$getMonth : $organisation->name;
             //$end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
             $end = $month;
             /*$start = '2020-12-01';
@@ -256,7 +257,7 @@ class CalldatarecordsController extends Controller
             $this->render('invoicedetail',[
                 'details'=>$data_array,
                 'org_id' => $org_id,
-                'monthName' => $monthName
+                'selected' => $selected
             ]);
         }
         $this->render('createinvoice',[
