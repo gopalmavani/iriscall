@@ -550,7 +550,7 @@ class CalldatarecordsController extends Controller
             ]);*/
             $model['unit_cost'] = $cost_calculate['cost'];
             $model['comment'] = $comment;
-            //$model->save(false);
+            $model->save(false);
         }
 //        echo "<pre>";print_r($data);die;
         //$this->redirect('cdrdetails');
