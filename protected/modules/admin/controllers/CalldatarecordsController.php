@@ -529,8 +529,10 @@ class CalldatarecordsController extends Controller
             $diff = strtotime($cdr['end_time']) - strtotime($cdr['start_time']);
             $total_time = $diff;
             $fromnumber = $cdr['from_number'];
+            /*$tonumber = '3214314051';
+            $fromnumber = '3214813909';*/
             $cost_calculate = $this->calculateCost($tonumber,$total_time,$fromnumber);
-            //echo "<pre>";print_r($cost_calculate);
+            //echo "<pre>";print_r($cost_calculate);die;
             if($total_time <= 0){
                 $comment = '-';
             }else{
@@ -548,9 +550,9 @@ class CalldatarecordsController extends Controller
             ]);*/
             $model['unit_cost'] = $cost_calculate['cost'];
             $model['comment'] = $comment;
-            $model->save(false);
+            //$model->save(false);
         }
-        //echo "<pre>";print_r($data);die;
+//        echo "<pre>";print_r($data);die;
         //$this->redirect('cdrdetails');
         $res = [
             'status' => 1,
@@ -576,12 +578,20 @@ class CalldatarecordsController extends Controller
             ->orWhere('start_with=:str_with',[':str_with'=>$prefix_start_char])
             ->order('start_with asc')
             ->queryAll();*/
-        $cost_rules = Yii::app()->db->createCommand("SELECT * FROM `cdr_cost_rules` where digit = ".$to_strlen_prefix." or from_number_digit = ".$from_strlen_prefix." or start_with = SUBSTRING($tonumber,0,LENGTH(start_with)) ORDER BY start_with asc");
+        $cost_rules = Yii::app()->db->createCommand("SELECT * FROM `cdr_cost_rules` where digit = ".$to_strlen_prefix." or from_number_digit = ".$from_strlen_prefix." or start_with = SUBSTRING($tonumber,0,LENGTH(start_with)) and from_number_start_with = SUBSTRING($tonumber,0,LENGTH(from_number_start_with)) ORDER BY start_with asc");
         $cost_rules = $cost_rules->queryAll();
+        // $cost_rules = $cost_rules->text;
         $cost = '0.00';
         $comment = '-';
         foreach ($cost_rules as $rule){
-            if($to_strlen_prefix == $rule['digit']){
+            if($to_strlen_prefix == $rule['digit'] && $from_strlen_prefix == $rule['from_number_digit'] && $rule['from_number_start_with'] == substr($fromnumber, 0, strlen($rule['from_number_start_with']))){
+                if(!empty($rule['from_number_digit']) && !empty($rule['from_number_start_with']) && !empty($rule['digit'])) {
+                    if($rule['from_number_digit'] == $from_strlen_prefix && $rule['from_number_start_with'] == substr($fromnumber, 0, strlen($rule['from_number_start_with'])) && $rule['digit'] == $to_strlen_prefix){
+                        $cost = $rule['cost'];
+                        $comment = $rule['comment'];
+                    }
+                }
+            } else if($to_strlen_prefix == $rule['digit']){
                 if(empty($rule['from_number_digit']) && empty($rule['start_with'])){
                     $cost = $rule['cost'];
                     $comment = $rule['comment'];
