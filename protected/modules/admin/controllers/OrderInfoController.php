@@ -356,7 +356,14 @@ class OrderInfoController extends CController
                         $invoice_no = OrderHelper::getInvoiceNumber();
                         $model->invoice_number = $invoice_no;
                         $model->invoice_date = date('Y-m-d H:i:s');
-
+                        $convert = strtotime($model->invoice_date);
+                        $day = date("d", $convert);
+                        $month = date("m", $convert);
+                        $random = rand(1,9);
+                        $reverse = strrev($model->invoice_number);
+                        $fourDigit = substr($reverse,0,4);
+                        $orderComment = '+++'.$random.$day.'/'.$random.$month.$random.'/'.$random.$fourDigit.'+++';
+                        $model->order_comment = $orderComment;
                         //Add Licenses to CBM Order Licenses
                         // foreach ($orderItem as $item) {
                         //     $orderLicense = new CbmOrderLicenses();

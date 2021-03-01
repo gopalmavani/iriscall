@@ -245,7 +245,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/plugins/boo
 				//"defaultContent": "<a href=''><i class='fa fa-eye'></i></a>&nbsp;&nbsp;<a href=''><i class='fa fa-pencil'></i></a>&nbsp;&nbsp;<a href=''><i class='fa fa-times'></i></a>"
 			},{
 				"visible":false,
-                "targets":[3,4,5,6,9,10,11,12,13,14,15,16,19,21,22,23,24,25]
+                "targets":[3,4,5,6,9,10,11,12,13,14,15,16,19,21,22,23,24,25,26,27]
 			} ]
 		});
 
