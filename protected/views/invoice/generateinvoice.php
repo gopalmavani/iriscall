@@ -56,9 +56,9 @@ if ($data == 0) { ?>
                             <table width="100%" style="border-bottom: 1px solid #b8babe; border-top: 1px solid #b8babe; border-right: 1px solid #b8babe; border-left: 1px solid #b8babe;">
                                 <tr>
                                     <td style="padding-left: 130px; padding-top: 10px; padding-bottom: 10px;border-bottom: 1px solid #b8babe;">
-                                        <h4 style="padding: 20px;border: 1px solid #4CAF50;color: #fff; font-size: 18px; background-color: #4CAF50;">OUTSTANDING</h4>
+                                        <h4 style="padding: 20px;border: 1px solid #4CAF50;color: #fff; font-size: 18px; background-color: #4CAF50;">OUTSTANDING</h4></h3>
                                     </td>
-                                    <td style="padding:10px;border-bottom: 1px solid #b8babe;"></td>
+                                    <td style="padding:10px;border-bottom: 1px solid #b8babe;"><img style="border: 1px solid #80ced6;background-color: #80ced6;" src="<?php echo Yii::app()->baseUrl.'/images/misc/send.png'; ?>" width="20px"/></td>
                                 </tr>
                                 <tr>
                                     <td style="padding:10px;border-bottom: 1px solid #b8babe;border-right: 1px solid #b8babe; font-size: 18px;">Invoice No</td>
@@ -116,7 +116,7 @@ if ($data == 0) { ?>
                             <th style="padding:20px;border-bottom: 1px solid #b8babe; border-top: 1px solid #b8babe;" width="15%" align="center"><h4>Unit</h4></th>
                             <?php $disc = [];
                                 foreach ($data['orderLineitem'] as $value) {
-                                    $disc[] = $value->item_disc;
+                                    $disc[] = empty($value->item_disc) ? '' : $value->item_disc;
                                 }
                                 if (!empty($disc)) { ?>
                                     <th style="padding:20px;border-bottom: 1px solid #b8babe;border-top: 1px solid #b8babe;" width="15%" align="center"><h4>Discount</h4></th> 
