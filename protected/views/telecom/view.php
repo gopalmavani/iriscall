@@ -286,7 +286,7 @@ $this->pageTitle = "Telecom details";
                                             </div>
                                             <label class="col-form-label col-2 text-lg-right text-left">VAT Rate</label>
                                             <div class="col-4">
-                                                <input type="text" name="vat_rate" value="<?php echo $model->vat_rate ?>" class="form-control form-control-line" disabled>
+                                                <input type="text" name="vat" value="<?php echo $model->vat ?>" class="form-control form-control-line" disabled>
                                             </div>
                                         </div>
                                         <!--end::Group-->

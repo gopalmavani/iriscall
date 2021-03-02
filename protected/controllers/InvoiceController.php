@@ -34,9 +34,12 @@ class InvoiceController extends CController
         $data['userInfo'] = UserInfo::model()->findByAttributes(array('user_id' => $data['orderInfo']->user_id));
 
         $html = $this->render('generateinvoice', array('data' => $data), true);
-        //echo $html;die;
+    
         $mPDF1 = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
 
+        $mPDF1->AddPageByArray([
+            'margin-top' => 5
+        ]);
         //$mPDF1->SetHTMLHeader('<div style="text-align: right; font-weight: bold;">Invoice - OD'.$data['orderInfo']->order_id.'</div>');
         $mPDF1->SetHTMLFooter('
 
@@ -52,8 +55,8 @@ class InvoiceController extends CController
         
         ');
         $mPDF1->WriteHTML($html);
-        $mPDF1->AddPage();
-        $mPDF1->WriteHTML($this->render('invoicepara', array('data' => $data), true));
+        // $mPDF1->AddPage();
+        // $mPDF1->WriteHTML($this->render('invoicepara', array('data' => $data), true));
         # Load a stylesheet
         $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css') . '/invoiceStyle.css');
 

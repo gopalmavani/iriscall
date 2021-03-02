@@ -80,7 +80,7 @@ class TelecomUserDetails extends CActiveRecord
 		// will receive user inputs.
 		return array(
             array('first_name, last_name, email, phone, building_num, street, city, postcode, country, nationality', 'required'),
-			array('id, client_id, user_id, company_since_in_months, expiry_date_month, expiry_date_year, vat_rate, agent_id, gender, telecom_user_status', 'numerical', 'integerOnly'=>true),
+			array('id, client_id, user_id, company_since_in_months, expiry_date_month, expiry_date_year, vat, agent_id, gender, telecom_user_status', 'numerical', 'integerOnly'=>true),
             array('created_at, modified_at', 'safe'),
             array('email, extra_email, credit_card_name, first_name, last_name, middle_name', 'length', 'max'=>80),
             array('agent_name, bus_number, nationality, landline_number, payment_method, credit_card_type, credit_card_number', 'length', 'max'=>20),
@@ -89,7 +89,7 @@ class TelecomUserDetails extends CActiveRecord
 			array('id, client_id, user_id, date_of_birth, phone, extra_email, language, telecom_user_status
 			 send_invoice_via, invoice_detail_type, building_num, street, city, postcode, country, bus_number, nationality
 			 billing_name, billing_building_num, billing_street, billing_city, billing_postcode, billing_country, billing_bus_number,
-			 business_name, business_country, vat_number, vat_rate, bank_name, bank_building_num, bank_street, bank_city, bank_postcode, bank_country,
+			 business_name, business_country, vat_number, vat, bank_name, bank_building_num, bank_street, bank_city, bank_postcode, bank_country,
 			 account_name, iban, bic_code, comments,
 			 company_since_in_months, expiry_date_month, expiry_date_year, email, credit_card_name, agent_name, nationality, landline_number, payment_method, credit_card_type, credit_card_number, created_at, modified_at, signature', 'safe', 'on'=>'search'),
 		);
