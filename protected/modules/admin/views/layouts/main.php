@@ -257,7 +257,7 @@ $folder = Yii::app()->params['basePath'];
                         <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-phone-square"></i> <span class=""> Telecom </span></a>
                             <ul>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/telecom/index'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/telecom/index');?>"><i class="fa fa-address-book"></i> <span class="sidebar-mini-hide"> Telecom Details </span></a></li>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/telecom/index');?>"><i class="fa fa-address-book"></i> <span class="sidebar-mini-hide"> Telecom User Details </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/telecom/accounts'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/telecom/accounts');?>"><i class="fa fa-list"></i> <span class="sidebar-mini-hide"> Telecom Accounts </span></a></li>
                             </ul>

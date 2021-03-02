@@ -271,7 +271,7 @@ class OrderInfoController extends CController
                 // Update/create Order Line Item
                 $orderItemAttributes = $_POST['OrderLineItem'];
                 foreach ($orderItemAttributes['product_name'] as $j=>$productItems){
-                    $ord = OrderLineItem::model()->findAllByAttributes(['product_name' => $productItems]);
+                    $ord = OrderLineItem::model()->findAllByAttributes(['product_name' => $productItems,'order_info_id' => $model->order_info_id]);
                     if(empty($ord)){
                         $product = ProductInfo::model()->findAllByAttributes(['name' => $productItems]);
                         $newOrderItem = new OrderLineItem();
@@ -284,7 +284,7 @@ class OrderInfoController extends CController
                             $newOrderItem->product_id = '';
                             $newOrderItem->product_sku = '';
                         }
-                        $newOrderItem->order_info_id = $id;
+                        $newOrderItem->order_info_id = $model->order_info_id;
                         $newOrderItem->product_name = $orderItemAttributes['product_name'][$j];
                         $newOrderItem->item_qty = $orderItemAttributes['item_qty'][$j];
                         $newOrderItem->item_disc = $orderItemAttributes['item_disc'][$j];
