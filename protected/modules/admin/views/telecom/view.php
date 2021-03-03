@@ -2,7 +2,7 @@
 /* @var $this TelecomController */
 /* @var $model TelecomUserDetails */
 
-$this->pageTitle = 'View User';
+$this->pageTitle = 'View Telecom User';
 ?>
 <style type="text/css">
     .block > .nav-tabs > li.active > a, .block > .nav-tabs > li.active > a:hover, .block > .nav-tabs > li.active > a:focus{
@@ -14,6 +14,9 @@ $this->pageTitle = 'View User';
     <ul class="nav nav-tabs" data-toggle="tabs">
         <li class="active">
             <a href="#btabs-animated-slideup-profile">Profile</a>
+        </li>
+        <li>
+            <a href="#btabs-animated-slideup-documents">Documents</a>
         </li>
     </ul>
     <div class="block-content tab-content">
@@ -83,7 +86,7 @@ $this->pageTitle = 'View User';
                             return $countryName;
                         }
                     ],
-                    'vat_rate',
+                    'vat',
                     'vat_number',
                     'company_since_in_months',
                     'payment_method',
@@ -114,20 +117,29 @@ $this->pageTitle = 'View User';
                 ),
             )); ?>
         </div>
-    </div>
-</div>
-<div class="block">
-    <div class="block-content tab-content">
-        <div class="row">
-        <?php foreach ($documents as $document) { ?>
-            <div class="col-md-4">
-                <a href="<?= Yii::app()->baseUrl.'/'.$document['document_path']; ?>" download class="btn btn-primary">Download <?= $document['document_name']; ?></a>
+        <!--End Profile tab-->
+        <!--Start Documents tab-->
+        <div class="tab-pane fade fade-up" id="btabs-animated-slideup-documents">
+            <div class="block">
+                <div class="block-content tab-content">
+                    <div class="row">
+                        <?php foreach ($documents as $document) { ?>
+                            <div class="col-md-7">
+                                <span>Download <?= $document['document_name']; ?></span>
+                                <div class="pull-right m-b-10">
+                                    <a href="<?= Yii::app()->baseUrl.'/'.$document['document_path']; ?>" download class="btn btn-primary"><i class="fa fa-download"></i></a>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
             </div>
-        <?php } ?>
         </div>
+        <!--End Documents tab-->
     </div>
 </div>
 <script>
+
     jQuery(function () {
         // Init page helpers (Appear + CountTo plugins)
         App.initHelpers(['appear', 'appear-countTo']);

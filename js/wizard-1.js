@@ -1,21 +1,20 @@
 "use strict";
 
 // Class definition
-var KTWizard1 = function () {
-	// Base elements
-	var _wizardEl;
-	var _formEl;
-	var _wizardObj;
-	var _validations = [];
+var KTWizard1 = function() {
+    // Base elements
+    var _wizardEl;
+    var _formEl;
+    var _wizardObj;
+    var _validations = [];
 
-	// Private functions
-	var _initValidation = function () {
-		// Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
-		// Step 1
-		_validations.push(FormValidation.formValidation(
-			_formEl,
-			{
-				fields: {
+    // Private functions
+    var _initValidation = function() {
+        // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+        // Step 1
+        _validations.push(FormValidation.formValidation(
+            _formEl, {
+                fields: {
                     first_name: {
                         validators: {
                             notEmpty: {
@@ -44,22 +43,21 @@ var KTWizard1 = function () {
                             }
                         }
                     }
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
-					// Bootstrap Framework Integration
-					bootstrap: new FormValidation.plugins.Bootstrap({
-						//eleInvalidClass: '',
-						eleValidClass: '',
-					})
-				}
-			}
-		));
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap({
+                        //eleInvalidClass: '',
+                        eleValidClass: '',
+                    })
+                }
+            }
+        ));
 
         // Step 2
         _validations.push(FormValidation.formValidation(
-            _formEl,
-            {
+            _formEl, {
                 fields: {
                     business_name: {
                         validators: {
@@ -109,11 +107,10 @@ var KTWizard1 = function () {
             }
         ));
 
-		// Step 3
-		_validations.push(FormValidation.formValidation(
-			_formEl,
-			{
-				fields: {
+        // Step 3
+        _validations.push(FormValidation.formValidation(
+            _formEl, {
+                fields: {
                     street: {
                         validators: {
                             notEmpty: {
@@ -198,25 +195,24 @@ var KTWizard1 = function () {
                             }
                         }
                     }
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
                     excluded: new FormValidation.plugins.Excluded(),
-					// Bootstrap Framework Integration
-					bootstrap: new FormValidation.plugins.Bootstrap({
-						//eleInvalidClass: '',
-						eleValidClass: '',
-					})
-				}
-			}
-		));
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap({
+                        //eleInvalidClass: '',
+                        eleValidClass: '',
+                    })
+                }
+            }
+        ));
 
-		// Step 4
-		_validations.push(FormValidation.formValidation(
-			_formEl,
-			{
-				fields: {
-					payment_method: {
+        // Step 4
+        _validations.push(FormValidation.formValidation(
+            _formEl, {
+                fields: {
+                    payment_method: {
                         validators: {
                             notEmpty: {
                                 message: 'Please select a payment method'
@@ -286,23 +282,22 @@ var KTWizard1 = function () {
                             }
                         }
                     }
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
                     excluded: new FormValidation.plugins.Excluded(),
-					// Bootstrap Framework Integration
-					bootstrap: new FormValidation.plugins.Bootstrap({
-						//eleInvalidClass: '',
-						eleValidClass: '',
-					})
-				}
-			}
-		));
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap({
+                        //eleInvalidClass: '',
+                        eleValidClass: '',
+                    })
+                }
+            }
+        ));
 
         // Step 5
         _validations.push(FormValidation.formValidation(
-            _formEl,
-            {
+            _formEl, {
                 fields: {
                     is_document_valid: {
                         validators: {
@@ -324,25 +319,24 @@ var KTWizard1 = function () {
             }
         ));
 
-        // Step 6
+        //Step 6
         _validations.push(FormValidation.formValidation(
-            _formEl,
-            {
+            _formEl, {
                 fields: {
-                    user_name: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please enter Account user name'
-                            }
-                        }
-                    }/*,
-                    tariff_plan: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please enter Account user name'
-                            }
-                        }
-                    }*/
+                    // user_name: {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'Please enter Account user name'
+                    //         }
+                    //     }
+                    // },
+                    // tariff_plan: {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'Please enter Account user name'
+                    //         }
+                    //     }
+                    // }
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -352,78 +346,77 @@ var KTWizard1 = function () {
                         eleValidClass: '',
                     })
                 }
+            }));
+    }
+
+    var _initWizard = function() {
+        // Initialize form wizard
+        _wizardObj = new KTWizard(_wizardEl, {
+            startStep: 1, // initial active step number
+            clickableSteps: false // allow step clicking
+        });
+
+        // Validation before going to next page
+        _wizardObj.on('change', function(wizard) {
+            if (wizard.getStep() > wizard.getNewStep()) {
+                return; // Skip if stepped back
             }
-        ));
-	}
+            console.log("Wizard Step: " + wizard.getStep());
 
-	var _initWizard = function () {
-		// Initialize form wizard
-		_wizardObj = new KTWizard(_wizardEl, {
-			startStep: 1, // initial active step number
-			clickableSteps: false  // allow step clicking
-		});
-
-		// Validation before going to next page
-		_wizardObj.on('change', function (wizard) {
-			if (wizard.getStep() > wizard.getNewStep()) {
-				return; // Skip if stepped back
-			}
-			console.log("Wizard Step: "+wizard.getStep());
-
-			//On Click events for edit button in review steps
-            $('#review_basic_toolbar_click').on('click', function () {
+            //On Click events for edit button in review steps
+            $('#review_basic_toolbar_click').on('click', function() {
                 wizard.goTo(1);
             });
-            $('#review_business_toolbar_click').on('click', function () {
+            $('#review_business_toolbar_click').on('click', function() {
                 wizard.goTo(2);
             });
-            $('#review_address_toolbar_click').on('click', function () {
+            $('#review_address_toolbar_click').on('click', function() {
                 wizard.goTo(3);
             });
-            $('#review_payment_toolbar_click').on('click', function () {
+            $('#review_payment_toolbar_click').on('click', function() {
                 wizard.goTo(4);
             });
-            $('#review_account_toolbar_click').on('click', function () {
+            $('#review_account_toolbar_click').on('click', function() {
                 wizard.goTo(6);
             });
 
 
-			if(wizard.getStep() == 6){
-			    //Add details to review section
-			    var formData = $('#kt_form').serializeArray().reduce(function(obj, item) {
+            if (wizard.getStep() == 6) {
+                //Add details to review section
+                var formData = $('#kt_form').serializeArray().reduce(function(obj, item) {
                     obj[item.name] = item.value;
                     return obj;
                 }, {});
 
                 //Basic Details
-                $('#review_name').html(formData['first_name'] + " "  + formData['middle_name'] + " " + formData['last_name']);
-			    $('#review_dob').html(formData['date_of_birth']);
-			    if(formData['gender'] == '1')
-			        $('#review_gender').html('Male');
-			    else
+                $('#review_name').html(formData['first_name'] + " " + formData['middle_name'] + " " + formData['last_name']);
+                $('#review_dob').html(formData['date_of_birth']);
+                if (formData['gender'] == '1')
+                    $('#review_gender').html('Male');
+                else
                     $('#review_gender').html('Female');
-			    $('#review_additional_email').html(formData['extra_email']);
-			    $('#review_phone').html(formData['phone']);
-			    $('#review_landline').html(formData['landline_number']);
+                $('#review_additional_email').html(formData['extra_email']);
+                $('#review_phone').html(formData['phone']);
+                $('#review_landline').html(formData['landline_number']);
 
-			    //Business Details
+                //Business Details
                 $('#review_business_name').html(formData['business_name']);
                 $('#review_business_country').html(country_array[formData['business_country']]);
                 $('#review_vat').html(formData['vat_number']);
 
                 //Address Details
-                $('#review_address_details').html(formData['building_num'] + ", "  + formData['bus_num'] + ", <br>" + formData['street'] + ", " + formData['city']
-                                + ", <br>" + country_array[formData['country']] + "-"  + formData['postcode']);
+                $('#review_address_details').html(formData['building_num'] + ", " + formData['bus_num'] + ", <br>" + formData['street'] + ", " + formData['city'] +
+                    ", <br>" + country_array[formData['country']] + "-" + formData['postcode']);
                 $('#review_nationality').html(nationality_array[formData['nationality']]);
-                $('#review_billing_address').html(formData['billing_name'] + " <br>" + formData['billing_building_num'] + ", "  + formData['billing_bus_num'] + ", <br>" + formData['billing_street'] + ", " + formData['billing_city']
-                    + ", <br>" + country_array[formData['billing_country']] + "-"  + formData['billing_postcode']);
+                $('#review_billing_address').html(formData['billing_name'] + " <br>" + formData['billing_building_num'] + ", " + formData['billing_bus_num'] + ", <br>" + formData['billing_street'] + ", " + formData['billing_city'] +
+                    ", <br>" + country_array[formData['billing_country']] + "-" + formData['billing_postcode']);
 
                 //Payment Details
                 $('#review_payment_method').html(formData['payment_method']);
                 //SEPA
                 $('#review_bank_name').html(formData['bank_name']);
-                $('#review_bank_address').html(formData['bank_building_num'] + ", <br>" + formData['bank_street'] + ", " + formData['bank_city']
-                    + ", <br>" + country_array[formData['bank_country']] + "-"  + formData['bank_postcode']);
+                $('#review_bank_address').html(formData['bank_building_num'] + ", <br>" + formData['bank_street'] + ", " + formData['bank_city'] +
+                    ", <br>" + country_array[formData['bank_country']] + "-" + formData['bank_postcode']);
                 $('#review_bank_account_name').html(formData['account_name']);
                 $('#review_iban').html(formData['iban']);
                 $('#review_bic_code').html(formData['bic_code']);
@@ -445,14 +438,14 @@ var KTWizard1 = function () {
                 createReviewSignature();
             }
 
-			var cardError = 0;
-			var SEPASignatureError = 0;
+            var cardError = 0;
+            var SEPASignatureError = 0;
             var fileError = 0;
-            if(wizard.getStep() == 2){
-                if($('.is_business_type').is(":checked")){
+            if (wizard.getStep() == 2) {
+                if ($('.is_business_type').is(":checked")) {
                     var employment_type = $('#employment_type').val();
-                    if(employment_type == 'company'){
-                        if(aoa_file_count == 0){
+                    if (employment_type == 'company') {
+                        if (aoa_file_count == 0) {
                             $('.aoa_label').addClass('text-danger');
                             $('.aoa_label').html('Articles-Of-Association is required');
                             fileError = fileError + 1;
@@ -463,16 +456,16 @@ var KTWizard1 = function () {
                     }
                 }
             }
-			if(wizard.getStep() == 4){
-				if($('input[type=radio][name=payment_method]:checked').val() == 'CreditCard'){
-					if(!card.isValid()){
+            if (wizard.getStep() == 4) {
+                if ($('input[type=radio][name=payment_method]:checked').val() == 'CreditCard') {
+                    if (!card.isValid()) {
                         cardError = 1;
-					} else {
+                    } else {
                         cardError = 0;
                     }
-				} else if($('input[type=radio][name=payment_method]:checked').val() == 'SEPA'){
+                } else if ($('input[type=radio][name=payment_method]:checked').val() == 'SEPA') {
                     cardError = 0;
-                    if(signaturePadSEPA){
+                    if (signaturePadSEPA) {
                         if (signaturePadSEPA.isEmpty()) {
                             SEPASignatureError++;
                         } else {
@@ -484,11 +477,11 @@ var KTWizard1 = function () {
                     cardError = 0;
                     SEPASignatureError = 0;
                 }
-			}
-			if(wizard.getStep() == 5){
+            }
+            if (wizard.getStep() == 5) {
                 fileError = 0;
-			    if(passport_file_count == 0){
-			        $('.passport_label').addClass('text-danger');
+                if (passport_file_count == 0) {
+                    $('.passport_label').addClass('text-danger');
                     $('.passport_label').html('Document is required');
                     fileError = fileError + 1;
                 } else {
@@ -497,41 +490,41 @@ var KTWizard1 = function () {
                 }
             }
 
-			// Validate form before change wizard step
-			var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
+            // Validate form before change wizard step
+            var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
 
-			if (validator) {
-				validator.validate().then(function (status) {
-					if (status == 'Valid' && cardError == 0 && fileError == 0 && SEPASignatureError == 0) {
-						wizard.goTo(wizard.getNewStep());
+            if (validator) {
+                validator.validate().then(function(status) {
+                    if (status == 'Valid' && cardError == 0 && fileError == 0 && SEPASignatureError == 0) {
+                        wizard.goTo(wizard.getNewStep());
 
-						KTUtil.scrollTop();
-					} else {
-						Swal.fire({
-							text: "Sorry, looks like there are some errors detected, please try again.",
-							icon: "error",
-							buttonsStyling: false,
-							confirmButtonText: "Ok, got it!",
-							customClass: {
-								confirmButton: "btn font-weight-bold btn-light"
-							}
-						}).then(function () {
-							//KTUtil.scrollTop();
-						});
-					}
-				});
-			}
+                        KTUtil.scrollTop();
+                    } else {
+                        Swal.fire({
+                            text: "Sorry, looks like there are some errors detected, please try again.",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-light"
+                            }
+                        }).then(function() {
+                            //KTUtil.scrollTop();
+                        });
+                    }
+                });
+            }
 
-			return false;  // Do not change wizard step, further action will be handled by he validator
-		});
+            return false; // Do not change wizard step, further action will be handled by he validator
+        });
 
-		// Change event
-		_wizardObj.on('changed', function (wizard) {
-			KTUtil.scrollTop();
-		});
+        // Change event
+        _wizardObj.on('changed', function(wizard) {
+            KTUtil.scrollTop();
+        });
 
-		// Submit event
-		_wizardObj.on('submit', function (wizard) {
+        // Submit event
+        _wizardObj.on('submit', function(wizard) {
             if (signaturePadReview.isEmpty()) {
                 Swal.fire({
                     text: "Sorry, You first need to sign the please.",
@@ -555,7 +548,7 @@ var KTWizard1 = function () {
                         confirmButton: "btn font-weight-bold btn-primary",
                         cancelButton: "btn font-weight-bold btn-default"
                     }
-                }).then(function (result) {
+                }).then(function(result) {
                     if (result.value) {
                         _formEl.submit(); // Submit form
                     } else if (result.dismiss === 'cancel') {
@@ -571,35 +564,35 @@ var KTWizard1 = function () {
                     }
                 });
             }
-		});
-	}
+        });
+    }
 
-	return {
-		// public functions
-		init: function () {
-			_wizardEl = KTUtil.getById('kt_wizard');
-			_formEl = KTUtil.getById('kt_form');
+    return {
+        // public functions
+        init: function() {
+            _wizardEl = KTUtil.getById('kt_wizard');
+            _formEl = KTUtil.getById('kt_form');
 
-			_initValidation();
-			_initWizard();
-		}
-	};
+            _initValidation();
+            _initWizard();
+        }
+    };
 }();
 
-function createReviewSignature(){
+function createReviewSignature() {
     //Signature Pad
     review_canvas = document.getElementById('review-signature-pad');
 
     signaturePadReview = new SignaturePad(review_canvas, {
         backgroundColor: 'rgb(243, 246, 249)'
-        //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+            //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
     });
 
-    document.getElementById('review-clear').addEventListener('click', function () {
+    document.getElementById('review-clear').addEventListener('click', function() {
         signaturePadReview.clear();
     });
 
-    document.getElementById('review-undo').addEventListener('click', function () {
+    document.getElementById('review-undo').addEventListener('click', function() {
         var data = signaturePadReview.toData();
         if (data) {
             data.pop(); // remove the last dot or line
@@ -608,6 +601,6 @@ function createReviewSignature(){
     });
 }
 
-jQuery(document).ready(function () {
-	KTWizard1.init();
+jQuery(document).ready(function() {
+    KTWizard1.init();
 });

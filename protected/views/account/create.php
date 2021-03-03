@@ -186,7 +186,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <div class="row">
                                             <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>First Name</label>
+                                                    <label>First Name<span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" name="first_name" placeholder="First Name" value="<?= $telecom_user_detail->first_name; ?>" />
                                                     <span class="form-text text-muted">Please enter your First Name.</span>
                                                 </div>
@@ -200,7 +200,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             </div>
                                             <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>Last Name</label>
+                                                    <label>Last Name<span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" name="last_name" placeholder="Last Name" value="<?= $telecom_user_detail->last_name; ?>" />
                                                     <span class="form-text text-muted">Please enter your Last Name.</span>
                                                 </div>
@@ -209,7 +209,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label class="col-form-label">Date Of Birth</label>
+                                                    <label class="col-form-label">Date Of Birth<span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" id="date_of_birth" placeholder="Select date/Enter in yyyy-mm-dd format" name="date_of_birth" value="<?= $telecom_user_detail->date_of_birth; ?>" />
                                                     <span class="form-text text-muted">You need to be of at-least 18 years to enroll.</span>
                                                 </div>
@@ -245,7 +245,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Phone Number</label>
+                                                    <label>Phone Number<span class="text-danger">*</span></label>
                                                     <input type="tel" class="form-control form-control-solid form-control-lg" name="phone" placeholder="Contact number please" value="<?= $telecom_user_detail->phone; ?>" />
                                                     <span class="form-text text-muted">Please enter phone number.</span>
                                                 </div>
@@ -291,7 +291,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label>Business Name</label>
+                                                        <label>Business Name<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="business_name" placeholder="Business Name" value="<?= $telecom_user_detail->business_name; ?>" />
                                                         <span class="form-text text-muted">Please enter Business Name.</span>
                                                     </div>
@@ -299,7 +299,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="col-xl-6">
 
                                                     <div class="form-group">
-                                                        <label>VAT Number</label>
+                                                        <label>VAT Number<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="vat_number" placeholder="VAT Number" value="<?= $telecom_user_detail->vat_number; ?>" />
                                                         <span class="form-text text-muted">Please enter VAT Number.</span>
                                                     </div>
@@ -309,7 +309,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label for="business_country">Business Country</label>
+                                                        <label for="business_country">Business Country<span class="text-danger">*</span></label>
                                                         <select name="business_country" id="business_country" class="form-control">
                                                             <?php
                                                             $country = Yii::app()->ServiceHelper->getCountry(); ?>
@@ -323,7 +323,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
                                                         <label>VAT Rate (in %)</label>
-                                                        <input type="number" class="form-control form-control-solid form-control-lg" name="vat_rate" id="business_vat_rate" placeholder="VAT Rate" value="<?= $telecom_user_detail->vat_rate; ?>" disabled/>
+                                                        <input type="number" class="form-control form-control-solid form-control-lg" name="vat" id="business_vat_rate" placeholder="VAT Rate" value="<?= $telecom_user_detail->vat; ?>" disabled/>
                                                         <span class="form-text text-muted">Applicable VAT rate.</span>
                                                     </div>
                                                 </div>
@@ -331,7 +331,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label for="employment_type">Employment Type</label>
+                                                        <label for="employment_type">Employment Type<span class="text-danger">*</span></label>
                                                         <select name="employment_type" id="employment_type" class="form-control">
                                                             <option value="">Select Employment</option>
                                                             <option value="self_employed">Self Employed</option>
@@ -363,14 +363,14 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Street</label>
+                                                    <label>Street<span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" name="street" placeholder="Street" value="<?= $telecom_user_detail->street; ?>" />
                                                     <span class="form-text text-muted">Please enter street details.</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Building Number</label>
+                                                    <label>Building Number<span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" name="building_num" placeholder="Building number please" value="<?= $telecom_user_detail->building_num; ?>" />
                                                     <span class="form-text text-muted">Please enter building number.</span>
                                                 </div>
@@ -386,7 +386,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             </div>
                                             <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>Postcode</label>
+                                                    <label>Postcode<span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" name="postcode" placeholder="Postcode" value="<?= $telecom_user_detail->postcode; ?>" />
                                                     <span class="form-text text-muted">Please enter postcode details.</span>
                                                 </div>
@@ -395,14 +395,14 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>City</label>
+                                                    <label>City<span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-solid form-control-lg" name="city" placeholder="City" value="<?= $telecom_user_detail->city; ?>" />
                                                     <span class="form-text text-muted">Please enter city details.</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label for="country">Country</label>
+                                                    <label for="country">Country<span class="text-danger">*</span></label>
                                                     <select name="country" id="country" class="form-control">
                                                         <?php
                                                         $country = Yii::app()->ServiceHelper->getCountry(); ?>
@@ -415,7 +415,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             </div>
                                             <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>Nationality</label>
+                                                    <label>Nationality<span class="text-danger">*</span></label>
                                                     <select name="nationality" id="nationality" class="form-control">
                                                         <?php
                                                         $nationality = Yii::app()->ServiceHelper->getNationality(); ?>
@@ -442,21 +442,21 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         </div>
                                         <div class="differentAddress" style="display: none;">
                                             <div class="form-group">
-                                                <label>Billing Name</label>
+                                                <label>Billing Name<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control form-control-solid form-control-lg" name="billing_name" placeholder="Billing Name" value="<?= $telecom_user_detail->billing_name; ?>" />
                                                 <span class="form-text text-muted">Name to be on invoice.</span>
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label>Street</label>
+                                                        <label>Street<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="billing_street" placeholder="Street" value="<?= $telecom_user_detail->billing_street; ?>" />
                                                         <span class="form-text text-muted">Please enter street details.</span>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label>Building Number</label>
+                                                        <label>Building Number<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="billing_building_num" placeholder="Building number please" value="<?= $telecom_user_detail->billing_building_num; ?>" />
                                                         <span class="form-text text-muted">Please enter building number.</span>
                                                     </div>
@@ -472,7 +472,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label>Postcode</label>
+                                                        <label>Postcode<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="billing_postcode" placeholder="Postcode" value="<?= $telecom_user_detail->billing_postcode; ?>" />
                                                         <span class="form-text text-muted">Please enter postcode details.</span>
                                                     </div>
@@ -481,14 +481,14 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label>City</label>
+                                                        <label>City<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="billing_city" placeholder="City" value="<?= $telecom_user_detail->billing_city; ?>" />
                                                         <span class="form-text text-muted">Please enter city details.</span>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label for="billing_country">Country</label>
+                                                        <label for="billing_country">Country<span class="text-danger">*</span></label>
                                                         <select name="billing_country" id="billing_country" class="form-control">
                                                             <?php
                                                             $country = Yii::app()->ServiceHelper->getCountry(); ?>
@@ -527,7 +527,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         </div>
                                         <div class="sepa-div" style="display: none;">
                                             <div class="form-group">
-                                                <label>Bank Name</label>
+                                                <label>Bank Name<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control form-control-solid form-control-lg" name="bank_name" placeholder="Bank Name" value="<?= $telecom_user_detail->bank_name; ?>" />
                                                 <span class="form-text text-muted">Name of the bank.</span>
                                             </div>
@@ -535,7 +535,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="col-xl-6">
 
                                                     <div class="form-group">
-                                                        <label>Building Number</label>
+                                                        <label>Building Number<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="bank_building_num" placeholder="Building number please" value="<?= $telecom_user_detail->bank_building_num; ?>" />
                                                         <span class="form-text text-muted">Please enter building number.</span>
                                                     </div>
@@ -544,7 +544,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="col-xl-6">
 
                                                     <div class="form-group">
-                                                        <label>Street</label>
+                                                        <label>Street<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="bank_street" placeholder="Street" value="<?= $telecom_user_detail->bank_street; ?>" />
                                                         <span class="form-text text-muted">Please enter street details.</span>
                                                     </div>
@@ -554,14 +554,14 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label>City</label>
+                                                        <label>City<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="bank_city" placeholder="City" value="<?= $telecom_user_detail->bank_city; ?>" />
                                                         <span class="form-text text-muted">Please enter city details.</span>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label>Postcode</label>
+                                                        <label>Postcode<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="bank_postcode" placeholder="Postcode" value="<?= $telecom_user_detail->bank_postcode; ?>" />
                                                         <span class="form-text text-muted">Please enter postcode details.</span>
                                                     </div>
@@ -570,7 +570,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label for="bank_country">Country</label>
+                                                        <label for="bank_country">Country<span class="text-danger">*</span></label>
                                                         <select name="bank_country" id="bank_country" class="form-control">
                                                             <?php
                                                             $country = Yii::app()->ServiceHelper->getCountry(); ?>
@@ -584,7 +584,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             </div>
                                             <hr>
                                             <div class="form-group">
-                                                <label>Account Name</label>
+                                                <label>Account Name<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control form-control-solid form-control-lg" name="account_name" placeholder="Account Name" value="<?= $telecom_user_detail->account_name; ?>" />
                                                 <span class="form-text text-muted">Please add Account Name in the bank.</span>
                                             </div>
@@ -592,7 +592,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="col-xl-6">
 
                                                     <div class="form-group">
-                                                        <label>iBAN</label>
+                                                        <label>iBAN<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="iban" placeholder="IBAN number" value="<?= $telecom_user_detail->iban; ?>" />
                                                         <span class="form-text text-muted">Please enter iBan number.</span>
                                                     </div>
@@ -601,7 +601,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="col-xl-6">
 
                                                     <div class="form-group">
-                                                        <label>BIC Code</label>
+                                                        <label>BIC Code<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control form-control-solid form-control-lg" name="bic_code" placeholder="BIC Code" value="<?= $telecom_user_detail->bic_code; ?>" />
                                                         <span class="form-text text-muted">Please enter BIC Code details.</span>
                                                     </div>
@@ -609,7 +609,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </div>
                                             </div>
                                             <div class="sepa-signature-div">
-                                                <h4 class="font-weight-bold text-dark">Please Sign here</h4>
+                                                <h4 class="font-weight-bold text-dark">Please Sign here<span class="text-danger">*</span></h4>
                                                 <div class="wrapper">
                                                     <canvas id="sepa-signature-pad" class="sepa-signature-pad" width=400 height=200></canvas>
                                                 </div>
@@ -653,7 +653,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     </div>
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
-                                    <h4 class="mb-10 font-weight-bold text-dark" style="text-align: center">Select ID Type</h4>
+                                    <h4 class="mb-10 font-weight-bold text-dark" style="text-align: center">Select ID Type<span class="text-danger">*</span></h4>
                                     <div class="row">
                                         <div class="row justify-content-center">
                                             <div class="col-md-4 col-xxl-2 border ribbon ribbon-right" style="margin: 0 10px">
@@ -690,7 +690,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                     </div>
                                     <div class="col-xxl-7" style="margin: auto; display: none" id="kyc_file_upload">
                                         <div class="form-group row">
-                                            <label class="col-form-label col-lg-12 col-sm-12 passport_label">Upload here</label>
+                                            <label class="col-form-label col-lg-12 col-sm-12 passport_label">Upload here<span class="text-danger">*</span></label>
                                             <div class="col-lg-12 col-md-9 col-sm-12">
                                                 <div class="dropzone dropzone-default" id="passport_file">
                                                     <div class="dropzone-msg dz-message needsclick">
@@ -707,7 +707,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <label>
                                                     <input type="checkbox" name="is_document_valid" class="is_document_valid">
                                                     <span></span>
-                                                    <label class="col-9 col-form-label">I confirm the document is authentic and valid until the expiry date mentioned in document</label>
+                                                    <label class="col-9 col-form-label">I confirm the document is authentic and valid until the expiry date mentioned in document.<span class="text-danger">*</span></label>
                                                 </label>
                                             </span>
                                             </div>
@@ -1085,7 +1085,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         </div>
                                         <div class="col-md-6">
                                             <div class="review-signature-div">
-                                                <h4 class="font-weight-bold text-dark">Please Sign here</h4>
+                                                <h4 class="font-weight-bold text-dark">Please Sign here<span class="text-danger">*</span></h4>
                                                 <div class="wrapper">
                                                     <canvas id="review-signature-pad" class="review-signature-pad" width=400 height=200></canvas>
                                                 </div>
