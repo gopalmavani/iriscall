@@ -36,7 +36,7 @@
  * @property string $business_name
  * @property string $business_country
  * @property string $vat_number
- * @property double $vat_rate
+ * @property double $vat
  * @property integer $company_since_in_months
  * @property string $payment_method
  * @property string $bank_name

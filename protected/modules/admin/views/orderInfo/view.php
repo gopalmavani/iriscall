@@ -223,7 +223,7 @@ $id = $model->order_info_id;
                                 <th  style="text-transform: capitalize;">Quantity</th>
                                 <th  style="text-transform: capitalize;">Discount</th>
                                 <th  style="text-transform: capitalize;">Price</th>
-                                <th  style="text-transform: capitalize;">Comment</th>
+                                <th  style="text-transform: capitalize;" width="31%">Comment</th>
                                 <th  style="text-transform: capitalize;">Total</th>
                             </tr>
                             </thead>

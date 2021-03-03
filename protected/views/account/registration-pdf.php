@@ -54,7 +54,7 @@
             </tr>
             <tr>
                 <td>VAT Rate: </td>
-                <td><b><?= $model->vat_rate . '%'; ?></b></td>
+                <td><b><?= $model->vat . '%'; ?></b></td>
             </tr>
             </tbody>
         </table>

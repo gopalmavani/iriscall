@@ -219,8 +219,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="col-md-12">
-                                    <div class="form-group <?php echo $model->hasErrors('vat_rate') ? 'has-error' : ''; ?> ">
-                                        <?php echo $form->textFieldControlGroup($model, 'vat_rate', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                                    <div class="form-group <?php echo $model->hasErrors('vat') ? 'has-error' : ''; ?> ">
+                                        <?php echo $form->textFieldControlGroup($model, 'vat', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); ?>
                                     </div>
                                 </div>
                             </div>
