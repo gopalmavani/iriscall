@@ -34,7 +34,7 @@ class InvoiceController extends CController
         $data['userInfo'] = UserInfo::model()->findByAttributes(array('user_id' => $data['orderInfo']->user_id));
 
         $html = $this->render('generateinvoice', array('data' => $data), true);
-    
+
         $mPDF1 = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
 
         $mPDF1->AddPageByArray([
