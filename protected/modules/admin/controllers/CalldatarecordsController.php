@@ -335,7 +335,10 @@ class CalldatarecordsController extends Controller
                 $organisation_id = $_POST['OrganizationInfo']['organisation_id'];
                 $all_data = [];
                 foreach ($date_range as $date){
-                    $fileUrl = 'https://files.apollo.compass-stack.com/cdr/'.$organisation_id.'/'.$date.'/company.csv';
+                    //old url for get cdr data
+                    //$fileUrl = 'https://files.apollo.compass-stack.com/cdr/'.$organisation_id.'/'.$date.'/company.csv';
+                    //New url for get cdr data
+                    $fileUrl = 'https://files.pbx.mytelephony.eu/cdr/'.$organisation_id.'/'.$date.'/company.csv';
                     //The path & filename to save to.
                     //$saveTo = 'company.csv';
                     $saveTo = $_SERVER['DOCUMENT_ROOT'].Yii::app()->baseUrl.'/uploads/cdr-csv/company.csv';
