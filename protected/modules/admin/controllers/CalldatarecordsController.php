@@ -127,15 +127,16 @@ class CalldatarecordsController extends Controller
                 ->queryRow();*/
             $national_call_total_time = 0;
             $min = '0';
-            if(!empty($national_call_cdr_data['total_time'])){
+            if(!empty($national_call_cdr_data['total_time']) && $national_call_cdr_data['total_time'] > 0){
                 $national_call_total_time = $national_call_cdr_data['total_time'];
                 /*if(!empty($national_call_total_time)){
                     $time = $national_call_total_time;
                     $timesplit=explode(':',$time);
                     $min=($timesplit[0]*60)+($timesplit[1])+(round($timesplit[2]/60,2));
                 }*/
+                array_push($data_array,['is_min'=>false,'rule'=>'Setup National call','min'=>$national_call_total_time,'total_time'=>$national_call_total_time,'cost'=>'0.025']);
             }
-            array_push($data_array,['is_min'=>false,'rule'=>'Setup National call','min'=>$national_call_total_time,'total_time'=>$national_call_total_time,'cost'=>'0.025']);
+
             /* second row */
             $cdr_rules = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Fixed Call']);
             $national_fixed_call_cdr_data = Yii::app()->db->createCommand()
@@ -153,7 +154,9 @@ class CalldatarecordsController extends Controller
                 $timesplit=explode(':',$time);
                 $min=($timesplit[0]*60)+($timesplit[1])+(round($timesplit[2]/60,2));
             }
-            array_push($data_array,['is_min'=>true,'rule'=>'National Fixed call','total_time'=>$time,'min'=>$min,'cost'=>$cdr_rules->cost]);
+            if($min > 0){
+                array_push($data_array,['is_min'=>true,'rule'=>'National Fixed call','total_time'=>$time,'min'=>$min,'cost'=>$cdr_rules->cost]);
+            }
 
             /* third row */
             $cdr_rules_2 = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Mobile Call']);
@@ -173,7 +176,9 @@ class CalldatarecordsController extends Controller
                 $min2=($timesplit2[0]*60)+($timesplit2[1])+(round($timesplit2[2]/60,2));
                 $national_mobile_total_time = $national_mobile_call_cdr_data['total_time'];
             }
-            array_push($data_array,['is_min'=>true,'rule'=>'National Mobile call','total_time'=>$national_mobile_total_time,'min'=>$min2,'cost'=>$cdr_rules_2->cost]);
+            if($min2 > 0){
+                array_push($data_array,['is_min'=>true,'rule'=>'National Mobile call','total_time'=>$national_mobile_total_time,'min'=>$min2,'cost'=>$cdr_rules_2->cost]);
+            }
 
             /* fourth row */
             $international_call_cdr_data = Yii::app()->db->createCommand()
@@ -185,14 +190,14 @@ class CalldatarecordsController extends Controller
                 ->andWhere('date<=:fn1',[':fn1'=>$end])
                 ->queryRow();
             $intenational_total_time = 0;
-            if(!empty($international_call_cdr_data['total_time'])){
+            if(!empty($international_call_cdr_data['total_time']) && $international_call_cdr_data['total_time'] > 0){
                 $intenational_total_time = $international_call_cdr_data['total_time'];
+                array_push($data_array,['is_min'=>false,'rule'=>'Setup International call','min'=>$intenational_total_time,'total_time'=>$intenational_total_time,'cost'=>'0.100']);
             }
-            array_push($data_array,['is_min'=>false,'rule'=>'Setup International call','min'=>$intenational_total_time,'total_time'=>$intenational_total_time,'cost'=>'0.100']);
 
             /* fifth row */
             $token = base64_encode(Yii::app()->params['com_username'].":".Yii::app()->params['com_password']);
-            $url = 'https://rest.apollo.compass-stack.com/company/'.$org_id.'/users';
+            $url = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/users';
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL => $url,
@@ -221,10 +226,12 @@ class CalldatarecordsController extends Controller
                 }
             }
             $entityId = implode(', ', $list);
-            array_push($data_array,['is_min'=>false,'rule'=>'Number Of Users','min'=>$numberOfUsers,'total_time'=> $numberOfUsers,'cost'=>'8','entityId'=>$entityId]);
+            if($numberOfUsers > 0){
+                array_push($data_array,['is_min'=>false,'rule'=>'Number Of Users','min'=>$numberOfUsers,'total_time'=> $numberOfUsers,'cost'=>'8','entityId'=>$entityId]);
+            }
 
             /* sixth row */
-            $exUrl = 'https://rest.apollo.compass-stack.com/company/'.$org_id.'/externalNumbers';
+            $exUrl = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/externalNumbers';//https://rest.apollo.compass-stack.com/company
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL => $exUrl,
@@ -253,7 +260,9 @@ class CalldatarecordsController extends Controller
                 }
             }
             $resourceId = implode(', ', $resource);
-            array_push($data_array,['is_min'=>false,'rule'=>'External Numbers','min'=>$numberOfExternalNumber,'total_time'=> $numberOfExternalNumber,'cost'=>'4','resourceId'=>$resourceId]);
+            if($numberOfExternalNumber > 0){
+                array_push($data_array,['is_min'=>false,'rule'=>'External Numbers','min'=>$numberOfExternalNumber,'total_time'=> $numberOfExternalNumber,'cost'=>'4','resourceId'=>$resourceId]);
+            }
             $this->render('invoicedetail',[
                 'details'=>$data_array,
                 'org_id' => $org_id,
