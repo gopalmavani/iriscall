@@ -96,26 +96,27 @@ class CalldatarecordsController extends Controller
     }
 
     public function actionInvoice(){
-        $model=new OrganizationInfo;
-        if(isset($_POST) && !empty($_POST['month']) && !empty($_POST['OrganizationInfo']['organisation_id'])){
-            $org_id = $_POST['OrganizationInfo']['organisation_id'];
-            $month = $_POST['month'];
-            $start = date("Y-m-01", strtotime($month));
-            if($month != 'Select month'){
-                $getMonth = date("F, Y", strtotime($month));
-            }else{
-                $getMonth = '';
-            }
-            $organisation = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
-            $selected = ($getMonth != '') ? $organisation->name.' for '.$getMonth : $organisation->name;
-            //$end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
-            $end = $month;
-            /*$start = '2020-12-01';
-            $end = '2020-12-31';*/
-            $data_array = [];
-            /* first row */
-            $national_call_cdr_data = Yii::app()->db->createCommand("SELECT count(*) as total_time FROM `cdr_info` where organisation_id = ".$org_id." and (`comment` LIKE '%National Fixed Call%' or `comment` LIKE 'National Mobile Call') and date >= '".$start."' and date <= '$end'");
-            $national_call_cdr_data = $national_call_cdr_data->queryRow();
+        try {
+            $model=new OrganizationInfo;
+            if(isset($_POST) && !empty($_POST['month']) && !empty($_POST['OrganizationInfo']['organisation_id'])){
+                $org_id = $_POST['OrganizationInfo']['organisation_id'];
+                $month = $_POST['month'];
+                $start = date("Y-m-01", strtotime($month));
+                if($month != 'Select month'){
+                    $getMonth = date("F, Y", strtotime($month));
+                }else{
+                    $getMonth = '';
+                }
+                $organisation = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
+                $selected = ($getMonth != '') ? $organisation->name.' for '.$getMonth : $organisation->name;
+                //$end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
+                $end = $month;
+                /*$start = '2020-12-01';
+                $end = '2020-12-31';*/
+                $data_array = [];
+                /* first row */
+                $national_call_cdr_data = Yii::app()->db->createCommand("SELECT count(*) as total_time FROM `cdr_info` where organisation_id = ".$org_id." and (`comment` LIKE '%National Fixed Call%' or `comment` LIKE 'National Mobile Call') and date >= '".$start."' and date <= '$end'");
+                $national_call_cdr_data = $national_call_cdr_data->queryRow();
                 /*->select('count(*) as total_time')
                 ->from('cdr_info')
                 ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
@@ -125,153 +126,156 @@ class CalldatarecordsController extends Controller
                 ->andWhere('date>=:fn',[':fn'=>$start])
                 ->andWhere('date<=:fn1',[':fn1'=>$end])
                 ->queryRow();*/
-            $national_call_total_time = 0;
-            $min = '0';
-            if(!empty($national_call_cdr_data['total_time']) && $national_call_cdr_data['total_time'] > 0){
-                $national_call_total_time = $national_call_cdr_data['total_time'];
-                /*if(!empty($national_call_total_time)){
-                    $time = $national_call_total_time;
+                $national_call_total_time = 0;
+                $min = '0';
+                if(!empty($national_call_cdr_data['total_time']) && $national_call_cdr_data['total_time'] > 0){
+                    $national_call_total_time = $national_call_cdr_data['total_time'];
+                    /*if(!empty($national_call_total_time)){
+                        $time = $national_call_total_time;
+                        $timesplit=explode(':',$time);
+                        $min=($timesplit[0]*60)+($timesplit[1])+(round($timesplit[2]/60,2));
+                    }*/
+                    array_push($data_array,['is_min'=>false,'rule'=>'Setup National call','min'=>$national_call_total_time,'total_time'=>$national_call_total_time,'cost'=>'0.025']);
+                }
+
+                /* second row */
+                $cdr_rules = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Fixed Call']);
+                $national_fixed_call_cdr_data = Yii::app()->db->createCommand()
+                    ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
+                    ->from('cdr_info')
+                    ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
+                    ->andWhere(['like', 'comment', '%'.$cdr_rules->comment.'%'])
+                    ->andWhere('date>=:fn',[':fn'=>$start])
+                    ->andWhere('date<=:fn1',[':fn1'=>$end])
+                    ->queryRow();
+                $time = '00:00:00';
+                $min = '0';
+                if(!empty($national_fixed_call_cdr_data['total_time'])){
+                    $time = $national_fixed_call_cdr_data['total_time'];
                     $timesplit=explode(':',$time);
                     $min=($timesplit[0]*60)+($timesplit[1])+(round($timesplit[2]/60,2));
-                }*/
-                array_push($data_array,['is_min'=>false,'rule'=>'Setup National call','min'=>$national_call_total_time,'total_time'=>$national_call_total_time,'cost'=>'0.025']);
-            }
-
-            /* second row */
-            $cdr_rules = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Fixed Call']);
-            $national_fixed_call_cdr_data = Yii::app()->db->createCommand()
-                ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
-                ->from('cdr_info')
-                ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                ->andWhere(['like', 'comment', '%'.$cdr_rules->comment.'%'])
-                ->andWhere('date>=:fn',[':fn'=>$start])
-                ->andWhere('date<=:fn1',[':fn1'=>$end])
-                ->queryRow();
-            $time = '00:00:00';
-            $min = '0';
-            if(!empty($national_fixed_call_cdr_data['total_time'])){
-                $time = $national_fixed_call_cdr_data['total_time'];
-                $timesplit=explode(':',$time);
-                $min=($timesplit[0]*60)+($timesplit[1])+(round($timesplit[2]/60,2));
-            }
-            if($min > 0){
-                array_push($data_array,['is_min'=>true,'rule'=>'National Fixed call','total_time'=>$time,'min'=>$min,'cost'=>$cdr_rules->cost]);
-            }
-
-            /* third row */
-            $cdr_rules_2 = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Mobile Call']);
-            $national_mobile_call_cdr_data = Yii::app()->db->createCommand()
-                ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
-                ->from('cdr_info')
-                ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                ->andWhere(['like', 'comment', '%'.$cdr_rules_2->comment.'%'])
-                ->andWhere('date>=:fn',[':fn'=>$start])
-                ->andWhere('date<=:fn1',[':fn1'=>$end])
-                ->queryRow();
-            $min2 = 0;
-            $national_mobile_total_time = '00:00:00';
-            if(!empty($national_mobile_call_cdr_data['total_time'])){
-                $time2 = $national_mobile_call_cdr_data['total_time'];
-                $timesplit2=explode(':',$time2);
-                $min2=($timesplit2[0]*60)+($timesplit2[1])+(round($timesplit2[2]/60,2));
-                $national_mobile_total_time = $national_mobile_call_cdr_data['total_time'];
-            }
-            if($min2 > 0){
-                array_push($data_array,['is_min'=>true,'rule'=>'National Mobile call','total_time'=>$national_mobile_total_time,'min'=>$min2,'cost'=>$cdr_rules_2->cost]);
-            }
-
-            /* fourth row */
-            $international_call_cdr_data = Yii::app()->db->createCommand()
-                ->select('count(*) as total_time')
-                ->from('cdr_info')
-                ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                ->andWhere(['like', 'comment', '%International%'])
-                ->andWhere('date>=:fn',[':fn'=>$start])
-                ->andWhere('date<=:fn1',[':fn1'=>$end])
-                ->queryRow();
-            $intenational_total_time = 0;
-            if(!empty($international_call_cdr_data['total_time']) && $international_call_cdr_data['total_time'] > 0){
-                $intenational_total_time = $international_call_cdr_data['total_time'];
-                array_push($data_array,['is_min'=>false,'rule'=>'Setup International call','min'=>$intenational_total_time,'total_time'=>$intenational_total_time,'cost'=>'0.100']);
-            }
-
-            /* fifth row */
-            $token = base64_encode(Yii::app()->params['com_username'].":".Yii::app()->params['com_password']);
-            $url = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/users';
-            $curl = curl_init();
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_SSL_VERIFYPEER=>false,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => array(
-                    "Authorization: Basic ".$token,
-                    "content-type: application/json"
-                ),
-            ));
-            $response = curl_exec($curl);
-            curl_close($curl);
-            $response = json_decode($response);
-            $numberOfUsers = 0;
-            $list = [];
-            if(!empty($response)){
-                $numberOfUsers = count($response);
-                foreach($response as $res){
-                    $list[] = $res->entityId;
                 }
-            }
-            $entityId = implode(', ', $list);
-            if($numberOfUsers > 0){
-                array_push($data_array,['is_min'=>false,'rule'=>'Number Of Users','min'=>$numberOfUsers,'total_time'=> $numberOfUsers,'cost'=>'8','entityId'=>$entityId]);
-            }
-
-            /* sixth row */
-            $exUrl = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/externalNumbers';//https://rest.apollo.compass-stack.com/company
-            $curl = curl_init();
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => $exUrl,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_SSL_VERIFYPEER=>false,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => array(
-                    "Authorization: Basic ".$token,
-                    "content-type: application/json"
-                ),
-            ));
-            $externalNumber = curl_exec($curl);
-            curl_close($curl);
-            $externalNumber = json_decode($externalNumber);
-            $numberOfExternalNumber = 0;
-            $resource = [];
-            if(!empty($externalNumber)){
-                $numberOfExternalNumber = count($externalNumber);
-                foreach($externalNumber as $data){
-                    $resource[] = $data->resourceId;
+                if($min > 0){
+                    array_push($data_array,['is_min'=>true,'rule'=>'National Fixed call','total_time'=>$time,'min'=>$min,'cost'=>$cdr_rules->cost]);
                 }
+
+                /* third row */
+                $cdr_rules_2 = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Mobile Call']);
+                $national_mobile_call_cdr_data = Yii::app()->db->createCommand()
+                    ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
+                    ->from('cdr_info')
+                    ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
+                    ->andWhere(['like', 'comment', '%'.$cdr_rules_2->comment.'%'])
+                    ->andWhere('date>=:fn',[':fn'=>$start])
+                    ->andWhere('date<=:fn1',[':fn1'=>$end])
+                    ->queryRow();
+                $min2 = 0;
+                $national_mobile_total_time = '00:00:00';
+                if(!empty($national_mobile_call_cdr_data['total_time'])){
+                    $time2 = $national_mobile_call_cdr_data['total_time'];
+                    $timesplit2=explode(':',$time2);
+                    $min2=($timesplit2[0]*60)+($timesplit2[1])+(round($timesplit2[2]/60,2));
+                    $national_mobile_total_time = $national_mobile_call_cdr_data['total_time'];
+                }
+                if($min2 > 0){
+                    array_push($data_array,['is_min'=>true,'rule'=>'National Mobile call','total_time'=>$national_mobile_total_time,'min'=>$min2,'cost'=>$cdr_rules_2->cost]);
+                }
+
+                /* fourth row */
+                $international_call_cdr_data = Yii::app()->db->createCommand()
+                    ->select('count(*) as total_time')
+                    ->from('cdr_info')
+                    ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
+                    ->andWhere(['like', 'comment', '%International%'])
+                    ->andWhere('date>=:fn',[':fn'=>$start])
+                    ->andWhere('date<=:fn1',[':fn1'=>$end])
+                    ->queryRow();
+                $intenational_total_time = 0;
+                if(!empty($international_call_cdr_data['total_time']) && $international_call_cdr_data['total_time'] > 0){
+                    $intenational_total_time = $international_call_cdr_data['total_time'];
+                    array_push($data_array,['is_min'=>false,'rule'=>'Setup International call','min'=>$intenational_total_time,'total_time'=>$intenational_total_time,'cost'=>'0.100']);
+                }
+
+                /* fifth row */
+                $token = base64_encode(Yii::app()->params['com_username'].":".Yii::app()->params['com_password']);
+                $url = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/users';
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_SSL_VERIFYPEER=>false,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => array(
+                        "Authorization: Basic ".$token,
+                        "content-type: application/json"
+                    ),
+                ));
+                $response = curl_exec($curl);
+                curl_close($curl);
+                $response = json_decode($response);
+                $numberOfUsers = 0;
+                $list = [];
+                if(!empty($response)){
+                    $numberOfUsers = count($response);
+                    foreach($response as $res){
+                        $list[] = $res->entityId;
+                    }
+                }
+                $entityId = implode(', ', $list);
+                if($numberOfUsers > 0){
+                    array_push($data_array,['is_min'=>false,'rule'=>'Number Of Users','min'=>$numberOfUsers,'total_time'=> $numberOfUsers,'cost'=>'8','entityId'=>$entityId]);
+                }
+
+                /* sixth row */
+                $exUrl = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/externalNumbers';//https://rest.apollo.compass-stack.com/company
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => $exUrl,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_SSL_VERIFYPEER=>false,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => array(
+                        "Authorization: Basic ".$token,
+                        "content-type: application/json"
+                    ),
+                ));
+                $externalNumber = curl_exec($curl);
+                curl_close($curl);
+                $externalNumber = json_decode($externalNumber);
+                $numberOfExternalNumber = 0;
+                $resource = [];
+                if(!empty($externalNumber)){
+                    $numberOfExternalNumber = count($externalNumber);
+                    foreach($externalNumber as $data){
+                        $resource[] = $data->resourceId;
+                    }
+                }
+                $resourceId = implode(', ', $resource);
+                if($numberOfExternalNumber > 0){
+                    array_push($data_array,['is_min'=>false,'rule'=>'External Numbers','min'=>$numberOfExternalNumber,'total_time'=> $numberOfExternalNumber,'cost'=>'4','resourceId'=>$resourceId]);
+                }
+                $this->render('invoicedetail',[
+                    'details'=>$data_array,
+                    'org_id' => $org_id,
+                    'selected' => $selected
+                ]);
             }
-            $resourceId = implode(', ', $resource);
-            if($numberOfExternalNumber > 0){
-                array_push($data_array,['is_min'=>false,'rule'=>'External Numbers','min'=>$numberOfExternalNumber,'total_time'=> $numberOfExternalNumber,'cost'=>'4','resourceId'=>$resourceId]);
-            }
-            $this->render('invoicedetail',[
-                'details'=>$data_array,
-                'org_id' => $org_id,
-                'selected' => $selected
+            $this->render('createinvoice',[
+                'model'=>$model
             ]);
+        } catch (Exception $exception) {
+            echo $exception->getMessage();
         }
-        $this->render('createinvoice',[
-            'model'=>$model
-        ]);
     }
 
     /**
