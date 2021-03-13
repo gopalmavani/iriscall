@@ -23,7 +23,7 @@ $id = $model->order_info_id;
                 <?php // echo CHtml::link('Create', array('orderInfo/create'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
                 <?php if(isset($model->invoice_number)){ ?>
                 <a href="<?php echo Yii::app()->createUrl('invoice/Generateinvoice/' . $model->order_info_id); ?> "
-                   data-toggle="tooltip" title="Download Invoice" class="btn btn-minw btn-square btn-success">Generate Invoice</a>
+                   data-toggle="tooltip" title="Download Invoice" target="_blank" class="btn btn-minw btn-square btn-success">Generate Invoice</a>
                 <?php }if($model->order_status != 1){ ?>
                     <?php echo CHtml::link('Update', array('orderInfo/update/'.$id), array('class' => 'btn btn-minw btn-square btn-primary')); ?> 
                 <?php }elseif ($model->order_status == 1) {?>

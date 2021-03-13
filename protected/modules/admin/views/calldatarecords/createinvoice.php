@@ -10,7 +10,11 @@
 /* @var $form CActiveForm */
 $this->pageTitle = 'Create Invoice';
 ?>
-
+<style>
+.ui-datepicker-calendar {
+        display: none;
+    }
+</style>
 <div class="row">
     <div class="col-md-12">
         <div class="pull-right" style="margin: 0px 15px 15px 0px;">
@@ -41,9 +45,9 @@ $this->pageTitle = 'Create Invoice';
                     <div class="row">
                         <div class="form-group">
                             <label class="control-lable">
-                                Select month
+                                Select Month
                             </label>
-                            <?php
+                            <!-- <?php /*
                             $months = array('2020-01-31' => 'January - 2020', '2020-02-29' => 'February - 2020', '2020-03-31' => 'March - 2020', '2020-04-30' => 'April - 2020', '2020-05-31' => 'May - 2020', '2020-06-30' => 'June - 2020', '2020-07-31' => 'July - 2020', '2020-08-31' => 'August - 2020', '2020-09-30' => 'September - 2020', '2020-10-31' => 'October - 2020', '2020-11-30' => 'November - 2020', '2020-12-31' => 'December - 2020','2021-01-31' => 'January - 2021', '2021-02-28' => 'February - 2021', '2021-03-31' => 'March - 2021', '2021-04-30' => 'April - 2021', '2021-05-31' => 'May - 2021', '2021-06-30' => 'June - 2021', '2021-07-31' => 'July - 2021', '2021-08-31' => 'August - 2021', '2021-09-30' => 'September - 2021', '2021-10-31' => 'October - 2021', '2021-11-30' => 'November - 2021', '2021-12-31' => 'December - 2021');
                             ?>
                             <select name="month" class="form-control">
@@ -52,9 +56,10 @@ $this->pageTitle = 'Create Invoice';
                                 foreach ($months as $key => $month){?>
                                     <option value="<?= $key; ?>"><?= $month; ?></option>
                                 <?php }
-                                ?>
+                                */ ?>
                             </select>
-                            <span class="help-block"></span>
+                            <span class="help-block"></span> -->
+                            <input type="text" class="form-control" name="month" placeholder='Select Month' autocomplete="off", id='datepickerfilter'>
                         </div>
                     </div>
                 </div>
@@ -68,8 +73,28 @@ $this->pageTitle = 'Create Invoice';
         <?php $this->endWidget(); ?>
     </div>
 </div>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" />
 <script>
-    $(document).ready(function (e) {
-
+$(document).ready(function (e) {
+//year-month calender
+$('#datepickerfilter').datepicker({
+        dateFormat: "MM-yy",
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst){
+            $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+        },
+        beforeShow: function(dateText, inst) {
+            if ((datestr = $(this).val()).length > 0) {
+                year = datestr.substring(0, 4);
+                //month = getMonthFromString(datestr.substring(0, datestr.length-6));
+                month = datestr.substring(5);
+                $(this).datepicker('option', 'defaultDate', new Date(year, month-1, 1));
+                $(this).datepicker('setDate', new Date(year, month-1, 1));
+            }
+        },
     });
+});
 </script>

@@ -102,7 +102,7 @@ class CalldatarecordsController extends Controller
                 $org_id = $_POST['OrganizationInfo']['organisation_id'];
                 $month = $_POST['month'];
                 $start = date("Y-m-01", strtotime($month));
-                if($month != 'Select month'){
+                if($month != ''){
                     $getMonth = date("F, Y", strtotime($month));
                 }else{
                     $getMonth = '';
