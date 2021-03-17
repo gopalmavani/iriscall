@@ -1,24 +1,24 @@
-<h3 class="card-label">Bank Details</h3>
+<h3 class="card-label">Bankgegevens</h3>
 <div style="border: 1px solid black">
     <table>
         <tbody>
         <tr>
-            <td>Bank Name: </td>
+            <td>Banknaam:</td>
             <td><b><?= $model->bank_name; ?></b></td>
         </tr>
         <tr>
-            <td>Bank Address: </td>
+            <td>Bank adres: </td>
             <td><b><?= $model->bank_building_num . ', '; ?>
                     <?= $model->bank_street . ', ' . $model->bank_city . ', '; ?>
                     <?= $model->bank_country . '-' . $model->bank_postcode; ?></b>
             </td>
         </tr>
         <tr>
-            <td>Phone Number: </td>
+            <td>Telefoonnummer: </td>
             <td><b><?= $model->phone; ?></b></td>
         </tr>
         <tr>
-            <td>Account Name: </td>
+            <td>Accountnaam: </td>
             <td><b><?= $model->account_name; ?></b></td>
         </tr>
         <tr>
@@ -36,17 +36,17 @@
 <table>
     <tbody>
     <tr>
-        <td>Authorized Person:</td>
+        <td>Geautoriseerd persoon:</td>
         <td><b><?= $model->first_name . ' ' . $model->middle_name . ' ' . $model->last_name; ?></b></td>
     </tr>
     <tr>
-        <td>Place:</td>
+        <td>Plaats:</td>
         <td><b><?= $model->city; ?></b></td>
     </tr>
     <tr>
-        <td>Date:</td>
+        <td>Datum:</td>
         <td><?= date('d M, Y', strtotime($model->created_at)); ?></td>
     </tr>
     </tbody>
 </table>
-<h3  class="card-label">Signature:</h3>
+<h3  class="card-label">Handtekening:</h3>
