@@ -108,6 +108,12 @@ if (!defined('PDF_HEADER_LOGO')) {
 	define ('PDF_HEADER_LOGO', $tcpdf_header_logo);
 }
 
+if (!defined('SEPA_PDF_HEADER_LOGO')) {
+	$tellink_header_logo = '../../images/logos/tellink-logo.png';
+
+	define ('SEPA_PDF_HEADER_LOGO', $tellink_header_logo);
+}
+
 if (!defined('PDF_HEADER_LOGO_WIDTH')) {
 	if (!empty($tcpdf_header_logo)) {
 		define ('PDF_HEADER_LOGO_WIDTH', 30);

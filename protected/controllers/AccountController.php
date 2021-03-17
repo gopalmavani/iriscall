@@ -1,5 +1,6 @@
 <?php
 require_once ('plugins/tcpdf_min/tcpdf.php');
+require_once 'vendor/autoload.php';
 class AccountController extends Controller
 {
     public $layout = 'main';
@@ -355,7 +356,7 @@ class AccountController extends Controller
         ]);
     }
 
-    public function generateTelecomRegistrationPDF($user_id, $telecom_account_id){
+    /*public function generateTelecomRegistrationPDF($user_id, $telecom_account_id){
         set_time_limit(-1);
         $this->layout = false;
         $telecom_user_details = TelecomUserDetails::model()->findByAttributes(['user_id'=>$user_id]);
@@ -376,6 +377,7 @@ class AccountController extends Controller
         $pdf->SetTitle('Iriscall');
 
         // set default header data
+        //$pdf->SetHeaderData(REG_PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '', array(0,64,255), array(0,64,128));
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '', array(0,64,255), array(0,64,128));
         $pdf->setFooterData(array(0,64,0), array(0,64,128));
 
@@ -398,10 +400,10 @@ class AccountController extends Controller
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
         // set some language-dependent strings (optional)
-        /*if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
-            require_once(dirname(__FILE__).'/lang/eng.php');
-            $pdf->setLanguageArray($l);
-        }*/
+        // if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+        //     require_once(dirname(__FILE__).'/lang/eng.php');
+        //     $pdf->setLanguageArray($l);
+        // }
 
         // ---------------------------------------------------------
 
@@ -418,12 +420,12 @@ class AccountController extends Controller
         // This method has several options, check the source code documentation for more information.
         $pdf->AddPage();
         // Set some content to print
-        /*$html =
-        '<h1>Welcome to <a href="http://www.tcpdf.org" style="text-decoration:none;background-color:#CC0000;color:black;">&nbsp;<span style="color:black;">TC</span><span style="color:white;">PDF</span>&nbsp;</a>!</h1>
-        <i>This is the first example of TCPDF library.</i>
-        <p>This text is printed using the <i>writeHTMLCell()</i> method but you can also use: <i>Multicell(), writeHTML(), Write(), Cell() and Text()</i>.</p>
-        <p>Please check the source code documentation and other examples for further information.</p>
-        <p style="color:#CC0000;">TO IMPROVE AND EXPAND TCPDF I NEED YOUR SUPPORT, PLEASE <a href="http://sourceforge.net/donate/index.php?group_id=128076">MAKE A DONATION!</a></p>';*/
+        // $html =
+        // '<h1>Welcome to <a href="http://www.tcpdf.org" style="text-decoration:none;background-color:#CC0000;color:black;">&nbsp;<span style="color:black;">TC</span><span style="color:white;">PDF</span>&nbsp;</a>!</h1>
+        // <i>This is the first example of TCPDF library.</i>
+        // <p>This text is printed using the <i>writeHTMLCell()</i> method but you can also use: <i>Multicell(), writeHTML(), Write(), Cell() and Text()</i>.</p>
+        // <p>Please check the source code documentation and other examples for further information.</p>
+        // <p style="color:#CC0000;">TO IMPROVE AND EXPAND TCPDF I NEED YOUR SUPPORT, PLEASE <a href="http://sourceforge.net/donate/index.php?group_id=128076">MAKE A DONATION!</a></p>';
 
         $pdf->setJPEGQuality(75);
         // Print text using writeHTMLCell()
@@ -465,6 +467,73 @@ class AccountController extends Controller
         //============================================================+
         // END OF FILE
         //============================================================+
+    } */
+
+    public function generateTelecomRegistrationPDF($user_id, $telecom_account_id)
+    {
+        //$user_id = $id;
+        set_time_limit(-1);
+        $this->layout = false;
+        $telecom_user_details = TelecomUserDetails::model()->findByAttributes(['user_id'=>$user_id]);
+        //$telecom_account_details = TelecomAccountDetails::model()->findByPk($telecom_account_id);
+        $telecom_account_details = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('telecom_account_details t')
+            ->join('product_info p', 't.tariff_plan = p.product_id')
+            ->where('t.id=:tId', [':tId' => $telecom_account_id])
+            ->queryRow();
+        $html = $this->render('registration-pdf', ['model' => $telecom_user_details, 'account' => $telecom_account_details], true);
+
+        $mPDF1 = new \Mpdf\Mpdf(['tempDir' => Yii::getPathOfAlias('application.runtime')]);
+
+        $mPDF1->SetHTMLHeader('
+        <table width="100%" style="vertical-align: top;">
+        <tr><td align="right">
+            <img style="width: 120px" src="../../images/logos/iriscall-logo.svg"/>
+            <img style="width: 120px" src="../../images/logos/tellink-logo-2.png"/>
+            <hr></td>
+        </tr></table>');
+        $mPDF1->SetHTMLFooter('
+        <hr>
+        <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;"><tr>
+        <td align="right" style="font-weight: bold; font-style: italic;">{PAGENO}/{nbpg}</td>
+        </tr></table>
+        
+        ');
+        $mPDF1->AddPageByArray([
+            'margin-top' => 35
+        ]);
+        $mPDF1->WriteHTML($html);
+
+        # Load a stylesheet
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css') . '/invoiceStyle.css');
+
+        $mPDF1->WriteHTML($stylesheet, 1);
+
+        // The '@' character is used to indicate that follows an image data stream and not an image file name
+        // $pdf->Image('@'.$imgdata);
+        // $pdf->Image('images/graph-product1.jpg', 15, 140, 75, 113, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
+
+        // $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+        // ---------------------------------------------------------
+
+        // Close and output PDF document
+        // This method has several options, check the source code documentation for more information.
+        $filename= "registration_".$telecom_user_details->user_id."_".$telecom_user_details->first_name.".pdf";
+        $filelocation = "protected/runtime/uploads/registration/"; //Linux
+        if (!is_dir($filelocation)) {
+            mkdir($filelocation, 0755, true);
+        }
+
+        $relative_file_path = 'protected/runtime/uploads/registration/'.$filename;
+        $fileNL = getcwd() .'/'. $relative_file_path; //Linux
+
+        $mPDF1->Output($fileNL, 'F');
+        return $relative_file_path;
+        //============================================================+
+        // END OF FILE
+        //============================================================+
     }
 
     public function generateSEPAPDF($user_id, $sepa_signature){
@@ -481,7 +550,7 @@ class AccountController extends Controller
         $pdf->SetTitle('Iriscall');
 
         // set default header data
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '', array(0,64,255), array(0,64,128));
+        $pdf->SetHeaderData(SEPA_PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '', array(0,64,255), array(0,64,128));
         $pdf->setFooterData(array(0,64,0), array(0,64,128));
 
         // set header and footer fonts
