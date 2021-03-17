@@ -471,7 +471,7 @@ class AccountController extends Controller
 
     public function generateTelecomRegistrationPDF($user_id, $telecom_account_id)
     {
-        //$user_id = $id;
+
         set_time_limit(-1);
         $this->layout = false;
         $telecom_user_details = TelecomUserDetails::model()->findByAttributes(['user_id'=>$user_id]);
@@ -489,8 +489,8 @@ class AccountController extends Controller
         $mPDF1->SetHTMLHeader('
         <table width="100%" style="vertical-align: top;">
         <tr><td align="right">
-            <img style="width: 120px" src="../../images/logos/iriscall-logo.svg"/>
-            <img style="width: 120px" src="../../images/logos/tellink-logo-2.png"/>
+            <img style="width: 120px" src="/images/logos/iriscall-logo.svg"/>
+            <img style="width: 120px" src="/images/logos/tellink-logo-2.png"/>
             <hr></td>
         </tr></table>');
         $mPDF1->SetHTMLFooter('
@@ -498,7 +498,6 @@ class AccountController extends Controller
         <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;"><tr>
         <td align="right" style="font-weight: bold; font-style: italic;">{PAGENO}/{nbpg}</td>
         </tr></table>
-        
         ');
         $mPDF1->AddPageByArray([
             'margin-top' => 35
