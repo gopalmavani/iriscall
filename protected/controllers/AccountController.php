@@ -471,7 +471,6 @@ class AccountController extends Controller
 
     public function generateTelecomRegistrationPDF($user_id, $telecom_account_id)
     {
-
         set_time_limit(-1);
         $this->layout = false;
         $telecom_user_details = TelecomUserDetails::model()->findByAttributes(['user_id'=>$user_id]);
@@ -490,7 +489,7 @@ class AccountController extends Controller
         <table width="100%" style="vertical-align: top;">
         <tr><td align="right">
             <img style="width: 120px" src="/images/logos/iriscall-logo.svg"/>
-            <img style="width: 120px" src="/images/logos/tellink-logo-2.png"/>
+            <img style="width: 120px" src="/images/logos/tellink.svg"/>
             <hr></td>
         </tr></table>');
         $mPDF1->SetHTMLFooter('

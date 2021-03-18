@@ -109,7 +109,7 @@ if (!defined('PDF_HEADER_LOGO')) {
 }
 
 if (!defined('SEPA_PDF_HEADER_LOGO')) {
-	$tellink_header_logo = '../../images/logos/tellink-logo.png';
+	$tellink_header_logo = '../../images/logos/tellink-logo.svg';
 
 	define ('SEPA_PDF_HEADER_LOGO', $tellink_header_logo);
 }
