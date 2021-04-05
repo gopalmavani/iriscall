@@ -95,6 +95,13 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="col-md-12 ">
+							<div class="form-group <?php echo $model->hasErrors('invoice_number') ? 'has-error' : ''; ?>">
+								<?php echo $form->textFieldControlGroup($model, 'invoice_number', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="col-md-12 ">
 							<div class="form-group <?php echo $model->hasErrors('order_comment') ? 'has-error' : ''; ?>">
 								<?php echo $form->textFieldControlGroup($model, 'order_comment', array('autofocus' => 'on', 'autocomplete' => 'off', 'class' => 'form-control')); ?>
 							</div>
