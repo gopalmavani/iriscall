@@ -10,6 +10,7 @@ class CronHelper extends CApplicationComponent {
         $cron_log->status = $status;
         $cron_log->start_time = $start_time;
         $cron_log->end_time = $end_time;
+        $cron_log->created_at = date('Y-m-d H:i:s');
         $cron_log->save(false);
     }
 
