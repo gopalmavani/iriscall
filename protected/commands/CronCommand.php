@@ -82,9 +82,9 @@ class CronCommand extends CConsoleCommand
                     array_push($order_info_meta, $temp);
                 }
                 CronHelper::cronDataInsert('order_info_meta', $order_info_meta);
-                CronHelper::addCronLogs(1, 'Total '.count($order_info_meta).' reminder sent.', '', 1, '', '');
+                CronHelper::addCronLogs(1, 'Total '.count($order_info_meta).' reminder sent.', '', 1, null, null);
             }else{
-                CronHelper::addCronLogs(1, 'Could not find any pending payment invoice.', '', 0, '', '');
+                CronHelper::addCronLogs(1, 'Could not find any pending payment invoice.', '', 0, null, null);
             }
         } catch (Exception $e) {
             echo $e->getMessage();

@@ -322,6 +322,46 @@ $id = $model->order_info_id;
                     </div>
                 </div>
             </div>
+            <?php if($model->order_status != 1){ ?>
+            <div class="block block-bordered" style="border-color: #E26A6A;">
+                <div class="block-header" style="background-color: #E26A6A;">
+                    <h3 class="block-title"><font color="white"><i class="fa fa-cogs"></i> Reminders</font></h3>
+                </div>
+                <div class="block-content block-content-full">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th  style="text-transform: capitalize;">No</th>
+                                <th  style="text-transform: capitalize;">Reminder</th>
+                                <th  style="text-transform: capitalize;">Additional Price</th>
+                                <th  style="text-transform: capitalize;">Comment</th>
+                                <th  style="text-transform: capitalize;">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php $i = 1;
+                            foreach ($order_info_meta as $reminder){ ?>
+                                <tr>
+                                    <td><?= $i; ?></td>
+                                    <td><?php echo $reminder['action']; ?></td>
+                                    <?php if($reminder['action'] == '1st Reminder sent'){
+                                        $amount = 0;
+                                    }else{
+                                        $amount = 12.10;
+                                    } 
+                                    $sendDate = date('Y-m-d', strtotime($reminder['created_at'])); ?>
+                                    <td><?php echo $amount; ?></td>
+                                    <td><?php echo $reminder['comment']; ?></td>
+                                    <td><?php echo $sendDate; ?></td>
+                                </tr>
+                                <?php $i++; } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
         </div>
     </div>
 
