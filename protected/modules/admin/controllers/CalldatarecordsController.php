@@ -1102,7 +1102,10 @@ class CalldatarecordsController extends Controller
                     } else {
                         $model->order_id = $Order['order_id'] + 1;
                     }
+                    $invoice_no = OrderHelper::getInvoiceNumber();
                     $model->user_id = $orgInfo['user_id'];
+                    $model->invoice_number = $invoice_no;
+                    $model->invoice_date = date('Y-m-d H:i:s');
                     $model->order_status = 2;
                     $model->company = $orgInfo['name'];
                     $model->user_name = $orgInfo['name'];
