@@ -31,10 +31,16 @@ class OrderInfoController extends CController
     public function actionView($id)
     {
         date_default_timezone_set('Europe/Berlin');
+        $order_info_meta = Yii::app()->db->createCommand()
+                    ->select('*')
+                    ->from('order_info_meta')
+                    ->where('order_info_id=:id', array(':id' => $id))
+                    ->queryAll();
         $this->render('view', array(
             'model' => $this->loadModel($id),
             'itemModel' => OrderLineItem::model()->findAllByAttributes(['order_info_id' => $id]),
-            'paymentModel' => OrderPayment::model()->findAllByAttributes(['order_info_id' => $id])
+            'paymentModel' => OrderPayment::model()->findAllByAttributes(['order_info_id' => $id]),
+            'order_info_meta' => $order_info_meta
         ));
     }
 
