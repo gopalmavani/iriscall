@@ -12,8 +12,16 @@ $this->pageTitle = 'View Order';
 }
 $id = $model->order_info_id;
 
-?>
-
+if(Yii::app()->user->hasFlash('success')) { ?>
+    <div class="alert alert-success info" role="alert">
+        <?php echo Yii::app()->user->getFlash('success'); ?>
+    </div>
+<?php }else{ ?>
+    <div class="alert alert-error" role="alert">
+        <?php echo Yii::app()->user->getFlash('error'); ?>
+    </div>
+    <?php
+} ?>
 <div class="tab-content">
     <div class="tab-pane active">
         <div class="row">
@@ -25,7 +33,8 @@ $id = $model->order_info_id;
                 <a href="<?php echo Yii::app()->createUrl('invoice/Generateinvoice/' . $model->order_info_id); ?> "
                    data-toggle="tooltip" title="Download Invoice" target="_blank" class="btn btn-minw btn-square btn-success">Generate Invoice</a>
                 <?php }if($model->order_status != 1){ ?>
-                    <?php echo CHtml::link('Update', array('orderInfo/update/'.$id), array('class' => 'btn btn-minw btn-square btn-primary')); ?> 
+                    <?php echo CHtml::link('Update', array('orderInfo/update/'.$id), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+                    <?php echo CHtml::link('Send Reminder', array('orderInfo/reminder/'.$id), array('class' => 'btn btn-minw btn-square btn-danger')); ?> 
                 <?php }elseif ($model->order_status == 1) {?>
                    <a href="<?php echo Yii::app()->createUrl('admin/orderInfo/creditMemo/'.$model->order_info_id); ?>" data-toggle="tooltip" title="Credit Memo" class="btn btn-minw btn-square btn-info">Credit Memo</a>
                 <?php } ?>
@@ -249,6 +258,16 @@ $id = $model->order_info_id;
                             <?php } ?>
                             </tbody>
                         </table>
+                        <?php if($order_info_meta){
+                            $count = 0;
+                            foreach ($order_info_meta as $reminders){
+                            if(in_array($reminders['action'], ['2nd Reminder sent', '3rd Reminder sent'])){
+                                $count++; ?>
+                            <?php } } 
+                            $addAmount = $count * 12.10; 
+                            if(isset($addAmount) && $addAmount > 0){ ?>
+                            <h6>Total number of 2nd and 3rd reminders sent are <?= $count ?>, so total additional amount &euro; <?= $addAmount ?> added in order total.</h6>
+                        <?php } } ?>
                     </div>
                 </div>
             </div>
@@ -336,6 +355,7 @@ $id = $model->order_info_id;
                                 <th  style="text-transform: capitalize;">Reminder</th>
                                 <th  style="text-transform: capitalize;">Additional Price</th>
                                 <th  style="text-transform: capitalize;">Comment</th>
+                                <th  style="text-transform: capitalize;">Sent By</th>
                                 <th  style="text-transform: capitalize;">Date</th>
                             </tr>
                             </thead>
@@ -353,6 +373,7 @@ $id = $model->order_info_id;
                                     $sendDate = date('Y-m-d', strtotime($reminder['created_at'])); ?>
                                     <td><?php echo $amount; ?></td>
                                     <td><?php echo $reminder['comment']; ?></td>
+                                    <td><?php echo $reminder['sent_by']; ?></td>
                                     <td><?php echo $sendDate; ?></td>
                                 </tr>
                                 <?php $i++; } ?>

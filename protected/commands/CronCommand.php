@@ -32,54 +32,55 @@ class CronCommand extends CConsoleCommand
                     }else{
                         $email = $orders['email'];
                     }
-                    $payment_reminder = Yii::app()->db->createCommand()
-                                ->select('*')
-                                ->from('order_info_meta')
-                                ->where('order_info_id=:order_id', array(':order_id' => $orders['order_info_id']))
-                                ->order('id desc')
-                                ->limit(1)
-                                ->queryAll();
-                    if(empty($payment_reminder)){
+                    $amount = $orders['orderTotal'] + 12.10;
+                    $current_date = date('Y-m-d');
+                    $reminder_1_date = date('Y-m-d', strtotime($orders['invoice_date'].' + 7 days'));
+                    $reminder_2_date = date('Y-m-d', strtotime($reminder_1_date.' + 7 days'));
+                    $reminder_3_date = date('Y-m-d', strtotime($reminder_2_date.' + 5 days'));
+                    if($reminder_1_date == $current_date){
                         $reminder = '1st Reminder';
                         $subject = 'Payment Reminder';
                         $action = '1st Reminder sent';
                         $comment = 'Total amount '.$orders['orderTotal'];
                         $msg = "1st Reminder sent to ".$email.",\n";
-                    }else{
-                        $amount = $orders['orderTotal'] + 12.10;
-                        if($payment_reminder[0]['action'] == '1st Reminder sent'){
-                            $reminder = '2nd Reminder';
-                            $subject = 'Second Reminder';
-                            $action = '2nd Reminder sent';
-                            $comment = 'Additional amount of Euro 12.10 added in invoice total '.$amount;
-                            $msg = "2nd Reminder sent to ".$email.",\n";
-                        }elseif($payment_reminder[0]['action'] == '2nd Reminder sent'){
-                            $reminder = '3rd Reminder';
-                            $subject = 'Third Reminder';
-                            $action = '3rd Reminder sent';
-                            $comment = 'Additional amount of Euro 12.10 added in invoice total '.$amount;
-                            $msg = "3rd Reminder sent to ".$email.",\n";
-                        }
+                    }elseif($reminder_2_date == $current_date){
+                        $reminder = '2nd Reminder';
+                        $subject = 'Second Reminder';
+                        $action = '2nd Reminder sent';
+                        $comment = 'Additional amount of Euro 12.10 added in invoice total '.$amount;
+                        $msg = "2nd Reminder sent to ".$email.",\n";
+                        $query = "update order_info, order_payment set order_info.orderTotal = $amount, order_info.netTotal = $amount, order_payment.total = $amount 
+                                where order_info.order_info_id = $orders[order_info_id] and order_payment.order_info_id = $orders[order_info_id]";
+                        Yii::app()->db->createCommand($query)->execute();
+                    }elseif($reminder_3_date == $current_date){
+                        $reminder = '3rd Reminder';
+                        $subject = 'Third Reminder';
+                        $action = '3rd Reminder sent';
+                        $comment = 'Additional amount of Euro 12.10 added in invoice total '.$amount;
+                        $msg = "3rd Reminder sent to ".$email.",\n";
                         $query = "update order_info, order_payment set order_info.orderTotal = $amount, order_info.netTotal = $amount, order_payment.total = $amount 
                                 where order_info.order_info_id = $orders[order_info_id] and order_payment.order_info_id = $orders[order_info_id]";
                         Yii::app()->db->createCommand($query)->execute();
                     }
-                    $mail = new YiiMailer('reminder', [
-                        'reminder' => $reminder,
-                        'orders' => $orders,
-                    ]);
-                    $mail->setFrom('info@cbmglobal.io', 'Iriscall');
-                    $mail->setSubject($subject);
-                    $mail->setTo($email);
-                    $sent = $mail->send();
-                    echo $msg;
-                    if($sent == 1){
-                        $temp['order_info_id'] = $orders['order_info_id'];
-                        $temp['action'] = $action;
-                        $temp['comment'] = $comment;
-                        $temp['created_at'] = $execution_time;
+                    if(!empty($reminder) && !empty($subject)){
+                        $mail = new YiiMailer('reminder', [
+                            'reminder' => $reminder,
+                            'orders' => $orders,
+                        ]);
+                        $mail->setFrom('info@cbmglobal.io', 'Iriscall');
+                        $mail->setSubject($subject);
+                        $mail->setTo($email);
+                        $sent = $mail->send();
+                        echo $msg;
+                        if($sent == 1){
+                            $temp['order_info_id'] = $orders['order_info_id'];
+                            $temp['action'] = $action;
+                            $temp['comment'] = $comment;
+                            $temp['sent_by'] = 'Cron Job';
+                            $temp['created_at'] = $execution_time;
+                        }
+                        array_push($order_info_meta, $temp);
                     }
-                    array_push($order_info_meta, $temp);
                 }
                 CronHelper::cronDataInsert('order_info_meta', $order_info_meta);
                 CronHelper::addCronLogs(1, 'Total '.count($order_info_meta).' reminder sent.', '', 1, null, null);
