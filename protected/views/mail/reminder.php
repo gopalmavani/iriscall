@@ -67,6 +67,8 @@
                     Indien het bedrag inmiddels is overgemaakt dan kunt u deze e-mail negeren.<br/><br/>
                     Met de meeste hoogachting,<br/>Admin
                 </p>
+            <?php }elseif ($reminder == 'By Admin') { ?>
+                <p style="font-size:16px;color:#5e5e5f;font-family:open sans, arial; margin:0 0 20px;"><?= $description ?><p>
             <?php } ?>
         </td>
         <td width="4%"></td>

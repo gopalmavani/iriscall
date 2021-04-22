@@ -43,7 +43,76 @@ class OrderInfoController extends CController
             'order_info_meta' => $order_info_meta
         ));
     }
-
+    public function actionReminder($id)
+    {
+        try{
+            date_default_timezone_set('Europe/Berlin');
+            $model = $this->loadModel($id);
+            $order_info_meta = Yii::app()->db->createCommand()
+                        ->select('*')
+                        ->from('order_info_meta')
+                        ->where('order_info_id=:id', array(':id' => $id))
+                        ->andWhere('sent_by=:sent',[':sent'=> 'Admin'])
+                        ->order('id desc')
+                        ->limit(1)
+                        ->queryAll();
+            if(!empty($_POST) && !empty($_POST['email']) && !empty($_POST['subject']) && !empty($_POST['description'])){
+                //echo '<pre>';print_r($_POST);die;
+                $amount = $model->orderTotal + 12.10;
+                $subject = $_POST['subject'];
+                if($subject == 'Payment Reminder'){
+                    $action = "1st Reminder sent";
+                    $comment = 'Total amount '.$model->orderTotal;
+                }elseif ($subject == 'Second Reminder') {
+                    $action = "2nd Reminder sent";
+                    $comment = 'Additional amount of Euro 12.10 added in invoice total '.$amount;
+                    $query = "update order_info, order_payment set order_info.orderTotal = $amount, order_info.netTotal = $amount, order_payment.total = $amount 
+                                where order_info.order_info_id = $id and order_payment.order_info_id = $id";
+                        Yii::app()->db->createCommand($query)->execute();
+                }elseif ($subject == 'Third Reminder') {
+                    $action = "3rd Reminder sent";
+                    $comment = 'Additional amount of Euro 12.10 added in invoice total '.$amount;
+                    $query = "update order_info, order_payment set order_info.orderTotal = $amount, order_info.netTotal = $amount, order_payment.total = $amount 
+                                where order_info.order_info_id = $id and order_payment.order_info_id = $id";
+                        Yii::app()->db->createCommand($query)->execute();
+                }else {
+                    $action = "New Reminder sent";
+                    $comment = 'New custom reminder sent successfully.';
+                }
+                $mail = new YiiMailer('reminder', [
+                    'reminder' => 'By Admin',
+                    'description' => $_POST['description'],
+                ]);
+                $mail->setFrom('info@cbmglobal.io', 'Iriscall');
+                $mail->setSubject($subject);
+                $mail->setTo($_POST['email']);
+                $sent = $mail->send();
+                if($sent == 1){
+                    Yii::app()->db->createCommand()->insert(
+                        'order_info_meta',
+                        [
+                            'order_info_id' => $id,
+                            'action' => $action,
+                            'comment' => $comment,
+                            'sent_by' => 'Admin',
+                            'created_at' => date("Y-m-d H:i:s"),
+                        ]
+                    );
+                    Yii::app()->user->setFlash('success', 'Reminder sent successfully.');
+                    $this->redirect(Yii::app()->createUrl('admin/orderInfo/view/'.$id));
+                }else {
+                    Yii::app()->user->setFlash('error', 'Reminder not send.');
+                    $this->redirect(Yii::app()->createUrl('admin/orderInfo/view/'.$id));
+                }
+            }
+            $this->render('reminder', array(
+                'model' => $model,
+                'order_info_meta' => $order_info_meta
+            ));
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
