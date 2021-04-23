@@ -1,6 +1,4 @@
-<?php function money_format($x,$y){
-    return $y;
-} ?>
+
 <?php
 setlocale(LC_MONETARY, 'nl_NL.UTF-8');
 if ($data == 0) { ?>
