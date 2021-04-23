@@ -32,8 +32,12 @@ class InvoiceController extends CController
         $data['orderLineitem'] = OrderLineItem::model()->findAllByAttributes(array('order_info_id' => $id));
         $data['orderPayment'] = OrderPayment::model()->findAllByAttributes(array('order_info_id' => $id));
         $data['userInfo'] = UserInfo::model()->findByAttributes(array('user_id' => $data['orderInfo']->user_id));
-
-        $html = $this->render('generateinvoice', array('data' => $data), true);
+        $order_info_meta = Yii::app()->db->createCommand()
+                            ->select('*')
+                            ->from('order_info_meta')
+                            ->where('order_info_id=:id', array(':id' => $id))
+                            ->queryAll();
+        $html = $this->render('generateinvoice', array('data' => $data, 'order_info_meta' => $order_info_meta), true);
 
         $mPDF1 = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
 

@@ -258,7 +258,7 @@ if(Yii::app()->user->hasFlash('success')) { ?>
                             <?php } ?>
                             </tbody>
                         </table>
-                        <?php if($order_info_meta){
+                        <?php
                             $count = 0;
                             foreach ($order_info_meta as $reminders){
                             if(in_array($reminders['action'], ['2nd Reminder sent', '3rd Reminder sent'])){
@@ -266,8 +266,8 @@ if(Yii::app()->user->hasFlash('success')) { ?>
                             <?php } } 
                             $addAmount = $count * 12.10; 
                             if(isset($addAmount) && $addAmount > 0){ ?>
-                            <h6>Total number of 2nd and 3rd reminders sent are <?= $count ?>, so total additional amount &euro; <?= $addAmount ?> added in order total.</h6>
-                        <?php } } ?>
+                            <h6><b>Note:-</b> Total number of 2nd and 3rd reminders sent are <?= $count ?>, so total additional amount &euro; <?= $addAmount ?> added in order total.</h6>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

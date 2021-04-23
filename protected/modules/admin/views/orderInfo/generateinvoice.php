@@ -1,4 +1,6 @@
-
+<?php function money_format($x,$y){
+    return $y;
+} ?>
 <?php
 setlocale(LC_MONETARY, 'nl_NL.UTF-8');
 if ($data == 0) { ?>
@@ -147,7 +149,10 @@ if ($data == 0) { ?>
                         foreach ($order_info_meta as $reminders){
                         if(in_array($reminders['action'], ['2nd Reminder sent', '3rd Reminder sent'])){
                             $count++; ?>
-                        <?php } } 
+                        <?php } }
+                        if(in_array($action, ['2nd Reminder sent', '3rd Reminder sent'])){
+                            $count += 1;
+                        }
                         $addAmount = $count * 12.10; 
                         if(isset($addAmount) && $addAmount > 0){ ?>
                         <p style="font-size: 14px;"><b>Note:-</b> Total number of 2nd and 3rd reminders sent are <?= $count ?>, so total additional amount &euro; <?= $addAmount ?> added in order total.</p>
