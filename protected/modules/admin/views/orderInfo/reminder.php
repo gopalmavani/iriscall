@@ -82,13 +82,24 @@ Met de meeste hoogachting,&#13;&#10;Admin</textarea>
                         <input type="text" style="display: none;" class="form-control form-control-lg" name="subject" value="Third Reminder"/>
                 <?php }else { ?>
                     <div class="col-md-10">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea class="form-control form-control-lg" name="description" placeholder="Description..." rows="10"></textarea>
+                        </div>
+                    </div>
+                    <input type="text" style="display: none;" class="form-control form-control-lg" name="subject" value="Reminder"/>
+                <?php } } ?>
+                <div class="col-md-10">
                     <div class="form-group">
-                        <label>Description</label>
-                        <textarea class="form-control form-control-lg" name="description" placeholder="Description..." rows="10"></textarea>
+                        <span class="switch switch-outline switch-icon switch-success">
+                            <label>
+                                <input type="checkbox" name="attachment">
+                                <span></span>
+                            </label>
+                        </span>
+                        <label class="col-8 col-form-label col-form-label-new">Attach invoice to the email.</label>
                     </div>
                 </div>
-                <input type="text" style="display: none;" class="form-control form-control-lg" name="subject" value="Reminder"/>
-                <?php } } ?>
             </div>
         </div>
         <div class="col-md-12">

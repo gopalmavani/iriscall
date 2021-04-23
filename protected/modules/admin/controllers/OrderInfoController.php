@@ -1,5 +1,5 @@
 <?php
-
+require_once 'vendor/autoload.php';
 class OrderInfoController extends CController
 {
     /**
@@ -57,7 +57,6 @@ class OrderInfoController extends CController
                         ->limit(1)
                         ->queryAll();
             if(!empty($_POST) && !empty($_POST['email']) && !empty($_POST['subject']) && !empty($_POST['description'])){
-                //echo '<pre>';print_r($_POST);die;
                 $amount = $model->orderTotal + 12.10;
                 $subject = $_POST['subject'];
                 if($subject == 'Payment Reminder'){
@@ -79,6 +78,12 @@ class OrderInfoController extends CController
                     $action = "New Reminder sent";
                     $comment = 'New custom reminder sent successfully.';
                 }
+                if(isset($_POST['attachment']) == 'on'){
+                    $filePath = $this->Generateinvoice($id, $action);
+                    $attachment = $filePath;
+                }else {
+                    $attachment = '';
+                }
                 $mail = new YiiMailer('reminder', [
                     'reminder' => 'By Admin',
                     'description' => $_POST['description'],
@@ -86,6 +91,7 @@ class OrderInfoController extends CController
                 $mail->setFrom('info@cbmglobal.io', 'Iriscall');
                 $mail->setSubject($subject);
                 $mail->setTo($_POST['email']);
+                $mail->setAttachment($attachment);
                 $sent = $mail->send();
                 if($sent == 1){
                     Yii::app()->db->createCommand()->insert(
@@ -112,6 +118,72 @@ class OrderInfoController extends CController
         } catch (Exception $e) {
             echo $e->getMessage();
         }
+    }
+
+    public function Generateinvoice($id, $action)
+    {
+        $this->layout = 'invoice';
+        $data['orderInfo'] = OrderInfo::model()->findByAttributes(array('order_info_id' => $id));
+        $data['orderLineitem'] = OrderLineItem::model()->findAllByAttributes(array('order_info_id' => $id));
+        $data['orderPayment'] = OrderPayment::model()->findAllByAttributes(array('order_info_id' => $id));
+        $data['userInfo'] = UserInfo::model()->findByAttributes(array('user_id' => $data['orderInfo']->user_id));
+        $order_info_meta = Yii::app()->db->createCommand()
+                                ->select('*')
+                                ->from('order_info_meta')
+                                ->where('order_info_id=:id', array(':id' => $id))
+                                ->queryAll();
+        $html = $this->render('generateinvoice', array('data' => $data, 'order_info_meta' => $order_info_meta, 'action' => $action), true);
+
+        $mPDF1 = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
+
+        $mPDF1->AddPageByArray([
+            'margin-top' => 5
+        ]);
+        //$mPDF1->SetHTMLHeader('<div style="text-align: right; font-weight: bold;">Invoice - OD'.$data['orderInfo']->order_id.'</div>');
+        $mPDF1->SetHTMLFooter('
+
+        <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;"><tr>
+        
+        <td width="33%"><span style="font-weight: bold; font-style: italic;">{DATE j-m-Y}</span></td>
+        
+        <td width="33%" align="center" style="font-weight: bold; font-style: italic;">{PAGENO}/{nbpg}</td>
+        
+        <td width="33%" style="text-align: right; ">Iriscall</td>
+        
+        </tr></table>
+        
+        ');
+        $mPDF1->WriteHTML($html);
+        // $mPDF1->AddPage();
+        // $mPDF1->WriteHTML($this->render('invoicepara', array('data' => $data), true));
+        # Load a stylesheet
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css') . '/invoiceStyle.css');
+
+        $mPDF1->WriteHTML($stylesheet, 1);
+
+        $filename = $data['orderInfo']->invoice_number.'-'.$data['orderInfo']->user_name.'.pdf';
+        $filelocation = "protected/runtime/uploads/invoice/"; //Linux
+        if (!is_dir($filelocation)) {
+            mkdir($filelocation, 0755, true);
+        }
+
+        $relative_file_path = 'protected/runtime/uploads/invoice/'.$filename;
+        $fileNL = getcwd() .'/'. $relative_file_path; //Linux
+        # renderPartial (only 'view' of current controller)
+        //$mPDF1->WriteHTML($this->renderPartial('admin', array(), true));
+
+        # Renders image
+        //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/CYL Logo.png'));
+
+        # Outputs ready PDF
+        $mPDF1->Output($fileNL, 'F');
+        return $relative_file_path;
+        // $res = [
+        //     'status' => 1,
+        //     'message' => 'Reminder sent with attachment.',
+        //     'url' => $relative_file_path
+        // ];
+        // echo json_encode($res);
     }
     /**
      * Creates a new model.
