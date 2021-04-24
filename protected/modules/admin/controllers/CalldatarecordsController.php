@@ -102,6 +102,7 @@ class CalldatarecordsController extends Controller
                 $org_id = $_POST['OrganizationInfo']['organisation_id'];
                 $month = $_POST['month'];
                 $start = date("Y-m-01", strtotime($month));
+                $end = date("Y-m-t", strtotime($month));
                 if($month != ''){
                     $getMonth = date("F, Y", strtotime($month));
                 }else{
@@ -110,7 +111,7 @@ class CalldatarecordsController extends Controller
                 $organisation = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
                 $selected = ($getMonth != '') ? $organisation->name.' for '.$getMonth : $organisation->name;
                 //$end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
-                $end = $month;
+                //$end = $month;
                 /*$start = '2020-12-01';
                 $end = '2020-12-31';*/
                 $data_array = [];

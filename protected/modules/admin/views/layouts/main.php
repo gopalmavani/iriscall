@@ -274,6 +274,8 @@ $folder = Yii::app()->params['basePath'];
                                 <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrdetails');?>"><i class="fa fa-phone"></i><span class="sidebar-mini-hide"> CDR Details </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrcostrules'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrcostrules');?>"><i class="fa fa-money"></i><span class="sidebar-mini-hide"> CDR Cost Rules </span></a></li>
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/invoice'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/invoice');?>"><i class="fa fa-file-text-o"></i><span class="sidebar-mini-hide"> Generate Invoice </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/settings'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/settings');?>"><i class="fa fa-wrench"></i><span class="sidebar-mini-hide"> Settings </span></a></li>
                             </ul>
