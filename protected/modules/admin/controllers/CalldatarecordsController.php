@@ -307,7 +307,10 @@ class CalldatarecordsController extends Controller
 
     public function actionSettings()
     {
-        $this->render('settings');
+        $organizationInfo = OrganizationInfo::model()->findAll();
+        $this->render('settings',[
+            'organizationInfo' => $organizationInfo
+        ]);
     }
 
 
@@ -333,110 +336,122 @@ class CalldatarecordsController extends Controller
      */
     public function actionIndex()
     {
-        $model=new OrganizationInfo;
-
-        if(isset($_POST) && !empty($_POST['start_date'])){
-            if(!empty($_POST['start_date'] && $_POST['end_date'] && $_POST['OrganizationInfo']['organisation_id'])){
+        try {
+            ini_set('memory_limit', '-1');
+            set_time_limit(0);
+            if(isset($_POST) && !empty($_POST['month_year'] && $_POST['organization'])){
                 $date_range = array();
-                $date_from = strtotime($_POST['start_date']); // Convert date to a UNIX timestamp
-                $date_to = strtotime($_POST['end_date']); // Convert date to a UNIX timestamp
-                // Loop from the start date to end date and output all dates inbetween
-                for ($i=$date_from; $i<=$date_to; $i+=86400) {
+                $myDateTime = DateTime::createFromFormat('F, Y', $_POST['month_year']);
+                $start = strtotime($myDateTime->format('Y-m-01'));
+                $end = strtotime($myDateTime->format('Y-m-t'));
+                for ($i=$start; $i<=$end; $i+=86400) {
                     $date_range[] = date("Y-m-d", $i);
                 }
-                //echo "<pre>";print_r($_SERVER['DOCUMENT_ROOT'].Yii::app()->baseUrl.'/uploads/cdr-csv/company.csv');die;
-                $organisation_id = $_POST['OrganizationInfo']['organisation_id'];
-                $all_data = [];
-                foreach ($date_range as $date){
-                    //old url for get cdr data
-                    //$fileUrl = 'https://files.apollo.compass-stack.com/cdr/'.$organisation_id.'/'.$date.'/company.csv';
-                    //New url for get cdr data
-                    $fileUrl = 'https://files.pbx.mytelephony.eu/cdr/'.$organisation_id.'/'.$date.'/company.csv';
-                    //The path & filename to save to.
-                    //$saveTo = 'company.csv';
-                    $saveTo = $_SERVER['DOCUMENT_ROOT'].Yii::app()->baseUrl.'/uploads/cdr-csv/company.csv';
-                    //Open file handler.
-                    $fp = fopen($saveTo, 'w+');
-
-                    //If $fp is FALSE, something went wrong.
-                    if($fp === false){
-                        throw new Exception('Could not open: ' . $saveTo);
+                if($_POST['organization'] == 'All Organizations'){
+                    $organizationInfo = OrganizationInfo::model()->findAll();
+                    foreach ($organizationInfo as $org){
+                        $organisation_id = $org['organisation_id'];
+                        $fetchCDR = $this->fetchCDR($date_range, $organisation_id);
                     }
+                }else{
+                    $organisationInfo = OrganizationInfo::model()->findByAttributes(['name' => $_POST['organization']]);
+                    $organisation_id = $organisationInfo->organisation_id;
+                    $fetchCDR = $this->fetchCDR($date_range, $organisation_id);
+                }
+                echo $fetchCDR;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            echo "<div align='center'><h3 style='color: red; margin-bottom: 0'>Failed to add CDR!!</h3></div>";
+        }
+    }
+    public function fetchCDR($date_range, $organisation_id){
+        $all_data = [];
+        foreach ($date_range as $date){
+            //old url for get cdr data
+            //$fileUrl = 'https://files.apollo.compass-stack.com/cdr/'.$organisation_id.'/'.$date.'/company.csv';
+            //New url for get cdr data
+            $fileUrl = 'https://files.pbx.mytelephony.eu/cdr/'.$organisation_id.'/'.$date.'/company.csv';
+            //The path & filename to save to.
+            $saveTo = 'company.csv';
+            $saveTo = $_SERVER['DOCUMENT_ROOT'].Yii::app()->baseUrl.'/uploads/cdr-csv/company.csv';
+            //Open file handler.
+            $fp = fopen($saveTo, 'w+');
 
-                    $token = base64_encode(Yii::app()->params['cdr_username'].":".Yii::app()->params['cdr_password']);
-                    //Create a cURL handle.
-                    $ch = curl_init($fileUrl);
-                    //Pass our file handle to cURL.
-                    curl_setopt($ch, CURLOPT_FILE, $fp);
+            //If $fp is FALSE, something went wrong.
+            if($fp === false){
+                throw new Exception('Could not open: ' . $saveTo);
+            }
 
-                    //Timeout if the file doesn't download after 20 seconds.
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 9000);
-                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER , array(
-                        "Authorization: Basic ".$token
-                    ));
-                    //Execute the request.
-                    curl_exec($ch);
-                    //If there was an error, throw an Exception
-                    if(curl_errno($ch)){
-                        throw new Exception(curl_error($ch));
-                    }
-                    //Get the HTTP status code.
-                    $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                    //Close the cURL handler.
-                    curl_close($ch);
-                    //Close the file handler.
-                    fclose($fp);
+            $token = base64_encode(Yii::app()->params['cdr_username'].":".Yii::app()->params['cdr_password']);
+            //Create a cURL handle.
+            $ch = curl_init($fileUrl);
+            //Pass our file handle to cURL.
+            curl_setopt($ch, CURLOPT_FILE, $fp);
 
-                    if($statusCode == 200) {
+            //Timeout if the file doesn't download after 20 seconds.
+            curl_setopt($ch, CURLOPT_TIMEOUT, 9000);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_HTTPHEADER , array(
+                "Authorization: Basic ".$token
+            ));
+            //Execute the request.
+            curl_exec($ch);
+            //If there was an error, throw an Exception
+            if(curl_errno($ch)){
+                throw new Exception(curl_error($ch));
+            }
+            //Get the HTTP status code.
+            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            //Close the cURL handler.
+            curl_close($ch);
+            //Close the file handler.
+            fclose($fp);
 
-                        $data = $this->csvToArray($saveTo, ',');
-                        $cdr_data = [];
-                        foreach ($data as $key => $value) {
-                            if($value['from_type'] != 'external'){
-                                if(empty($value['answer_time'])){
-                                    $value['answer_time'] = '0000-00-00 00:00:00';
-                                }
-                                $value['organisation_id'] = $organisation_id;
-                                $value['unit_cost'] = '';
-                                $value['date'] = $date;
-                                $value['created_at'] = date('Y-m-d H:i:s');
-                                $diff = strtotime($value['end_time']) - strtotime($value['start_time']);
-                                $minutes = floor($diff / 60);
-                                $seconds = $diff % 60;
-                                $total_time = "00:$minutes:$seconds";
-                                $value['total_time'] = $total_time;
-                                $value['comment'] = '';
-                                $value['created_at'] = date('Y-m-d H:i:s');
-                                array_push($cdr_data, $value);
-                            }
+            if($statusCode == 200) {
+                $data = $this->csvToArray($saveTo, ',');
+                $cdr_data = [];
+                foreach ($data as $key => $value) {
+                    if($value['from_type'] != 'external'){
+                        if(empty($value['answer_time'])){
+                            $value['answer_time'] = '0000-00-00 00:00:00';
                         }
-                        //echo "<pre>";print_r($cdr_data);
-                        if(!empty($cdr_data)){
-                            $deleted = CallDataRecordsInfo::model()->deleteAll("organisation_id='" .$organisation_id."' and date = '".$date."'");
-                            $connection = Yii::app()->db->getSchema()->getCommandBuilder();
-                            $chunked_array = array_chunk($cdr_data, 5000);
-                            $table_name = 'cdr_info';
-                            foreach ($chunked_array as $chunk_array){
-                                $command = $connection->createMultipleInsertCommand($table_name, $chunk_array);
-                                $command->execute();
-                                $logMessage = count($chunk_array)." records were inserted in ".$table_name.PHP_EOL;
-                                file_put_contents('protected/runtime/insert.log', $logMessage, FILE_APPEND);
-                            }
-                        }
+                        $value['organisation_id'] = $organisation_id;
+                        $value['unit_cost'] = '';
+                        $value['date'] = $date;
+                        $value['created_at'] = date('Y-m-d H:i:s');
+                        $diff = strtotime($value['end_time']) - strtotime($value['start_time']);
+                        $minutes = floor($diff / 60);
+                        $seconds = $diff % 60;
+                        $total_time = "00:$minutes:$seconds";
+                        $value['total_time'] = $total_time;
+                        $value['comment'] = '';
+                        $value['created_at'] = date('Y-m-d H:i:s');
+                        array_push($cdr_data, $value);
                     }
                 }
-                $this->redirect('cdrdetails');
+                //echo "<pre>";print_r($cdr_data);
+                if(!empty($cdr_data)){
+                    $deleted = CallDataRecordsInfo::model()->deleteAll("organisation_id='" .$organisation_id."' and date = '".$date."'");
+                    $connection = Yii::app()->db->getSchema()->getCommandBuilder();
+                    $chunked_array = array_chunk($cdr_data, 5000);
+                    $table_name = 'cdr_info';
+                    foreach ($chunked_array as $chunk_array){
+                        $command = $connection->createMultipleInsertCommand($table_name, $chunk_array);
+                        $command->execute();
+                        $logMessage = count($chunk_array)." records were inserted in ".$table_name.PHP_EOL;
+                        file_put_contents('protected/runtime/insert.log', $logMessage, FILE_APPEND);
+                    }
+                }
             }
         }
-        $this->render('index',[
-            'model'=>$model
-        ]);
+        return "<div align='center'><h3 style='color: green; margin-bottom: 0'>Call Data Records added successfully!!</h3></div>";
     }
-
     public function actionGetfromnumber(){
+        ini_set('memory_limit', '-1');
+        set_time_limit(0);
         $cdr_data = Yii::app()->db->createCommand()
             ->select('distinct(from_id)')
             ->from('cdr_info')
@@ -517,7 +532,7 @@ class CalldatarecordsController extends Controller
                     CallDataRecordsInfo::model()->updateAll(array('from_number' => $from_numer), 'from_id=:from_id AND from_number=:from_number',array(':from_id'=>$from_id,'from_number'=>''));
                     $res = [
                         'status' => 1,
-                        'message' => 'CDR updated successfully.'
+                        'message' => "<div align='center'><h3 style='color: green; margin-bottom: 0'>Call Data Records added successfully!!</h3></div>"
                     ];
                 }catch (Exception $e){
                     $error = $e->getMessage();
@@ -573,7 +588,7 @@ class CalldatarecordsController extends Controller
         //$this->redirect('cdrdetails');
         $res = [
             'status' => 1,
-            'message' => 'Cost calculation completed.'
+            'message' => "<div align='center'><h3 style='color: green; margin-bottom: 0'>Cost calculation completed.</h3></div>"
         ];
 
         echo json_encode($res);      
