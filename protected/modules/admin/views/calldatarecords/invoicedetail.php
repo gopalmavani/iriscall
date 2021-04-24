@@ -40,7 +40,7 @@ $this->pageTitle = 'Invoice details - '.$selected;
     </table>
     <br>
     <div class="row">
-        <button class="btn btn-primary pull-right" id="generateorder" style="margin-right: 10px;">Generate Order</button>
+        <button class="btn btn-primary pull-right" id="generateorder" style="margin-right: 30px;">Generate Order</button>
     </div>
     <div class="row">
         <br>

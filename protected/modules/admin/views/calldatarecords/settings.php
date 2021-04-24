@@ -217,6 +217,7 @@ $(document).ready(function () {
             }
         });
     });
+
     //for CDR cost calculate
     $('#callCalculateCost').click(function(e){
         e.preventDefault();
@@ -242,6 +243,46 @@ $(document).ready(function () {
         });
     });
 
+    //for generate order/invoice
+    $('#callGenerateInvoice').click(function(e){
+        e.preventDefault();
+        var organization = $('#organization').val();
+        var month_year = $('#datepickerfilter').val();
+        if(month_year == '' && organization == ''){
+            $('#status').css('color','red');
+            $('#status').html("Please select organization and appropriate month and year.");
+        }else if(organization == ''){
+            $('#status').css('color','red');
+            $('#status').html("Please select organization."); 
+        }else if(month_year == ''){
+            $('#status').css('color','red');
+            $('#status').html("Please select appropriate month and year."); 
+        }else {
+            $('#status').css('color','green');
+            $('#status').html("Generating Invoice for "+ organization +", for "+ month_year);
+            $.ajax({
+                url: "invoice",
+                type: "POST",
+                data: {
+                    'month_year':month_year,
+                    'organization':organization
+                },
+                beforeSend:function () {
+                    $('.month').prop('readonly', true);
+                    $('.btn,.org').prop('disabled',true);
+                    $('#generateInvoice').css('display','none');
+                    $('#loader-generateInvoice').css('display','block');
+                },
+                success: function(data) {
+                    $('.month').prop('readonly', false);
+                    $('#loader-generateInvoice').css('display','none');
+                    $('.btn,.org').prop('disabled',false);
+                    $('#generateInvoice').css('display','block');
+                    $('#generateInvoice').html(data);
+                }
+            });
+        }
+    });
     //year-month calender
     $('#datepickerfilter').datepicker({
         dateFormat: "MM, yy",
