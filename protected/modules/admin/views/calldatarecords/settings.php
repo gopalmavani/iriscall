@@ -57,9 +57,6 @@ $this->pageTitle = 'Settings';
                     <li>
                         <a href="#btabs-alt-static-calculateCost">Calculate Cost</a>
                     </li>
-                    <li>
-                        <a href="#btabs-alt-static-generateInvoice">Generate Invoice</a>
-                    </li>
                 </ul>
                 <div class="block-content tab-content">
                     <div class="tab-pane active" id="btabs-alt-static-fetchCDR">
@@ -89,17 +86,6 @@ $this->pageTitle = 'Settings';
                         </p>
                         <p style="background: whitesmoke !important; display: none" id="calculateCost"></p>
                         <div id="loader-calculateCost" style="display: none; margin-left: auto; margin-right: auto; padding: inherit; width: 100px;">
-                            <i class="fa fa-4x fa-cog fa-spin text-success"></i>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="btabs-alt-static-generateInvoice">
-                        <?php echo CHtml::link('Generate Invoice', array('calldatarecords/invoice'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
-                        <!-- <button class="btn btn-minw btn-primary" type="button" id="callGenerateInvoice">Generate Invoice</button> -->
-                        <p style="margin-top: 15px"> On button click, following process will be executed sequentially: <br>
-                            1. Order generated and rows will be added in order_info, order_line_item, order_payment table.<br>
-                        </p>
-                        <p style="background: whitesmoke !important; display: none" id="generateInvoice"></p>
-                        <div id="loader-generateInvoice" style="display: none; margin-left: auto; margin-right: auto; padding: inherit; width: 100px;">
                             <i class="fa fa-4x fa-cog fa-spin text-success"></i>
                         </div>
                     </div>
@@ -243,46 +229,6 @@ $(document).ready(function () {
         });
     });
 
-    //for generate order/invoice
-    $('#callGenerateInvoice').click(function(e){
-        e.preventDefault();
-        var organization = $('#organization').val();
-        var month_year = $('#datepickerfilter').val();
-        if(month_year == '' && organization == ''){
-            $('#status').css('color','red');
-            $('#status').html("Please select organization and appropriate month and year.");
-        }else if(organization == ''){
-            $('#status').css('color','red');
-            $('#status').html("Please select organization."); 
-        }else if(month_year == ''){
-            $('#status').css('color','red');
-            $('#status').html("Please select appropriate month and year."); 
-        }else {
-            $('#status').css('color','green');
-            $('#status').html("Generating Invoice for "+ organization +", for "+ month_year);
-            $.ajax({
-                url: "invoice",
-                type: "POST",
-                data: {
-                    'month_year':month_year,
-                    'organization':organization
-                },
-                beforeSend:function () {
-                    $('.month').prop('readonly', true);
-                    $('.btn,.org').prop('disabled',true);
-                    $('#generateInvoice').css('display','none');
-                    $('#loader-generateInvoice').css('display','block');
-                },
-                success: function(data) {
-                    $('.month').prop('readonly', false);
-                    $('#loader-generateInvoice').css('display','none');
-                    $('.btn,.org').prop('disabled',false);
-                    $('#generateInvoice').css('display','block');
-                    $('#generateInvoice').html(data);
-                }
-            });
-        }
-    });
     //year-month calender
     $('#datepickerfilter').datepicker({
         dateFormat: "MM, yy",
