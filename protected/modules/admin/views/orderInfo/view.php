@@ -32,9 +32,9 @@ if(Yii::app()->user->hasFlash('success')) { ?>
                 <?php if(isset($model->invoice_number)){ ?>
                 <a href="<?php echo Yii::app()->createUrl('invoice/Generateinvoice/' . $model->order_info_id); ?> "
                    data-toggle="tooltip" title="Download Invoice" target="_blank" class="btn btn-minw btn-square btn-success">Generate Invoice</a>
+                   <?php echo CHtml::link('Send Reminder', array('orderInfo/reminder/'.$id), array('class' => 'btn btn-minw btn-square btn-danger')); ?> 
                 <?php }if($model->order_status != 1){ ?>
                     <?php echo CHtml::link('Update', array('orderInfo/update/'.$id), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
-                    <?php echo CHtml::link('Send Reminder', array('orderInfo/reminder/'.$id), array('class' => 'btn btn-minw btn-square btn-danger')); ?> 
                 <?php }elseif ($model->order_status == 1) {?>
                    <a href="<?php echo Yii::app()->createUrl('admin/orderInfo/creditMemo/'.$model->order_info_id); ?>" data-toggle="tooltip" title="Credit Memo" class="btn btn-minw btn-square btn-info">Credit Memo</a>
                 <?php } ?>
@@ -341,7 +341,6 @@ if(Yii::app()->user->hasFlash('success')) { ?>
                     </div>
                 </div>
             </div>
-            <?php if($model->order_status != 1){ ?>
             <div class="block block-bordered" style="border-color: #E26A6A;">
                 <div class="block-header" style="background-color: #E26A6A;">
                     <h3 class="block-title"><font color="white"><i class="fa fa-cogs"></i> Reminders</font></h3>
@@ -382,7 +381,6 @@ if(Yii::app()->user->hasFlash('success')) { ?>
                     </div>
                 </div>
             </div>
-            <?php } ?>
         </div>
     </div>
 
