@@ -1123,10 +1123,18 @@ class CalldatarecordsController extends Controller
                         $model->order_id = $Order['order_id'] + 1;
                     }
                     $invoice_no = OrderHelper::getInvoiceNumber();
-                    $model->user_id = $orgInfo['user_id'];
                     $model->invoice_number = $invoice_no;
+                    $convert = strtotime($model->invoice_date);
+                    $day = date("d", $convert);
+                    $month = date("m", $convert);
+                    $random = rand(1,9);
+                    $reverse = strrev($model->invoice_number);
+                    $fourDigit = substr($reverse,0,4);
+                    $orderComment = '+++'.$random.$day.'/'.$random.$month.$random.'/'.$random.$fourDigit.'+++';
+                    $model->order_comment = $orderComment;
+                    $model->user_id = $orgInfo['user_id'];
                     $model->invoice_date = date('Y-m-d H:i:s');
-                    $model->order_status = 2;
+                    $model->order_status = 1;
                     $model->company = $orgInfo['name'];
                     $model->user_name = $orgInfo['name'];
                     $model->created_date = date('Y-m-d H:i:s');
