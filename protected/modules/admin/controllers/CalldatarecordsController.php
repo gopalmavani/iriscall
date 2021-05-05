@@ -76,10 +76,10 @@ class CalldatarecordsController extends Controller
 
     public function actionCompanydetails($id)
     {
-        $data = $model=OrganizationInfo::model()->findByPk($id);
+        $model = OrganizationInfo::model()->findByPk($id);
 
         $this->render('companydetails',array(
-            'model'=>$data,
+            'model'=>$model,
         ));
     }
 
@@ -329,6 +329,76 @@ class CalldatarecordsController extends Controller
         $this->render('admin',array(
             'model'=>$model,
         ));
+    }
+
+    /**
+     * Create organization.
+     */
+    public function actionCreate()
+    {
+        try{
+            $model = new OrganizationInfo;
+            if (isset($_POST['OrganizationInfo'])) {
+                $user = Yii::app()->user->getId();
+                $model->attributes = $_POST['OrganizationInfo'];
+                $model->user_id = $user;
+                $model->created_at = date('Y-m-d H:i:s');
+                if($model->save())
+                    $this->redirect(array('companydetails', 'id' => $model->id));
+            }
+            $this->render('create', array(
+                'model' => $model
+            ));
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate($id)
+    {
+        try{
+            $model = OrganizationInfo::model()->findByPk($id);
+            if (isset($_POST['OrganizationInfo'])) {
+                $user = Yii::app()->user->getId();
+                $model->attributes = $_POST['OrganizationInfo'];
+                $model->user_id = $user;
+                $model->modified_at = date('Y-m-d H:i:s');
+                if($model->save())
+                        $this->redirect(array('companydetails', 'id' => $model->id));
+            }
+            $this->render('update', array(
+                'model' => $model
+            ));
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionDelete()
+    {
+        $model = OrganizationInfo::model()->findByAttributes(['id' => $_POST['id']]);
+
+        if(!empty($model)){
+            if (OrganizationInfo::model()->deleteAll("id ='" .$model->id. "'")){
+                echo json_encode([
+                    'token' => 1,
+                ]);
+            }else{
+                echo json_encode([
+                    'token' => 0,
+                ]);
+            }
+        }
     }
 
     /**

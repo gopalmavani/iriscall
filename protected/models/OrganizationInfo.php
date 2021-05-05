@@ -35,8 +35,8 @@ class OrganizationInfo extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('organisation_id, name, shortened_name, language, sip_domain, domain_name, call_pickup_within_group, trunk_clutch, trunk_username, pbx, created_at', 'required'),
-            array('organisation_id, call_pickup_within_group', 'integerOnly'=>true),
+            array('organisation_id, name, shortened_name, language, sip_domain, call_pickup_within_group, trunk_clutch, trunk_username, pbx, created_at', 'required'),
+            //array('organisation_id, call_pickup_within_group', 'integerOnly'=>true),
             array('name, shortened_name, language, sip_domain, domain_name, trunk_clutch, trunk_username, pbx','length', 'max'=>50),
             array('created_at', 'safe'),
             // The following rule is used by search().
@@ -61,7 +61,7 @@ class OrganizationInfo extends CActiveRecord
             'trunk_clutch' => 'Trunk Clutch',
             'trunk_username' => 'Trunk Urername',
             'pbx'=> 'PBX',
-            'created_at'=> 'created',
+            'created_at'=> 'Created Date',
         );
     }
 

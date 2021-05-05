@@ -20,7 +20,7 @@ $this->pageTitle = 'Company';
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         if(!empty($result)){ ?>
             <div class="pull-right m-b-10">
-                <?php //echo CHtml::link('Create', array('calldatarecords/create'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+                <?php echo CHtml::link('Create', array('calldatarecords/create'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
             </div>
             <div style="margin-right:10px;" class="pull-right m-b-10">
                 <a class="btn btn-outline-primary" id="clearfilters">Clear Filters <i class="fa fa-times"></i></a>
@@ -171,11 +171,11 @@ $this->pageTitle = 'Company';
                 "targets": 0,
                 "data": null,
                 "render" : function(data, type, row) {
-                    return '<a href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/companydetails/').'/'; ?>'+data[1]+'""><i class="fa fa-eye delete-product" id="'+data[1]+'"></i></a>';
+                    return '<a href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/companydetails/').'/'; ?>'+data[1]+'""><i class="fa fa-eye" id="'+data[1]+'"></i></a>&nbsp;&nbsp;<a href="<?php echo Yii::app()->createUrl("admin/calldatarecords/update/").'/'; ?>'+data[1]+'"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;<a id='+data[1]+' class="orgdelete" href="javascript:void(0)"><i class="fa fa-times"></i></a>';
                 }
             },{
                 "visible":false,
-                "targets":[1,4,6,7,8,9,10,11,12]
+                "targets":[1,4,6,7,8,9,10,11,12,14]
             } ]
         });
 
@@ -206,6 +206,31 @@ $this->pageTitle = 'Company';
             $('input[type=text]').val('');
             $('.drop-box').val('');
             $('.date-field').val('');
+        });
+
+        $(' body ').on('click','.orgdelete',function() {
+            var id = $(this).attr('id');
+            bootbox.confirm("Are you sure you want to delete this organization?", function(result){
+                if (result === true){
+                    $.ajax({
+                        url: "Delete",
+                        type: "POST",
+                        data: {'id': id},
+                        beforeSend: function () {
+                            $(".overlay").removeClass("hide");
+                        },
+                        success: function (response) {
+                            var Result = JSON.parse(response);
+                            if (Result.token == 1){
+                                localStorage.setItem('msg','success');
+                                window.location.reload();
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        }
+                    });
+                }
+            });
         });
     });
 </script>
