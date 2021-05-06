@@ -43,6 +43,64 @@ class OrderInfoController extends CController
             'order_info_meta' => $order_info_meta
         ));
     }
+
+    /**
+     * setting reminders
+     */
+    public function actionSettings()
+    {
+        $this->render('reminderSettings');
+    }
+
+    /**
+     * setting reminders
+     */
+    public function actionReminderSettings()
+    {
+        try{
+            if(isset($_POST) && !empty($_POST)){
+                $command = Yii::app()->db->createCommand();
+                $reminder = $_POST['reminder'];
+                $cost = $_POST['cost'];
+                $days = $_POST['days'];
+                $reminders = $command->select('*')->from('reminder_settings')
+                            ->where('reminder=:value', array(':value' => $reminder))->queryAll();
+                if(!empty($reminders)){
+                    $save = $command->update('reminder_settings', array(
+                        'reminder' => $reminder,
+                        'cost' => $cost,
+                        'days' => $days,
+                        'modified_at' => date("Y-m-d H:i:s"),
+                    ), 'reminder=:rem', array(':rem'=>$reminder));
+                }else{
+                    $save = $command->insert('reminder_settings',
+                        [
+                            'reminder' => $reminder,
+                            'cost' => $cost,
+                            'days' => $days,
+                            'created_at' => date("Y-m-d H:i:s"),
+                        ]
+                    );
+                }
+                if($save == 1){
+                    $res = [
+                        'status' => 1,
+                        'message' => 'Reminder '.$reminder.' set successfully.'
+                    ];
+                }else{
+                    $res = [
+                        'status' => 0,
+                        'message' => 'Reminder not set.'
+                    ];
+                }
+                echo json_encode($res);
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+   
+    //send reminders email
     public function actionReminder($id)
     {
         try{
