@@ -300,6 +300,8 @@ $folder = Yii::app()->params['basePath'];
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/orderInfo/admin');?>"><i class="fa fa-file-text-o"></i> <span class="sidebar-mini-hide"> Orders </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/orderCreditMemo/admin'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/orderCreditMemo/admin');?>"><i class="fa fa-book"></i> <span class="sidebar-mini-hide"> Order Credit Memo </span></a></li>
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/orderInfo/settings'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/orderInfo/settings');?>"><i class="fa fa-wrench"></i><span class="sidebar-mini-hide"> Settings </span></a></li>
                             </ul>
                         </li>
                         <?php $action = Yii::app()->controller->id;

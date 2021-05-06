@@ -16,8 +16,7 @@ class CronCommand extends CConsoleCommand
     public function actionSendReminder() {
         try {
             $order_info_meta = [];
-            $order_info_id = Yii::app()->db->createCommand()
-                            ->select('order_info_id')
+            $order_info_id = Yii::app()->db->createCommand()->select('order_info_id')
                             ->from('order_payment')
                             ->where('payment_status=:status', array(':status' => 2))
                             ->queryAll();
@@ -32,35 +31,57 @@ class CronCommand extends CConsoleCommand
                     }else{
                         $email = $orders['email'];
                     }
-                    $amount = $orders['orderTotal'] + 12.10;
+                    $reminders = Yii::app()->db->createCommand()->select('*')->from('reminder_settings')->queryAll();
+                    foreach($reminders as $rem){
+                        if($rem['reminder'] == 1){
+                            $amount = $orders['orderTotal'] + $rem['cost'];
+                            $reminder_1_date = date('Y-m-d', strtotime($orders['invoice_date'].' + '.$rem['days'].' days'));
+                        }elseif($rem['reminder'] == 2){
+                            $amount = $orders['orderTotal'] + $rem['cost'];
+                            $reminder_2_date = date('Y-m-d', strtotime($orders['invoice_date'].' + '.$rem['days'].' days'));
+                        }
+                        elseif($rem['reminder'] == 3){
+                            $amount = $orders['orderTotal'] + $rem['cost'];
+                            $reminder_3_date = date('Y-m-d', strtotime($orders['invoice_date'].' + '.$rem['days'].' days'));
+                        }
+                    }
                     $current_date = date('Y-m-d');
-                    $reminder_1_date = date('Y-m-d', strtotime($orders['invoice_date'].' + 7 days'));
+                    /*$reminder_1_date = date('Y-m-d', strtotime($orders['invoice_date'].' + 7 days'));
                     $reminder_2_date = date('Y-m-d', strtotime($reminder_1_date.' + 7 days'));
-                    $reminder_3_date = date('Y-m-d', strtotime($reminder_2_date.' + 5 days'));
+                    $reminder_3_date = date('Y-m-d', strtotime($reminder_2_date.' + 5 days'));*/
                     if($reminder_1_date == $current_date){
                         $reminder = '1st Reminder';
                         $subject = 'Payment Reminder';
                         $action = '1st Reminder sent';
-                        $comment = 'Total amount '.$orders['orderTotal'];
+                        $comment = 'Total amount '.$amount;
                         $msg = "1st Reminder sent to ".$email.",\n";
+                        if($amount != $orders['orderTotal']){
+                            $query = "update order_info, order_payment set order_info.orderTotal = $amount, order_info.netTotal = $amount, order_payment.total = $amount 
+                                where order_info.order_info_id = $orders[order_info_id] and order_payment.order_info_id = $orders[order_info_id]";
+                            Yii::app()->db->createCommand($query)->execute();
+                        }
                     }elseif($reminder_2_date == $current_date){
                         $reminder = '2nd Reminder';
                         $subject = 'Second Reminder';
                         $action = '2nd Reminder sent';
                         $comment = 'Additional amount of Euro 12.10 added in invoice total '.$amount;
                         $msg = "2nd Reminder sent to ".$email.",\n";
-                        $query = "update order_info, order_payment set order_info.orderTotal = $amount, order_info.netTotal = $amount, order_payment.total = $amount 
+                        if($amount != $orders['orderTotal']){
+                            $query = "update order_info, order_payment set order_info.orderTotal = $amount, order_info.netTotal = $amount, order_payment.total = $amount 
                                 where order_info.order_info_id = $orders[order_info_id] and order_payment.order_info_id = $orders[order_info_id]";
-                        Yii::app()->db->createCommand($query)->execute();
+                            Yii::app()->db->createCommand($query)->execute();
+                        }
                     }elseif($reminder_3_date == $current_date){
                         $reminder = '3rd Reminder';
                         $subject = 'Third Reminder';
                         $action = '3rd Reminder sent';
                         $comment = 'Additional amount of Euro 12.10 added in invoice total '.$amount;
                         $msg = "3rd Reminder sent to ".$email.",\n";
-                        $query = "update order_info, order_payment set order_info.orderTotal = $amount, order_info.netTotal = $amount, order_payment.total = $amount 
+                        if($amount != $orders['orderTotal']){
+                            $query = "update order_info, order_payment set order_info.orderTotal = $amount, order_info.netTotal = $amount, order_payment.total = $amount 
                                 where order_info.order_info_id = $orders[order_info_id] and order_payment.order_info_id = $orders[order_info_id]";
-                        Yii::app()->db->createCommand($query)->execute();
+                            Yii::app()->db->createCommand($query)->execute();
+                        }
                     }
                     if(!empty($reminder) && !empty($subject)){
                         $mail = new YiiMailer('reminder', [
