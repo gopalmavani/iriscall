@@ -46,6 +46,7 @@ class CronCommand extends CConsoleCommand
                         }
                     }
                     $current_date = date('Y-m-d');
+                    $email = 'vaghelamayursinh999@gmail.com';
                     /*$reminder_1_date = date('Y-m-d', strtotime($orders['invoice_date'].' + 7 days'));
                     $reminder_2_date = date('Y-m-d', strtotime($reminder_1_date.' + 7 days'));
                     $reminder_3_date = date('Y-m-d', strtotime($reminder_2_date.' + 5 days'));*/
