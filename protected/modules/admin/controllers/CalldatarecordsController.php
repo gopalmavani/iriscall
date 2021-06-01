@@ -488,6 +488,8 @@ class CalldatarecordsController extends Controller
                     if($value['from_type'] != 'external'){
                         if(empty($value['answer_time'])){
                             $value['answer_time'] = '0000-00-00 00:00:00';
+                        }else{
+                            $value['answer_time'] = date("Y-m-d H:i:s", strtotime($value['answer_time']));
                         }
                         $value['organisation_id'] = $organisation_id;
                         $value['unit_cost'] = '';
