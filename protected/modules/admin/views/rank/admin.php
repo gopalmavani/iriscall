@@ -91,9 +91,39 @@ if(!empty($result)){ ?>
     </div>
 </div>
 <?php } ?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">Compute Ranks</div>
+        <input type="button" class="btn btn-primary" style="float: right;" name="computerank" id="rankCompute" value="Compute Ranks"/>
+    </div>
+    <div class="col-md-12">
+        <div style="height: 150px;" id="computeResult"></div>
+    </div>
+</div>
 <script src="<?php echo Yii::app()->createUrl('/'); ?>/plugins/js/core/bootbox.min.js"></script>
 <script>
     $(document).ready(function() {
+        //compute rank
+        $('#rankCompute').click(function () {
+            $.ajax({
+                url: 'ComputeRank',
+                type: "post",
+                beforeSend: function(){
+                    $(".overlay").removeClass("hide");
+                },
+                success: function (response) {
+                    //console.log(response);
+                    var Result = JSON.parse(response);
+                    if (Result.users == 0){
+                        $('#computeResult').html("Users not eligible for rank update");
+                    }else{
+                        $('#computeResult').html('Ranks Successfully Updated, ' + Result.users + " Users's rank updated");
+                    }
+                    $(".overlay").addClass("hide");
+                }
+            });
+        });
+
         if (localStorage.getItem('msg')){
             $("#delete").removeClass("hide");
             setTimeout(
