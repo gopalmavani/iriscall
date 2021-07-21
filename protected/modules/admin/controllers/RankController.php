@@ -266,13 +266,13 @@ class RankController extends CController
             for ($i=11; $i > 0 ; $i--) {
                 if($this->getCheckRanks($i ,$user->user_id)){
                     $setrank = UserInfo::model()->findByAttributes(['user_id' => $user->user_id]);
-                    $setrank->rankId = $i;
+                    $setrank->rank = $i;
                     if ($setrank->validate()){
                         if ($setrank->save(true)){
                             //echo "User ".$user->user_id."'s Rank Changed From ".$user->rankId." To ".$i ."<br>";
                             $rankUser[] = $user->user_id;
                             $newRank[] = $i;
-                            $oldRank[] = $user->rankId;
+                            $oldRank[] = $user->rank;
                         }
                     }else{
                         echo $user->user_id." ";
@@ -292,7 +292,7 @@ class RankController extends CController
 
     protected function getCheckRanks($rankId, $userId){
         $totalSpent = $childCount = 1;
-        $amount = '';
+        $amount = $child = '';
         $NoOfChild = UserInfo::model()->findAllByAttributes(['sponsor_id' => $userId]);
         if ($NoOfChild){
             $childCount = count($NoOfChild);
