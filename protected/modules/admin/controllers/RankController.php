@@ -291,22 +291,21 @@ class RankController extends CController
     }
 
     protected function getCheckRanks($rankId, $userId){
-        $totalDeposit = $childCount = 1;
+        $totalSpent = $childCount = 1;
         $amount = '';
         $NoOfChild = UserInfo::model()->findAllByAttributes(['sponsor_id' => $userId]);
         if ($NoOfChild){
             $childCount = count($NoOfChild);
         }
 
-        $ownDeposit = Wallet::model()->findByAttributes(['denomination_id' => 1, 'transaction_type' => 1, 'transaction_status' => 2, 'user_id' => $userId]);
-        if ($ownDeposit){
-            $totalDeposit = $ownDeposit->amount;
+        $ownSpent = OrderInfo::model()->findByAttributes(['order_status' => 1, 'user_id' => $userId]);
+        if ($ownSpent){
+            $totalSpent = $ownSpent->orderTotal;
         }
 
         $rules = Rankrules::model()->findAllByAttributes(['rankId' => $rankId]);
 
-
-        if ($totalDeposit != 0 && $childCount != 0 ){
+        if ($totalSpent != 0 && $childCount != 0 ){
             foreach ($rules as $rule){
                 if($rule->ruleId == 1){
                     if ($childCount >= $rule->value1){
@@ -314,8 +313,8 @@ class RankController extends CController
                     }
                 }
                 if($rule->ruleId == 2){
-                    if ($totalDeposit >= $rule->value1){
-                        $amount = $totalDeposit;
+                    if ($totalSpent >= $rule->value1){
+                        $amount = $totalSpent;
                     }
                 }
             }
