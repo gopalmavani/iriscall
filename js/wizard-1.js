@@ -466,7 +466,7 @@ var KTWizard1 = function() {
                 }, {});
 
                 //Basic Details
-                $('#review_name').html(formData['first_name'] + " " + formData['middle_name'] + " " + formData['last_name']);
+                $('#review_name').html(formData['first_name'] + " " + formData['last_name']);
                 $('#review_dob').html(formData['date_of_birth']);
                 if (formData['gender'] == '1')
                     $('#review_gender').html('Male');
