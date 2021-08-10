@@ -15,6 +15,13 @@ var KTWizard1 = function() {
         _validations.push(FormValidation.formValidation(
             _formEl, {
                 fields: {
+                    company_number: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Company Number is required'
+                            }
+                        }
+                    },
                     first_name: {
                         validators: {
                             notEmpty: {
@@ -36,10 +43,24 @@ var KTWizard1 = function() {
                             }
                         }
                     },
-                    date_of_birth: {
+                    day: {
                         validators: {
                             notEmpty: {
-                                message: 'Birth-date is required'
+                                message: 'Please select date'
+                            }
+                        }
+                    },
+                    month: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select month'
+                            }
+                        }
+                    },
+                    year: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select year'
                             }
                         }
                     }
@@ -59,38 +80,94 @@ var KTWizard1 = function() {
         _validations.push(FormValidation.formValidation(
             _formEl, {
                 fields: {
-                    business_name: {
+                    postcode: {
                         validators: {
                             notEmpty: {
-                                message: 'Please enter Business name'
+                                message: 'Please enter postcode'
                             }
                         }
                     },
-                    vat_number: {
+                    city: {
                         validators: {
                             notEmpty: {
-                                message: 'Please enter VAT number'
+                                message: 'Please enter city'
                             }
                         }
                     },
-                    business_country: {
+                    street: {
                         validators: {
                             notEmpty: {
-                                message: 'Please select a Country'
+                                message: 'Please emnter street'
                             }
                         }
                     },
-                    vat_rate: {
+                    building_num: {
                         validators: {
                             notEmpty: {
-                                message: 'Please enter vat rate'
+                                message: 'Please enter building number'
                             }
                         }
                     },
-                    employment_type: {
+                    country: {
                         validators: {
                             notEmpty: {
-                                message: 'Please select employment type'
+                                message: 'Please select country'
+                            }
+                        }
+                    },
+                    billing_postcode: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter delivery postcode'
+                            }
+                        }
+                    },
+                    billing_city: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter delivery city'
+                            }
+                        }
+                    },
+                    billing_street: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter delivery street'
+                            }
+                        }
+                    },
+                    billing_building_num: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter delivery building number'
+                            }
+                        }
+                    },
+                    billing_country: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select delivery country'
+                            }
+                        }
+                    },
+                    account_name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter account name'
+                            }
+                        }
+                    },
+                    iban: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter IBAN number'
+                            }
+                        }
+                    },
+                    bic_code: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter BIC code'
                             }
                         }
                     }
@@ -108,7 +185,7 @@ var KTWizard1 = function() {
         ));
 
         // Step 3
-        _validations.push(FormValidation.formValidation(
+        /*_validations.push(FormValidation.formValidation(
             _formEl, {
                 fields: {
                     street: {
@@ -293,7 +370,7 @@ var KTWizard1 = function() {
                     })
                 }
             }
-        ));
+        )); */
 
         // Step 5
         _validations.push(FormValidation.formValidation(
@@ -370,20 +447,20 @@ var KTWizard1 = function() {
             $('#review_business_toolbar_click').on('click', function() {
                 wizard.goTo(2);
             });
-            $('#review_address_toolbar_click').on('click', function() {
-                wizard.goTo(3);
-            });
-            $('#review_payment_toolbar_click').on('click', function() {
+            // $('#review_address_toolbar_click').on('click', function() {
+            //     wizard.goTo(3);
+            // });
+            // $('#review_payment_toolbar_click').on('click', function() {
+            //     wizard.goTo(4);
+            // });
+            $('#review_account_toolbar_click').on('click', function() {
                 wizard.goTo(4);
             });
-            $('#review_account_toolbar_click').on('click', function() {
-                wizard.goTo(6);
-            });
 
-
-            if (wizard.getStep() == 6) {
+            if (wizard.getStep() == 4) {
                 //Add details to review section
                 var formData = $('#kt_form').serializeArray().reduce(function(obj, item) {
+                    console.log(formData);
                     obj[item.name] = item.value;
                     return obj;
                 }, {});
@@ -441,7 +518,8 @@ var KTWizard1 = function() {
             var cardError = 0;
             var SEPASignatureError = 0;
             var fileError = 0;
-            if (wizard.getStep() == 2) {
+            var dobError = 0;
+            /*if (wizard.getStep() == 2) {
                 if ($('.is_business_type').is(":checked")) {
                     var employment_type = $('#employment_type').val();
                     if (employment_type == 'company') {
@@ -455,8 +533,8 @@ var KTWizard1 = function() {
                         }
                     }
                 }
-            }
-            if (wizard.getStep() == 4) {
+            } */
+            if (wizard.getStep() == 2) {
                 if ($('input[type=radio][name=payment_method]:checked').val() == 'CreditCard') {
                     if (!card.isValid()) {
                         cardError = 1;
@@ -478,7 +556,7 @@ var KTWizard1 = function() {
                     SEPASignatureError = 0;
                 }
             }
-            if (wizard.getStep() == 5) {
+            if (wizard.getStep() == 3) {
                 fileError = 0;
                 if (passport_file_count == 0) {
                     $('.passport_label').addClass('text-danger');
@@ -490,18 +568,51 @@ var KTWizard1 = function() {
                 }
             }
 
+            function getAge() {
+                var dateString = $("#date_of_birth").val();
+                if (dateString != "") {
+                    var today = new Date();
+                    var birthDate = new Date(dateString);
+                    var age = today.getFullYear() - birthDate.getFullYear();
+                    var m = today.getMonth() - birthDate.getMonth();
+                    var da = today.getDate() - birthDate.getDate();
+                    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    if (m < 0) {
+                        m += 12;
+                    }
+                    if (da < 0) {
+                        da += 30;
+                    }
+
+                    if (age < 18) {
+                        dobError = 1;
+                    } else {}
+                } else {
+                    //$("#restrict").html("Birth-date is required");
+                }
+            }
+
             // Validate form before change wizard step
             var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
 
             if (validator) {
+                getAge();
                 validator.validate().then(function(status) {
-                    if (status == 'Valid' && cardError == 0 && fileError == 0 && SEPASignatureError == 0) {
+                    if (status == 'Valid' && cardError == 0 && fileError == 0 && SEPASignatureError == 0 && dobError == 0) {
                         wizard.goTo(wizard.getNewStep());
 
                         KTUtil.scrollTop();
                     } else {
+                        var msg = 'Some Error!! Please check';
+                        if (dobError == 1) {
+                            msg = 'You need to be of at-least 18 years to enroll.';
+                        } else {
+                            msg = 'Sorry, looks like there are some errors detected, please try again.';
+                        }
                         Swal.fire({
-                            text: "Sorry, looks like there are some errors detected, please try again.",
+                            text: msg,
                             icon: "error",
                             buttonsStyling: false,
                             confirmButtonText: "Ok, got it!",
