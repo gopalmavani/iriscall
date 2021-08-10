@@ -1,9 +1,9 @@
 // add multiple product affiliates
 
 
-$(function () {
+$(function() {
     $('.js-select2').select2();
-    $(document).on('click', '.btn-add', function (e) {
+    $(document).on('click', '.btn-add', function(e) {
         e.preventDefault();
 
         var controlForm = $('.affiliate-control:first');
@@ -15,23 +15,23 @@ $(function () {
             .removeClass('btn-default').addClass('btn-danger')
             .removeClass('btn-add').addClass('btn-remove')
             .html('<span>-</span>');
-    }).on('click', '.btn-remove', function (e) {
+    }).on('click', '.btn-remove', function(e) {
 
         $(this).parents('.add-more-fields:first').remove();
         return false;
     });
 
     // validate product affiliate level form
-    $("input[name='yt1']").click(function () {
+    $("input[name='yt1']").click(function() {
         var result = true;
         $('#affiliateError').text('');
 
-        var level = $('input[name="ProductAffiliate[amount][]"]').map(function () {
+        var level = $('input[name="ProductAffiliate[amount][]"]').map(function() {
             return this.value
         }).get();
         var tAmount = $.trim(level);
 
-        var values = $('input[name="ProductAffiliate[aff_level][]"]').map(function () {
+        var values = $('input[name="ProductAffiliate[aff_level][]"]').map(function() {
             return this.value
         }).get();
         //var values = $.trim(value);
@@ -40,7 +40,7 @@ $(function () {
         var duplicate = (new Set(values)).size !== values.length;
         var duplicateCount = values.length;
         var getResult = true;
-        $.each(level, function (indexl, valuel) {
+        $.each(level, function(indexl, valuel) {
             if (valuel == '0') {
                 getResult = false;
             } else {
@@ -67,7 +67,7 @@ $(function () {
         }
 
         var affiliateCount = 0;
-        $('.add-more-fields').each(function (index, element) {
+        $('.add-more-fields').each(function(index, element) {
             var affiliate_amount = $('#ProductAffiliate_amount').val();
             var affiliate_level = $('#ProductAffiliate_aff_level').val();
             var validNum = /[^\d].+/;
@@ -81,8 +81,7 @@ $(function () {
                     $('#affiliateError').text('Please Fill Only Number');
                     $('#affiliateError').css('display', 'block');
                     result = false;
-                } else {
-                }
+                } else {}
 
                 if (affiliate_level == "") {
                     $('#affiliateError').text('Please Fill the Affiliate Level ');
@@ -92,8 +91,7 @@ $(function () {
                     $('#affiliateError').text('Please Fill Only Number in affiliate level');
                     $('#affiliateError').css('display', 'block');
                     result = false;
-                } else {
-                }
+                } else {}
                 affiliateCount++;
             }
         });
@@ -105,7 +103,7 @@ $(function () {
     });
 
     // add more product license fields
-    $(document).on('click', '.btn-add-license', function (e) {
+    $(document).on('click', '.btn-add-license', function(e) {
         e.preventDefault();
 
         var controlForm = $('.license-control:first');
@@ -117,18 +115,18 @@ $(function () {
             .removeClass('btn-default').addClass('btn-danger')
             .removeClass('btn-add-license').addClass('btn-remove-license')
             .html('<span>-</span>');
-    }).on('click', '.btn-remove-license', function (e) {
+    }).on('click', '.btn-remove-license', function(e) {
 
         $(this).parents('.add-more-license:first').remove();
         return false;
     });
 
 
-    $("input[name='yt2']").click(function () {
+    $("input[name='yt2']").click(function() {
         var result = true;
 
         //valid product license text-field
-        $('.Product-License-No').each(function (index, element) {
+        $('.Product-License-No').each(function(index, element) {
             var productLicense = $(this).val();
             var validNum = /[^\d].+/;
             if (productLicense == "") {
@@ -139,12 +137,11 @@ $(function () {
                 $('#licenseError').text('Please Fill Only Number');
                 $('#licenseError').css('display', 'block');
                 result = false;
-            } else {
-            }
+            } else {}
         });
 
         //valid Product-List drop-down
-        $('.Product-List').each(function (index, element) {
+        $('.Product-List').each(function(index, element) {
             var product = $(this).val();
             if (product == "") {
                 $('#licenseError').text('Please Select Product');
@@ -155,18 +152,18 @@ $(function () {
         return result;
     });
 
-    $('#UserInfo_last_name, #UserInfo_first_name, #UserInfo_middle_name').change(function () {
+    $('#UserInfo_last_name, #UserInfo_first_name').change(function() {
         var first = document.getElementById("UserInfo_first_name").value.replace(/\s+/g, '');
         $("#UserInfo_first_name").val(first);
         var middle = document.getElementById("UserInfo_middle_name").value.replace(/\s+/g, '');
         $("#UserInfo_middle_name").val(middle);
         var last = document.getElementById("UserInfo_last_name").value.replace(/\s+/g, '');
         $("#UserInfo_last_name").val(last);
-        $("#UserInfo_full_name").val(first + " " + middle+ " " + last);
+        $("#UserInfo_full_name").val(first + " " + last);
     });
 
 
-    $('#ProductInfo_image').on('change', function () {
+    $('#ProductInfo_image').on('change', function() {
         var fup = document.getElementById('ProductInfo_image');
         var fileName = fup.value;
         var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
@@ -174,8 +171,7 @@ $(function () {
         if (ext == "PNG" || ext == "png" || ext == "jpg" || ext == "JPG" || ext == "jpeg" || ext == "JPEG" || ext == "gif" || ext == "GIF" || ext == "bmp" || ext == "BMP") {
             $("#imageTypeError").css("display", "none");
             return true;
-        }
-        else {
+        } else {
             $("#imageTypeError").html("only allows file types of GIF, PNG, JPG, JPEG and BMP");
             $("#imageTypeError").css("color", "red");
             $("#imageTypeError").css("display", "block");
@@ -184,7 +180,7 @@ $(function () {
         }
     });
     // add Multiple Product in Order
-    $(document).on('click', '.btn-add-product', function (e) {
+    $(document).on('click', '.btn-add-product', function(e) {
         var controlForm = $('#productControl:first');
         var currentEntry = $(this).parents('.addMoreProduct:first');
         var newEntry = $(currentEntry.clone()).appendTo(controlForm).insertBefore('#beforePrice');
@@ -199,26 +195,26 @@ $(function () {
             .removeClass('btn-default').addClass('btn-danger')
             .removeClass('btn-add-product').addClass('btn-remove-product')
             .html('<span>-</span>');
-    }).on('click', '.btn-remove-product', function (e) {
+    }).on('click', '.btn-remove-product', function(e) {
         $(this).parents('.addMoreProduct:first').remove();
         setPriceTotal();
         return false;
     });
 
     // Update amount on the change of quantity
-    $(document).on('keyup', '#OrderLineItem_item_qty', function (e) {
+    $(document).on('keyup', '#OrderLineItem_item_qty', function(e) {
         var productRow = $(this).parents('tr');
         ProductPrice(productRow);
-    }).on('change', '#OrderLineItem_product_id', function (e) {
+    }).on('change', '#OrderLineItem_product_id', function(e) {
         var productRow = $(this).parents('tr');
         ProductPrice(productRow);
     });
 
     //Update amount on the change in discount
-    $(document).on('keyup', '#OrderLineItem_item_disc', function (e) {
+    $(document).on('keyup', '#OrderLineItem_item_disc', function(e) {
         var productRow = $(this).parents('tr');
         ProductPrice(productRow);
-    }).on('change', '#OrderLineItem_item_disc', function (e) {
+    }).on('change', '#OrderLineItem_item_disc', function(e) {
         var productRow = $(this).parents('tr');
         ProductPrice(productRow);
     });
@@ -286,67 +282,53 @@ $(function () {
      return result;
      });*/
 
-    $("#submit_button").on("click",function(){
+    $("#submit_button").on("click", function() {
         var result = true;
         var duration = $('#ProductSubscription_duration').val();
         var duration_denomination = $('#ProductSubscription_duration_denomination').val();
         var billing_cycle = $('#ProductSubscription_billing_cycles').val();
         var starting_date = $('#ProductSubscription_starts_at').val();
         var subscription = $('#OrderInfo_is_subscription_enabled').val();
-        if(subscription == '1')
-        {
-            if(duration == '')
-            {
+        if (subscription == '1') {
+            if (duration == '') {
                 $('#sub_duration').addClass('has-error');
                 $('#duration_sub').text('Please enter duration!');
                 // console.info('hi');
                 result = false;
-            }
-            else if(isNaN(duration))
-            {
+            } else if (isNaN(duration)) {
                 $('#sub_duration').addClass('has-error');
                 $('#duration_sub').text('Please enter digits!');
                 result = false;
-            }
-            else if(duration_denomination == '')
-            {
+            } else if (duration_denomination == '') {
                 $('#sub_duration').removeClass('has-error');
-                $('#duration_sub').css('display','none');
+                $('#duration_sub').css('display', 'none');
 
                 result = false;
-            }
-            else if(billing_cycle == '')
-            {
+            } else if (billing_cycle == '') {
                 $('#sub_duration').removeClass('has-error');
-                $('#duration_sub').css('display','none');
+                $('#duration_sub').css('display', 'none');
 
                 $('#sub_billing_cycles').addClass('has-error');
                 $('#billing_cycles_sub').text('Enter the number of billing cycles..');
                 // console.info('hi3');
                 result = false;
-            }
-            else if(isNaN(billing_cycle))
-            {
+            } else if (isNaN(billing_cycle)) {
                 $('#sub_duration').removeClass('has-error');
-                $('#duration_sub').css('display','none');
+                $('#duration_sub').css('display', 'none');
 
                 $('#sub_billing_cycles').addClass('has-error');
                 $('#billing_cycles_sub').text('Enter the only digits..');
-            }
-            else if(starting_date == '')
-            {
+            } else if (starting_date == '') {
                 $('#sub_billing_cycles').removeClass('has-error');
-                $('#billing_cycles_sub').css('display','none');
+                $('#billing_cycles_sub').css('display', 'none');
 
                 $('#sub_starting_date').addClass('has-error');
                 $('#starting_date_sub').text('Choose the starting date of your subscription..');
                 // console.info('hi4');
                 result = false;
-            }
-            else
-            {
+            } else {
                 $('#sub_starting_date').removeClass('has-error');
-                $('#starting_date_sub').css('display','none');
+                $('#starting_date_sub').css('display', 'none');
             }
 
         }
@@ -370,17 +352,17 @@ $(function () {
 
         //Payment Errors
         var payment_mode = $('#OrderPayment_payment_mode').val();
-        if(payment_mode == ''){
+        if (payment_mode == '') {
             $('#payment_mode').addClass('has-error');
             $('#payment_mode_msg').text('Please select Payment mode');
             result = false;
         }
-        if($('#OrderPayment_payment_ref_id').val() == ''){
+        if ($('#OrderPayment_payment_ref_id').val() == '') {
             $('#payment_ref').addClass('has-error');
             $('#payment_ref_msg').text('Please enter payment reference');
             result = false;
         }
-        if($('#OrderPayment_payment_date').val() == ''){
+        if ($('#OrderPayment_payment_date').val() == '') {
             $('#payment_date').addClass('has-error');
             $('#payment_date_msg').text('Please select payment date');
             result = false;
@@ -389,10 +371,10 @@ $(function () {
         var address = $('#orderAddress').val();
 
         // $('#productError').text('');
-        $('.addMoreProduct').each(function (index, element) {
+        $('.addMoreProduct').each(function(index, element) {
             var productQty = $(this).find('#OrderLineItem_item_qty').val();
             var qty = ($('#OrderLineItem_item_qty').val()) ? $('#OrderLineItem_item_qty').val() : 0;
-            if(qty == 0){
+            if (qty == 0) {
                 // console.info(qty);
                 $('#qty').addClass('has-error');
                 $('#qty_msg').text('Please enter quantity');
@@ -420,10 +402,10 @@ $(function () {
         });
 
         // valid Product Item
-        var itemId = $('select[name="OrderLineItem[product_id][]"]').map(function () {
+        var itemId = $('select[name="OrderLineItem[product_id][]"]').map(function() {
             return this.value;
         }).toArray();
-        var hasDups = !itemId.every(function (v, i) {
+        var hasDups = !itemId.every(function(v, i) {
             return itemId.indexOf(v) == i;
         });
         if (hasDups) {
@@ -437,7 +419,7 @@ $(function () {
 
     });
 
-// change password validate and submit in user-info
+    // change password validate and submit in user-info
     $("form[id='usersChangePassword']").validate({
         debug: true,
         errorClass: "help-block",
@@ -464,20 +446,20 @@ $(function () {
                 equalTo: "The Password you entered doesn’t match."
             }
         },
-        highlight: function (element, errorClass) {
+        highlight: function(element, errorClass) {
             $(element).removeClass(errorClass);
             $(element).parent().parent().addClass('has-error');
             //$('.form-group').addClass('has-error');
         },
-        unhighlight: function (element) {
+        unhighlight: function(element) {
             $(element).parent().parent().removeClass('has-error');
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             $.ajax({
                 url: changePassword,
                 type: "post",
                 data: $(form).serializeArray(),
-                success: function (response) {
+                success: function(response) {
                     var Result = JSON.parse(response);
                     if (Result.result == true) {
                         $('#passwordMessage').text('Password successfully change');
@@ -494,7 +476,7 @@ $(function () {
 
     //custom validation rule
     $.validator.addMethod("custompassword",
-        function (value, element) {
+        function(value, element) {
             return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(value);
         },
         "Password must contain atleast 8 characters including atleast 1 upprcase ,1 lower case and a number."
@@ -528,22 +510,22 @@ $(function () {
                 equalTo: "Please enter the same password as above"
             }
         },
-        highlight: function (element, errorClass) {
+        highlight: function(element, errorClass) {
             console.log("a");
             $(element).removeClass(errorClass);
             $(element).parent().parent().addClass('has-error');
             //$('.form-group').addClass('has-error');
         },
-        unhighlight: function (element) {
+        unhighlight: function(element) {
             $(element).parent().parent().removeClass('has-error');
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             console.log("a");
             $.ajax({
                 url: changePassword,
                 type: "post",
                 data: $(form).serializeArray(),
-                success: function (response) {
+                success: function(response) {
                     var Result = JSON.parse(response);
                     if (Result.result == true) {
                         $('#passwordMessage').text('Password successfully change');
@@ -562,7 +544,7 @@ $(function () {
 function setPriceTotal() {
     var totalPrice = parseInt(0);
     var totalDiscount = parseInt(0);
-    $(".addMoreProduct").each(function () {
+    $(".addMoreProduct").each(function() {
         if ($(this).find('#itemPrice').val() != '') {
             totalPrice += parseInt($(this).find('#itemPrice').val());
             totalDiscount += parseInt($(this).find('#OrderLineItem_item_disc').val());
@@ -613,7 +595,7 @@ function gridDropDown(dropCheckbox) {
 
     var count = 0;
     var flag = 0;
-    $('.hidecol').each(function () {
+    $('.hidecol').each(function() {
         if ($(this).attr('id') != 'select_all') {
             flag++;
             if ($(this).is(":checked")) {
@@ -628,10 +610,10 @@ function gridDropDown(dropCheckbox) {
 }
 
 // on load local storage value if exits and set drop down in admin
-$(window).on('load',function () {
+$(window).on('load', function() {
     // code here
     var fieldVal = [];
-    $(".dataTable th").each(function (k, v) {
+    $(".dataTable th").each(function(k, v) {
         k++;
         if (typeof(Storage) !== "undefined") {
             if (localStorage.getItem(defineVarName + 'col_' + k) !== null) {
@@ -654,7 +636,7 @@ $(window).on('load',function () {
     $("#userList li:nth-child(2)").remove();
 });
 
-$(function () {
+$(function() {
     $("form[name='UserCreate']").validate({
         debug: true,
         errorClass: "help-block error text-right animated fadeInDown",
@@ -664,11 +646,11 @@ $(function () {
         rules: {
             'UserInfo[first_name]': {
                 required: true
-                // lettersonly: true
+                    // lettersonly: true
             },
             'UserInfo[last_name]': {
                 required: true
-                // lettersonly: true
+                    // lettersonly: true
             },
             'UserInfo[city]': {
                 required: true
@@ -685,20 +667,20 @@ $(function () {
             },
             'UserInfo[phone]': {
                 number: true
-                // minlength: 8,
-                // maxlength: 10
+                    // minlength: 8,
+                    // maxlength: 10
             },
             'UserInfo[business_phone]': {
                 number: true
-                // minlength: 8,
-                // maxlength: 10
+                    // minlength: 8,
+                    // maxlength: 10
             },
             'UserInfo[sponsor_id]': {
                 required: true
             },
             'UserInfo[password]': {
                 required: true
-                // minlength: 8
+                    // minlength: 8
             },
             /*'UserInfo[region]': {
                 required: true
@@ -714,14 +696,14 @@ $(function () {
             },*/
             'UserInfo[email]': {
                 required: {
-                    depends: function () {
+                    depends: function() {
                         $(this).val($.trim($(this).val()));
                         return true;
                     }
                 },
                 customemail: true
             },
-            'UserInfo[role]':{
+            'UserInfo[role]': {
                 required: true
             },
         },
@@ -766,26 +748,26 @@ $(function () {
             /*'UserInfo[country]': {
                 required: "Please Select Country"
             },*/
-            'UserInfo[role]':{
+            'UserInfo[role]': {
                 required: "Please Select role"
             }
 
         },
-        highlight: function (element, errorClass) {
+        highlight: function(element, errorClass) {
             $(element).removeClass(errorClass);
             $(element).parent().parent().addClass('has-error');
             return false;
             //$('.form-group').addClass('has-error');
         },
-        unhighlight: function (element) {
+        unhighlight: function(element) {
             $(element).parent().parent().removeClass('has-error');
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             form.submit();
         }
     });
 
-    $(function () {
+    $(function() {
         $("form[name='SysUserCreate']").validate({
             debug: true,
             errorClass: "help-block error text-right animated fadeInDown",
@@ -819,23 +801,23 @@ $(function () {
                     required: "Please enter your email"
                 }
             },
-            highlight: function (element, errorClass) {
+            highlight: function(element, errorClass) {
                 $(element).removeClass(errorClass);
                 $(element).parent().parent().addClass('has-error');
                 return false;
                 //$('.form-group').addClass('has-error');
             },
-            unhighlight: function (element) {
+            unhighlight: function(element) {
                 $(element).parent().parent().removeClass('has-error');
             },
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 form.submit();
             }
         })
     });
 
 });
-$(function () {
+$(function() {
     $("form[name='UserUpdate']").validate({
         debug: true,
         errorClass: "help-block error text-right animated fadeInDown",
@@ -845,11 +827,11 @@ $(function () {
         rules: {
             'UserInfo[first_name]': {
                 required: true
-                // lettersonly: true
+                    // lettersonly: true
             },
             'UserInfo[last_name]': {
                 required: true
-                // lettersonly: true
+                    // lettersonly: true
             },
             'UserInfo[city]': {
                 required: true
@@ -866,20 +848,20 @@ $(function () {
             },
             'UserInfo[phone]': {
                 number: true
-                // minlength: 8,
-                // maxlength: 10
+                    // minlength: 8,
+                    // maxlength: 10
             },
             'UserInfo[business_phone]': {
                 number: true
-                // minlength: 8,
-                // maxlength: 10
+                    // minlength: 8,
+                    // maxlength: 10
             },
             'UserInfo[sponsor_id]': {
                 required: true
             },
             'UserInfo[password]': {
                 required: true
-                // minlength: 8
+                    // minlength: 8
             },
             /*'UserInfo[region]': {
                 required: true
@@ -895,14 +877,14 @@ $(function () {
             },*/
             'UserInfo[email]': {
                 required: {
-                    depends: function () {
+                    depends: function() {
                         $(this).val($.trim($(this).val()));
                         return true;
                     }
                 },
                 customemail: true
             },
-            'UserInfo[role]':{
+            'UserInfo[role]': {
                 required: true
             },
         },
@@ -947,26 +929,26 @@ $(function () {
             /*'UserInfo[country]': {
                 required: "Please Select Country"
             },*/
-            'UserInfo[role]':{
+            'UserInfo[role]': {
                 required: "Please Select role"
             }
 
         },
-        highlight: function (element, errorClass) {
+        highlight: function(element, errorClass) {
             $(element).removeClass(errorClass);
             $(element).parent().parent().addClass('has-error');
             return false;
             //$('.form-group').addClass('has-error');
         },
-        unhighlight: function (element) {
+        unhighlight: function(element) {
             $(element).parent().parent().removeClass('has-error');
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             form.submit();
         }
     });
 
-    $(function () {
+    $(function() {
         $("form[name='SysUserCreate']").validate({
             debug: true,
             errorClass: "help-block error text-right animated fadeInDown",
@@ -1000,16 +982,16 @@ $(function () {
                     required: "Please enter your email"
                 }
             },
-            highlight: function (element, errorClass) {
+            highlight: function(element, errorClass) {
                 $(element).removeClass(errorClass);
                 $(element).parent().parent().addClass('has-error');
                 return false;
                 //$('.form-group').addClass('has-error');
             },
-            unhighlight: function (element) {
+            unhighlight: function(element) {
                 $(element).parent().parent().removeClass('has-error');
             },
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 form.submit();
             }
         })
@@ -1018,7 +1000,7 @@ $(function () {
 });
 
 //order update form
-$(function () {
+$(function() {
     let validator = $("#order-update-form").validate({
         debug: true,
         errorClass: "help-block error text-right animated fadeInDown",
@@ -1039,10 +1021,10 @@ $(function () {
             'UserInfo[country]': {
                 required: true
             },
-            'OrderPayment[payment_mode]':{
+            'OrderPayment[payment_mode]': {
                 required: true
             },
-            'OrderPayment[payment_ref_id]':{
+            'OrderPayment[payment_ref_id]': {
                 required: true
             }
         },
@@ -1063,22 +1045,22 @@ $(function () {
             'OrderPayment[payment_mode]': {
                 required: "Please Select Payment Mode"
             },
-            'OrderPayment[payment_ref_id]':{
+            'OrderPayment[payment_ref_id]': {
                 required: "Please Enter Ref"
             }
 
         },
-        highlight: function (element, errorClass) {
+        highlight: function(element, errorClass) {
             //console.log(element.error());
             $(element).removeClass(errorClass);
             $(element).parent().parent().addClass('has-error');
             return false;
             //$('.form-group').addClass('has-error');
         },
-        unhighlight: function (element) {
+        unhighlight: function(element) {
             $(element).parent().parent().removeClass('has-error');
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             //console.log("Form submitted");
             form.submit();
         }
@@ -1088,22 +1070,24 @@ $(function () {
 
 
 
-$('.admin-edit').on('click', function () {
+$('.admin-edit').on('click', function() {
     var data = $('#profile-email').val();
     $.ajax({
         url: EditAdmin,
         type: 'POST',
-        data: {email: data},
-        success: function (response) {
+        data: { email: data },
+        success: function(response) {
             $("#email-success-change").html("Email Successfull Updated");
         },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
             console.error("could not delete field");
         }
     });
 });
-$('#profile-password-new-confirm').on('change', function () {
-    var cur_pass = $('#profile-password').val(), new_pass = $('#profile-password-new').val(), reenter_pass = $('#profile-password-new-confirm').val();
+$('#profile-password-new-confirm').on('change', function() {
+    var cur_pass = $('#profile-password').val(),
+        new_pass = $('#profile-password-new').val(),
+        reenter_pass = $('#profile-password-new-confirm').val();
     if (new_pass === reenter_pass) {
         $("#check").html("Password matched");
         $("#check").removeClass("no-match");
@@ -1112,14 +1096,16 @@ $('#profile-password-new-confirm').on('change', function () {
         $("#check").addClass("no-match");
     }
 });
-$('.change-pass').on('click', function () {
-    var cur_pass = $('#profile-password').val(), new_pass = $('#profile-password-new').val(), reenter_pass = $('#profile-password-new-confirm').val();
+$('.change-pass').on('click', function() {
+    var cur_pass = $('#profile-password').val(),
+        new_pass = $('#profile-password-new').val(),
+        reenter_pass = $('#profile-password-new-confirm').val();
     if (cur_pass && new_pass && reenter_pass && new_pass === reenter_pass) {
         $.ajax({
             url: ChangePass,
             type: 'POST',
-            data: {current_pass: cur_pass, New_Pass: new_pass},
-            success: function (response) {
+            data: { current_pass: cur_pass, New_Pass: new_pass },
+            success: function(response) {
                 var res = jQuery.parseJSON(response);
                 if (res.token == 1) {
                     $("#pass-mismatch").html("Current password not matched");
@@ -1131,7 +1117,7 @@ $('.change-pass').on('click', function () {
                 }
 
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.error("could not delte field");
             }
         });
@@ -1140,21 +1126,21 @@ $('.change-pass').on('click', function () {
 
 //custom validation rule
 $.validator.addMethod("customemail",
-    function (value, element) {
+    function(value, element) {
         return /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(value);
     },
     "Invalid Email Address, Please Enter Valid Email."
 );
 
 $.validator.addMethod("alphanumeric",
-    function (value, element) {
+    function(value, element) {
         return /^[A-Za-z0-9]+$/.test(value);
     },
     "Please Enter Only Alphanumeric Value."
 );
 
 
-$(function () {
+$(function() {
     $("form[name='CreateOrder']").validate({
         debug: true,
         errorClass: "help-block error text-right animated fadeInDown",
@@ -1205,27 +1191,27 @@ $(function () {
             },
 
         },
-        highlight: function (element, errorClass) {
+        highlight: function(element, errorClass) {
             $(element).removeClass(errorClass);
             $(element).parent().parent().addClass('has-error');
             return false;
             //$('.form-group').addClass('has-error');
         },
-        unhighlight: function (element) {
+        unhighlight: function(element) {
             $(element).parent().parent().removeClass('has-error');
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             form.submit();
         }
     });
 });
 
-$("#select_all").change(function () {  //"select all" change
+$("#select_all").change(function() { //"select all" change
 
     var status = this.checked; // "select all" checked status
 
-    $('.hidecol').each(function () { //iterate all listed checkbox items
-        var id = $(this).attr('id');//.id;
+    $('.hidecol').each(function() { //iterate all listed checkbox items
+        var id = $(this).attr('id'); //.id;
         var splitid = id.split("_");
         var colno = splitid[1];
         var colname = splitid[0];
@@ -1256,7 +1242,7 @@ $("#select_all").change(function () {  //"select all" change
 
 });
 
-$('.hidecol').change(function () { //".checkbox" change
+$('.hidecol').change(function() { //".checkbox" change
     //uncheck "select all", if one of the listed checkbox item is unchecked
     if (this.checked == false) { //if this item is unchecked
         $("#select_all")[0].checked = false; //change "select all" checked status to false
@@ -1268,7 +1254,7 @@ $('.hidecol').change(function () { //".checkbox" change
     }
 });
 
-$(window).on('load',function () {
+$(window).on('load', function() {
     var url = window.location.pathname.split("/");
     var action = url[3];
     if (action == 'admin') {
@@ -1334,48 +1320,48 @@ $(window).on('load',function () {
 //     }
 // });
 
-$("#create_pool_plan").click(function () {
-    if (!$("#user_multi_select").val()){
+$("#create_pool_plan").click(function() {
+    if (!$("#user_multi_select").val()) {
         $('#multi_user_error').html('<div id="Compensations_level-error" class="help-block animated fadeInDown">Please enter users</div>');
         $('#multi_user_error').parent().parent().addClass('has-error');
         $("label[for='userSelect']").css('color', '#d26a5c');
         return false;
-    }else{
+    } else {
         $('#multi_user_error').html('');
         $('#multi_user_error').parent().parent().removeClass('has-error');
         $("label[for='userSelect']").css('color', '#646464');
     }
 });
 
-$("#create_pool_plan").click(function () {
-    if (!$("#PoolPlan_pool_amount").val()){
+$("#create_pool_plan").click(function() {
+    if (!$("#PoolPlan_pool_amount").val()) {
         $('#amount_error').html('<div id="Compensations_level-error" class="help-block animated fadeInDown">Please enter users</div>');
         $('#amount_error').parent().parent().addClass('has-error');
         return false;
-    }else{
+    } else {
         $('#amount_error').html('');
         $('#amount_error').parent().parent().removeClass('has-error');
         return true;
     }
 });
 
-$("#create_pool_plan").click(function () {
-    if (!$("#PoolPlan_pool_name").val()){
+$("#create_pool_plan").click(function() {
+    if (!$("#PoolPlan_pool_name").val()) {
         $('#poolName_error').html('<div id="Compensations_level-error" class="help-block animated fadeInDown">Please enter users</div>');
         $('#poolName_error').parent().parent().addClass('has-error');
         return false;
-    }else{
+    } else {
         $('#poolName_error').html('');
         $('#poolName_error').parent().parent().removeClass('has-error');
     }
 });
 
-$("#create_pool_plan").click(function () {
-    if (!$("#PoolPlan_pool_denomination").val()){
+$("#create_pool_plan").click(function() {
+    if (!$("#PoolPlan_pool_denomination").val()) {
         $('#denomination_error').html('<div id="Compensations_level-error" class="help-block animated fadeInDown">Please enter users</div>');
         $('#denomination_error').parent().parent().addClass('has-error');
         return false;
-    }else{
+    } else {
         $('#denomination_error').html('');
         $('#denomination_error').parent().parent().removeClass('has-error');
     }
