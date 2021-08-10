@@ -152,14 +152,14 @@ $(function() {
         return result;
     });
 
-    $('#UserInfo_last_name, #UserInfo_first_name').change(function() {
+    $('#UserInfo_last_name, #UserInfo_first_name, #UserInfo_middle_name').change(function() {
         var first = document.getElementById("UserInfo_first_name").value.replace(/\s+/g, '');
         $("#UserInfo_first_name").val(first);
         var middle = document.getElementById("UserInfo_middle_name").value.replace(/\s+/g, '');
         $("#UserInfo_middle_name").val(middle);
         var last = document.getElementById("UserInfo_last_name").value.replace(/\s+/g, '');
         $("#UserInfo_last_name").val(last);
-        $("#UserInfo_full_name").val(first + " " + last);
+        $("#UserInfo_full_name").val(first + " " + middle + " " + last);
     });
 
 
