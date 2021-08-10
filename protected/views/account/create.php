@@ -75,8 +75,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                         <div class="wizard-steps p-8 p-lg-10">
                             <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-list"></i>
-                                    <h3 class="wizard-title">1. Enter Basic details</h3>
+                                    <i class="wizard-icon flaticon-list" style="color: blue;"></i>
+                                    <h3 class="wizard-title">1. Bedrijfsgegevens aanvullen</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
                                     
@@ -92,8 +92,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-earth-globe "></i>
-                                    <h3 class="wizard-title">2. Add business details</h3>
+                                    <i class="wizard-icon flaticon-earth-globe " style="color: blue;"></i>
+                                    <h3 class="wizard-title">2. Factuurgegevens aanvullen</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
 
@@ -107,9 +107,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 
                                 </span>
                             </div>
-                            <div class="wizard-step" data-wizard-type="step">
+                            <!-- <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-home "></i>
+                                    <i class="wizard-icon flaticon-home " style="color: blue;"></i>
                                     <h3 class="wizard-title">3. Add address details</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
@@ -126,7 +126,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-piggy-bank"></i>
+                                    <i class="wizard-icon flaticon-piggy-bank" style="color: blue;"></i>
                                     <h3 class="wizard-title">4. Payment Details</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
@@ -138,11 +138,11 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         </g>
                                     </svg>
                                 </span>
-                            </div>
+                            </div> -->
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-upload-1"></i>
-                                    <h3 class="wizard-title">5. Upload Documents</h3>
+                                    <i class="wizard-icon flaticon-upload-1" style="color: blue;"></i>
+                                    <h3 class="wizard-title">3. Documenten oplanden</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -156,8 +156,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-trophy"></i>
-                                    <h3 class="wizard-title">6. Create Account</h3>
+                                    <i class="wizard-icon flaticon-trophy" style="color: blue;"></i>
+                                    <h3 class="wizard-title">4. Create Account</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -171,8 +171,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon2-reload"></i>
-                                    <h3 class="wizard-title">7. Review</h3>
+                                    <i class="wizard-icon flaticon2-reload" style="color: blue;"></i>
+                                    <h3 class="wizard-title">5. Review</h3>
                                 </div>
                             </div>
                         </div>
@@ -186,131 +186,343 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <div class="row">
                                             <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>First Name<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="first_name" placeholder="First Name" value="<?= $telecom_user_detail->first_name; ?>" />
-                                                    <span class="form-text text-muted">Please enter your First Name.</span>
+                                                    <label>Bedrijfsnaam</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="company_name" placeholder="Bedrijfsnaam"/>
                                                 </div>
                                             </div>
                                             <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>Middle Name</label>
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="middle_name" placeholder="Middle Name" value="<?= $telecom_user_detail->middle_name; ?>" />
-                                                    <span class="form-text text-muted">Please enter your Middle Name.</span>
+                                                    <label>Rechtsvorm</label>
+                                                    <select name="legal_form" id="legal_form" class="form-control form-control-solid form-control-lg">
+                                                        <option value="">Rechtsvorm</option>    
+                                                        <option value="Eenmanszaak">Eenmanszaak</option>
+                                                        <option value="VOF">VOF</option>
+                                                        <option value="Maatschap">Maatschap</option>
+                                                        <option value="BV">Besloten Vennootschap (BV)</option>
+                                                        <option value="NV">Naamloze Vennootschap (NV)</option>
+                                                        <option value="CV">Coöperatieve Vennootschap (CV)</option>
+                                                        <option value="VZW">Vereniging Zonder Winstoogmerk (VZW)</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>Last Name<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="last_name" placeholder="Last Name" value="<?= $telecom_user_detail->last_name; ?>" />
-                                                    <span class="form-text text-muted">Please enter your Last Name.</span>
+                                                    <label>Ondernemingsnummer<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="company_number" id="company_number" placeholder="Ondernemingsnummer"/>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-xl-6">
+                                            <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label class="col-form-label">Date Of Birth<span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control form-control-solid form-control-lg" id="date_of_birth" placeholder="Select date/Enter in yyyy-mm-dd format" name="date_of_birth" value="<?= $telecom_user_detail->date_of_birth; ?>" />
-                                                    <span class="form-text text-muted">You need to be of at-least 18 years to enroll.</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label>Gender</label>
-                                                    <div class="col-form-label">
-                                                        <div class="">
+                                                    <label class="col-form-label">Aanspreking</label>
+                                                    <div class="row p-4">
+                                                        <div class="radio-inline">
                                                             <label class="radio radio-success radio-inline">
-                                                                <input value="1" <?php if ($telecom_user_detail->gender == 1) { echo "checked";} ?> type="radio" class="check" name="gender">
-                                                                <span></span>Male
+                                                                <input value="1" <?php if ($telecom_user_detail->gender == 1) { echo "checked";} ?> type="radio" class="check details" name="gender">
+                                                                <span></span>Dhr
                                                             </label>
-                                                            <label class="radio radio-success radio-inline">
-                                                                <input value="2" <?php if ($telecom_user_detail->gender != 1) { echo "checked";} ?> type="radio" class="check" name="gender">
-                                                                <span></span>Female
+                                                            <label class="radio radio-success radio-inline pl-5">
+                                                                <input value="2" <?php if ($telecom_user_detail->gender != 1) { echo "checked";} ?> type="radio" class="check details" name="gender">
+                                                                <span></span>Mrs
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Fix Email</label>
-                                            <input type="text" class="form-control form-control-solid form-control-lg" name="email" value="<?= $telecom_user_detail->email; ?>" <?php if ($telecom_user_detail->email != '') { echo "disabled";} ?> />
-                                            <span class="form-text text-muted"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Extra Email</label>
-                                            <input type="text" class="form-control form-control-solid form-control-lg" name="extra_email" placeholder="Additional Email" value="<?= $telecom_user_detail->extra_email; ?>" />
-                                            <span class="form-text text-muted">Additional email for backup purpose.</span>
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <div>
+                                                    <label>Naam<span class="text-danger">*</span></label>
+                                                </div>
+                                                <label><span class="text-info">Het contract dient opgemaakt te worden op naam van een tekengerechtigde persoon voor het bedrijf.</span></label>
+                                            </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-xl-6">
+                                            <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>Phone Number<span class="text-danger">*</span></label>
-                                                    <input type="tel" class="form-control form-control-solid form-control-lg" name="phone" placeholder="Contact number please" value="<?= $telecom_user_detail->phone; ?>" />
-                                                    <span class="form-text text-muted">Please enter phone number.</span>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="first_name" placeholder="Voornaam" value="<?= $telecom_user_detail->first_name; ?>" />
                                                 </div>
                                             </div>
-                                            <div class="col-xl-6">
+                                            <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>Landline Number (Fixed)</label>
-                                                    <input type="tel" class="form-control form-control-solid form-control-lg" name="landline_number" placeholder="Contact number please" value="<?= $telecom_user_detail->landline_number; ?>" />
-                                                    <span class="form-text text-muted">Please enter land-line number as an extra contact information.</span>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="last_name" placeholder="Naam" value="<?= $telecom_user_detail->last_name; ?>" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <!--<div class="col-xl-4">
+                                            <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Language</label>
-                                                    <select name="language" id="language" class="form-control">
-                                                        <option value="Dutch">Dutch</option>
-                                                        <option value="English">English</option>
-                                                        <option value="French">French</option>
-                                                        <option value="Nederlands">Nederlands</option>
+                                                    <label>E-mailadres</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="email" value="<?= $telecom_user_detail->email; ?>" <?php if ($telecom_user_detail->email != '') { echo "disabled";} ?> />
+                                                    <span class="form-text text-muted"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Extra e-mailadres voor facturatie</label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="extra_email" placeholder="Extra e-mailadres voor facturatie" value="<?= $telecom_user_detail->extra_email; ?>" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div>
+                                                    <label>Geboortedatum<span class="text-danger">*</span></label>
+                                                </div>
+                                                <div><label><span class="text-info">Er kan geen contract opgemaakt worden voor een persoon -18 jaar.</span></label></div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                            $days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+                                            $months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+                                            array_unshift($months,"");
+                                            unset($months[0]);
+                                            $years = [1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,
+                                                    2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021];
+                                        ?>
+                                        <div class="row">
+                                            <div class="col-xl-2">
+                                                <div class="form-group">
+                                                <select id="day" name="day" class="form-control form-control-solid form-control-lg">
+                                                    <option value="">Dag</option>
+                                                    <?php foreach ($days as $day) { ?>
+                                                        <option value="<?php echo $day; ?>"><?php echo $day ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2">
+                                                <div class="form-group">
+                                                    <select id="month" name="month" class="form-control form-control-solid form-control-lg">
+                                                        <option value="">Maand</option>
+                                                        <?php foreach ($months as $key => $month) { ?>
+                                                            <option value="<?php echo $key; ?>"><?php echo $month ?></option>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
-                                            </div>-->
+                                            </div>
+                                            <div class="col-xl-2">
+                                                <div class="form-group">
+                                                    <select id="year" name="year" class="form-control form-control-solid form-control-lg">
+                                                        <option value="">Jaar</option>
+                                                        <?php foreach ($years as $year) { ?>
+                                                            <option value="<?php echo $year; ?>"><?php echo $year ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control form-control-solid form-control-lg" id="date_of_birth" name="date_of_birth" hidden/>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-4">
+                                                <div class="form-group">
+                                                    <label>Nationaliteit</label>
+                                                    <select name="nationality" id="nationality" class="form-control form-control-solid form-control-lg">
+                                                        <?php
+                                                        $nationality = Yii::app()->ServiceHelper->getNationality(); ?>
+                                                        <option value="">Nationaliteit</option>
+                                                        <?php foreach ($nationality as $key => $value) { ?>
+                                                            <option value="<?php echo $key;?>" <?php if ($telecom_user_detail->nationality == $key) {echo "selected";}?>><?php echo $value ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Contact telefoonnummer<span class="text-danger">*</span></label>
+                                                    <input type="tel" class="form-control form-control-solid form-control-lg" name="phone" placeholder="Contact telefoonnummer" value="<?= $telecom_user_detail->phone; ?>" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Extra telefoonnummer</label>
+                                                    <input type="tel" class="form-control form-control-solid form-control-lg" name="landline_number" placeholder="Extra telefoonnummer" value="<?= $telecom_user_detail->landline_number; ?>" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="pb-5" data-wizard-type="step-content">
-                                    <div class="col-xxl-7" style="margin: auto">
-                                        <h4 class="mb-10 font-weight-bold text-dark">Business Details</h4>
-                                        <div class="form-group row">
-                                            <div class="col-1">
-                                            <span class="switch switch-outline switch-icon switch-success">
-                                                <label>
-                                                    <input type="checkbox" name="is_business_type" class="is_business_type" />
-                                                    <span></span>
-                                                </label>
-                                            </span>
+                                <div class="col-xxl-7" style="margin: auto">
+                                        <h4 class="mb-10 font-weight-bold text-dark">Factuuradres</h4>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Postcode<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="postcode" placeholder="Postcode"/>
+                                                </div>
                                             </div>
-                                            <label class="col-6 col-form-label col-form-label-new">Add Business details:</label>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Gemeente<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="city" placeholder="Gemeente"/>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="business_details" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Straatnaam<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="street" placeholder="Straatnaam"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2">
+                                                <div class="form-group">
+                                                    <label>Huisnummer<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="building_num" placeholder="Gemeente"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2">
+                                                <div class="form-group">
+                                                    <label>Toevoegsel</label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="suffix" placeholder="Toevoegsel"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2">
+                                                <div class="form-group">
+                                                    <label>Busnummer</label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="bus_num" placeholder="Busnummer"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label>Land<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-solid form-control-lg" name="country" placeholder="Land" value="Belgium" readonly/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-7" style="margin: auto">
+                                        <h4 class="mb-10 font-weight-bold text-dark">Bezorgadres</h4>
+                                        <div class="form-group row">
+                                            <div class="col-9 col-form-label">
+                                                <div class="radio-inline">
+                                                    <label class="radio radio-success radio-inline">
+                                                        <input value="Same" type="radio" class="check" name="delivery_address" checked>
+                                                        <span></span>idem als factuuradres
+                                                    </label>
+                                                    <label class="radio radio-success radio-inline">
+                                                        <input value="Different" type="radio" class="check" name="delivery_address">
+                                                        <span></span>anders dan factuuradres
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="delivery_details" style="display: none;">
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label>Business Name<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="business_name" placeholder="Business Name" value="<?= $telecom_user_detail->business_name; ?>" />
-                                                        <span class="form-text text-muted">Please enter Business Name.</span>
+                                                        <label>Postcode<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="billing_postcode" placeholder="Postcode"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6">
-
                                                     <div class="form-group">
-                                                        <label>VAT Number<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="vat_number" placeholder="VAT Number" value="<?= $telecom_user_detail->vat_number; ?>" />
-                                                        <span class="form-text text-muted">Please enter VAT Number.</span>
+                                                        <label>Gemeente<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-solid form-control-lg" name="billing_city" placeholder="Gemeente"/>
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label for="business_country">Business Country<span class="text-danger">*</span></label>
-                                                        <select name="business_country" id="business_country" class="form-control">
+                                                        <label>Straatnaam<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="billing_street" placeholder="Straatnaam"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-2">
+                                                    <div class="form-group">
+                                                        <label>Huisnummer<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-solid form-control-lg" name="billing_building_num" placeholder="Gemeente"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-2">
+                                                    <div class="form-group">
+                                                        <label>Toevoegsel</label>
+                                                            <input type="text" class="form-control form-control-solid form-control-lg" name="suffix" placeholder="Toevoegsel"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-2">
+                                                    <div class="form-group">
+                                                        <label>Busnummer</label>
+                                                            <input type="text" class="form-control form-control-solid form-control-lg" name="billing_bus_num" placeholder="Busnummer"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label>Land<span class="text-danger">*</span></label>
+                                                        <select name="billing_country" id="country" class="form-control form-control-solid form-control-lg">
+                                                        <?php
+                                                            $country = Yii::app()->ServiceHelper->getCountry(); ?>
+                                                            <option value="">Select Country</option>
+                                                            <?php foreach ($country as $key => $value) { ?>
+                                                                <option value="<?php echo $key;?>" <?php if ($telecom_user_detail->country == $key) {echo "selected";}?>><?php echo $value ?></option>
+                                                            <?php  } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-7" style="margin: auto">
+                                        <h4 class="mb-10 font-weight-bold text-dark">Betalingsgegevens</h4>
+                                        <span class="text-info">Als zakelijke klant kan u uit verschillende opties kiezen om de factuur te betalen</span>
+                                        <div class="form-group row">
+                                            <div class="col-9 col-form-label">
+                                                <div class="radio-inline">
+                                                    <label class="radio radio-success sepa_radio radio-inline">
+                                                        <input value="SEPA" <?php if ($telecom_user_detail->payment_method == "SEPA") { echo "checked";} ?> type="radio" class="check" name="payment_method">
+                                                        <span></span>SEPA (domiciliëring)
+                                                    </label>
+                                                    <label class="radio radio-success credit_card_radio radio-inline">
+                                                        <input value="CreditCard" <?php if ($telecom_user_detail->payment_method == "CreditCard") { echo "checked";} ?> type="radio" class="check" name="payment_method">
+                                                        <span></span>Credit Card
+                                                    </label>
+                                                    <label class="radio radio-success bank_transfer_radio radio-inline">
+                                                        <input value="BankTransfer" <?php if ($telecom_user_detail->payment_method == "BankTransfer") { echo "checked";} ?> type="radio" class="check" name="payment_method">
+                                                        <span></span>bankoverschrijving
+                                                    </label>
+                                                </div>
+                                                <span class="text-muted">U kiest voor betaling via domiciliëring. Het factuurbedrag wordt automatisch van uw bankrekening verminderd.</span>
+                                            </div>
+                                        </div>
+                                        <div class="sepa-div" style="display: none;">
+                                            <div class="form-group">
+                                                <label>Naam rekeninghouder<span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-solid form-control-lg" name="account_name" placeholder="Naam rekeninghouder" value="<?= $telecom_user_detail->account_name; ?>" />
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label>Adres van de bank</label>
+                                                        <?php $street = $telecom_user_detail->bank_street.''.$telecom_user_detail->bank_building_num; ?>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="bank_street" placeholder="straat and nummer" value="<?= $street; ?>" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-2">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control mt-8 form-control-solid form-control-lg" name="bank_postcode" placeholder="postcode" value="<?= $telecom_user_detail->bank_postcode; ?>" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control mt-8 form-control-solid form-control-lg" name="bank_city" placeholder="gemeente" value="<?= $telecom_user_detail->bank_city; ?>" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="bank_country">Country</label>
+                                                        <select name="bank_country" id="bank_country" class="form-control form-control-solid form-control-lg">
                                                             <?php
                                                             $country = Yii::app()->ServiceHelper->getCountry(); ?>
                                                             <option value="">Select Country</option>
@@ -320,44 +532,68 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-xl-6">
-                                                    <div class="form-group">
-                                                        <label>VAT Rate (in %)</label>
-                                                        <input type="number" class="form-control form-control-solid form-control-lg" name="vat" id="business_vat_rate" placeholder="VAT Rate" value="<?= $telecom_user_detail->vat; ?>" disabled/>
-                                                        <span class="form-text text-muted">Applicable VAT rate.</span>
-                                                    </div>
-                                                </div>
                                             </div>
+                                            <hr>
                                             <div class="row">
                                                 <div class="col-xl-6">
                                                     <div class="form-group">
-                                                        <label for="employment_type">Employment Type<span class="text-danger">*</span></label>
-                                                        <select name="employment_type" id="employment_type" class="form-control">
-                                                            <option value="">Select Employment</option>
-                                                            <option value="self_employed">Self Employed</option>
-                                                            <option value="company">Company</option>
-                                                        </select>
+                                                        <label>IBAN rekeningnummer<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="iban" placeholder="IBAN rekeningnummer" value="<?= $telecom_user_detail->iban; ?>" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <label>BIC van de bank<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control form-control-solid form-control-lg" name="bic_code" placeholder="BIC van de bank" value="<?= $telecom_user_detail->bic_code; ?>" />
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="aoa-div">
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-lg-12 col-sm-12 aoa_label">File: Articles of Association</label>
-                                                    <div class="col-lg-12 col-md-9 col-sm-12">
-                                                        <div class="dropzone dropzone-default" id="aoa_file">
-                                                            <div class="dropzone-msg dz-message needsclick">
-                                                                <h3 class="dropzone-msg-title">Drop Articles-Of-Association file here or click to upload.</h3>
-                                                                <h5 class="dropzone-msg-desc">Only PDF file with a cap of 2MB are allowed</h5>
-                                                                <button type="button" class="btn btn-light-primary font-weight-bolder text-uppercase px-9 py-4">Upload here</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div class="sepa-signature-div">
+                                                <h4 class="font-weight-bold text-info">Onderteken het SEPA document door in onderstaand vak je handtekening digitaal te plaatsen</h4>
+                                                <div class="wrapper">
+                                                    <canvas id="sepa-signature-pad" class="sepa-signature-pad" width=400 height=200></canvas>
                                                 </div>
+                                                <!--<button id="save-png" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save as PNG</button>-->
+                                                <button id="sepa-undo" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">ONGEDAAN MAKEN</button>
+                                                <button id="sepa-clear" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">OPNIEUW</button>
+                                                <input type="text" class="form-control form-control-solid form-control-lg sepa-signature" name="sepa_signature" hidden/>
                                             </div>
+                                        </div>
+                                        <div class="credit-card-payment-div" style="display: none">
+                                            <h4 class="font-weight-bold text-info">Gelieve op de kaart XXX uw gegevens in te vullen</h4>
+                                            <div class="credit-card-input no-js form-group" id="skeuocard">
+                                                <p class="no-support-warning">
+                                                    Either you have Javascript disabled, or you're using an unsupported browser, amigo! That's why you're seeing this old-school credit card input form instead of a fancy new Card. On the other hand, at least you know it gracefully degrades...
+                                                </p>
+                                                <label for="cc_type">Card Type</label>
+                                                <select name="cc_type">
+                                                    <option value="">...</option>
+                                                    <option value="visa">Visa</option>
+                                                    <option value="discover">Discover</option>
+                                                    <option value="mastercard">MasterCard</option>
+                                                    <option value="maestro">Maestro</option>
+                                                    <option value="jcb">JCB</option>
+                                                    <option value="unionpay">China UnionPay</option>
+                                                    <option value="amex">American Express</option>
+                                                    <option value="dinersclubintl">Diners Club</option>
+                                                </select>
+                                                <label for="cc_number">Card Number</label>
+                                                <input type="text" name="cc_number" id="cc_number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" size="19">
+                                                <label for="cc_exp_month">Expiration Month</label>
+                                                <input type="text" name="cc_exp_month" id="cc_exp_month" placeholder="00">
+                                                <label for="cc_exp_year">Expiration Year</label>
+                                                <input type="text" name="cc_exp_year" id="cc_exp_year" placeholder="00">
+                                                <label for="cc_name">Cardholder's Name</label>
+                                                <input type="text" name="cc_name" id="cc_name" placeholder="John Doe">
+                                                <label for="cc_cvc">Card Validation Code</label>
+                                                <input type="text" name="cc_cvc" id="cc_cvc" placeholder="123" maxlength="3" size="3">
+                                            </div>
+                                        </div>
+                                        <div class="bank-transfer-div" style="display: none">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="pb-5" data-wizard-type="step-content">
+                                <!-- <div class="pb-5" data-wizard-type="step-content">
                                     <div class="col-xxl-7" style="margin: auto">
                                         <h4 class="mb-10 font-weight-bold text-dark">Address Details</h4>
                                         <div class="row">
@@ -613,7 +849,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 <div class="wrapper">
                                                     <canvas id="sepa-signature-pad" class="sepa-signature-pad" width=400 height=200></canvas>
                                                 </div>
-                                                <!--<button id="save-png" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save as PNG</button>-->
+                                                <button id="save-png" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save as PNG</button>
                                                 <button id="sepa-undo" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Undo</button>
                                                 <button id="sepa-clear" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Clear</button>
                                                 <input type="text" class="form-control form-control-solid form-control-lg sepa-signature" name="sepa_signature" hidden/>
@@ -651,7 +887,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                         <div class="bank-transfer-div" style="display: none">
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="pb-5" data-wizard-type="step-content">
                                     <h4 class="mb-10 font-weight-bold text-dark" style="text-align: center">Select ID Type<span class="text-danger">*</span></h4>
                                     <div class="row">
@@ -862,7 +1098,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6"  id="review_business" style="display: none">
+                                        <!-- <div class="col-md-6"  id="review_business" style="display: none">
                                             <div class="card card-custom">
                                                 <div class="card-header">
                                                     <div class="card-title">
@@ -870,7 +1106,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 														<i class="flaticon2-chat-1 text-primary"></i>
 													</span>
                                                         <h3 class="card-label">Business details
-                                                            <!--<small>sub title</small>--></h3>
+                                                            <small>sub title</small></h3>
                                                     </div>
                                                     <div class="card-toolbar">
                                                         <a href="javascript:void(0);" class="btn btn-sm btn-success font-weight-bold" id="review_business_toolbar_click">
@@ -1016,7 +1252,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="col-md-6"  id="review_account">
                                             <div class="card card-custom">
                                                 <div class="card-header">
@@ -1090,8 +1326,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                     <canvas id="review-signature-pad" class="review-signature-pad" width=400 height=200></canvas>
                                                 </div>
                                                 <!--<button id="save-png" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save as PNG</button>-->
-                                                <button id="review-undo" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Undo</button>
-                                                <button id="review-clear" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">Clear</button>
+                                                <button id="review-undo" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">ONGEDAAN MAKEN</button>
+                                                <button id="review-clear" type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base" style="margin: 10px">OPNIEUW</button>
                                                 <input type="text" class="form-control form-control-solid form-control-lg review-signature" name="signature" hidden/>
                                             </div>
                                         </div>
@@ -1128,7 +1364,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
     $(document).ready(function () {
 
         //By default
-        $('.bank_transfer_radio').hide();
+        //$('.bank_transfer_radio').hide();
         $('#tariff_rate').val('Iriscall');
         $('#review_fix_email').html('<?= $user->email; ?>');
 
@@ -1150,7 +1386,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
         });
 
         //If the customer enters business details
-        $('.is_business_type').on('change',function(){
+        /* $('.is_business_type').on('change',function(){
             if($('.is_business_type').is(":checked")){
                 $(".business_details").show();
                 $('.bank_transfer_radio').show();
@@ -1172,7 +1408,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 
                 $('#review_business').hide();
             }
-        });
+        }); */
 
         //On change event for business country
         $('#business_country').on('change', function (e) {
@@ -1285,17 +1521,51 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
             }
         });
 
-        $('#date_of_birth').datepicker({
-            todayHighlight: true,
-            orientation: "bottom left",
-            startDate: "01-01-1950",
-            endDate: "-18y",
-            format: "yyyy-mm-dd",
-            templates: {
-                leftArrow: '<i class="la la-angle-left"></i>',
-                rightArrow: '<i class="la la-angle-right"></i>'
+        // $('#date_of_birth').datepicker({
+        //     todayHighlight: true,
+        //     orientation: "bottom left",
+        //     startDate: "01-01-1950",
+        //     endDate: "-18y",
+        //     format: "yyyy-mm-dd",
+        //     templates: {
+        //         leftArrow: '<i class="la la-angle-left"></i>',
+        //         rightArrow: '<i class="la la-angle-right"></i>'
+        //     }
+        // });
+
+        
+        $('input[type=radio][name=delivery_address]').on('change', function() {
+            if($(this).val() == 'Different'){
+                $('.delivery_details').show();
+            } else {
+                $('.delivery_details').hide();
             }
         });
+
+        $('#day, #month, #year').change(function () {
+            var day = $("#day").val();
+            var month = $("#month").val();
+            var year = $("#year").val();
+            $("#date_of_birth").val(year + "/" + month+ "/" + day);
+        });
+
+        // $("#legal_form, #company_number").change(function(){
+        //     var legal_form = $("#legal_form").val();
+        //     var company_number = $("#company_number").val();
+        //     if(legal_form == 'VZW'){
+        //         $("#companyNum").hide();
+        //     }else if(legal_form == 'VZW' && company_number == ''){
+        //         $("#companyNum").hide();
+        //     }else if(legal_form != ""){
+        //         $("#companyNum").show();
+        //     }else if(legal_form != "" && company_number == ""){
+        //         $("#companyNum").show();
+        //     }else if(legal_form != "" && company_number != ""){
+        //         $("#companyNum").hide();
+        //     }else{
+        //         $("#companyNum").hide();
+        //     }
+        // });
     });
 
     function createSignature(){
