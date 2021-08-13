@@ -9,7 +9,7 @@ $this->pageTitle = 'View Commission Plan Setting';
             <div class="pull-right">
 				<?php echo CHtml::link('Go to list', array('commissionPlanSetting/admin'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
                 <?php echo CHtml::link('Create', array('commissionPlanSetting/create'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
-				<?php echo CHtml::link('Update', array('commissionPlanSetting/update'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+				<?php echo CHtml::link('Update', array('commissionPlanSetting/update'.'/'.$model->id), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
             </div>
         </div>
         <!-- Page Content -->
