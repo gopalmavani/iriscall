@@ -1,6 +1,6 @@
 <?php
 
-class CommissionPlanController extends CController
+class CommissionPlanSettingController extends CController
 {
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -44,13 +44,13 @@ class CommissionPlanController extends CController
      */
     public function actionCreate()
     {
-        $model = new CommissionPlan;
+        $model = new Rank;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
         $path = Yii::getPathOfAlias('webroot').'/uploads/icons';
-        if (isset($_POST['CommissionPlan'])) {
-            $model->attributes = $_POST['CommissionPlan'];
+        if (isset($_POST['Rank'])) {
+            $model->attributes = $_POST['Rank'];
             $image = CUploadedFile::getInstance($model, 'icon');
             if(!empty($image)){
                 $image->saveAs($path.'/'.$image->name);
@@ -75,14 +75,12 @@ class CommissionPlanController extends CController
     {
         $model = $this->loadModel($id);
         $path = Yii::getPathOfAlias('webroot').'/uploads/icons';
-        if (isset($_POST['CommissionPlan'])) {
-            $model->attributes = $_POST['CommissionPlan'];
-            if(!empty($_POST['CommissionPlan']['icon'])){
-                $image = CUploadedFile::getInstance($model, 'icon');
-                if(!empty($image)){
-                    $image->saveAs($path.'/'.$image->name);
-                    $model->icon =  '/uploads/icons/'.$image->name;
-                }
+        if (isset($_POST['Rank'])) {
+            $model->attributes = $_POST['Rank'];
+            $image = CUploadedFile::getInstance($model, 'icon');
+            if(!empty($image)){
+                $image->saveAs($path.'/'.$image->name);
+                $model->icon =  '/uploads/icons/'.$image->name;
             }
             $model->modified_at = date('Y-m-d H:i:s');
             if($model->save())
@@ -100,10 +98,10 @@ class CommissionPlanController extends CController
      */
     public function actionDelete()
     {
-        $model = CommissionPlan::model()->findByAttributes(['id' => $_POST['id']]);
+        $model = Rank::model()->findByAttributes(['id' => $_POST['id']]);
 
         if(!empty($model)){
-            if (CommissionPlan::model()->deleteAll("id ='" .$model->id. "'")){
+            if (Rank::model()->deleteAll("id ='" .$model->id. "'")){
                 echo json_encode([
                     'token' => 1,
                 ]);
@@ -116,14 +114,25 @@ class CommissionPlanController extends CController
     }
 
     /**
+     * Lists all models.
+     */
+    public function actionIndex()
+    {
+        $dataProvider = new CActiveDataProvider('Rank');
+        $this->render('index',array(
+            'dataProvider'=>$dataProvider,
+        ));
+    }
+
+    /**
      * Manages all models.
      */
     public function actionAdmin()
     {
-        $model = new CommissionPlan('search');
+        $model = new CommissionPlanSettings('search');
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['CommissionPlan']))
-            $model->attributes=$_GET['CommissionPlan'];
+        if(isset($_GET['CommissionPlanSettings']))
+            $model->attributes=$_GET['CommissionPlanSettings'];
 
         $this->render('admin',array(
             'model'=>$model,
@@ -134,12 +143,12 @@ class CommissionPlanController extends CController
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return CommissionPlan the loaded model
+     * @return Rank the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-        $model = CommissionPlan::model()->findByPk($id);
+        $model=Rank::model()->findByPk($id);
         if($model===null)
             throw new CHttpException(404,'The requested page does not exist.');
         return $model;
@@ -152,16 +161,20 @@ class CommissionPlanController extends CController
 
         $requestData = $_REQUEST;
 
-        $array_cols = Yii::app()->db->schema->getTable('commission_plans')->columns;
+        $array_cols = Yii::app()->db->schema->getTable('rank')->columns;
         $array = array();
         $i = 0;
         foreach($array_cols as  $key=>$col){
             $array[$i] = $col->name;
             $i++;
         }
+        /*$columns = array(
+            0 => 'id',
+            1 => 'name'
+        );*/
         $columns = $array;
 
-        $sql = "SELECT  * from commission_plans where 1=1";
+        $sql = "SELECT  * from rank where 1=1";
         $data = Yii::app()->db->createCommand($sql)->queryAll();
         $totalFiltered = count($data);
 
@@ -180,7 +193,7 @@ class CommissionPlanController extends CController
         $j = 0;
         // getting records as per search parameters
         foreach($columns as $key=>$column){
-            if($requestData['columns'][$key]['search']['value'] != '' ){   //name
+            if( !empty($requestData['columns'][$key]['search']['value']) ){   //name
                 $sql.=" AND $column LIKE '%".$requestData['columns'][$key]['search']['value']."%' ";
             }
             $j++;
@@ -199,13 +212,17 @@ class CommissionPlanController extends CController
         $data = array();
         $i=1;
 
+        /*echo "<pre>";
+        print_r($result);die;*/
         foreach ($result as $key => $row)
         {
             $nestedData = array();
-            //$nestedData[] = $row['id'];
+            $nestedData[] = $row['id'];
             foreach($array_cols as  $key=>$col){
                 $nestedData[] = $row["$col->name"];
             }
+			// $nestedData[] = $row["employee_age"];
+			// $nestedData[] = '<a href="'.$url.'"><span class="glyphicon glyphicon-pencil"></span></a>';
             $data[] = $nestedData;
             $i++;
         }
@@ -221,11 +238,11 @@ class CommissionPlanController extends CController
 
     /**
      * Performs the AJAX validation.
-     * @param CommissionPlan $model the model to be validated
+     * @param CommissionPlanSettings $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
-        if(isset($_POST['ajax']) && $_POST['ajax']==='commissionPlan-form')
+        if(isset($_POST['ajax']) && $_POST['ajax']==='rank-form')
         {
             echo CActiveForm::validate($model);
             Yii::app()->end();

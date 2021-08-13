@@ -1,5 +1,5 @@
 <?php
-/* @var $this CommissionPlanController */
+/* @var $this CommissionPlansController */
 /* @var $model CommissionPlan */
 $this->pageTitle = 'Update Commission Plan';
 ?>
