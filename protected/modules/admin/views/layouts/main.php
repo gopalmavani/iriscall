@@ -253,6 +253,16 @@ $folder = Yii::app()->params['basePath'];
                             </ul>
                         </li>
                         <?php $action = Yii::app()->controller->id;
+                        if($action == 'commissionPlan' || $action == 'commissionPlanSettings'){ $open = "open";}else{ $open = " ";} ?>
+                        <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-euro"></i> <span class=""> Commission Plan </span></a>
+                            <ul>
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/commissionPlan/admin'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/commissionPlan/admin');?>"><i class="fa fa-money"></i> <span class="sidebar-mini-hide"> Commission Plan </span></a></li>
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/commissionPlanSettings/admin'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/commissionPlanSettings/admin'); ?>"><i class="fa fa-cogs"></i> <span class="sidebar-mini-hide"> Commission Plan Settings </span></a></li>
+                            </ul>
+                        </li>
+                        <?php $action = Yii::app()->controller->id;
                         if($action == 'telecom' ){ $open = "open";}else{ $open = "";} ?>
                         <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-phone-square"></i> <span class=""> Telecom </span></a>
                             <ul>
