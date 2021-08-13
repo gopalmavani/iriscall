@@ -166,7 +166,7 @@ $(document).ready(function() {
             "targets": 0,
             "data": null,
             "render" : function(data, type, row) {
-                return '<a href="<?php echo Yii::app()->createUrl("admin/commissionPlan/view/").'/'; ?>'+data[0]+'"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;<a href="<?php echo Yii::app()->createUrl("admin/commissionPlan/update/").'/'; ?>'+data[0]+'"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;<a id='+data[0]+' class="plandelete" href="javascript:void(0)"><i class="fa fa-times"></i></a>';
+                return '<a href="<?php echo Yii::app()->createUrl("admin/commissionPlans/view/").'/'; ?>'+data[0]+'"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;<a href="<?php echo Yii::app()->createUrl("admin/commissionPlans/update/").'/'; ?>'+data[0]+'"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;<a id='+data[0]+' class="plandelete" href="javascript:void(0)"><i class="fa fa-times"></i></a>';
             }
         },{
             "targets": 2,

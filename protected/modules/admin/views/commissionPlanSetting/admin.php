@@ -35,6 +35,12 @@ if(!empty($result)){ ?>
                             foreach($array_cols as $key=>$col){ 
                                 if($col->name == 'id'){ ?>
                                     <th class="custom-table-head">Action</th>
+                                <?php }elseif($col->name == 'commission_plan_id'){ ?>
+                                    <th class="custom-table-head">Commission Plan</th>
+                                <?php }elseif($col->name == 'rank_id'){ ?>
+                                    <th class="custom-table-head">Rank</th>
+                                <?php }elseif($col->name == 'amount'){ ?>
+                                    <th class="custom-table-head">Amount(€ / %)</th>
                                 <?php }else{ ?>
 								    <th class="custom-table-head"><?php echo ucfirst(str_replace('_',' ',$col->name)); ?></th>
 							<?php } } ?>
@@ -47,25 +53,57 @@ if(!empty($result)){ ?>
                             foreach($arr as $key=>$col){
                                 switch($col->name)
                                 {
-                                    case 'name':
+                                    case 'commission_plan_id':
                                         echo "<td></td>";
-                                        echo "<td><input type='text' data-column='1' class='text-box' style='width:100%'></td>";
+                                        $commissionsql = "select name,id from commission_plans";
+                                        $commissionPlan = Yii::app()->db->createCommand($commissionsql)->queryAll(); ?>
+                                        <td>
+                                            <select class='drop-box' data-column='1' style='width:100%'>
+                                                <option value=''>Select</option>
+                                                <?php foreach($commissionPlan as $key=>$value){ ?>
+                                                <option value='<?php echo $value['id']; ?>'> <?php echo $value['name']; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </td>
+                                        <?php
                                         break;
         
-                                    case 'is_active':
+                                    case 'user_level':
                                         echo "<td><select class='drop-box' data-column='2' style='width:100%'>
                                                     <option value=''>Select</option>
-                                                    <option value='1'>Active</option>
-											        <option value='0'>Inactive</option>
+                                                    <option value='0'>User</option>
+											        <option value='1'>Level 1</option>
+                                                    <option value='2'>Level 2</option>
+                                                    <option value='3'>Level 3</option>
+                                                    <option value='4'>Level 4</option>
+                                                    <option value='5'>Level 5</option>
                                                 </select></td>";
                                         break;
         
-                                    case 'table_name':
-                                        echo "<td><input type='text' data-column='3' class='text-box' style='width:100%'></td>";
+                                    case 'rank_id':
+                                        $ranksql = "select name,id from rank";
+                                        $rank = Yii::app()->db->createCommand($ranksql)->queryAll(); ?>
+                                        <td>
+                                            <select class='drop-box' data-column='3' style='width:100%'>
+                                                <option value=''>Select</option>
+                                                <?php foreach($rank as $key=>$value){ ?>
+                                                <option value='<?php echo $value['id']; ?>'> <?php echo $value['name']; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </td>
+                                        <?php
                                         break;
 
-                                    case 'action_name':
-                                        echo "<td><input type='text' data-column='4' class='text-box' style='width:100%'></td>";
+                                    case 'amount_type':
+                                        echo "<td><select class='drop-box' data-column='6' style='width:100%'>
+                                                    <option value=''>Select</option>
+                                                    <option value='1'>Percentage</option>
+                                                    <option value='0'>Fixed</option>
+                                                </select></td>";
+                                        break;
+
+                                    case 'amount':
+                                        echo "<td><input type='text' data-column='7' class='text-box' style='width:100%'></td>";
                                         break;
                                     default :
                                         break;
@@ -86,7 +124,7 @@ if(!empty($result)){ ?>
         <h2>No commission plan</h2>
         <p></p>
         <div class="row">
-            <?php echo CHtml::link('Create', array('commissionPlanSettings/create'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
+            <?php echo CHtml::link('Create', array('commissionPlanSetting/create'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
         </div>
         <br />
     </div>
@@ -95,6 +133,11 @@ if(!empty($result)){ ?>
 <script src="<?php echo Yii::app()->createUrl('/'); ?>/plugins/js/core/bootbox.min.js"></script>
 <script>
 $(document).ready(function() {
+    var ranks = '<?php echo json_encode($rankArray); ?>';
+    var rankArr = JSON.parse(ranks);
+    var commissionPlans = '<?php echo json_encode($commissionArray); ?>';
+    var commissionArr = JSON.parse(commissionPlans);
+
     if (localStorage.getItem('msg')){
         $("#delete").removeClass("hide");
         setTimeout(
@@ -166,21 +209,43 @@ $(document).ready(function() {
             "targets": 0,
             "data": null,
             "render" : function(data, type, row) {
-                return '<a href="<?php echo Yii::app()->createUrl("admin/commissionPlan/view/").'/'; ?>'+data[0]+'"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;<a href="<?php echo Yii::app()->createUrl("admin/commissionPlan/update/").'/'; ?>'+data[0]+'"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;<a id='+data[0]+' class="plandelete" href="javascript:void(0)"><i class="fa fa-times"></i></a>';
+                return '<a href="<?php echo Yii::app()->createUrl("admin/commissionPlanSetting/view/").'/'; ?>'+data[0]+'"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;<a href="<?php echo Yii::app()->createUrl("admin/commissionPlanSetting/update/").'/'; ?>'+data[0]+'"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;<a id='+data[0]+' class="plandelete" href="javascript:void(0)"><i class="fa fa-times"></i></a>';
+            }
+        },{
+            "targets": 1,
+            "data": null,
+            "render" : function(data, type, row) {
+                return commissionArr[data[1]];
             }
         },{
             "targets": 2,
             "data": null,
             "render" : function(data, type, row) {
-                if(data[2] == '1'){
-                    return "<span align='center' class='label label-table label-success'>Active</span>";
+                if(data[2] == '0'){
+                    return "<span align='center' class='label label-table label-success'>User</span>";
                 }else{
-                    return "<span align='center' class='label label-table label-danger'>Inactive</span>";
+                    return "<span align='center' class='label label-table label-info'>Level "+ data[2] +"</span>";
+                }
+            }
+        },{
+            "targets": 3,
+            "data": null,
+            "render" : function(data, type, row) {
+                return rankArr[data[3]];
+            }
+        },{
+            "targets": 6,
+            "data": null,
+            "render" : function(data, type, row) {
+                if(data[6] == '0'){
+                    return "<span align='center' class='label label-table label-success'>Fixed</span>";
+                }else{
+                    return "<span align='center' class='label label-table label-warning'>Percentage</span>";
                 }
             }
         },{
             "visible":false,
-            "targets":[5,6,7]
+            "targets":[4,5,8,9,10,11,12,13]
         },{
             "bSortable": false,
             "aTargets": [ 0 ]
