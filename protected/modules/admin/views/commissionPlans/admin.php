@@ -1,5 +1,5 @@
 <?php
-/* @var $this CommissionPlanController */
+/* @var $this CommissionPlansController */
 /* @var $model CommissionPlan */
 $this->pageTitle = 'Commission Plan';
 ?>
@@ -20,7 +20,7 @@ if(!empty($result)){ ?>
         </div>
         <div class="col-md-12">
             <div class="pull-right m-b-10">
-                <?php echo CHtml::link('Create', array('commissionPlan/create'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+                <?php echo CHtml::link('Create', array('commissionPlans/create'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
             </div>
             <div style="margin-right:10px;" class="pull-right m-b-10">
                 <a class="btn btn-outline-primary" id="clearfilters">Clear Filters <i class="fa fa-times"></i></a>
@@ -86,7 +86,7 @@ if(!empty($result)){ ?>
         <h2>No commission plan</h2>
         <p></p>
         <div class="row">
-            <?php echo CHtml::link('Create', array('commissionplan/create'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
+            <?php echo CHtml::link('Create', array('commissionPlans/create'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
         </div>
         <br />
     </div>

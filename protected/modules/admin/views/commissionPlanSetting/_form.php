@@ -1,12 +1,12 @@
 <?php
-/* @var $this CommissionPlanSettingsController */
+/* @var $this CommissionPlanSettingController */
 /* @var $model CommissionPlanSettings */
 /* @var $form CActiveForm */
 ?>
 <div class="row">
     <div class="col-md-12">
         <div class="pull-right">
-            <?php echo CHtml::link('Go to list', array('commissionPlan/admin'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
+            <?php echo CHtml::link('Go to list', array('commissionPlanSetting/admin'), array('class' => 'btn btn-minw btn-square btn-primary')); ?>
         </div>
     </div>
     <div class="col-lg-12">
@@ -63,7 +63,7 @@
                     'class' => 'btn btn-primary col-md-offset-2',
                     'id' => 'create_roles'
                 )); ?>
-                <?php echo CHtml::link('Cancel', array('commissionPlan/admin'),
+                <?php echo CHtml::link('Cancel', array('commissionPlanSetting/admin'),
                     array(
                         'class' => 'btn btn-default'
                     )

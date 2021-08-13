@@ -1,6 +1,6 @@
 <?php
-/* @var $this CommissionPlanController */
-/* @var $model CommissionPlan */
+/* @var $this CommissionPlanSettingController */
+/* @var $model CommissionPlanSettings */
 ?>
 
 <div class="view">
