@@ -3,17 +3,16 @@
 /* @var $model CommissionPlanSettings */
 /* @var $form CActiveForm */
 ?>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
-    .ui-slider-range {
-        background:green;
-    }
-    .percent {
-        color:green;
-        font-weight:bold;
-        text-align:center;
-        width:100%;
-        border:none;
-    }
+    #custom-handle {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+  }
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -109,10 +108,17 @@
                                 </div>
                             </div>
 						</div>
+                        <div class="col-md-12 slider" style="display: none;">
+                            <div class="form-group">
+                                <div id="slider">
+                                    <div id="custom-handle" class="ui-slider-handle"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="<?php echo $model->hasErrors('amount') ? 'has-error' : ''; ?>">
-                                    <?php echo $form->textFieldControlGroup($model, 'amount', array('autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Amount')); ?>
+                                    <?php echo $form->textFieldControlGroup($model, 'amount', array('autofocus' => 'on', 'class' => 'form-control amount', 'autocomplete' => 'off', 'placeholder' => 'Amount')); ?>
                                 </div>
                             </div>
                         </div>
@@ -166,9 +172,52 @@
         <?php $this->endWidget(); ?>
     </div>
 </div>
-
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    //percentage slider
+    $('input[type=radio][name=amount_type]').on('change', function() {
+        if($(this).val() == 1){
+            $('.slider').show();
+            $(function() {
+                var handle = $( "#custom-handle" );
+                $( "#slider" ).slider({
+                    create: function() {
+                        handle.text( $( this ).slider( "value" ) );
+                    },
+                    slide: function( event, ui ) {
+                        handle.text( ui.value + '%');
+                        $('.amount').prop("readonly", true);
+                        $('.amount').val(ui.value);
+                    }
+                });
+            });
+        }else{
+            $('.amount').prop("readonly", false);
+            $('.amount').val('');
+            $('.slider').hide();
+        }
+    });
+
+    if ($('input[type=radio][name=amount_type]:checked').val() == 1) {
+        $('.slider').show();
+        var amount = $('.amount').val();
+        $(function() {
+            var handle = $( "#custom-handle" );
+            $( "#slider" ).slider({
+                create: function() {
+                    handle.text( amount + '%' );
+                },
+                slide: function( event, ui ) {
+                    handle.text( ui.value + '%');
+                    $('.amount').prop("readonly", true);
+                    $('.amount').val(ui.value);
+                }
+            });
+        });
+    }
+
+    //form validation
     $("form[id='commissionPlanSettings-form']").validate({
         debug: true,
         errorClass: "help-block",
@@ -190,7 +239,8 @@ $(document).ready(function() {
                 required: true
             },
             'CommissionPlanSettings[amount]': {
-                required: true
+                required: true,
+                digits: true
             },
             'CommissionPlanSettings[wallet_type_id]': {
                 required: true
@@ -219,7 +269,8 @@ $(document).ready(function() {
                 required: "Please select category."
             },
             'CommissionPlanSettings[amount]': {
-                required: "Please enter amount."
+                required: "Please enter amount.",
+                digits: "Please enter number only"
             },
             'CommissionPlanSettings[wallet_type_id]': {
                 required: "Please select wallet type."
