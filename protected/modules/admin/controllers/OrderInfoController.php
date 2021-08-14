@@ -334,7 +334,7 @@ class OrderInfoController extends CController
                     print_r($productSubscription->getErrors()); die;
                 }
             }*/
-
+            $_POST['OrderInfo']['vat'] = 0;
             // Order All item price,discount,total,net total
             $totalArray = $this->getOrderAllTotal($_POST['OrderLineItem']);
             $model->orderTotal = $totalArray['orderTotal'];
@@ -344,7 +344,8 @@ class OrderInfoController extends CController
             $model->netTotal = $totalArray['orderTotal'] - $totalArray['orderDiscount'] + $_POST['OrderInfo']['vat'];
 
             if ($model->save()) {
-
+                //add direct sales bonus to wallet
+                OrderHelper::AddDirectSalesBonus($model->user_id, $model->order_id);
                 $orderPayment->attributes = $_POST['OrderPayment'];
                 $orderPayment->created_at = date('Y-m-d H:i:s');
                 $orderPayment->total = $model->netTotal;

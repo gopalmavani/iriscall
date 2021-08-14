@@ -1216,6 +1216,8 @@ class CalldatarecordsController extends Controller
                     // echo '<pre>';
                     // print_r($model->netTotal);die;
                     if($model->save(false)){
+                        //add direct sales bonus to wallet
+                        OrderHelper::AddDirectSalesBonus($model->user_id, $model->order_id);
                         foreach($details as $detail){
                             $productInfo = ProductInfo::model()->findByAttributes(['name' => $detail->rule]);
                             if(!empty($productInfo)){
