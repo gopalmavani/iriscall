@@ -220,8 +220,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
+                                <?php
+                                    $country = Yii::app()->ServiceHelper->getCountry(); ?>
+                                    <?php foreach ($country as $key => $value) {
+                                        if ($model->country == $key) {
+                                            $selected = $model->country;
+                                        }
+                                    } ?>
                                     <div class="form-group <?php echo $model->hasErrors('country') ? 'has-error' : ''; ?>">
-                                        <?php echo $form->dropDownListControlGroup($model, 'country', Yii::app()->ServiceHelper->getCountry(), array('prompt' => 'Select Country', 'class' => 'form-control')); ?>
+                                        <?php echo $form->dropDownListControlGroup($model, 'country', $country, array('options' => array(isset($selected) ? $selected : '' => array('selected'=>true)),'prompt' => 'Select Country', 'class' => 'form-control')); ?>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -232,8 +239,9 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <?php $language = ['English'=>'English', 'Dutch'=>'Dutch', 'French'=>'French']; ?>
                                         <div class="<?php echo $model->hasErrors('language') ? 'has-error' : ''; ?>">
-                                            <?php echo $form->dropDownListControlGroup($model,'language', array('English'=>'English', 'Dutch'=>'Dutch', 'French'=>'French'), array('prompt' => 'Select Language', 'class' => 'form-control')); ?>
+                                            <?php echo $form->dropDownListControlGroup($model,'language', $language, array('options' => array(in_array($model->language, $language) ? $model->language : '' => array('selected'=>true)),'prompt' => 'Select Language', 'class' => 'form-control')); ?>
                                         </div>
                                     </div>
                                 </div>

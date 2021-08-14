@@ -63,7 +63,7 @@
                             <div class="form-group">
                                 <lable style="font-weight: 600; font-size: 13px;">Select Product *</lable>
                                 <select class="js-select2 form-control" name="product_id" id="product_id">
-                                    <!-- <option value="">Select Product</option> -->
+                                    <option value="">Select Product</option>
                                 <?php $productInfo = ProductInfo::model()->findAll(['order' => 'name']);
                                     foreach ($productInfo as $product) { ?>
                                         <option value="<?= $product['product_id']; ?>"><?= 'Name: '.$product['name']; ?>
@@ -232,12 +232,6 @@ $(document).ready(function() {
             'CommissionPlanSettings[rank_id]': {
                 required: true
             },
-            product_id: {
-                required: true
-            },
-            'CommissionPlanSettings[category_id]': {
-                required: true
-            },
             'CommissionPlanSettings[amount]': {
                 required: true,
                 digits: true
@@ -261,12 +255,6 @@ $(document).ready(function() {
             },  
             'CommissionPlanSettings[rank_id]': {
                 required: "Please select rank."
-            },
-            product_id: {
-                required: "Please select product."
-            },
-            'CommissionPlanSettings[category_id]': {
-                required: "Please select category."
             },
             'CommissionPlanSettings[amount]': {
                 required: "Please enter amount.",
