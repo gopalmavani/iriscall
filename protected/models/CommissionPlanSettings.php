@@ -36,7 +36,7 @@ class CommissionPlanSettings extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-            array('commission_plan_id, user_level, rank_id, product_id, category_id, amount_type, amount, wallet_type_id, wallet_reference_id, denomination_id, wallet_status', 'required'),
+            array('commission_plan_id, user_level, rank_id, amount_type, amount, wallet_type_id, wallet_reference_id, denomination_id, wallet_status', 'required'),
 			array('commission_plan_id, rank_id, product_id, category_id, amount_type, wallet_type_id, wallet_reference_id, denomination_id, wallet_status', 'numerical', 'integerOnly'=>true),
 			array('user_level', 'length', 'max'=>30),
 			array('created_at, modified_at', 'safe'),
