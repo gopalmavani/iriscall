@@ -16,7 +16,8 @@ class OrderHelper extends CApplicationComponent
         if(isset($data['order_comment'])){
             $order->order_comment = $data['order_comment'];
         }
-        $order->save(false);
+        if($order->save(false))
+            OrderHelper::AddDirectSalesBonus($order->user_id, $order->order_id);
         return $order->order_info_id;
     }
 
@@ -469,5 +470,45 @@ class OrderHelper extends CApplicationComponent
         $logs->created_date = date('Y-m-d H:i:s');
         $logs->log = $log;
         $logs->save(false);
+    }
+
+    /*Direct sales bonus*/
+    public static function AddDirectSalesBonus($user_id,$order_id)
+    {
+        $userInfo = UserInfo::model()->findByAttributes(['user_id' => $user_id]);
+        $orderInfo = OrderInfo::model()->findByAttributes(['order_id' => $order_id]);
+        $commissionPlan = Yii::app()->db->createCommand()
+                            ->select('*')
+                            ->from('commission_plan_settings')
+                            ->where('rank_id=:id', array(':id'=>$userInfo->rank))
+                            ->queryAll();
+
+        foreach($commissionPlan as $commission){
+            if($commission['user_level'] == 0){
+                $id = $userInfo->user_id;
+            }else{
+                $id = $userInfo->sponsor_id;
+            }
+
+            if($commission['amount_type'] == 1){
+                $amount = $commission['amount'] * $orderInfo->orderTotal / 100;
+            }else{
+                $amount = $commission['amount'];
+            }
+
+            $walletds = new Wallet();
+            $walletds->user_id = $id;
+            $walletds->wallet_type_id = $commission['wallet_type_id'];
+            $walletds->transaction_type = 0;
+            $walletds->reference_id = $commission['wallet_reference_id'];
+            $walletds->reference_num = $userInfo->user_id;
+            $walletds->transaction_comment = "Direct Sale Bonus due to order ".$orderInfo->order_id;
+            $walletds->denomination_id = $commission['denomination_id'];
+            $walletds->transaction_status = 2;
+            $walletds->portal_id = 1;
+            $walletds->amount = $amount;
+            $walletds->created_at = date('Y-m-d H:i:s');
+            $walletds->save();
+        }
     }
 }

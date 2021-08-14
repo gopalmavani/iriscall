@@ -61,7 +61,7 @@
 						</div>
                         <div class="col-md-12" style="margin-top: 3%;">
                             <div class="form-group">
-                                <lable style="font-weight: 600; font-size: 13px;">Select Product *</lable>
+                                <lable style="font-weight: 600; font-size: 13px;">Select Product</lable>
                                 <select class="js-select2 form-control" name="product_id" id="product_id">
                                     <option value="">Select Product</option>
                                 <?php $productInfo = ProductInfo::model()->findAll(['order' => 'name']);
