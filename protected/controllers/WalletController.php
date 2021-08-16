@@ -119,7 +119,7 @@ class WalletController extends Controller
                 }   elseif ($item == 1){
                     //Direct sales commissiom
                     $commissionRecords = Yii::app()->db->createCommand()
-                        ->select('sum(amount) as amount, transaction_comment, transaction_status, reference_id, reference_num, created_at')
+                        ->select('sum(amount) as amount, transaction_comment, transaction_status, reference_num, created_at')
                         ->from('wallet')
                         ->where('user_id=:uid',[':uid'=>$userId])
                         ->andWhere('wallet_type_id=:wId',[':wId'=>$userWallet->wallet_type_id])
