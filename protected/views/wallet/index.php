@@ -61,12 +61,19 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#payouts_tab" tabindex="-1" aria-disabled="true">Payouts</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#commission_plan_tab">Commission</a>
+                            </li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="all_trans_tab" role="tabpanel">
                                 <div class="row d-flex align-items-center mb-3">
                                     <div class="col-md-9 col-lg-10">
                                         <div class="checkbox-inline" style="margin: 15px">
+                                            <label for="commission_tab" class="checkbox">
+                                                <input type="checkbox" name="all_trans" id="commission_tab" value="1"
+                                                       checked=""><span></span>Commission
+                                            </label>
                                             <label for="all_trans_affiliates" class="checkbox">
                                                 <input type="checkbox" name="all_trans" id="all_trans_affiliates" value="2"
                                                        checked=""><span></span>Affiliate Earnings
@@ -146,6 +153,23 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
                                     <div class="pages" align="right"></div>
                                 </div>
                             </div>
+                            <div class="tab-pane" id="commission_plan_tab" role="tabpanel">
+                                <div class="table-responsive mt-5">
+                                    <table class="table table-wallet" id="commission_table">
+                                        <thead>
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Amount</th>
+                                            <th>Order Id</th>
+                                            <th>From</th>
+                                            <th>Date</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="commission_table_body"></tbody>
+                                    </table>
+                                    <div class="pages" align="right"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -173,6 +197,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
 
     //Default Payout Data
     getPayout();
+
+    //Default commission data
+    getCommission();
 
     //Default Order Payment Data
     //getOrderPayment();
@@ -234,6 +261,18 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/datata
             type: "POST",
             success: function (response) {
                 setDataInTables(response, 'payout_table');
+            }
+        });
+    }
+
+    //To Get Commission Data
+    function getCommission() {
+        var commissionDataUrl = "<?= Yii::app()->createUrl('wallet/GetCommissionData'); ?>";
+        $.ajax({
+            url: commissionDataUrl,
+            type: "POST",
+            success: function (response) {
+                setDataInTables(response, 'commission_table');
             }
         });
     }

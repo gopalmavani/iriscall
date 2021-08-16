@@ -116,7 +116,18 @@ class WalletController extends Controller
                         ->order('created_at desc')
                         ->queryAll();
 
-                }  elseif ($item == 2){
+                }   elseif ($item == 1){
+                    //Direct sales commissiom
+                    $commissionRecords = Yii::app()->db->createCommand()
+                        ->select('sum(amount) as amount, transaction_comment, transaction_status, reference_id, reference_num, created_at')
+                        ->from('wallet')
+                        ->where('user_id=:uid',[':uid'=>$userId])
+                        ->andWhere('wallet_type_id=:wId',[':wId'=>$userWallet->wallet_type_id])
+                        ->andWhere('transaction_type=:type',[':type'=>Yii::app()->params['CreditTransactionType']])
+                        ->andWhere(['like','transaction_comment','%Direct Sale Bonus due to%'])
+                        ->order('created_at desc')
+                        ->queryAll();
+                } elseif ($item == 2){
                     //Affiliates
                     $commissionRecords = Yii::app()->db->createCommand()
                         ->select('amount, transaction_comment, transaction_status, transaction_type, reference_id, reference_num, created_at')
@@ -144,7 +155,8 @@ class WalletController extends Controller
 
                 foreach ($commissionRecords as $record){
                     $temp = array();
-                    if($record['reference_id'] == $affiliate_reference->reference_id){
+                    $comment = explode('order_id',$record['transaction_comment']);
+                    if($comment[0] != "Direct Sale Bonus due to " && $record['reference_id'] == $affiliate_reference->reference_id){
                         //For Affiliate Reference
                         $level = substr($record['transaction_comment'], 6, 1);
                         $temp['scheme'] = "Affiliate Earning";
@@ -171,7 +183,7 @@ class WalletController extends Controller
                         $transaction_type = Yii::app()->params['DebitTransactionType'];
                         $reference_id = $order_payment_reference->reference_id;
                         $uniqueness_checker = $record['transaction_comment']. " For order No. ".$record['reference_num'];
-                    } else {
+                    }  elseif ($record['reference_id'] == $payout_reference->reference_id){
                         //For Payout Reference
                         $temp['scheme'] = "Payout";
                         $temp['date'] = date('d F, Y',strtotime($record['created_at']));
@@ -179,6 +191,22 @@ class WalletController extends Controller
                         $transaction_type = Yii::app()->params['DebitTransactionType'];
                         $reference_id = $payout_reference->reference_id;
                         $uniqueness_checker = "payout_with_comment_".str_replace(" ","_",$record['transaction_comment'])."_".$record['reference_num'];
+                    } else {
+                        $transaction_type = Yii::app()->params['CreditTransactionType'];
+                        $reference_id = $record['reference_id'];
+                        if($record['reference_num'] == $userId){
+                            $from = "Self";
+                        }else{
+                            $user = UserInfo::model()->findByPk($record['reference_num']);
+                            $from = $user->full_name;
+                        }
+                        $str = stristr($record['transaction_comment'], 'order');
+                        $order_id = trim($str, 'order');
+
+                        $temp['scheme'] = "Commission";
+                        $temp['date'] = date('d F, Y',strtotime($record['created_at']));
+                        $temp['description'] = $record['transaction_comment'];
+                        $uniqueness_checker = "commission_from_".$order_id;
                     }
                     $temp['earnings'] = '€'.money_format('%(#1n',$record['amount']);
                     $temp['transaction_status'] = ServiceHelper::getTransactionStatusDetails($record['transaction_status'], $transaction_type, $reference_id);
@@ -221,6 +249,45 @@ class WalletController extends Controller
             $payoutData[$uniqueness_checker] = $temp;
         }
         echo json_encode($payoutData);
+    }
+
+    //Direct sales commissiom data
+    public function actionGetCommissionData(){
+        $userId = Yii::app()->user->getId();
+        $userWallet = WalletTypeEntity::model()->findByAttributes(['wallet_type'=>'User']);
+        $commissionData = [];
+
+        $commissionRecords = Yii::app()->db->createCommand()
+            ->select('sum(amount) as amount, transaction_comment, transaction_status, reference_num, created_at')
+            ->from('wallet')
+            ->where('user_id=:uid',[':uid'=>$userId])
+            ->andWhere('wallet_type_id=:wId',[':wId'=>$userWallet->wallet_type_id])
+            ->andWhere('transaction_type=:type',[':type'=>Yii::app()->params['CreditTransactionType']])
+            ->andWhere(['like','transaction_comment','%Direct Sale Bonus due to order%'])
+            ->order('created_at desc')
+            ->queryAll();
+
+        foreach ($commissionRecords as $record){
+            if($record['reference_num'] == $userId){
+                $from = "Self";
+            }else{
+                $user = UserInfo::model()->findByPk($record['reference_num']);
+                $from = $user->full_name;
+            }
+            $str = stristr($record['transaction_comment'], 'order_id');
+            $order_id = trim($str, 'order_id');
+            $temp = array();
+
+            $temp['date'] = $from;
+            $temp['description'] = $record['transaction_comment'];
+            $temp['earnings'] = '€'.money_format('%(#1n',$record['amount']);
+            $temp['transaction_status'] = $order_id;
+            $temp['earning_date'] = date('d F, Y',strtotime($record['created_at']));
+
+            $uniqueness_checker = "commission_from_".$order_id;
+            $commissionData[$uniqueness_checker] = $temp;
+        }
+        echo json_encode($commissionData);
     }
 
     public function actionGetOrderPaymentData(){
