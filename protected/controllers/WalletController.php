@@ -147,7 +147,7 @@ class WalletController extends Controller
                         ->andWhere('wallet_type_id=:wId',[':wId'=>$userWallet->wallet_type_id])
                         ->andWhere('transaction_type=:type',[':type'=>Yii::app()->params['DebitTransactionType']])
                         ->andWhere('reference_id=:rId',[':rId'=>$payout_reference->reference_id])
-                        ->group('reference_id, transaction_comment, transaction_status, reference_num')
+                        ->group('reference_id, transaction_comment, transaction_status, reference_num, created_at')
                         ->order('created_at desc')
                         ->queryAll();
                 } else {
