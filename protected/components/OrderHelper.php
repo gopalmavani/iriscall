@@ -502,7 +502,7 @@ class OrderHelper extends CApplicationComponent
             $walletds->transaction_type = 0;
             $walletds->reference_id = $commission['wallet_reference_id'];
             $walletds->reference_num = $userInfo->user_id;
-            $walletds->transaction_comment = "Direct Sale Bonus due to order ".$orderInfo->order_id;
+            $walletds->transaction_comment = "Direct Sale Bonus due to order_id ".$orderInfo->order_id;
             $walletds->denomination_id = $commission['denomination_id'];
             $walletds->transaction_status = 2;
             $walletds->portal_id = 1;
