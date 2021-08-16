@@ -125,7 +125,7 @@ class WalletController extends Controller
                         ->andWhere('wallet_type_id=:wId',[':wId'=>$userWallet->wallet_type_id])
                         ->andWhere('transaction_type=:type',[':type'=>Yii::app()->params['CreditTransactionType']])
                         ->andWhere(['like','transaction_comment','%Direct Sale Bonus due to order_id%'])
-                        ->group('reference_id, transaction_comment, transaction_status, reference_num')
+                        ->group('reference_id, transaction_comment, transaction_status, reference_num, created_at')
                         ->order('created_at desc')
                         ->queryAll();
                 } elseif ($item == 2){
