@@ -155,7 +155,7 @@ if ($data == 0) { ?>
                     <tr>
                         <td width="35%" align="center" style="padding:20px;"><img src="<?php echo Yii::app()->createUrl('/images/icon-map.jpg'); ?>" width="80px"/><br/><span style="display:block; font-size: 24px">Olenseweg 375 2260 Westerlo BELGIUM</span></td>
                         <td width="28%" align="center"><img src="<?php echo Yii::app()->createUrl('/images/icon-phone.jpg')?>"  width="80px" /><br/><span style="display:block; font-size: 24px">+32 14 24 85 11</span>	</td>
-                        <td width="35%" align="center"> <img src="<?php echo Yii::app()->createUrl('images/icon-msg.jpg')?>"  width="80px" /><br/><a  style="display:block; font-size: 24px color:#000; text-decoration:none;" href="mailto:accounting@cbm.net">accounting@cbmglobal.io</a> </td>
+                        <td width="35%" align="center"> <img src="<?php echo Yii::app()->createUrl('images/icon-msg.jpg')?>"  width="80px" /><br/><a  style="display:block; font-size: 24px color:#000; text-decoration:none;" href="mailto:accounting@force.international">accounting@force.international</a> </td>
                     </tr>
                     </tbody></table>
             </td>
