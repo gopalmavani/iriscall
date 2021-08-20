@@ -65,7 +65,7 @@
                     2260 Westerlo<br />
                     Belgium</p>
                 <p style="font-size:15px;color:#5e5e5f;margin:0 0 5px; line-height:24px; font-family:open sans, arial;">Technical Inquiries or Support: <a style="color:#5e5e5f; text-decoration:none;" href="mailto:support@cbmglobal.io">support@cbmglobal.io</a><br />
-                    Financial Inquiries: <a style="color:#5e5e5f; text-decoration:none;" href="mailto:accounting@cbmglobal.io">accounting@cbmglobal.io</a><br />
+                    Financial Inquiries: <a style="color:#5e5e5f; text-decoration:none;" href="mailto:accounting@force.international">accounting@force.international</a><br />
                     IBAN No. EURO: BE63 0689 0467 8308 Swift/BIC Code: GKCCBEBB
                 </p>
                 <a href="<?= Yii::app()->getBaseUrl(true) . '/Legal/terms-conditions.html'; ?>" target="_blank" style="color:#d4537d; font-family:open sans, arial; text-decoration:none; margin:15px 0 20px; font-size:16px; display:inline-block;"><i style="float:left; margin:2px 5px 0 0;"><img src="<?= Yii::app()->getBaseUrl(true).'/images/icon-pdf.png'; ?>"/></i> Download Terms and Conditions</a>

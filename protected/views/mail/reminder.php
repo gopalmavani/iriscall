@@ -87,7 +87,7 @@
                     2260 Westerlo<br />
                     Belgium</p>
                 <p style="font-size:15px;color:#5e5e5f;margin:0 0 10px; font-family:open sans, arial;">Technical Inquiries or Support: <a style="color:#5e5e5f; text-decoration:none;" href="mailto:support@cbmglobal.io">support@cbmglobal.io</a><br />
-                    Financial Inquiries: <a style="color:#5e5e5f; text-decoration:none;" href="mailto:accounting@cbmglobal.io">accounting@cbmglobal.io</a></p>
+                    Financial Inquiries: <a style="color:#5e5e5f; text-decoration:none;" href="mailto:accounting@force.international">accounting@force.international</a></p>
             </div>
         </td>
         <td width="4%"></td>
