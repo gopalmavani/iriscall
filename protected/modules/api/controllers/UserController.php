@@ -303,15 +303,20 @@ class UserController extends Controller
             $rawBody = Yii::app()->request->rawBody;
             $requestArray = json_decode($rawBody, true);
             if(isset($requestArray['email'])){
-                $userObject = UserInfo::model()->findByAttributes(['email'=> $requestArray['email']]);
-                $userPayoutObject = UserPayoutInfo::model()->findByAttributes(['user_id'=>$userObject->user_id]);
-                $data['userInfo'] = $userObject->attributes;
-                unset($data['userInfo']['user_id']);
-                if(isset($userPayoutObject->id))
-                    $data['payoutInfo'] = $userPayoutObject->attributes;
-                $response['data'] = SSOHelper::modifyDataWRTSSOForLogin($data);
-                $response['status'] = 1;
-                $response['message'] = 'User data';
+				if(isset($userObject->user_id)){
+					$userObject = UserInfo::model()->findByAttributes(['email'=> $requestArray['email']]);
+					$userPayoutObject = UserPayoutInfo::model()->findByAttributes(['user_id'=>$userObject->user_id]);
+					$data['userInfo'] = $userObject->attributes;
+					unset($data['userInfo']['user_id']);
+					if(isset($userPayoutObject->id))
+						$data['payoutInfo'] = $userPayoutObject->attributes;
+					$response['data'] = SSOHelper::modifyDataWRTSSOForLogin($data);
+					$response['status'] = 1;
+					$response['message'] = 'User data';
+				} else {
+					$response['status'] = 0;
+					$response['message'] = 'User not found.';
+				}
             } else {
                 $response['status'] = 0;
                 $response['message'] = 'User data not found.';
@@ -390,6 +395,27 @@ class UserController extends Controller
                 $response['message'] = 'Token not provided.';
             }
         } catch (Exception $e){
+            $response['status'] = 0;
+            $response['message'] = $e->getMessage();
+        }
+        echo json_encode($response);
+    }
+
+	public function actionCreateUser(){
+		try {
+			$rawBody = Yii::app()->request->rawBody;
+			$requestArray = json_decode($rawBody, true);
+			if (isset($requestArray['data'])) {
+				$model = new UserInfo;
+				$model->attributes = $requestArray['data'];
+				$model->save(false);
+				$response['status'] = 1;
+                $response['message'] = 'User register successfully.';
+			} else {
+                $response['status'] = 0;
+                $response['message'] = 'User data not provided.';
+            }
+		} catch (Exception $e){
             $response['status'] = 0;
             $response['message'] = $e->getMessage();
         }
