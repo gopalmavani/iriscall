@@ -1,7 +1,7 @@
 <?php
 /* @var $this CommissionPlansController */
 /* @var $model CommissionPlan */
-$this->pageTitle = 'Commission Plan';
+$this->pageTitle = 'Plans';
 ?>
 <?php
 $sql = "SELECT * FROM commission_plans";
@@ -16,7 +16,7 @@ if(!empty($result)){ ?>
     <!--End loader-->
     <div class="row hide" id="mydatatable">
         <div class="alert alert-success hide" id="delete" align="center">
-            <h4>Commission Plan deleted successfully</h4>
+            <h4>Plan deleted successfully</h4>
         </div>
         <div class="col-md-12">
             <div class="pull-right m-b-10">
@@ -218,7 +218,7 @@ $(document).ready(function() {
 
     $(' body ').on('click','.plandelete',function() {
         var id = $(this).attr('id');
-        bootbox.confirm("Are you sure you want to delete this commission plan?", function(result){
+        bootbox.confirm("Are you sure you want to delete this plan?", function(result){
             if (result === true){
                 $.ajax({
                     url: "Delete",

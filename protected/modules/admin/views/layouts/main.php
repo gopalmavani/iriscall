@@ -257,9 +257,9 @@ $folder = Yii::app()->params['basePath'];
                         <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-euro"></i> <span class=""> Commission Plan </span></a>
                             <ul>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/commissionPlans/admin'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/commissionPlans/admin');?>"><i class="fa fa-money"></i> <span class="sidebar-mini-hide"> Commission Plan </span></a></li>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/commissionPlans/admin');?>"><i class="fa fa-money"></i> <span class="sidebar-mini-hide"> Plans </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/commissionPlanSetting/admin'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/commissionPlanSetting/admin'); ?>"><i class="fa fa-cogs"></i> <span class="sidebar-mini-hide"> Commission Plan Settings </span></a></li>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/commissionPlanSetting/admin'); ?>"><i class="fa fa-cogs"></i> <span class="sidebar-mini-hide"> Commission Rules </span></a></li>
                             </ul>
                         </li>
                         <?php $action = Yii::app()->controller->id;
