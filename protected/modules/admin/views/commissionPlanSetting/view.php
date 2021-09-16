@@ -1,7 +1,7 @@
 <?php
 /* @var $this OrderInfoController */
 /* @var $model OrderInfo */
-$this->pageTitle = 'View Commission Plan Setting';
+$this->pageTitle = 'View Commission Rule';
 ?>
 <div class="tab-content">
     <div class="tab-pane active">

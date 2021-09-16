@@ -1,7 +1,7 @@
 <?php
 /* @var $this CommissionPlansController */
 /* @var $model CommissionPlan */
-$this->pageTitle = 'View Commission Plan';
+$this->pageTitle = 'View Plan';
 $id = $model->id;
 ?>
 <div class="pull-right m-b-10">
