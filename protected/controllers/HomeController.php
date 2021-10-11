@@ -74,7 +74,7 @@ class HomeController extends Controller
                 $model = new AutoLoginForm;
                 $model->email = $user->email;
                 if ($model->validate() && $model->login()) {
-                    $this->redirect(array('home/index/'));
+                    $this->redirect(array('account/create/'));
                 } else {
                     $this->redirect(array('login'));
                 }

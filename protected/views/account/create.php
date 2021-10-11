@@ -75,7 +75,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                         <div class="wizard-steps p-8 p-lg-10">
                             <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-list" style="color: blue;"></i>
+                                    <i class="wizard-icon flaticon-list" style="color: #096c9e;"></i>
                                     <h3 class="wizard-title">1. Bedrijfsgegevens aanvullen</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
@@ -92,7 +92,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-earth-globe " style="color: blue;"></i>
+                                    <i class="wizard-icon flaticon-earth-globe " style="color: #096c9e;"></i>
                                     <h3 class="wizard-title">2. Factuurgegevens aanvullen</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
@@ -109,7 +109,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div>
                             <!-- <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-home " style="color: blue;"></i>
+                                    <i class="wizard-icon flaticon-home " style="color: #096c9e;"></i>
                                     <h3 class="wizard-title">3. Add address details</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
@@ -126,7 +126,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-piggy-bank" style="color: blue;"></i>
+                                    <i class="wizard-icon flaticon-piggy-bank" style="color: #096c9e;"></i>
                                     <h3 class="wizard-title">4. Payment Details</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
@@ -141,7 +141,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div> -->
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-upload-1" style="color: blue;"></i>
+                                    <i class="wizard-icon flaticon-upload-1" style="color: #096c9e;"></i>
                                     <h3 class="wizard-title">3. Documenten oplanden</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
@@ -156,7 +156,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon-trophy" style="color: blue;"></i>
+                                    <i class="wizard-icon flaticon-trophy" style="color: #096c9e;"></i>
                                     <h3 class="wizard-title">4. Create Account</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
@@ -171,7 +171,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             </div>
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
-                                    <i class="wizard-icon flaticon2-reload" style="color: blue;"></i>
+                                    <i class="wizard-icon flaticon2-reload" style="color: #096c9e;"></i>
                                     <h3 class="wizard-title">5. Review</h3>
                                 </div>
                             </div>
@@ -192,7 +192,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             </div>
                                             <div class="col-xl-4">
                                                 <div class="form-group">
-                                                    <label>Rechtsvorm</label>
+                                                    <label>Rechtsvorm<span class="text-danger">*</span></label>
                                                     <select name="legal_form" id="legal_form" class="form-control form-control-solid form-control-lg">
                                                         <option value="">Rechtsvorm</option>    
                                                         <option value="Eenmanszaak">Eenmanszaak</option>
@@ -334,13 +334,13 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Contact telefoonnummer<span class="text-danger">*</span></label>
-                                                    <input type="tel" class="form-control form-control-solid form-control-lg" name="phone" placeholder="Contact telefoonnummer" value="<?= $telecom_user_detail->phone; ?>" />
+                                                    <input type="tel" class="form-control form-control-solid form-control-lg" name="phone" placeholder="Om je op de hoogte te houden" value="<?= $telecom_user_detail->phone; ?>" />
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Extra telefoonnummer</label>
-                                                    <input type="tel" class="form-control form-control-solid form-control-lg" name="landline_number" placeholder="Extra telefoonnummer" value="<?= $telecom_user_detail->landline_number; ?>" />
+                                                    <input type="tel" class="form-control form-control-solid form-control-lg" name="landline_number" placeholder="Bijvoorbeeld voor facturatie" value="<?= $telecom_user_detail->landline_number; ?>" />
                                                 </div>
                                             </div>
                                         </div>

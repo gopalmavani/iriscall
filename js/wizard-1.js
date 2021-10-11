@@ -15,6 +15,13 @@ var KTWizard1 = function() {
         _validations.push(FormValidation.formValidation(
             _formEl, {
                 fields: {
+                    legal_form: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select legal form'
+                            }
+                        }
+                    },
                     company_number: {
                         validators: {
                             notEmpty: {
