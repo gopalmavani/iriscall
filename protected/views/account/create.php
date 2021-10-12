@@ -142,7 +142,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                             <div class="wizard-step" data-wizard-type="step">
                                 <div class="wizard-label">
                                     <i class="wizard-icon flaticon-upload-1" style="color: #096c9e;"></i>
-                                    <h3 class="wizard-title">3. Documenten oplanden</h3>
+                                    <h3 class="wizard-title">3. Documenten opladen</h3>
                                 </div>
                                 <span class="svg-icon svg-icon-xl wizard-arrow">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -491,7 +491,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                                                         <span></span>bankoverschrijving
                                                     </label>
                                                 </div>
-                                                <span class="text-muted">U kiest voor betaling via domiciliëring. Het factuurbedrag wordt automatisch van uw bankrekening verminderd.</span>
+                                                <span class="text-muted" id="msg"></span>
                                             </div>
                                         </div>
                                         <div class="sepa-div" style="display: none;">
@@ -1499,6 +1499,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
 
         $('input[type=radio][name=payment_method]').on('change', function() {
             if($(this).val() == 'CreditCard'){
+                $('#msg').html('U kiest voor betaling via credit card. Het factuurbedrag wordt automatisch van uw bankrekening verminderd.');
                 $('.credit-card-payment-div').show();
                 $('#review_credit_card_method').show();
             } else {
@@ -1506,11 +1507,13 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
                 $('#review_credit_card_method').hide();
             }
             if($(this).val() == 'BankTransfer'){
+                $('#msg').html('U kiest voor bankoverschrijving, er zal maandelijks een overschrijvingsopdracht aan je factuur worden toegevoegd.');
                 $('.bank-transfer-div').show();
             } else {
                 $('.bank-transfer-div').hide();
             }
             if($(this).val() == 'SEPA'){
+                $('#msg').html('U kiest voor betaling via domiciliëring. Het factuurbedrag wordt automatisch van uw bankrekening verminderd.');
                 $('.sepa-div').show();
                 $('#review_sepa_method').show();
 
