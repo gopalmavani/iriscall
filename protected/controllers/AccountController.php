@@ -267,6 +267,7 @@ class AccountController extends Controller
                 $telecomDocument->user_id = $telecom_account->user_id;
                 $telecomDocument->document_id = $registrationDocument->document_id;
                 $telecomDocument->document_path = $filePath;
+                $telecomDocument->created_at = date('Y-m-d H:i:s');
                 $telecomDocument->save(false);
 
                 //Create PDF
@@ -277,6 +278,7 @@ class AccountController extends Controller
                     $telecomDocument->user_id = $telecom_account->user_id;
                     $telecomDocument->document_id = $sepaDocument->document_id;
                     $telecomDocument->document_path = $filePath;
+                    $telecomDocument->created_at = date('Y-m-d H:i:s');
                     $telecomDocument->save(false);
                 }
             }
