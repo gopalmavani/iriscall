@@ -573,6 +573,12 @@ var KTWizard1 = function() {
                     $('.passport_label').removeClass('text-danger');
                     $('.passport_label').html('Upload Here');
                 }
+
+                if (productId != "") {
+                    $('.ribbon-target').hide();
+                    $('.tariff_plan').val(productId);
+                    $('#' + productId + '_ribbon').show();
+                }
             }
 
             function getAge() {

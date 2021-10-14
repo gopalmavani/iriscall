@@ -1359,8 +1359,8 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/plugins/credit
     var nationality_array = JSON.parse('<?php echo json_encode($nationalityArray); ?>', true);
     var country_array = JSON.parse('<?php echo json_encode($countryArray); ?>', true);
     var signaturePadSEPA, signaturePadReview ;
-    var sepa_canvas, review_canvas;
-
+    var sepa_canvas, review_canvas, productId;
+    productId = "<?= $_GET['plan'] ?>";
     $(document).ready(function () {
 
         //By default

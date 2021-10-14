@@ -65,6 +65,8 @@ class HomeController extends Controller
      * */
     public function actionAutoLogin(){
         if(isset($_GET['token'])){
+            $plan = isset($_GET['plan']) ? $_GET['plan'] : null;
+            //echo $plan;die;
             $userEmail = $_GET['email'];
             $user = UserInfo::model()->findByAttributes(['email'=>$userEmail]);
             if(isset($user->user_id)){
@@ -74,7 +76,7 @@ class HomeController extends Controller
                 $model = new AutoLoginForm;
                 $model->email = $user->email;
                 if ($model->validate() && $model->login()) {
-                    $this->redirect(array('account/create/'));
+                    $this->redirect(array('account/create/', 'plan'=>$plan));
                 } else {
                     $this->redirect(array('login'));
                 }
