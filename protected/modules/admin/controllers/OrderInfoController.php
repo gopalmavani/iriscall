@@ -146,7 +146,7 @@ class OrderInfoController extends CController
                     'reminder' => 'By Admin',
                     'description' => $_POST['description'],
                 ]);
-                $mail->setFrom('info@cbmglobal.io', 'Iriscall');
+                $mail->setFrom('info@iriscall.be', 'Iriscall');
                 $mail->setSubject($subject);
                 $mail->setTo($_POST['email']);
                 $mail->setAttachment($attachment);

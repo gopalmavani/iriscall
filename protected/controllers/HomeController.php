@@ -39,7 +39,7 @@ class HomeController extends Controller
     protected function beforeAction($action)
     {
         //Action that needs to be allowed before signing up
-        $allowedActionArr = ['login', 'signup', 'registrationStepOne', 'registrationStepEmailVerification', 'registrationStepOneDemo',
+        $allowedActionArr = ['welcome', 'login', 'signup', 'registrationStepOne', 'registrationStepEmailVerification', 'registrationStepOneDemo',
             'registrationStepOneInitial', 'verifyEmail', 'completeDemo', 'activation', 'createUserSignup', 'checkEmail', 'jiraWebhook', 'autologin', 'index', 'landing'];
         if (Yii::app()->user->isGuest && !in_array($action->id, $allowedActionArr)) {
             $this->redirect(Yii::app()->createUrl('home/login'));
@@ -193,7 +193,8 @@ class HomeController extends Controller
             }
         }
         if (!empty($_POST)) {
-            $modified_data = SSOHelper::modifyPostDataWRTSSOForNewUser($_POST);
+            $userInfo['UserInfo'] = $_POST;
+            $modified_data = SSOHelper::modifyPostDataWRTSSOForNewUser($userInfo);
             if (isset($_SESSION['sponsor_id'])) {
                 $id = $_SESSION['sponsor_id'];
                 $modified_data['sponsor_id'] = $id;
@@ -208,42 +209,16 @@ class HomeController extends Controller
                     $user_response = CurlHelper::executeAction($sso_url."api/updateUser", $modified_data, "POST");
                 }
                 if(!is_null($user_response['success_response']) && ($user_response['success_response']['status'] == 1)){
-                    $model->attributes = $_POST['UserInfo'];
-                    //$model->date_of_birth = date('Y-m-d', strtotime($_POST['UserInfo']['date_of_birth']));
-                    //$model->date_of_birth = date('Y-m-d');
-                    if (!empty($model->business_name)) {
-                        if (isset($_POST['sameAddress'])) {
-                            $model->busAddress_building_num = $_POST['UserInfo']['building_num'];
-                            $model->busAddress_street = $_POST['UserInfo']['street'];
-                            $model->busAddress_region = $_POST['UserInfo']['region'];
-                            $model->busAddress_city = $_POST['UserInfo']['city'];
-                            $model->busAddress_postcode = $_POST['UserInfo']['postcode'];
-                            $model->busAddress_country = $_POST['UserInfo']['country'];
-                        } else {
-                            $model->busAddress_building_num = $_POST['UserInfo']['busAddress_building_num'];
-                            $model->busAddress_street = $_POST['UserInfo']['busAddress_street'];
-                            $model->busAddress_region = $_POST['UserInfo']['busAddress_region'];
-                            $model->busAddress_city = $_POST['UserInfo']['busAddress_city'];
-                            $model->busAddress_postcode = $_POST['UserInfo']['busAddress_postcode'];
-                            $model->busAddress_country = $_POST['UserInfo']['busAddress_country'];
-                        }
-                    } else {
-                        $model->business_name = "";
-                        $model->vat_number = "";
-                        $model->busAddress_building_num = "";
-                        $model->busAddress_street = "";
-                        $model->busAddress_region = "";
-                        $model->busAddress_city = "";
-                        $model->busAddress_postcode = "";
-                        $model->busAddress_country = "";
-                    }
+                    //$model->attributes = $userInfo;
+                    $model->first_name = $_POST['first_name'];
+                    $model->middle_name = $_POST['middle_name'];
+                    $model->last_name = $_POST['last_name'];
                     $model->setScenario('signUp');
                     $model->sponsor_id = $id;
                     $model->full_name = $model->first_name . ' ' . $model->middle_name . ' ' . $model->last_name;
-                    $model->email = strtolower($_POST['UserInfo']['email']);
+                    $model->email = strtolower($_POST['email']);
                     $model->created_at = date('Y-m-d H:i:s');
                     $model->auth = $this->randomString(20);
-                    $model->gender = $_POST['gender'];
                     $activationUrl = Yii::app()->createAbsoluteUrl('/home/activation?key=' . $model->auth);
                     if (isset($_POST['privacy'])) {
                         $model->terms_conditions = 1;
@@ -257,47 +232,11 @@ class HomeController extends Controller
 
                     $model->save(false);
 
-                    if (!empty($_POST['payout_bank'])) {
-                        $payout = new UserPayoutInfo();
-                        $payout->user_id = $model->user_id;
-                        $payout->bank_name = $_POST['payout_bank'];
-                        if (isset($_POST['payout_house'])) {
-                            $payout->bank_building_num = $_POST['payout_house'];
-                        }
-                        if (isset($_POST['payout_street'])) {
-                            $payout->bank_street = $_POST['payout_street'];
-                        }
-                        if (isset($_POST['payout_region'])) {
-                            $payout->bank_region = $_POST['payout_region'];
-                        }
-                        if (isset($_POST['payout_city'])) {
-                            $payout->bank_city = $_POST['payout_city'];
-                        }
-                        if (isset($_POST['payout_post'])) {
-                            $payout->bank_postcode = $_POST['payout_post'];
-                        }
-                        if (isset($_POST['payout_country'])) {
-                            $payout->bank_country = $_POST['payout_country'];
-                        }
-                        if (isset($_POST['payout_accountname'])) {
-                            $payout->account_name = $_POST['payout_accountname'];
-                        }
-                        if (isset($_POST['payout_iban'])) {
-                            $payout->iban = $_POST['payout_iban'];
-                        }
-                        if (isset($_POST['payout_biccode'])) {
-                            $payout->bic_code = $_POST['payout_biccode'];
-                        }
-                        $payout->created_at = date('Y-m-d H:i:s');
-                        if ($payout->validate()) {
-                            $payout->save();
-                        }
-                    }
                     if(Yii::app()->params['env'] != 'local'){
-                        $mail = new YiiMailer('welcome', array('activationUrl' => $activationUrl));
+                        $mail = new YiiMailer('welcome', array('activationUrl' => $activationUrl, 'email' => $model->email));
                         //$mail->setFrom('info@micromaxcash.com', 'Micromaxcash');
-                        $mail->setFrom('info@cbmglobal.io', 'CBM Global');
-                        $mail->setSubject("Email Verification");
+                        $mail->setFrom('info@iriscall.be', 'IrisCall');
+                        $mail->setSubject("Verifieer je e-mailadres");
                         $mail->setTo($model->email);
                         $mail->send();
                     }
@@ -386,6 +325,12 @@ class HomeController extends Controller
         $_SESSION['sponsor_id'] = $id;
         $apiToken = null;
         $this->render('registration/stepEmailVerification');
+    }
+
+    public function actionWelcome(){
+        
+        $this->layout = false;
+        $this->render('welcome', array('activationUrl' => "http://iriscall.net"));
     }
 
     public function actionRegistrationStepOneInitial(){
@@ -480,7 +425,8 @@ class HomeController extends Controller
                 } elseif ($sso_success_response['status'] == 2){
                     //User is already registered at SIO. Please proceed registration with some necessary data.
                     $response['status'] = 3;
-                    $response['message'] = $sso_success_response['message'];
+                    $response['message'] = "We see that you are already registered with Sign In Once.<br/>
+                                            Please verify your email for proceeding with registration with your SIO account.";
                     //$_SESSION['user_present_in_sso'] = $sso_success_response['data']['email'];
                     $portalToken = $sso_success_response['data']['portal_token'];
 
@@ -488,7 +434,7 @@ class HomeController extends Controller
                     $afterVerificationUrl = Yii::app()->createAbsoluteUrl('/home/registrationStepOneInitial') . '?token='.$portalToken;
                     $response['verification_url'] = $afterVerificationUrl;
                     $mail = new YiiMailer('sso-email-verification', ['activationUrl' => $afterVerificationUrl]);
-                    $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+                    $mail->setFrom('info@iriscall.be', 'IrisCall');
                     $mail->setSubject("Email Verification");
                     $mail->setTo($sso_success_response['data']['email']);
                     $mail->send();
@@ -606,7 +552,7 @@ class HomeController extends Controller
             //Update to SSO
             $sso_url = Yii::app()->params['SSO_URL'];
 
-            $data['application'] = 'Micromaxcash';
+            $data['application'] = 'Iriscall';
             $data['email'] = $user->email;
             $data['is_active'] = 1;
             $sso_response = CurlHelper::executeAction($sso_url.'api/activateUser',$data, "POST");
@@ -648,7 +594,7 @@ class HomeController extends Controller
             $activationUrl = Yii::app()->createAbsoluteUrl('/home/activation?key=' . $model->auth);
             if ($model->save(false)) {
                 $mail = new YiiMailer('welcome', array('activationUrl' => $activationUrl));
-                $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+                $mail->setFrom('info@iriscall.be', 'IrisCall');
                 $mail->setSubject("Email Verification");
                 $mail->setTo($model->email);
                 if ($mail->send()) {

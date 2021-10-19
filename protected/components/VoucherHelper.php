@@ -69,7 +69,7 @@ class VoucherHelper extends CApplicationComponent {
             'voucher_code' => $voucher_code,
             'voucher_validity' => $voucher->end_time
         ]);
-        $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+        $mail->setFrom('info@iriscall.be', 'IrisCall');
         $mail->setSubject("Voucher Confirmation");
         $mail->setTo($user->email);
         $mail->send();

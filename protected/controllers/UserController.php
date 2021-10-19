@@ -524,7 +524,7 @@ class UserController extends Controller
             $model->save(false);
             $resetUrl = Yii::app()->getBaseUrl(true) . '/user/resetpassword/?token=' . $token;
             $mail = new YiiMailer('forgot-password', array('resetUrl'=>$resetUrl));
-            $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+            $mail->setFrom('info@iriscall.be', 'IrisCall');
             $mail->setSubject("Password Change");
             $mail->setTo($model->email);
             if($mail->send())
@@ -612,7 +612,7 @@ class UserController extends Controller
         $user->save(false);
         $resetUrl = Yii::app()->getBaseUrl(true) . '/user/newUserPage/?token=' . $token;
         $mail = new YiiMailer('welcome',['resetUrl'=>$resetUrl]);
-        $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+        $mail->setFrom('info@iriscall.be', 'IrisCall');
         $mail->setSubject("Welcome mail");
         $mail->setTo($user->email);
         if($mail->send())
@@ -631,7 +631,7 @@ class UserController extends Controller
             $user->save(false);
             $resetUrl = Yii::app()->createAbsoluteUrl('user/newUserPage/?token=' . $token.'/');
             $mail = new YiiMailer('welcome',['resetUrl'=>$resetUrl]);
-            $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+            $mail->setFrom('info@iriscall.be', 'IrisCall');
             $mail->setSubject("Welcome mail");
             $mail->setTo($user->email);
             if($mail->send())

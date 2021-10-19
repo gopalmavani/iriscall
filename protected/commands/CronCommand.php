@@ -89,7 +89,7 @@ class CronCommand extends CConsoleCommand
                             'reminder' => $reminder,
                             'orders' => $orders,
                         ]);
-                        $mail->setFrom('info@cbmglobal.io', 'Iriscall');
+                        $mail->setFrom('info@iriscall.be', 'IrisCall');
                         $mail->setSubject($subject);
                         $mail->setTo($email);
                         $sent = $mail->send();
