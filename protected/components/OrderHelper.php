@@ -192,7 +192,7 @@ class OrderHelper extends CApplicationComponent
                 'orderItems' => $orderItems,
                 'orderPayment' => $orderPayment
             ]);
-            $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+            $mail->setFrom('info@iriscall.be', 'IrisCall');
             $mail->setSubject("Order Confirmation");
             $mail->setTo($user->email);
             $mail->send();
@@ -208,7 +208,7 @@ class OrderHelper extends CApplicationComponent
                 'from_name' => $fromName,
                 'to_name' => $user->full_name
             ]);
-            $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+            $mail->setFrom('info@iriscall.be', 'IrisCall');
             $mail->setSubject("Affiliate Level One Commission");
             $mail->setTo($user->email);
             $mail->send();
@@ -224,7 +224,7 @@ class OrderHelper extends CApplicationComponent
                 'from_name' => $fromName,
                 'to_name' => $user->full_name
             ]);
-            $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+            $mail->setFrom('info@iriscall.be', 'IrisCall');
             $mail->setSubject("Affiliate Level Two Commission");
             $mail->setTo($user->email);
             $mail->send();
@@ -239,7 +239,7 @@ class OrderHelper extends CApplicationComponent
             'name' => $name,
             'licenses' => $license
         ]);
-        $mail->setFrom('info@cbmglobal.io', 'CBM Global');
+        $mail->setFrom('info@iriscall.be', 'IrisCall');
         $mail->setSubject("Buy Extra License");
         $mail->setTo($email);
         $mail->send();

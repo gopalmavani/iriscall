@@ -11,7 +11,7 @@ $config=dirname(__FILE__).'/protected/config/main.php';
 if($_SERVER['HTTP_HOST'] == 'localhost'){
 	defined('YII_DEBUG') or define('YII_DEBUG',true);
 }else{
-	defined('YII_DEBUG') or define('YII_DEBUG',false);
+	defined('YII_DEBUG') or define('YII_DEBUG',true);
 }
 //defined('YII_DEBUG') or define('YII_DEBUG',true);
 // specify how many levels of call stack should be shown in each log message
