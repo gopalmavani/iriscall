@@ -39,7 +39,7 @@ class HomeController extends Controller
     protected function beforeAction($action)
     {
         //Action that needs to be allowed before signing up
-        $allowedActionArr = ['welcome', 'login', 'signup', 'registrationStepOne', 'registrationStepEmailVerification', 'registrationStepOneDemo',
+        $allowedActionArr = ['login', 'signup', 'registrationStepOne', 'registrationStepEmailVerification', 'registrationStepOneDemo',
             'registrationStepOneInitial', 'verifyEmail', 'completeDemo', 'activation', 'createUserSignup', 'checkEmail', 'jiraWebhook', 'autologin', 'index', 'landing'];
         if (Yii::app()->user->isGuest && !in_array($action->id, $allowedActionArr)) {
             $this->redirect(Yii::app()->createUrl('home/login'));
@@ -325,12 +325,6 @@ class HomeController extends Controller
         $_SESSION['sponsor_id'] = $id;
         $apiToken = null;
         $this->render('registration/stepEmailVerification');
-    }
-
-    public function actionWelcome(){
-        
-        $this->layout = false;
-        $this->render('welcome', array('activationUrl' => "http://iriscall.net"));
     }
 
     public function actionRegistrationStepOneInitial(){
