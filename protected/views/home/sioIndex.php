@@ -1,5 +1,5 @@
 <div class="logo mb6" data-aos="fade-down">
-    <a href="#"><img src="<?php echo Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" alt="" style="width: 35%" /></a>
+    <a href="https://mobiel.iriscall.com/"><img src="<?php echo Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" alt="" style="width: 35%" /></a>
 </div>
 <div class="login-box mb6">
     <div class="login-form" style="min-height: 300px">
