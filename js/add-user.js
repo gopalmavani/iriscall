@@ -1,63 +1,63 @@
 "use strict";
 
 // Class Definition
-var KTAddUser = function () {
-	// Private Variables
-	var _wizardEl;
-	var _formEl;
-	var _wizardObj;
-	var _avatar;
-	var _validations = [];
+var KTAddUser = function() {
+    // Private Variables
+    var _wizardEl;
+    var _formEl;
+    var _wizardObj;
+    var _avatar;
+    var _validations = [];
 
-	// Private Functions
-	var _initWizard = function () {
-		// Initialize form wizard
-		_wizardObj = new KTWizard(_wizardEl, {
-			startStep: 1, // initial active step number
-			clickableSteps: false  // allow step clicking
-		});
+    // Private Functions
+    var _initWizard = function() {
+        // Initialize form wizard
+        _wizardObj = new KTWizard(_wizardEl, {
+            startStep: 1, // initial active step number
+            clickableSteps: false // allow step clicking
+        });
 
-		// Validation before going to next page
-		_wizardObj.on('change', function (wizard) {
-			if (wizard.getStep() > wizard.getNewStep()) {
-				return; // Skip if stepped back
-			}
+        // Validation before going to next page
+        _wizardObj.on('change', function(wizard) {
+            if (wizard.getStep() > wizard.getNewStep()) {
+                return; // Skip if stepped back
+            }
 
-			// Validate form before change wizard step
-			var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
+            // Validate form before change wizard step
+            var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
 
-			if (validator) {
-				validator.validate().then(function (status) {
-					if (status == 'Valid') {
-						wizard.goTo(wizard.getNewStep());
+            if (validator) {
+                validator.validate().then(function(status) {
+                    if (status == 'Valid') {
+                        wizard.goTo(wizard.getNewStep());
 
-						KTUtil.scrollTop();
-					} else {
-						Swal.fire({
-							text: "Sorry, looks like there are some errors detected, please try again.",
-							icon: "error",
-							buttonsStyling: false,
-							confirmButtonText: "Ok, got it!",
-							customClass: {
-								confirmButton: "btn font-weight-bold btn-light"
-							}
-						}).then(function () {
-							KTUtil.scrollTop();
-						});
-					}
-				});
-			}
-			return false;  // Do not change wizard step, further action will be handled by he validator
-		});
+                        KTUtil.scrollTop();
+                    } else {
+                        Swal.fire({
+                            text: "Sorry, looks like there are some errors detected, please try again.",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-light"
+                            }
+                        }).then(function() {
+                            KTUtil.scrollTop();
+                        });
+                    }
+                });
+            }
+            return false; // Do not change wizard step, further action will be handled by he validator
+        });
 
-		// Change event
-		_wizardObj.on('changed', function (wizard) {
-			KTUtil.scrollTop();
-		});
+        // Change event
+        _wizardObj.on('changed', function(wizard) {
+            KTUtil.scrollTop();
+        });
 
-		// Submit event
-		_wizardObj.on('submit', function (wizard) {
-			if($('.privacy').prop('checked')){
+        // Submit event
+        _wizardObj.on('submit', function(wizard) {
+            if ($('.privacy').prop('checked')) {
                 Swal.fire({
                     text: "All is good! Please confirm the form submission.",
                     icon: "success",
@@ -69,7 +69,7 @@ var KTAddUser = function () {
                         confirmButton: "btn font-weight-bold btn-primary",
                         cancelButton: "btn font-weight-bold btn-default"
                     }
-                }).then(function (result) {
+                }).then(function(result) {
                     if (result.value) {
                         _formEl.submit(); // Submit form
                     } else if (result.dismiss === 'cancel') {
@@ -84,7 +84,7 @@ var KTAddUser = function () {
                         });
                     }
                 });
-			} else {
+            } else {
                 Swal.fire({
                     text: "Sorry, You need to accept the privacy policy.",
                     icon: "error",
@@ -93,99 +93,98 @@ var KTAddUser = function () {
                     customClass: {
                         confirmButton: "btn font-weight-bold btn-light"
                     }
-                }).then(function () {
+                }).then(function() {
                     KTUtil.scrollTop();
                 });
-			}
-		});
-	}
+            }
+        });
+    }
 
-	var _initValidations = function () {
-		// Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+    var _initValidations = function() {
+        // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
 
-		// Validation Rules For Step 1
-		_validations.push(FormValidation.formValidation(
-			_formEl,
-			{
-				fields: {
+        // Validation Rules For Step 1
+        _validations.push(FormValidation.formValidation(
+            _formEl, {
+                fields: {
                     'UserInfo[first_name]': {
-						validators: {
-							notEmpty: {
-								message: 'First Name is required'
-							}
-						}
-					},
-					'UserInfo[last_name]': {
-						validators: {
-							notEmpty: {
-								message: 'Last Name is required'
-							}
-						}
-					},
+                        validators: {
+                            notEmpty: {
+                                message: 'First Name is required'
+                            }
+                        }
+                    },
+                    'UserInfo[last_name]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Last Name is required'
+                            }
+                        }
+                    },
                     'UserInfo[phone]': {
-						validators: {
-							notEmpty: {
-								message: 'Phone is required'
-							}
-						}
-					},
+                        validators: {
+                            notEmpty: {
+                                message: 'Phone is required'
+                            }
+                        }
+                    },
                     password: {
-						validators: {
-							notEmpty: {
-								message: 'Password is required'
-							}
-						}
-					},
+                        validators: {
+                            notEmpty: {
+                                message: 'Dit is een verplicht veld.'
+                            }
+                        }
+                    },
                     confirm_password: {
                         validators: {
                             identical: {
                                 compare: function() {
                                     return _formEl.querySelector('[name="password"]').value;
                                 },
-                                message: 'The password and its confirm are not the same'
+                                message: 'Het wachtwoord en de wachtwoord bevestiging zijn niet hetzelfde'
                             }
                         }
                     },
-					'UserInfo[email]': {
-						validators: {
-							notEmpty: {
-								message: 'Email is required'
-							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}/*,
-                            remote: {
-                                message: 'Email Already Exist in System. Please login',
-                                method: 'POST',
-                                url: '../checkEmail'
-                            }*/
-						}
-					}
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
+                    'UserInfo[email]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email is required'
+                            },
+                            emailAddress: {
+                                message: 'The value is not a valid email address'
+                            }
+                            /*,
+                                                        remote: {
+                                                            message: 'Email Already Exist in System. Please login',
+                                                            method: 'POST',
+                                                            url: '../checkEmail'
+                                                        }*/
+                        }
+                    }
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
                     excluded: new FormValidation.plugins.Excluded(),
-					// Bootstrap Framework Integration
-					bootstrap: new FormValidation.plugins.Bootstrap({
-						//eleInvalidClass: '',
-						eleValidClass: ''
-					})
-				}
-			}
-		));
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap({
+                        //eleInvalidClass: '',
+                        eleValidClass: ''
+                    })
+                }
+            }
+        ));
 
-		_validations.push(FormValidation.formValidation(
-			_formEl,
-			{
-				fields: {
-					// Step 2
-					'UserInfo[street]': {
-						validators: {
-							notEmpty: {
-								message: 'Please enter street name'
-							}
-						}
-					},
+        _validations.push(FormValidation.formValidation(
+            _formEl, {
+                fields: {
+                    // Step 2
+                    'UserInfo[street]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter street name'
+                            }
+                        }
+                    },
                     'UserInfo[building_num]': {
                         validators: {
                             notEmpty: {
@@ -207,7 +206,7 @@ var KTAddUser = function () {
                             }
                         }
                     },
-					'UserInfo[country]': {
+                    'UserInfo[country]': {
                         validators: {
                             notEmpty: {
                                 message: 'Please select a country'
@@ -263,93 +262,92 @@ var KTAddUser = function () {
                             }
                         }
                     }
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
                     excluded: new FormValidation.plugins.Excluded(),
                     icon: new FormValidation.plugins.Icon({
                         valid: 'fa fa-check',
                         invalid: 'fa fa-times',
                         validating: 'fa fa-refresh'
                     }),
-					// Bootstrap Framework Integration
-					bootstrap: new FormValidation.plugins.Bootstrap({
-						//eleInvalidClass: '',
-						eleValidClass: ''
-					})
-				}
-			}
-		));
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap({
+                        //eleInvalidClass: '',
+                        eleValidClass: ''
+                    })
+                }
+            }
+        ));
 
-		_validations.push(FormValidation.formValidation(
-			_formEl,
-			{
-				fields: {
+        _validations.push(FormValidation.formValidation(
+            _formEl, {
+                fields: {
                     // Step 3
-					payout_bank: {
-						validators: {
-							notEmpty: {
-								message: 'Bank name is required'
-							}
-						}
-					},
+                    payout_bank: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Bank name is required'
+                            }
+                        }
+                    },
                     payout_accountname: {
-						validators: {
-							notEmpty: {
-								message: 'Account Name is required'
-							}
-						}
-					},
+                        validators: {
+                            notEmpty: {
+                                message: 'Account Name is required'
+                            }
+                        }
+                    },
                     payout_iban: {
-						validators: {
-							notEmpty: {
-								message: 'IBAN is required'
-							}
-						}
-					},
+                        validators: {
+                            notEmpty: {
+                                message: 'IBAN is required'
+                            }
+                        }
+                    },
                     payout_biccode: {
-						validators: {
-							notEmpty: {
-								message: 'BIC-CODE is required'
-							}
-						}
-					}
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
+                        validators: {
+                            notEmpty: {
+                                message: 'BIC-CODE is required'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
                     excluded: new FormValidation.plugins.Excluded(),
                     icon: new FormValidation.plugins.Icon({
                         valid: 'fa fa-check',
                         invalid: 'fa fa-times',
                         validating: 'fa fa-refresh'
                     }),
-					// Bootstrap Framework Integration
-					bootstrap: new FormValidation.plugins.Bootstrap({
-						//eleInvalidClass: '',
-						eleValidClass: ''
-					})
-				}
-			}
-		));
-	}
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap({
+                        //eleInvalidClass: '',
+                        eleValidClass: ''
+                    })
+                }
+            }
+        ));
+    }
 
-	var _initAvatar = function () {
-		_avatar = new KTImageInput('kt_user_add_avatar');
-	}
+    var _initAvatar = function() {
+        _avatar = new KTImageInput('kt_user_add_avatar');
+    }
 
-	return {
-		// public functions
-		init: function () {
-			_wizardEl = KTUtil.getById('kt_wizard');
-			_formEl = KTUtil.getById('kt_form');
+    return {
+        // public functions
+        init: function() {
+            _wizardEl = KTUtil.getById('kt_wizard');
+            _formEl = KTUtil.getById('kt_form');
 
-			_initWizard();
-			_initValidations();
-			_initAvatar();
-		}
-	};
+            _initWizard();
+            _initValidations();
+            _initAvatar();
+        }
+    };
 }();
 
-jQuery(document).ready(function () {
-	KTAddUser.init();
+jQuery(document).ready(function() {
+    KTAddUser.init();
 });

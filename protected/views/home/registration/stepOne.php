@@ -109,10 +109,10 @@
                     <div class="subheader py-2 py-lg-4 subheader-transparent remove" id="kt_subheader">
                         <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
                             <div class="d-flex align-items-center flex-wrap mr-2">
-                                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">New User</h5>
+                                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Nieuwe klant</h5>
                                 <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
                                 <div class="d-flex align-items-center" id="kt_subheader_search">
-                                    <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">Enter user details and submit</span>
+                                    <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">Voer gebruikersgegevens in en verzend</span>
                                 </div>
                             </div>
 
@@ -142,11 +142,11 @@
                                                         )); ?>
                                                         <!--begin: Form Wizard Step 1-->
                                                         <div class="my-5 step" data-wizard-type="step-content" data-wizard-state="current">
-                                                            <h5 class="text-dark font-weight-bold mb-10">Enter your Account Details</h5>
+                                                            <h5 class="text-dark font-weight-bold mb-10">Voer uw accountgegevens in</h5>
                                                             <div class="row">
                                                                 <div class="col-xl-6">
 																	<div class="form-group">
-																		<label for="first_name">First Name<span>*</span></label>
+																		<label for="first_name">Voornaam<span>*</span></label>
 																		<div class="input-group input-group-solid">
                                                                         	<input type="text" id="first_name" class="form-control" name="first_name" required="required">
 																		</div>
@@ -154,7 +154,7 @@
                                                                 </div>
                                                                 <div class="col-xl-6">
 																	<div class="form-group">
-																		<label for="middle_name">Middle Name<span>*</span></label>
+																		<label for="middle_name">Midden-naam</label>
 																		<div class="input-group input-group-solid">
                                                                         	<input type="text" id="middle_name" class="form-control" name="middle_name">
 																		</div>
@@ -164,7 +164,7 @@
                                                             <div class="row">
                                                                 <div class="col-xl-6">
 																	<div class="form-group">
-																		<label for="last_name">Last Name<span>*</span></label>
+																		<label for="last_name">Achternaam<span>*</span></label>
 																		<div class="input-group input-group-solid">
                                                                         	<input type="text" id="last_name" class="form-control" name="last_name" required="required">
 																		</div>
@@ -172,7 +172,7 @@
                                                                 </div>
                                                                 <div class="col-xl-6">
                                                                     <div class="form-group">
-																		<label for="email">Email<span>*</span></label>
+																		<label for="email">E-mailadres<span>*</span></label>
 																		<div class="input-group input-group-solid">
                                                                         	<input type="email" id="email" class="form-control" name="email" value="<?= isset($model->email) ? $model->email : '' ?>" required="required">
 																		</div>
@@ -182,14 +182,14 @@
                                                             <div class="row">
                                                                 <div class="col-xl-6">
                                                                     <div class="form-group" id="password_group">
-                                                                        <label>Password<span>*</span></label>
+                                                                        <label>Wachtwoord<span>*</span></label>
 																		<div class="input-group input-group-solid">
 																			<input type="password" id="password" class="form-control" name="password" required="required">
 																			<div class="input-group-append">
 																				<i style="margin-right: 0.50rem" class="far fa-eye-slash" id="togglePassword"></i>
 																			</div>
 																		</div>
-                                                                        <div class="text-sm text-grey">Password Strength</div>
+                                                                        <div class="text-sm text-grey">Wachtwoord sterkte</div>
                                                                         <div class="progress progress-striped active">
                                                                             <div id="jak_pstrength" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                                                                         </div>
@@ -197,7 +197,7 @@
                                                                 </div>
                                                                 <div class="col-xl-6">
                                                                     <div class="form-group" id="confirm_password_group">
-                                                                        <label for="confirm_password">Repeat Password<span>*</span></label>
+                                                                        <label for="confirm_password">Wachtwoord bevestigen<span>*</span></label>
 																		<div class="input-group input-group-solid">
                                                                         	<input type="password" id="confirm_password" class="form-control" name="confirm_password" required="required">
 																			<div class="input-group-append">
@@ -211,9 +211,10 @@
                                                         <!--end: Form Wizard Step 3-->
                                                         <div class="col-md-12">
                                                             <div class="form-group" align="center">
-                                                                <?php echo CHtml::submitButton($model->isNewRecord ? 'Submit' : 'Save', array(
+                                                                <?php echo CHtml::submitButton($model->isNewRecord ? 'Account aanmaken' : 'Save', array(
                                                                     'class' => 'btn btn-primary col-md-offset-2',
-                                                                    'id' => 'create'
+                                                                    'id' => 'create',
+																	'style' => 'background-color: #096c9e;'
                                                                 )); ?>
                                                             </div>
                                                         </div>
