@@ -10,7 +10,7 @@
                 <img src="<?= Yii::app()->request->baseUrl ?>/images/sio/logo-sio-icon.png" alt="" />
             </a>
         </form>
-        <a style="color: white; padding-left: 45%;" href="<?php echo Yii::app()->request->baseUrl ?>/home/signup/1">Click here to create new account</a>
+        <a style="color: white; padding-left: 5%;" href="<?php echo Yii::app()->request->baseUrl ?>/home/signup/1">Nieuwe Klant ? Zakelijk account aanmaken</a>
     </div>
     <div>
         <div class="vector-icon">

@@ -26,6 +26,9 @@
         .boxshadow-content{
             background: #FFF !important;
         }
+		.font24{
+			font-size: 24px;
+		}
     </style>
 </head>
 <!-- <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled page-loading"> -->
@@ -35,7 +38,7 @@
             <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
                 <div class="row mb9 mb6-md">
                     <div class="col-md-12 text-center">
-                        <div class="logo mb3 wow fadeInUp" data-wow-delay="100ms"><img src="<?= Yii::app()->baseUrl. '/images/logos/iriscall-logo.svg'; ?>" class="img-fluid"></div>
+                        <div class="logo mb3 wow fadeInUp" data-wow-delay="100ms"><img src="<?= Yii::app()->baseUrl. '/images/logos/iriscall-logo.svg'; ?>" width="20%" class="img-fluid"></div>
                     </div>
                 </div>
                 <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin:0 30% 1%;display: none;">
@@ -44,10 +47,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="content" style="background-color: #ffffff; padding: 90px 0">
+                <div class="content" style="background-color: #ffffff; padding: 50px 0 130px">
                     <div class="text-center" style="margin: auto">
                         <div class="card-title">
-                            <h3 class="card-label">Welcome to <?= Yii::app()->params['applicationName'] ?></h3>
+                            <h3 style="font-size: 2.75rem;" class="card-label">Welcome to <?= Yii::app()->params['applicationName'] ?></h3>
                         </div>
                     </div>
                     <hr>
@@ -61,7 +64,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-center">
-                                <button type="button" onclick="verifyEmail()" class="btn btn-primary">Verify <i class="fa fa-angle-right"></i></button>
+                                <button type="button" onclick="verifyEmail()" class="btn btn-primary" style="background-color: #096c9e;">Verify <i class="fa fa-angle-right"></i></button>
                             </div>
                         </div>
                     </div>
