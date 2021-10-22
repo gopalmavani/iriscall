@@ -1,3 +1,4 @@
+<?php $plan = isset($_GET['plan']) ? $_GET['plan'] : null ?>
 <div class="logo mb6" data-aos="fade-down">
     <a href="https://mobiel.iriscall.com/"><img src="<?php echo Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" alt="" style="width: 35%" /></a>
 </div>
@@ -5,7 +6,7 @@
     <div class="login-form" style="min-height: 300px">
         <h4 class="mb5">Login To <?= Yii::app()->params['applicationName']; ?></h4>
         <form class="mb1" style="margin-top: 70px">
-            <a href="<?= Yii::app()->params['SSO_URL'].'login?application='.Yii::app()->params['applicationName'] ?>" class="signInBtn">
+            <a href="<?= Yii::app()->params['SSO_URL'].'login?application='.Yii::app()->params['applicationName'].'&plan='.$plan ?>" class="signInBtn">
                 Sign in using Sign In Once
                 <img src="<?= Yii::app()->request->baseUrl ?>/images/sio/logo-sio-icon.png" alt="" />
             </a>
