@@ -10,7 +10,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/SIO/color.
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/SIO/main.css');
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/SIO/responsive.css');
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/plugins.bundle.css');
-    
 ?>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet"/>
@@ -19,6 +18,9 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/plugins.bu
 <main class="login">
     <?php echo $content; ?>
 </main>
+<?php
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins.bundle.js', CClientScript::POS_HEAD);
+?>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     AOS.init({
