@@ -176,7 +176,7 @@ class HomeController extends Controller
         $model = new UserInfo;
         $sioData = 0;
         $apiToken = null;
-
+        $_SESSION['sponsor_id'] = 1;
         if(isset($_SESSION['verified_email'])){
             $model->email = $_SESSION['verified_email'];
             unset($_SESSION['verified_email']);
@@ -193,6 +193,7 @@ class HomeController extends Controller
             }
         }
         if (!empty($_POST)) {
+            //echo '<pre>';print_r($_POST);die;
             $userInfo['UserInfo'] = $_POST;
             $modified_data = SSOHelper::modifyPostDataWRTSSOForNewUser($userInfo);
             if (isset($_SESSION['sponsor_id'])) {
@@ -211,11 +212,9 @@ class HomeController extends Controller
                 if(!is_null($user_response['success_response']) && ($user_response['success_response']['status'] == 1)){
                     //$model->attributes = $userInfo;
                     $model->first_name = $_POST['first_name'];
-                    $model->middle_name = $_POST['middle_name'];
-                    $model->last_name = $_POST['last_name'];
                     $model->setScenario('signUp');
                     $model->sponsor_id = $id;
-                    $model->full_name = $model->first_name . ' ' . $model->middle_name . ' ' . $model->last_name;
+                    $model->full_name = $model->first_name;
                     $model->email = strtolower($_POST['email']);
                     $model->created_at = date('Y-m-d H:i:s');
                     $model->auth = $this->randomString(20);
@@ -422,16 +421,16 @@ class HomeController extends Controller
                     $response['message'] = "We see that you are already registered with Sign In Once.<br/>
                                             Please verify your email for proceeding with registration with your SIO account.";
                     //$_SESSION['user_present_in_sso'] = $sso_success_response['data']['email'];
-                    $portalToken = $sso_success_response['data']['portal_token'];
+                    $_SESSION['user_present_in_sso'] = $sso_success_response['data']['portal_token'];
 
                     //Email verification with SIO email
-                    $afterVerificationUrl = Yii::app()->createAbsoluteUrl('/home/registrationStepOneInitial') . '?token='.$portalToken;
-                    $response['verification_url'] = $afterVerificationUrl;
-                    $mail = new YiiMailer('sso-email-verification', ['activationUrl' => $afterVerificationUrl]);
-                    $mail->setFrom('info@iriscall.be', 'IrisCall');
-                    $mail->setSubject("Email Verification");
-                    $mail->setTo($sso_success_response['data']['email']);
-                    $mail->send();
+                    // $afterVerificationUrl = Yii::app()->createAbsoluteUrl('/home/registrationStepOneInitial') . '?token='.$portalToken;
+                    // $response['verification_url'] = $afterVerificationUrl;
+                    // $mail = new YiiMailer('sso-email-verification', ['activationUrl' => $afterVerificationUrl]);
+                    // $mail->setFrom('info@iriscall.be', 'IrisCall');
+                    // $mail->setSubject("Email Verification");
+                    // $mail->setTo($sso_success_response['data']['email']);
+                    // $mail->send();
                 } else {
                     //Registration can begin
                     $response['status'] = 1;
