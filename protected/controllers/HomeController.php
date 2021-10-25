@@ -193,6 +193,10 @@ class HomeController extends Controller
             }
         }
         if (!empty($_POST)) {
+            if($_POST['password'] == "remove" && $_POST['confirm_password'] == "remove"){
+                unset($_POST['password']);
+                unset($_POST['confirm_password']);
+            }
             //echo '<pre>';print_r($_POST);die;
             $userInfo['UserInfo'] = $_POST;
             $modified_data = SSOHelper::modifyPostDataWRTSSOForNewUser($userInfo);

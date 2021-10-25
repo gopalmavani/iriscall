@@ -137,15 +137,18 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
     }
+    .mt-5{
+        margin-top: 100px;
+    }
 </style>
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-12">
         <div class="logo mb6" data-aos="fade-down">
             <a href="https://mobiel.iriscall.com/"><img src="<?php echo Yii::app()->request->baseUrl ?>/images/logos/iriscall-logo.svg" alt="" style="width: 30%" /></a>
         </div>
     </div>
-</div>
-<div class="row">
+</div> -->
+<div class="row mt-5">
     <div class="col-md-12">
         <div class="col-md-6">
             <div class="login-box mb6">
@@ -284,7 +287,9 @@ $(document).ready(function () {
                     $('#msg').html(resp['message']);
                     $("form[name='register']").empty();
                 }else if(resp['status'] == 3){
-                    $('.password').remove();
+                    $('.password').hide();
+                    $('#password').val('remove');
+                    $('#confirm_password').val('remove');
                     $('#hide').show();
                     $('#msg').html(resp['message']);
                 }
