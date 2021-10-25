@@ -30,7 +30,7 @@
 
                         <div class="col-md-12">
                             <div class="form-group <?php echo $model->hasErrors('cost') ? 'has-error' : ''; ?>">
-                                <?php echo $form->textFieldControlGroup($model, 'cost', array('autofocus' => 'on', 'class' => 'form-control', 'autocomplete' => 'off', 'placeholder' => 'Enter cost')); ?>
+                                <?php echo $form->textFieldControlGroup($model, 'cost', array('autofocus' => 'on', 'class' => 'form-control cost', 'autocomplete' => 'off', 'placeholder' => 'Enter cost')); ?>
                             </div>
                         </div>
                          
@@ -102,11 +102,11 @@ $(document).ready(function () {
             },
             'CdrCostRulesInfo[cost]': {
                 required: true,
-                digits: true
+                //digits: true
             },
-            'CdrCostRulesInfo[country]': {
-                required: true
-            },
+            // 'CdrCostRulesInfo[country]': {
+            //     required: true
+            // },
             'CdrCostRulesInfo[from_number_digit]': {
                 digits: true
             }
@@ -121,11 +121,11 @@ $(document).ready(function () {
             },
             'CdrCostRulesInfo[cost]': {
                 required: "Please enter the cost.",
-                digits: "Please enter number only."
+                //digits: "Please enter number only."
             },
-            'CdrCostRulesInfo[country]': {
-                required: "Please select the country."
-            },
+            // 'CdrCostRulesInfo[country]': {
+            //     required: "Please select the country."
+            // },
             'CdrCostRulesInfo[from_number_digit]': {
                 digits: "Please enter number only."
             }
@@ -139,6 +139,15 @@ $(document).ready(function () {
         },
         submitHandler: function(form) {
             form.submit();
+        }
+    });
+
+    $('.cost').on("input", function(evt) {
+        var self = $(this);
+        self.val(self.val().replace(/[^0-9\.]/g, ''));
+        if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+        {
+            evt.preventDefault();
         }
     });
 });

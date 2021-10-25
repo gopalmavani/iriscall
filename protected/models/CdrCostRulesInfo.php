@@ -31,9 +31,9 @@ class CdrCostRulesInfo extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('start_with, digit, cost, country, created_at', 'required'),
+            array('start_with, digit, cost, created_at', 'required'),
             array('cost', 'numerical'),
-            array('digit,cost,from_number_digit', 'numerical', 'integerOnly'=>true),
+            array('digit,from_number_digit', 'numerical', 'integerOnly'=>true),
             array('comment','length', 'max'=>255),
             array('start_with,from_number_start_with','length', 'max'=>30),
             array('country','length', 'max'=>20),
