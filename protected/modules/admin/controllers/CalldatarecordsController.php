@@ -110,36 +110,20 @@ class CalldatarecordsController extends Controller
                 }
                 $organisation = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
                 $selected = ($getMonth != '') ? $organisation->name.' for '.$getMonth : $organisation->name;
-                //$end = date(date('Y-'. $month .'-' . 't', strtotime($start)) );
-                //$end = $month;
-                /*$start = '2020-12-01';
-                $end = '2020-12-31';*/
+
                 $data_array = [];
-                /* first row */
+
+                /* National Call */
                 $national_call_cdr_data = Yii::app()->db->createCommand("SELECT count(*) as total_time FROM `cdr_info` where organisation_id = ".$org_id." and (`comment` LIKE '%National Fixed Call%' or `comment` LIKE 'National Mobile Call') and date >= '".$start."' and date <= '$end'");
                 $national_call_cdr_data = $national_call_cdr_data->queryRow();
-                /*->select('count(*) as total_time')
-                ->from('cdr_info')
-                ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                ->andWhere(['like', 'comment', '%National%'])
-                ->andWhere(['Not like', 'comment', '%International Call%'])
-                //->orWhere(['like', 'comment', '%National Mobile Call%'])
-                ->andWhere('date>=:fn',[':fn'=>$start])
-                ->andWhere('date<=:fn1',[':fn1'=>$end])
-                ->queryRow();*/
                 $national_call_total_time = 0;
                 $min = '0';
                 if(!empty($national_call_cdr_data['total_time']) && $national_call_cdr_data['total_time'] > 0){
                     $national_call_total_time = $national_call_cdr_data['total_time'];
-                    /*if(!empty($national_call_total_time)){
-                        $time = $national_call_total_time;
-                        $timesplit=explode(':',$time);
-                        $min=($timesplit[0]*60)+($timesplit[1])+(round($timesplit[2]/60,2));
-                    }*/
                     array_push($data_array,['is_min'=>false,'rule'=>'Setup National call','min'=>$national_call_total_time,'total_time'=>$national_call_total_time,'cost'=>'0.025']);
                 }
 
-                /* second row */
+                /* National Fixed Call */
                 $cdr_rules = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Fixed Call']);
                 $national_fixed_call_cdr_data = Yii::app()->db->createCommand()
                     ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
@@ -160,7 +144,7 @@ class CalldatarecordsController extends Controller
                     array_push($data_array,['is_min'=>true,'rule'=>'National Fixed call','total_time'=>$time,'min'=>$min,'cost'=>$cdr_rules->cost]);
                 }
 
-                /* third row */
+                /* National Mobile Call */
                 $cdr_rules_2 = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Mobile Call']);
                 $national_mobile_call_cdr_data = Yii::app()->db->createCommand()
                     ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
@@ -182,7 +166,7 @@ class CalldatarecordsController extends Controller
                     array_push($data_array,['is_min'=>true,'rule'=>'National Mobile call','total_time'=>$national_mobile_total_time,'min'=>$min2,'cost'=>$cdr_rules_2->cost]);
                 }
 
-                /* fourth row */
+                /* International Call */
                 $international_call_cdr_data = Yii::app()->db->createCommand()
                     ->select('count(*) as total_time')
                     ->from('cdr_info')
@@ -191,13 +175,38 @@ class CalldatarecordsController extends Controller
                     ->andWhere('date>=:fn',[':fn'=>$start])
                     ->andWhere('date<=:fn1',[':fn1'=>$end])
                     ->queryRow();
-                $intenational_total_time = 0;
+                $international_call_total_time = 0;
                 if(!empty($international_call_cdr_data['total_time']) && $international_call_cdr_data['total_time'] > 0){
-                    $intenational_total_time = $international_call_cdr_data['total_time'];
-                    array_push($data_array,['is_min'=>false,'rule'=>'Setup International call','min'=>$intenational_total_time,'total_time'=>$intenational_total_time,'cost'=>'0.100']);
+                    $international_call_total_time = $international_call_cdr_data['total_time'];
+                    array_push($data_array,['is_min'=>false,'rule'=>'Setup International call','min'=>$international_call_total_time,'total_time'=>$international_call_total_time,'cost'=>'0.100']);
                 }
 
-                /* fifth row */
+                //All international call
+                $all_international = Yii::app()->db->createCommand("SELECT DISTINCT comment, cost FROM cdr_cost_rules WHERE comment Like '%international call -%'");
+                $all_international_cdr_rules = $all_international->queryAll();
+                foreach($all_international_cdr_rules as $international_cdr_rule){
+                    $international_cdr_data = Yii::app()->db->createCommand()
+                        ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
+                        ->from('cdr_info')
+                        ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
+                        ->andWhere(['like', 'comment', '%'.$international_cdr_rule['comment'].'%'])
+                        ->andWhere('date>=:fn',[':fn'=>$start])
+                        ->andWhere('date<=:fn1',[':fn1'=>$end])
+                        ->queryRow();
+                    $min3 = 0;
+                    $international_total_time = '00:00:00';
+                    if(!empty($international_cdr_data['total_time'])){
+                        $time3 = $international_cdr_data['total_time'];
+                        $timesplit3=explode(':',$time3);
+                        $min3=($timesplit3[0]*60)+($timesplit3[1])+(round($timesplit3[2]/60,2));
+                        $international_total_time = $international_cdr_data['total_time'];
+                    }
+                    if($min3 > 0){
+                        array_push($data_array,['is_min'=>true,'rule'=>$international_cdr_rule['comment'],'total_time'=>$international_total_time,'min'=>$min3,'cost'=>$international_cdr_rule['cost']]);
+                    }
+                }
+
+                /* Number Of Users */
                 $token = base64_encode(Yii::app()->params['com_username'].":".Yii::app()->params['com_password']);
                 $url = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/users';
                 $curl = curl_init();
@@ -232,7 +241,7 @@ class CalldatarecordsController extends Controller
                     array_push($data_array,['is_min'=>false,'rule'=>'Number Of Users','min'=>$numberOfUsers,'total_time'=> $numberOfUsers,'cost'=>'8','entityId'=>$entityId]);
                 }
 
-                /* sixth row */
+                /* External Numbers */
                 $exUrl = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/externalNumbers';//https://rest.apollo.compass-stack.com/company
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
