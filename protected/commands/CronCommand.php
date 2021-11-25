@@ -113,4 +113,111 @@ class CronCommand extends CConsoleCommand
             echo $e->getMessage();
         }
     }
+
+    /**
+     * update from_number in cdr_info
+    */
+    public function actionGetFromNumber(){
+        ini_set('memory_limit', '-1');
+        set_time_limit(0);
+        try {
+            $cdr_data = Yii::app()->db->createCommand()
+                ->select('distinct(from_id)')
+                ->from('cdr_info')
+                ->Where('from_id!=:fi',[':fi'=>''])
+                //->andWhere('from_number=:fn',[':fn'=>''])
+                ->queryAll();
+            //echo "<pre>";print_r($cdr_data);die;
+            $res_data = [];
+            if(!empty($cdr_data)){
+                foreach ($cdr_data as $data){
+                    $from_id = $data['from_id'];
+                    $from_numer = '';
+                    $token = base64_encode(Yii::app()->params['cdr_username'].":".Yii::app()->params['cdr_password']);
+                    try{
+                        $curl = curl_init();
+                        curl_setopt_array($curl, array(
+                            CURLOPT_URL => "https://rest.pbx.mytelephony.eu/identity/".$from_id,
+                            CURLOPT_RETURNTRANSFER => true,
+                            CURLOPT_ENCODING => "",
+                            CURLOPT_MAXREDIRS => 10,
+                            CURLOPT_TIMEOUT => 90000,
+                            CURLOPT_SSL_VERIFYPEER=>false,
+                            CURLOPT_FOLLOWLOCATION => true,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_CUSTOMREQUEST => "GET",
+                            CURLOPT_HTTPHEADER => array(
+                                "Authorization: Basic ".$token
+                            ),
+                        ));
+                        $response = curl_exec($curl);
+                        curl_close($curl);
+                        $response = json_decode($response);
+                        if(!empty($response)){
+                            $resource_number = '';
+                            if(isset($response->cli)){
+                                $identity_number = explode("/",$response->cli);
+                                $resource_number = end($identity_number);
+                            }
+                        }else{
+                            $resource_number = '';
+                        }
+                        if(!empty($resource_number)){
+                            $curl = curl_init();
+                            curl_setopt_array($curl, array(
+                                CURLOPT_URL => "https://rest.pbx.mytelephony.eu/resource/".$resource_number,
+                                CURLOPT_RETURNTRANSFER => true,
+                                CURLOPT_ENCODING => "",
+                                CURLOPT_MAXREDIRS => 10,
+                                CURLOPT_TIMEOUT => 999990,
+                                CURLOPT_SSL_VERIFYPEER=>false,
+                                CURLOPT_FOLLOWLOCATION => true,
+                                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                                CURLOPT_CUSTOMREQUEST => "GET",
+                                CURLOPT_HTTPHEADER => array(
+                                    "Authorization: Basic ".$token
+                                ),
+                            ));
+                            $response = curl_exec($curl);
+                            curl_close($curl);
+                            $response = json_decode($response);
+                            if(!empty($response)){
+                                $from_numer = $response->number;
+                            }
+                        }
+                        $res = [
+                            'status' => 1,
+                            'message' => 'Fetch from number completed.'
+                        ];
+                    }catch(Exception $e){
+                        $error = $e->getMessage();
+                        print_r($error);die;
+                        $res = [
+                            'status' => 0,
+                            'message' => $error
+                        ];
+                    }
+                    try{
+                        CallDataRecordsInfo::model()->updateAll(array('from_number' => $from_numer), 'from_id=:from_id AND from_number=:from_number',array(':from_id'=>$from_id,'from_number'=>''));
+                        $res = [
+                            'status' => 1,
+                            'message' => "<div align='center'><h3 style='color: green; margin-bottom: 0'>Call Data Records added successfully!!</h3></div>"
+                        ];
+                    }catch (Exception $e){
+                        $error = $e->getMessage();
+                        echo "<pre>";print_r($from_id);
+                        print_r($error);die;
+                        $res = [
+                            'status' => 0,
+                            'message' => $error
+                        ];
+                    }
+                }
+            }
+            $res_data = $res;
+            echo '<pre>';print_r($res_data);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
