@@ -534,9 +534,22 @@ class CalldatarecordsController extends Controller
         return "<div align='center'><h3 style='color: green; margin-bottom: 0'>Call Data Records added successfully!!</h3></div>";
     }
     public function actionGetfromnumber(){
-        ini_set('memory_limit', '-1');
-        set_time_limit(0);
-        $cdr_data = Yii::app()->db->createCommand()
+        try{
+            ini_set('memory_limit', '-1');
+            set_time_limit(0);
+
+            //$path = Yii::app()->basePath;//dirname(Yii::app()->request->scriptFile);
+            $command = "php cron.php cron GetFromNumber > /dev/null 2>&1 &";
+            $output=null;
+            $returnVal=null;
+
+            exec($command, $output, $returnVal);
+        }catch (Exception $e) {
+            echo $e->getMessage();
+            echo "<div align='center'><h3 style='color: red; margin-bottom: 0'>Execution failed!!</h3></div>";
+        }
+
+        /*$cdr_data = Yii::app()->db->createCommand()
             ->select('distinct(from_id)')
             ->from('cdr_info')
             ->Where('from_id!=:fi',[':fi'=>''])
@@ -631,7 +644,7 @@ class CalldatarecordsController extends Controller
         }
         $res_data = $res;
         //$this->redirect('cdrdetails');
-        echo json_encode($res_data);
+        echo json_encode($res_data);*/
     }
 
     public function actionCostcalculate(){
