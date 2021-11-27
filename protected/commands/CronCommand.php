@@ -220,4 +220,78 @@ class CronCommand extends CConsoleCommand
             echo $e->getMessage();
         }
     }
+
+    public function actionCostCalculate(){
+        $cdr_data = $model=CallDataRecordsInfo::model()->findAll();
+        $ar = [];
+        set_time_limit(1000);
+        $data =[];
+        foreach ($cdr_data as $cdr){
+            $model = CallDataRecordsInfo::model()->findByPk($cdr['id']);
+            $tonumber = $cdr['to_number'];
+            $diff = strtotime($cdr['end_time']) - strtotime($cdr['start_time']);
+            $total_time = $diff;
+            $fromnumber = $cdr['from_number'];
+            $cost_calculate = $this->calculateCost($tonumber,$total_time,$fromnumber);
+            //echo "<pre>";print_r($cost_calculate);die;
+            if($total_time <= 0){
+                $comment = '-';
+            }else{
+                $comment = $cost_calculate['comment'];
+            }
+            $model['unit_cost'] = $cost_calculate['cost'];
+            $model['comment'] = $comment;
+            $model->save(false);
+        }
+        $res = [
+            'status' => 1,
+            'message' => "<div align='center'><h3 style='color: green; margin-bottom: 0'>Cost calculation completed.</h3></div>"
+        ];
+
+        echo '<pre>';print_r($res);
+        //echo json_encode($res);
+    }
+
+    /**
+     * @param $tonumber
+     * @param $totaltime
+     */
+    function calculateCost($tonumber,$totaltime,$fromnumber){
+        $prefix_start_char = substr($tonumber, 0, 2);
+        $to_strlen_prefix = strlen($tonumber);
+        $from_strlen_prefix = strlen($fromnumber);
+
+        $cost_rules = Yii::app()->db->createCommand("SELECT * FROM `cdr_cost_rules` where digit = ".$to_strlen_prefix." or from_number_digit = ".$from_strlen_prefix." or start_with = SUBSTRING($tonumber,0,LENGTH(start_with)) and from_number_start_with = SUBSTRING($tonumber,0,LENGTH(from_number_start_with)) ORDER BY start_with asc");
+        $cost_rules = $cost_rules->queryAll();
+
+        $cost = '0.00';
+        $comment = '-';
+        foreach ($cost_rules as $rule){
+            if($to_strlen_prefix == $rule['digit'] && $from_strlen_prefix == $rule['from_number_digit'] && $rule['from_number_start_with'] == substr($fromnumber, 0, strlen($rule['from_number_start_with']))){
+                if(!empty($rule['from_number_digit']) && !empty($rule['from_number_start_with']) && !empty($rule['digit'])) {
+                    if($rule['from_number_digit'] == $from_strlen_prefix && $rule['from_number_start_with'] == substr($fromnumber, 0, strlen($rule['from_number_start_with'])) && $rule['digit'] == $to_strlen_prefix){
+                        $cost = $rule['cost'];
+                        $comment = $rule['comment'];
+                    }
+                }
+            } else if($to_strlen_prefix == $rule['digit']){
+                if(empty($rule['from_number_digit']) && empty($rule['start_with'])){
+                    $cost = $rule['cost'];
+                    $comment = $rule['comment'];
+                }if(empty($rule['from_number_digit']) && !empty($rule['start_with'])){
+                    if($rule['start_with'] == substr($tonumber, 0, strlen($rule['start_with']))){
+                        $cost = $rule['cost'];
+                        $comment = $rule['comment'];
+                    }
+                }if(!empty($rule['from_number_digit']) && empty($rule['start_with'])) {
+                    if($rule['from_number_digit'] == $from_strlen_prefix){
+                        $cost = $rule['cost'];
+                        $comment = $rule['comment'];
+                    }
+                }
+            }
+        }
+        $result = array('cost'=>round($cost,3),'comment'=>$comment);
+        return $result;
+    }
 }
