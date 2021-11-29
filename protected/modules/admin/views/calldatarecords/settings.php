@@ -180,53 +180,91 @@ $(document).ready(function () {
     //for CDR get from number
     $('#callFetchFromNumber').click(function(e){
         e.preventDefault();
-        $.ajax({
-            url: "getfromnumber",
-            type: "POST",
-            beforeSend:function () {
-                $('.month').prop('readonly', true);
-                $('.btn,.org').prop('disabled',true);
-                $('#fetchFromNumber').css('display','none');
-                $('#loader-fetchFromNumber').css('display','block');
-            },
-            success: function(data) {
-                $('.month').prop('readonly', false);
-                $('#loader-fetchFromNumber').css('display','none');
-                $('.btn,.org').prop('disabled',false);
-                $('#fetchFromNumber').css('display','block');
-                var resp = JSON.parse(data);
-                if(resp['status'] == 1){
-                    $('#fetchFromNumber').html(resp['message']);
-                } else {
-                    $('#fetchFromNumber').html(resp['message']);
+        var organization = $('#organization').val();
+        var month_year = $('#datepickerfilter').val();
+        if(month_year == '' && organization == ''){
+            $('#status').css('color','red');
+            $('#status').html("Please select organization and appropriate month and year.");
+        }else if(organization == ''){
+            $('#status').css('color','red');
+            $('#status').html("Please select organization."); 
+        }else if(month_year == ''){
+            $('#status').css('color','red');
+            $('#status').html("Please select appropriate month and year."); 
+        }else {
+            $('#status').css('color','green');
+            $('#status').html("Fetching from number for "+ organization +", for "+ month_year);
+            $.ajax({
+                url: "getfromnumber",
+                type: "POST",
+                data: {
+                    'month_year':month_year,
+                    'organization':organization
+                },
+                beforeSend:function () {
+                    $('.month').prop('readonly', true);
+                    $('.btn,.org').prop('disabled',true);
+                    $('#fetchFromNumber').css('display','none');
+                    $('#loader-fetchFromNumber').css('display','block');
+                },
+                success: function(data) {
+                    $('.month').prop('readonly', false);
+                    $('#loader-fetchFromNumber').css('display','none');
+                    $('.btn,.org').prop('disabled',false);
+                    $('#fetchFromNumber').css('display','block');
+                    var resp = JSON.parse(data);
+                    if(resp['status'] == 1){
+                        $('#fetchFromNumber').html(resp['message']);
+                    } else {
+                        $('#fetchFromNumber').html(resp['message']);
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
     //for CDR cost calculate
     $('#callCalculateCost').click(function(e){
         e.preventDefault();
-        $.ajax({
-            url: "costcalculate",
-            type: "POST",
-            beforeSend:function () {
-                $('.month').prop('readonly', true);
-                $('.btn,.org').prop('disabled',true);
-                $('#calculateCost').css('display','none');
-                $('#loader-calculateCost').css('display','block');
-            },
-            success: function(data) {
-                $('.month').prop('readonly', false);
-                $('#loader-calculateCost').css('display','none');
-                $('.btn,.org').prop('disabled',false);
-                $('#calculateCost').css('display','block');
-                var resp = JSON.parse(data);
-                if(resp['status'] == 1){
-                    $('#calculateCost').html(resp['message']);
+        var organization = $('#organization').val();
+        var month_year = $('#datepickerfilter').val();
+        if(month_year == '' && organization == ''){
+            $('#status').css('color','red');
+            $('#status').html("Please select organization and appropriate month and year.");
+        }else if(organization == ''){
+            $('#status').css('color','red');
+            $('#status').html("Please select organization."); 
+        }else if(month_year == ''){
+            $('#status').css('color','red');
+            $('#status').html("Please select appropriate month and year."); 
+        }else {
+            $('#status').css('color','green');
+            $('#status').html("Cost calculating for "+ organization +", for "+ month_year);
+            $.ajax({
+                url: "costcalculate",
+                type: "POST",
+                data: {
+                    'month_year':month_year,
+                    'organization':organization
+                },
+                beforeSend:function () {
+                    $('.month').prop('readonly', true);
+                    $('.btn,.org').prop('disabled',true);
+                    $('#calculateCost').css('display','none');
+                    $('#loader-calculateCost').css('display','block');
+                },
+                success: function(data) {
+                    $('.month').prop('readonly', false);
+                    $('#loader-calculateCost').css('display','none');
+                    $('.btn,.org').prop('disabled',false);
+                    $('#calculateCost').css('display','block');
+                    var resp = JSON.parse(data);
+                    if(resp['status'] == 1){
+                        $('#calculateCost').html(resp['message']);
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
     //year-month calender
