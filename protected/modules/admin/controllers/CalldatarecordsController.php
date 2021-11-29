@@ -533,30 +533,50 @@ class CalldatarecordsController extends Controller
         }
         return "<div align='center'><h3 style='color: green; margin-bottom: 0'>Call Data Records added successfully!!</h3></div>";
     }
+
+
     public function actionGetfromnumber(){
         try{
             ini_set('memory_limit', '-1');
             set_time_limit(0);
-
-            //$path = Yii::app()->basePath;//dirname(Yii::app()->request->scriptFile);
-            $command = "php cron.php cron GetFromNumber > /dev/null 2>&1 &";
-            $output=null;
-            $returnVal=null;
-
-            exec($command, $output, $returnVal);
+            $response = [];
+            if(isset($_POST) && !empty($_POST['month_year'] && $_POST['organization'])){
+                $myDateTime = DateTime::createFromFormat('F, Y', $_POST['month_year']);
+                $start = $myDateTime->format('Y-m-01');
+                $end = $myDateTime->format('Y-m-t');
+                $start_date = $start.' 00:00:00';
+                $end_date = $end.' 23:59:59';
+                if($_POST['organization'] == 'All Organizations'){
+                    $organizationInfo = OrganizationInfo::model()->findAll();
+                    foreach ($organizationInfo as $org){
+                        $organisation_id = $org['organisation_id'];
+                        $response = $this->updateFromNumber($start_date, $end_date, $organisation_id);
+                    }
+                }else{
+                    $organisationInfo = OrganizationInfo::model()->findByAttributes(['name' => $_POST['organization']]);
+                    $organisation_id = $organisationInfo->organisation_id;
+                    $response = $this->updateFromNumber($start_date, $end_date, $organisation_id);
+                }
+            }
+            echo json_encode($response);
         }catch (Exception $e) {
             echo $e->getMessage();
             echo "<div align='center'><h3 style='color: red; margin-bottom: 0'>Execution failed!!</h3></div>";
         }
+    }
 
-        /*$cdr_data = Yii::app()->db->createCommand()
-            ->select('distinct(from_id)')
-            ->from('cdr_info')
-            ->Where('from_id!=:fi',[':fi'=>''])
-            //->andWhere('from_number=:fn',[':fn'=>''])
-            ->queryAll();
+    public function updateFromNumber($start_date, $end_date, $organisation_id){
+        // $cdr_data = Yii::app()->db->createCommand()
+        //     ->select('distinct(from_id)')
+        //     ->from('cdr_info')
+        //     ->Where('from_id!=:fi',[':fi'=>''])
+        //     //->andWhere('from_number=:fn',[':fn'=>''])
+        //     ->queryAll();
+        $query = Yii::app()->db->createCommand("SELECT DISTINCT(from_id) FROM `cdr_info` WHERE (start_time BETWEEN '$start_date' AND '$end_date') AND from_id != '' AND organisation_id = $organisation_id");
+        $cdr_data = $query->queryAll();
         //echo "<pre>";print_r($cdr_data);die;
         $res_data = [];
+        $res = [];
         if(!empty($cdr_data)){
             foreach ($cdr_data as $data){
                 $from_id = $data['from_id'];
@@ -629,7 +649,7 @@ class CalldatarecordsController extends Controller
                     CallDataRecordsInfo::model()->updateAll(array('from_number' => $from_numer), 'from_id=:from_id AND from_number=:from_number',array(':from_id'=>$from_id,'from_number'=>''));
                     $res = [
                         'status' => 1,
-                        'message' => "<div align='center'><h3 style='color: green; margin-bottom: 0'>Call Data Records added successfully!!</h3></div>"
+                        'message' => "<div align='center'><h3 style='color: green; margin-bottom: 0'>Call data record updated!!</h3></div>"
                     ];
                 }catch (Exception $e){
                     $error = $e->getMessage();
@@ -644,27 +664,43 @@ class CalldatarecordsController extends Controller
         }
         $res_data = $res;
         //$this->redirect('cdrdetails');
-        echo json_encode($res_data);*/
+        return $res_data;
     }
 
     public function actionCostcalculate(){
-        // try{
-        //     ini_set('memory_limit', '-1');
-        //     set_time_limit(0);
+        try{
+            $response = [];
+            if(isset($_POST) && !empty($_POST['month_year'] && $_POST['organization'])){
+                $myDateTime = DateTime::createFromFormat('F, Y', $_POST['month_year']);
+                $start = $myDateTime->format('Y-m-01');
+                $end = $myDateTime->format('Y-m-t');
+                $start_date = $start.' 00:00:00';
+                $end_date = $end.' 23:59:59';
+                if($_POST['organization'] == 'All Organizations'){
+                    $organizationInfo = OrganizationInfo::model()->findAll();
+                    foreach ($organizationInfo as $org){
+                        $organisation_id = $org['organisation_id'];
+                        $response = $this->cdrCostCalculate($start_date, $end_date, $organisation_id);
+                    }
+                }else{
+                    $organisationInfo = OrganizationInfo::model()->findByAttributes(['name' => $_POST['organization']]);
+                    $organisation_id = $organisationInfo->organisation_id;
+                    $response = $this->cdrCostCalculate($start_date, $end_date, $organisation_id);
+                }
+            }
+            echo json_encode($response);
+        }catch (Exception $e) {
+            echo $e->getMessage();
+            echo "<div align='center'><h3 style='color: red; margin-bottom: 0'>Execution failed!!</h3></div>";
+        }
+    }
 
-        //     $command = "php cron.php cron CostCalculate > /dev/null 2>&1 &";
-        //     $output=null;
-        //     $returnVal=null;
-
-        //     exec($command, $output, $returnVal);
-        // }catch (Exception $e) {
-        //     echo $e->getMessage();
-        //     echo "<div align='center'><h3 style='color: red; margin-bottom: 0'>Execution failed!!</h3></div>";
-        // }
-
-        $cdr_data = $model=CallDataRecordsInfo::model()->findAll();
-        $ar = [];
+    public function cdrCostCalculate($start_date, $end_date, $organisation_id){
         set_time_limit(0);
+        $query = Yii::app()->db->createCommand("SELECT * FROM `cdr_info` WHERE (start_time BETWEEN '$start_date' AND '$end_date') AND organisation_id = $organisation_id");
+        $cdr_data = $query->queryAll();
+        $ar = [];
+        $res = [];
         $data =[];
         $message = '<div class=row>';
         foreach ($cdr_data as $cdr){
@@ -704,8 +740,7 @@ class CalldatarecordsController extends Controller
             'status' => 1,
             'message' => $message."</div><div align='center'><h3 style='color: green; margin-bottom: 0'>Cost calculation completed.</h3></div>"
         ];
-
-        echo json_encode($res);
+        return $res;
     }
 
     /**
