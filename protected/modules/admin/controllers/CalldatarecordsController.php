@@ -231,7 +231,7 @@ class CalldatarecordsController extends Controller
                 $numberOfUsers = 0;
                 $list = [];
                 if(!empty($response)){
-                    $numberOfUsers = count($response);
+                    $numberOfUsers = (is_array($response) || is_object($response)) ? count($response) : '';
                     foreach($response as $res){
                         $list[] = $res->entityId;
                     }
