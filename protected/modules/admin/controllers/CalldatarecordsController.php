@@ -477,7 +477,9 @@ class CalldatarecordsController extends Controller
             curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_HTTPHEADER , array(
-                "Authorization: Basic ".$token
+                "Authorization: Basic ".$token,
+                "content-type: application/json",
+                "Accept: application/vnd.iperity.compass.v3+json"
             ));
             //Execute the request.
             curl_exec($ch);
@@ -597,7 +599,9 @@ class CalldatarecordsController extends Controller
                         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                         CURLOPT_CUSTOMREQUEST => "GET",
                         CURLOPT_HTTPHEADER => array(
-                            "Authorization: Basic ".$token
+                            "Authorization: Basic ".$token,
+                            "content-type: application/json",
+                            "Accept: application/vnd.iperity.compass.v3+json"
                         ),
                     ));
                     $response = curl_exec($curl);
@@ -625,7 +629,9 @@ class CalldatarecordsController extends Controller
                             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                             CURLOPT_CUSTOMREQUEST => "GET",
                             CURLOPT_HTTPHEADER => array(
-                                "Authorization: Basic ".$token
+                                "Authorization: Basic ".$token,
+                                "content-type: application/json",
+                                "Accept: application/vnd.iperity.compass.v3+json"
                             ),
                         ));
                         $response = curl_exec($curl);
