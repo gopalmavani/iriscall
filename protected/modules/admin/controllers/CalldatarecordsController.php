@@ -265,7 +265,7 @@ class CalldatarecordsController extends Controller
                 $numberOfExternalNumber = 0;
                 $resource = [];
                 if(!empty($externalNumber)){
-                    $numberOfExternalNumber = count($externalNumber);
+                    $numberOfExternalNumber = (is_array($externalNumber) || is_object($externalNumber)) ? count($externalNumber) : '';
                     foreach($externalNumber as $data){
                         $resource[] = $data->resourceId;
                     }
