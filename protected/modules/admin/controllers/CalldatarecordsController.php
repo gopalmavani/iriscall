@@ -713,7 +713,7 @@ class CalldatarecordsController extends Controller
             $fromnumber = $cdr['from_number'];
             /*$tonumber = '3214314051';
             $fromnumber = '3214813909';*/
-            $cost_calculate = $this->calculateCost('1234','00:00:33','56789');
+            $cost_calculate = $this->calculateCost($tonumber,$total_time,$fromnumber);
             if($cost_calculate['cost'] == '0.00' && $cost_calculate['comment'] == '-'){
                 $message .= "<div class=col-md-6><div class=col-md-12><span style='color: red;>".$tonumber."</span> number not match to CDR cost rules.</div></div>";
             }
