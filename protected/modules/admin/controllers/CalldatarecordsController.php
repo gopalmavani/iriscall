@@ -207,7 +207,7 @@ class CalldatarecordsController extends Controller
                 }
 
                 /* Number Of Users */
-                /*$token = base64_encode(Yii::app()->params['com_username'].":".Yii::app()->params['com_password']);
+                $token = base64_encode(Yii::app()->params['com_username'].":".Yii::app()->params['com_password']);
                 $url = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/users';
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
@@ -222,7 +222,8 @@ class CalldatarecordsController extends Controller
                     CURLOPT_CUSTOMREQUEST => "GET",
                     CURLOPT_HTTPHEADER => array(
                         "Authorization: Basic ".$token,
-                        "content-type: application/json"
+                        "content-type: application/json",
+                        "Accept: application/vnd.iperity.compass.v3+json"
                     ),
                 ));
                 $response = curl_exec($curl);
@@ -239,10 +240,10 @@ class CalldatarecordsController extends Controller
                 $entityId = implode(', ', $list);
                 if($numberOfUsers > 0){
                     array_push($data_array,['is_min'=>false,'rule'=>'Number Of Users','min'=>$numberOfUsers,'total_time'=> $numberOfUsers,'cost'=>'8','entityId'=>$entityId]);
-                }*/
+                }
 
                 /* External Numbers */
-                /*$exUrl = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/externalNumbers';//https://rest.apollo.compass-stack.com/company
+                $exUrl = 'https://rest.pbx.mytelephony.eu/company/'.$org_id.'/externalNumbers';//https://rest.apollo.compass-stack.com/company
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
                     CURLOPT_URL => $exUrl,
@@ -256,7 +257,8 @@ class CalldatarecordsController extends Controller
                     CURLOPT_CUSTOMREQUEST => "GET",
                     CURLOPT_HTTPHEADER => array(
                         "Authorization: Basic ".$token,
-                        "content-type: application/json"
+                        "content-type: application/json",
+                        "Accept: application/vnd.iperity.compass.v3+json"
                     ),
                 ));
                 $externalNumber = curl_exec($curl);
@@ -273,7 +275,7 @@ class CalldatarecordsController extends Controller
                 $resourceId = implode(', ', $resource);
                 if($numberOfExternalNumber > 0){
                     array_push($data_array,['is_min'=>false,'rule'=>'External Numbers','min'=>$numberOfExternalNumber,'total_time'=> $numberOfExternalNumber,'cost'=>'4','resourceId'=>$resourceId]);
-                }*/
+                }
                 $this->render('invoicedetail',[
                     'details'=>$data_array,
                     'org_id' => $org_id,
