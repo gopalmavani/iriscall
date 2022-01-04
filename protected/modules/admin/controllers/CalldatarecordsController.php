@@ -436,8 +436,10 @@ class CalldatarecordsController extends Controller
                         $fetchCDR = $this->fetchCDR($date_range, $organisation_id);
                     }
                 }else{
-                    $organisationInfo = OrganizationInfo::model()->findByAttributes(['name' => $_POST['organization']]);
-                    $organisation_id = $organisationInfo->organisation_id;
+                    $organisationInfo = Yii::app()->db->createCommand("SELECT * FROM company_info WHERE name = '$_POST[organization]'");
+                    $organisationInfo = $organisationInfo->queryRow();
+                    //$organisationInfo = OrganizationInfo::model()->findByAttributes(['name' => $_POST['organization']]);
+                    $organisation_id = $organisationInfo['organisation_id'];
                     $fetchCDR = $this->fetchCDR($date_range, $organisation_id);
                 }
                 echo $fetchCDR;
