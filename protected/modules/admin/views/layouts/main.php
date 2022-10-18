@@ -280,8 +280,10 @@ $folder = Yii::app()->params['basePath'];
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/admin');?>"><i class="fa fa-users"></i> <span class="sidebar-mini-hide"> iPerity Users </span></a></li>
                                 <!-- <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrinfo'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrinfo');?>"><i class="fa fa-paperclip"></i> <span class="sidebar-mini-hide"> CDR Info </span></a></li> -->
+                                <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/companyGroup/index'){ $active = "active";}else{ $active = " ";} ?>
+                                <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/companyGroup/index');?>"><i class="fa fa-users"></i><span class="sidebar-mini-hide"> Company Groups </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrdetails'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrdetails');?>"><i class="fa fa-phone"></i><span class="sidebar-mini-hide"> CDR Details </span></a></li>
+                                <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrdetails');?>"><i class="fa fa-phone"></i><span class="sidebar-mini-hide"> CDR Details  </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrcostrules'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="nav-menu <?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrcostrules');?>"><i class="fa fa-money"></i><span class="sidebar-mini-hide"> CDR Cost Rules </span></a></li>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/invoice'){ $active = "active";}else{ $active = " ";} ?>
