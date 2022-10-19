@@ -35,7 +35,7 @@ $this->pageTitle = 'Create Invoice';
                         <div class="form-group">
                             <?php echo $form->label($model, 'organisation_id', array('class' => 'control-label')); ?>
                             <span class="required">*</span>
-                            <?php $list = CHtml::listData(OrganizationInfo::model()->findAll(), 'organisation_id', 'name');
+                            <?php $list = CHtml::listData(OrganizationInfo::model()->findAll(), 'id', 'name');
                             echo $form->dropDownList($model, 'organisation_id', $list, array('class' => 'form-control organisation_id',
                                 'empty' => 'Select Organisation'));
                             ?>
