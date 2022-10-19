@@ -101,6 +101,11 @@ class CalldatarecordsController extends Controller
             if(isset($_POST) && !empty($_POST['month']) && !empty($_POST['OrganizationInfo']['organisation_id'])){
                 $org_id = $_POST['OrganizationInfo']['organisation_id'];
                 $month = $_POST['month'];
+                if(isset($_POST['group']) && !empty($_POST['group'])){
+                    $start_with = "AND from_number LIKE '{$_POST['group']}%'";
+                }else{
+                    $start_with = "";
+                }
                 $start = date("Y-m-01", strtotime($month));
                 $end = date("Y-m-t", strtotime($month));
                 if($month != ''){
@@ -114,7 +119,7 @@ class CalldatarecordsController extends Controller
                 $data_array = [];
 
                 /* National Call */
-                $national_call_cdr_data = Yii::app()->db->createCommand("SELECT count(*) as total_time FROM `cdr_info` where organisation_id = ".$org_id." and (`comment` LIKE '%National Fixed Call%' or `comment` LIKE 'National Mobile Call') and date >= '".$start."' and date <= '$end'");
+                $national_call_cdr_data = Yii::app()->db->createCommand("SELECT count(*) as total_time FROM `cdr_info` where organisation_id = ".$org_id." and (`comment` LIKE '%National Fixed Call%' or `comment` LIKE 'National Mobile Call') and date >= '".$start."' and date <= '$end' {$start_with}");
                 $national_call_cdr_data = $national_call_cdr_data->queryRow();
                 $national_call_total_time = 0;
                 $min = '0';
@@ -125,14 +130,9 @@ class CalldatarecordsController extends Controller
 
                 /* National Fixed Call */
                 $cdr_rules = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Fixed Call']);
-                $national_fixed_call_cdr_data = Yii::app()->db->createCommand()
-                    ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
-                    ->from('cdr_info')
-                    ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                    ->andWhere(['like', 'comment', '%'.$cdr_rules->comment.'%'])
-                    ->andWhere('date>=:fn',[':fn'=>$start])
-                    ->andWhere('date<=:fn1',[':fn1'=>$end])
-                    ->queryRow();
+                $sql_one = "SELECT SEC_TO_TIME(SUM(time_to_sec(total_time))) AS total_time FROM cdr_info WHERE organisation_id = {$org_id} AND `comment` LIKE '%{$cdr_rules->comment}%' AND `date` >= '{$start}' AND `date` <= '{$end}' {$start_with}";
+                $national_fixed_call_cdr_data = Yii::app()->db->createCommand($sql_one)->queryRow();
+
                 $time = '00:00:00';
                 $min = '0';
                 if(!empty($national_fixed_call_cdr_data['total_time'])){
@@ -146,14 +146,9 @@ class CalldatarecordsController extends Controller
 
                 /* National Mobile Call */
                 $cdr_rules_2 = $model=CdrCostRulesInfo::model()->findByAttributes(['comment'=>'National Mobile Call']);
-                $national_mobile_call_cdr_data = Yii::app()->db->createCommand()
-                    ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
-                    ->from('cdr_info')
-                    ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                    ->andWhere(['like', 'comment', '%'.$cdr_rules_2->comment.'%'])
-                    ->andWhere('date>=:fn',[':fn'=>$start])
-                    ->andWhere('date<=:fn1',[':fn1'=>$end])
-                    ->queryRow();
+                $sql_two = "SELECT SEC_TO_TIME(SUM(time_to_sec(total_time))) AS total_time FROM cdr_info WHERE organisation_id = {$org_id} AND `comment` LIKE '%{$cdr_rules_2->comment}%' AND `date` >= '{$start}' AND `date` <= '{$end}' {$start_with}";
+                $national_mobile_call_cdr_data = Yii::app()->db->createCommand($sql_two)->queryRow();
+
                 $min2 = 0;
                 $national_mobile_total_time = '00:00:00';
                 if(!empty($national_mobile_call_cdr_data['total_time'])){
@@ -167,14 +162,9 @@ class CalldatarecordsController extends Controller
                 }
 
                 /* International Call */
-                $international_call_cdr_data = Yii::app()->db->createCommand()
-                    ->select('count(*) as total_time')
-                    ->from('cdr_info')
-                    ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                    ->andWhere(['like', 'comment', '%International%'])
-                    ->andWhere('date>=:fn',[':fn'=>$start])
-                    ->andWhere('date<=:fn1',[':fn1'=>$end])
-                    ->queryRow();
+                $sql_three = "SELECT count(*) AS total_time FROM cdr_info WHERE organisation_id = {$org_id} AND `comment` LIKE '%International%' AND `date` >= '{$start}' AND `date` <= '{$end}' {$start_with}";
+                $international_call_cdr_data = Yii::app()->db->createCommand($sql_three)->queryRow();
+
                 $international_call_total_time = 0;
                 if(!empty($international_call_cdr_data['total_time']) && $international_call_cdr_data['total_time'] > 0){
                     $international_call_total_time = $international_call_cdr_data['total_time'];
@@ -185,14 +175,9 @@ class CalldatarecordsController extends Controller
                 $all_international = Yii::app()->db->createCommand("SELECT DISTINCT comment, cost FROM cdr_cost_rules WHERE comment Like '%international call -%'");
                 $all_international_cdr_rules = $all_international->queryAll();
                 foreach($all_international_cdr_rules as $international_cdr_rule){
-                    $international_cdr_data = Yii::app()->db->createCommand()
-                        ->select('SEC_TO_TIME( SUM(time_to_sec(total_time))) as total_time')
-                        ->from('cdr_info')
-                        ->Where('organisation_id=:orgid',[':orgid'=>$org_id])
-                        ->andWhere(['like', 'comment', '%'.$international_cdr_rule['comment'].'%'])
-                        ->andWhere('date>=:fn',[':fn'=>$start])
-                        ->andWhere('date<=:fn1',[':fn1'=>$end])
-                        ->queryRow();
+                    $sql_four = "SELECT SEC_TO_TIME(SUM(time_to_sec(total_time))) AS total_time FROM cdr_info WHERE organisation_id = {$org_id} AND `comment` LIKE '%{$international_cdr_rule['comment']}%' AND `date` >= '{$start}' AND `date` <= '{$end}' {$start_with}";
+                    $international_cdr_data = Yii::app()->db->createCommand($sql_four)->queryRow();
+
                     $min3 = 0;
                     $international_total_time = '00:00:00';
                     if(!empty($international_cdr_data['total_time'])){

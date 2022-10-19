@@ -277,6 +277,31 @@ class CompanyGroupController extends Controller
             Yii::app()->end();
         }
     }
+
+    public function actionGetGroups(){
+        $response = [];
+        if(isset($_POST) && !empty($_POST['organisation_id'])){
+            $organization = OrganizationInfo::model()->findByAttributes(['organisation_id' => $_POST['organisation_id']]);
+            $groups = CompanyGroupInfo::model()->findAllByAttributes(['company_id' => $organization->id]);
+            
+            if(!empty($groups)){
+                $data = CHtml::listData($groups, 'external_number', 'group_name');
+                $html = "<div class='row'><div class='form-group'><label class='control-lable group-list'>Select Group</label>
+                        <select class='form-control' id='group' name='group'><option value=''>Select Group</option>";
+                foreach ($data as $key => $value) {
+                    $html .= CHtml::tag('option', array('value' => $key), CHtml::encode($value), true);
+                }
+                $html .= "</select></div></div>";
+    
+                $response['status'] = true;
+                $response['data'] = $html;
+            }else{
+                $response['status'] = false;
+                $response['message'] = "Group not found";
+            }
+        }
+        echo json_encode($response);
+    }
 }
 
 ?>

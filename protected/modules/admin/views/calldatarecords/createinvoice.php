@@ -36,12 +36,13 @@ $this->pageTitle = 'Create Invoice';
                             <?php echo $form->label($model, 'organisation_id', array('class' => 'control-label')); ?>
                             <span class="required">*</span>
                             <?php $list = CHtml::listData(OrganizationInfo::model()->findAll(), 'organisation_id', 'name');
-                            echo $form->dropDownList($model, 'organisation_id', $list, array('class' => 'form-control',
+                            echo $form->dropDownList($model, 'organisation_id', $list, array('class' => 'form-control organisation_id',
                                 'empty' => 'Select Organisation'));
                             ?>
                             <span class="help-block"><?php echo $form->error($model, 'organisation_id'); ?> </span>
                         </div>
                     </div>
+                    <div class="group-list"></div>
                     <div class="row">
                         <div class="form-group">
                             <label class="control-lable">
@@ -78,7 +79,7 @@ $this->pageTitle = 'Create Invoice';
 <script>
 $(document).ready(function (e) {
 //year-month calender
-$('#datepickerfilter').datepicker({
+    $('#datepickerfilter').datepicker({
         dateFormat: "MM-yy",
         changeMonth: true,
         changeYear: true,
@@ -95,6 +96,23 @@ $('#datepickerfilter').datepicker({
                 $(this).datepicker('setDate', new Date(year, month-1, 1));
             }
         },
+    });
+
+    $('.organisation_id').on('change', function(e) {
+        $('.group-list').html('')
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo Yii::app()->getUrlManager()->createUrl('admin/companyGroup/getGroups'); ?>' ,
+            data: {
+                organisation_id: $(this).val()
+            },
+            success:function (result) {
+                var groupList = JSON.parse(result);
+                if(groupList.status == true){
+                    $('.group-list').html(groupList.data)
+                }
+            }
+        });
     });
 });
 </script>
