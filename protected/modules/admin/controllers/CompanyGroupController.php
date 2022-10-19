@@ -281,9 +281,9 @@ class CompanyGroupController extends Controller
     public function actionGetGroups(){
         $response = [];
         if(isset($_POST) && !empty($_POST['organisation_id'])){
-            $organization = OrganizationInfo::model()->findByAttributes(['organisation_id' => $_POST['organisation_id']]);
+            $organization = OrganizationInfo::model()->findByPk($_POST['organisation_id']);
             $groups = CompanyGroupInfo::model()->findAllByAttributes(['company_id' => $organization->id]);
-            
+
             if(!empty($groups)){
                 $data = CHtml::listData($groups, 'external_number', 'group_name');
                 $html = "<div class='row'><div class='form-group'><label class='control-lable group-list'>Select Group</label>

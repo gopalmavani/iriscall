@@ -99,7 +99,8 @@ class CalldatarecordsController extends Controller
         try {
             $model=new OrganizationInfo;
             if(isset($_POST) && !empty($_POST['month']) && !empty($_POST['OrganizationInfo']['organisation_id'])){
-                $org_id = $_POST['OrganizationInfo']['organisation_id'];
+                $organisation = OrganizationInfo::model()->findByPk($_POST['OrganizationInfo']['organisation_id']);
+                $org_id = $organisation->organisation_id;
                 $month = $_POST['month'];
                 if(isset($_POST['group']) && !empty($_POST['group'])){
                     $start_with = "AND from_number LIKE '{$_POST['group']}%'";
@@ -113,7 +114,6 @@ class CalldatarecordsController extends Controller
                 }else{
                     $getMonth = '';
                 }
-                $organisation = OrganizationInfo::model()->findByAttributes(['organisation_id' => $org_id]);
                 $selected = ($getMonth != '') ? $organisation->name.' for '.$getMonth : $organisation->name;
 
                 $data_array = [];
