@@ -86,11 +86,11 @@ $this->pageTitle = 'Company Groups';
         <?php } else { ?>
         <div class="row">
             <div align="center">
-                <img src="<?php echo Yii::app()->baseUrl."/plugins/img/product.png"; ?>" height="20%" width="10%"><br /><br />
+                <img src="<?php echo Yii::app()->baseUrl."/images/misc/order.png"; ?>" height="20%" width="10%"><br /><br />
                 <h2>No Company group</h2>
                 <p></p>
                 <div class="row">
-                    <?php echo CHtml::link('Create', array('companyGroup/create'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
+                <?php echo CHtml::link('Create', array('companyGroup/create'), array('class' => 'btn btn-minw btn-square btn-primary','style'=>'width:270px;font-size:18px')); ?>
                 </div>
                 <br />
             </div>
@@ -101,6 +101,11 @@ $this->pageTitle = 'Company Groups';
 <script src="<?php echo Yii::app()->createUrl('/'); ?>/plugins/js/core/bootbox.min.js"></script>
 <script>
     $(document).ready(function() {
+        var countData = "<?= count($result); ?>";
+	    if(countData == 0){
+            $('.overlay').addClass("overlayhide");
+            $("#mydatatable").removeClass("hide");
+        }
         if (localStorage.getItem('msg')){
             $("#delete").removeClass("hide");
             setTimeout(

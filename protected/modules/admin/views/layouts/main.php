@@ -273,11 +273,11 @@ $folder = Yii::app()->params['basePath'];
                             </ul>
                         </li>
                         <?php $action = Yii::app()->controller->id;
-                        if($action == 'calldatarecords'){ $open = "open";}else{ $open = "";} ?>
+                        if($action == 'calldatarecords' || $action == 'companyGroup'){ $open = "open";}else{ $open = "";} ?>
                         <li class="<?= $open; ?>"><a class="nav-submenu " data-toggle="nav-submenu" href="javascript::void(0);"><i class="fa fa-mobile"></i> <span class=""> iPerity </span></a>
                             <ul>
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/admin'){ $active = "active";}else{ $active = " ";} ?>
-                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/admin');?>"><i class="fa fa-users"></i> <span class="sidebar-mini-hide"> iPerity Users </span></a></li>
+                                <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/admin');?>"><i class="fa fa-users"></i> <span class="sidebar-mini-hide"> Companies </span></a></li>
                                 <!-- <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/calldatarecords/cdrinfo'){ $active = "active";}else{ $active = " ";} ?>
                                 <li><a class="<?= $active; ?>" href="<?php echo Yii::app()->createUrl('/admin/calldatarecords/cdrinfo');?>"><i class="fa fa-paperclip"></i> <span class="sidebar-mini-hide"> CDR Info </span></a></li> -->
                                 <?php if(Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'admin/companyGroup/index'){ $active = "active";}else{ $active = " ";} ?>
