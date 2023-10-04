@@ -86,7 +86,7 @@ $this->pageTitle = 'Create Invoice';
 $(document).ready(function (e) {
 //year-month calender
     $('#datepickerfilter').datepicker({
-        dateFormat: "MM, yy",
+        dateFormat: "MM-yy",
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,

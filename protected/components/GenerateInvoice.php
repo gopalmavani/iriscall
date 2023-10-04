@@ -20,7 +20,7 @@ class GenerateInvoice extends CApplicationComponent
     public static function fetchCDRInfo($month_year, $org_id){
         try{
             $date_range = [];
-            $myDateTime = DateTime::createFromFormat('F, Y', $month_year);
+            $myDateTime = DateTime::createFromFormat('F-Y', $month_year);
             $start = strtotime($myDateTime->format('Y-m-01'));
             $end = strtotime($myDateTime->format('Y-m-t'));
             for ($i = $start; $i <= $end; $i += 86400) {
@@ -154,7 +154,7 @@ class GenerateInvoice extends CApplicationComponent
 
     public static function fetchFromNumber($month_year, $org_id){
         try{
-            $myDateTime = DateTime::createFromFormat('F, Y', $month_year);
+            $myDateTime = DateTime::createFromFormat('F-Y', $month_year);
             $start = $myDateTime->format('Y-m-01');
             $end = $myDateTime->format('Y-m-t');
             $start_date = $start.' 00:00:00';
@@ -269,7 +269,7 @@ class GenerateInvoice extends CApplicationComponent
 
     public static function calculateCost($month_year, $org_id){
         try{
-            $myDateTime = DateTime::createFromFormat('F, Y', $month_year);
+            $myDateTime = DateTime::createFromFormat('F-Y', $month_year);
             $start = $myDateTime->format('Y-m-01');
             $end = $myDateTime->format('Y-m-t');
             $start_date = $start.' 00:00:00';

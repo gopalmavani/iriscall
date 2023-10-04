@@ -1015,7 +1015,7 @@ class CalldatarecordsController extends Controller
     public function actionGenerateInvoice(){
         ini_set('memory_limit', '-1');
         set_time_limit(0);
-        $month_year = !empty($_POST['month_year']) ? $_POST['month_year'] : date('F, Y');
+        $month_year = !empty($_POST['month_year']) ? $_POST['month_year'] : date('F-Y');
         $org_id = !empty($_POST['organization']) ? implode(",", $_POST['organization']) : [];
 
         //GenerateInvoice::createInvoice($month_year, $org_id);
