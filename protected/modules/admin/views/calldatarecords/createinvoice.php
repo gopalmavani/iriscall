@@ -159,6 +159,9 @@ $(document).ready(function (e) {
                                     data: { 
                                         'data': data
                                     },
+                                    beforeSend:function () {
+                                        $('#loader-invoice').css('display','block');
+                                    },
                                     success: function(response) {
                                         console.log('Success')
                                         $('body').html(response);
