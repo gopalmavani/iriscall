@@ -29,12 +29,12 @@ class GenerateInvoice extends CApplicationComponent
             //$organisationInfo = Yii::app()->db->createCommand("SELECT * FROM company_info WHERE id IN ({$org_id})")->queryAll();
             foreach ($org_id as $id){
                 $fetchCDR = self::fetchCDR($date_range, $id);
-                echo "Fetch CDR info for organization ID: ".$id."</br>";
-                echo $fetchCDR;
+                $log = "Fetch CDR info for organization ID: {$id} {$fetchCDR}".PHP_EOL;
+                file_put_contents('protected/runtime/invoice.log', $log, FILE_APPEND);
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
-            echo "<div align='center'><h3 style='color: red; margin-bottom: 0'>Failed to add CDR!!</h3></div>";
+            $log = "fetchCDRInfo: {$e->getMessage()}".PHP_EOL;
+            file_put_contents('protected/runtime/invoice.log', $log, FILE_APPEND);
         }
     }
 
@@ -161,12 +161,13 @@ class GenerateInvoice extends CApplicationComponent
             $end_date = $end.' 23:59:59';
             foreach ($org_id as $id){
                 $response = self::updateFromNumber($start_date, $end_date, $id);
-                echo "Fetch From Number for organization ID: ".$id."</br>";
-                echo $response['message'] ?? '';
+                $msg = $response['message'] ?? '';
+                $log = "Fetch From Number for organization ID: {$id} {$msg}".PHP_EOL;
+                file_put_contents('protected/runtime/invoice.log', $log, FILE_APPEND);
             }
         }catch (Exception $e) {
-            echo $e->getMessage();
-            echo "<div align='center'><h3 style='color: red; margin-bottom: 0'>Fetch From Number failed!!</h3></div>";
+            $log = "fetchFromNumber: {$e->getMessage()}".PHP_EOL;
+            file_put_contents('protected/runtime/invoice.log', $log, FILE_APPEND);
         }
     }
 
@@ -275,12 +276,13 @@ class GenerateInvoice extends CApplicationComponent
             $end_date = $end.' 23:59:59';
             foreach ($org_id as $id){
                 $response = self::cdrCostCalculate($start_date, $end_date, $id);
-                echo "Calculate Cost for organization ID: ".$id."</br>";
-                echo $response['message'] ?? '';
+                $msg = $response['message'] ?? '';
+                $log = "Calculate Cost for organization ID: {$id} {$msg}".PHP_EOL;
+                file_put_contents('protected/runtime/invoice.log', $log, FILE_APPEND);
             }
         }catch (Exception $e) {
-            echo $e->getMessage();
-            echo "<div align='center'><h3 style='color: red; margin-bottom: 0'>Execution failed!!</h3></div>";
+            $log = "calculateCost: {$e->getMessage()}".PHP_EOL;
+            file_put_contents('protected/runtime/invoice.log', $log, FILE_APPEND);
         }
     }
 
@@ -524,6 +526,7 @@ class GenerateInvoice extends CApplicationComponent
                     $data_array[$org_id][] = ['is_min' => false,'rule' => 'External Numbers','min' => $numberOfExternalNumber,'total_time' => $numberOfExternalNumber,'cost' => '4','resourceId' => $resourceId];
                 }
             }
+
             $res = [
                 'details' => $data_array,
                 'org_id' => $ids,
@@ -531,8 +534,8 @@ class GenerateInvoice extends CApplicationComponent
             ];
             echo json_encode($res);
         } catch (Exception $exception) {
-            echo $exception->getMessage();
-            echo "<div align='center'><h3 style='color: red; margin-bottom: 0'>Failed to Generate Invoice!!</h3></div>";
+            $log = "invoiceGenerate: {$exception->getMessage()}".PHP_EOL;
+            file_put_contents('protected/runtime/invoice.log', $log, FILE_APPEND);
         }
     }
 }

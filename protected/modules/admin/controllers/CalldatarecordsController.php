@@ -1018,6 +1018,7 @@ class CalldatarecordsController extends Controller
         $month_year = !empty($_POST['month_year']) ? $_POST['month_year'] : date('F, Y');
         $org_id = !empty($_POST['organization']) ? implode(",", $_POST['organization']) : [];
 
+        //GenerateInvoice::createInvoice($month_year, $org_id);
         $command = "php cron.php cron CreateInvoice --month_year={$month_year} --org_id={$org_id} > /dev/null 2>&1 &";
         $output=null;
         $returnVal=null;

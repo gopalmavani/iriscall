@@ -30,6 +30,10 @@ $this->pageTitle = 'Create Invoice';
                             <?php $list = CHtml::listData(OrganizationInfo::model()->findAll(), 'organisation_id', 'name'); ?>
                             <label class="control-label">Organisation</label>
                             <span class="required">*</span>
+                            <div style="padding-bottom: 4px">
+                                <span class="btn btn-info btn-xs select-all" style="border-radius: 0">Select all</span>
+                                <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">Deselect all</span>
+                            </div>
                             <select class="form-control js-select2" multiple="multiple" name="organisation_id[]" id="organisation_id">
                                 <?php
                                 foreach($list as $id => $name){ ?>
@@ -142,21 +146,30 @@ $(document).ready(function (e) {
                 success: function(data) {
                     $('#loader-invoice').css('display','none');
                     $('#createInvoice').prop('disabled',false);
-
-                    $.ajax({
-                        url: "invoice",
-                        type: "POST",
-                        data: { 
-                            'data': data
-                        },
-                        success: function(response) {
-                            console.log('Success')
-                            $('body').html(response);
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            $('#msg').html(errorThrown);
+                    var startIndex = data.indexOf("{");
+                    var jsonResponse = data.substring(startIndex);
+                    try {
+                        var dataObj = JSON.parse(jsonResponse);
+                        if(dataObj.details){
+                            $.ajax({
+                                url: "invoice",
+                                type: "POST",
+                                data: { 
+                                    'data': data
+                                },
+                                success: function(response) {
+                                    console.log('Success')
+                                    $('body').html(response);
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    $('#msg').html(errorThrown);
+                                }
+                            });
                         }
-                    });
+                    } catch (error) {
+                        $('#msg').html('something went wrong. Please try again.');
+                        console.error("Error parsing JSON:", error);
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     $('#msg').html(errorThrown);
