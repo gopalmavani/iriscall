@@ -113,4 +113,12 @@ class CronCommand extends CConsoleCommand
             echo $e->getMessage();
         }
     }
+
+    public function actionCreateInvoice($month_year = '', $org_id = ''){
+        ini_set('memory_limit', '-1');
+        set_time_limit(0);
+
+        $summaryMessage = GenerateInvoice::createInvoice($month_year, $org_id);
+        print $summaryMessage;
+    }
 }

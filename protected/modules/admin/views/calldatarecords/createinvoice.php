@@ -24,22 +24,19 @@ $this->pageTitle = 'Create Invoice';
     <div class="col-lg-12">
         <div class="block">
             <div class="block-content block-content-narrow">
-                <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-                    'id'=>'cdr-form',
-                    'layout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
-                    'enableAjaxValidation'=>false,
-                )); ?>
-
                 <div class="col-lg-6">
                     <div class="row">
                         <div class="form-group">
-                            <?php echo $form->label($model, 'organisation_id', array('class' => 'control-label')); ?>
+                            <?php $list = CHtml::listData(OrganizationInfo::model()->findAll(), 'organisation_id', 'name'); ?>
+                            <label class="control-label">Organisation</label>
                             <span class="required">*</span>
-                            <?php $list = CHtml::listData(OrganizationInfo::model()->findAll(), 'id', 'name');
-                            echo $form->dropDownList($model, 'organisation_id', $list, array('class' => 'form-control organisation_id',
-                                'empty' => 'Select Organisation'));
-                            ?>
-                            <span class="help-block"><?php echo $form->error($model, 'organisation_id'); ?> </span>
+                            <select class="form-control js-select2" multiple="multiple" name="organisation_id[]" id="organisation_id">
+                                <?php
+                                foreach($list as $id => $name){ ?>
+                                    <option value="<?= $id ?>"><?= $name ?></option>
+                                <?php } ?>
+                            </select>
+                            <span class="help-block" style="color: red" id="org-err"></span>
                         </div>
                     </div>
                     <div class="group-list"></div>
@@ -68,10 +65,15 @@ $this->pageTitle = 'Create Invoice';
         </div>
         <div class="col-md-12">
             <div class="form-group" align="right">
-                <input type="submit" name="submit" value="create" class="btn btn-primary cat-create">
+                <input type="button" name="submit" value="create" class="btn btn-primary cat-create" id="createInvoice">
             </div>
         </div>
-        <?php $this->endWidget(); ?>
+        <div class="col-md-12">
+            <p style="background: whitesmoke !important;" id="msg"></p>
+            <div id="loader-invoice" style="display: none; margin-left: auto; margin-right: auto; padding: inherit; width: 100px;">
+                <i class="fa fa-4x fa-cog fa-spin text-success"></i>
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
@@ -80,7 +82,7 @@ $this->pageTitle = 'Create Invoice';
 $(document).ready(function (e) {
 //year-month calender
     $('#datepickerfilter').datepicker({
-        dateFormat: "MM-yy",
+        dateFormat: "MM, yy",
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
@@ -98,11 +100,11 @@ $(document).ready(function (e) {
         },
     });
 
-    $('.organisation_id').on('change', function(e) {
+    /*$('#organisation_id').on('change', function(e) {
         $('.group-list').html('')
         $.ajax({
             type: 'POST',
-            url: '<?php echo Yii::app()->getUrlManager()->createUrl('admin/companyGroup/getGroups'); ?>' ,
+            url: '<?php //echo Yii::app()->getUrlManager()->createUrl('admin/companyGroup/getGroups'); ?>' ,
             data: {
                 organisation_id: $(this).val()
             },
@@ -113,6 +115,54 @@ $(document).ready(function (e) {
                 }
             }
         });
+    });*/
+
+    $('#createInvoice').click(function(e){
+        e.preventDefault();
+        var organization = $('#organisation_id').val();
+        var month_year = $('#datepickerfilter').val();
+
+        if(organization == null){
+            $('#org-err').html("Please select organization."); 
+        } else {
+            $('#msg').html('');
+            $('#org-err').html('');
+            $.ajax({
+                url: "GenerateInvoice",
+                type: "POST",
+                timeout: 0,
+                data: {
+                    'month_year':month_year,
+                    'organization':organization
+                },
+                beforeSend:function () {
+                    $('#createInvoice').prop('disabled',true);
+                    $('#loader-invoice').css('display','block');
+                },
+                success: function(data) {
+                    $('#loader-invoice').css('display','none');
+                    $('#createInvoice').prop('disabled',false);
+
+                    $.ajax({
+                        url: "invoice",
+                        type: "POST",
+                        data: { 
+                            'data': data
+                        },
+                        success: function(response) {
+                            console.log('Success')
+                            $('body').html(response);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            $('#msg').html(errorThrown);
+                        }
+                    });
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $('#msg').html(errorThrown);
+                }
+            });
+        }
     });
 });
 </script>
