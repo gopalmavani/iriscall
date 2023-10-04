@@ -257,7 +257,7 @@ class CalldatarecordsController extends Controller
                     array_push($data_array,['is_min'=>false,'rule'=>'External Numbers','min'=>$numberOfExternalNumber,'total_time'=> $numberOfExternalNumber,'cost'=>'4','resourceId'=>$resourceId]);
                 }*/
 
-                $this->render('InvoiceDetail', [
+                $this->render('invoicedetail', [
                     'details' => isset($data->details) ? (array)$data->details : [],
                     'org_id' => isset($data->org_id) ? (array)$data->org_id : [],
                     'selected' => isset($data->selected) ? (array)$data->selected : []
