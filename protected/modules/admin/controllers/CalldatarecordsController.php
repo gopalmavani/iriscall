@@ -1024,7 +1024,7 @@ class CalldatarecordsController extends Controller
         $returnVal=null;
 
         exec($command, $output, $returnVal);
-        echo '<pre>';print_r($output);
+        //echo '<pre>';print_r($output);
     }
 }
 

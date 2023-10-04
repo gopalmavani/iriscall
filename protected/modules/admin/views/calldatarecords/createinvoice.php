@@ -146,29 +146,32 @@ $(document).ready(function (e) {
                 success: function(data) {
                     $('#loader-invoice').css('display','none');
                     $('#createInvoice').prop('disabled',false);
-                    var startIndex = data.indexOf("{");
-                    var jsonResponse = data.substring(startIndex);
-                    try {
-                        var dataObj = JSON.parse(jsonResponse);
-                        if(dataObj.details){
-                            $.ajax({
-                                url: "invoice",
-                                type: "POST",
-                                data: { 
-                                    'data': data
-                                },
-                                success: function(response) {
-                                    console.log('Success')
-                                    $('body').html(response);
-                                },
-                                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                    $('#msg').html(errorThrown);
-                                }
-                            });
+
+                    if(data != ''){
+                        var startIndex = data.indexOf("{");
+                        var jsonResponse = data.substring(startIndex);
+                        try {
+                            var dataObj = JSON.parse(jsonResponse);
+                            if(dataObj.details){
+                                $.ajax({
+                                    url: "invoice",
+                                    type: "POST",
+                                    data: { 
+                                        'data': data
+                                    },
+                                    success: function(response) {
+                                        console.log('Success')
+                                        $('body').html(response);
+                                    },
+                                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                        $('#msg').html(errorThrown);
+                                    }
+                                });
+                            }
+                        } catch (error) {
+                            $('#msg').html('something went wrong. Please try again.');
+                            console.error("Error parsing JSON:", error);
                         }
-                    } catch (error) {
-                        $('#msg').html('something went wrong. Please try again.');
-                        console.error("Error parsing JSON:", error);
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
